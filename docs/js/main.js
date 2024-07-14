@@ -1594,7 +1594,7 @@
 					}
 				}
 
-				if (!this.isAgitated && showSkin && skinurl !== '') {
+				if (!this.isAgitated && showSkin && skinurl !== '' && skinurl !== '.png') {
 					if (!skins.hasOwnProperty(skinName)) {
 						skins[skinName] = new Image;
 						skins[skinName].src = skinurl;
