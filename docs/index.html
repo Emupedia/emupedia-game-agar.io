@@ -387,15 +387,15 @@
 								} else {
 									$('#overlays').show();
 
-									grecaptcha.ready(() => {
-										grecaptcha.execute('6LdxZMspAAAAAOVZOMGJQ_yJo2hBI9QAbShSr_F3', { action: 'connect' }).then(token => {
+									grecaptcha.ready(function() {
+										grecaptcha.execute('6LdxZMspAAAAAOVZOMGJQ_yJo2hBI9QAbShSr_F3', { action: 'connect' }).then(function(token) {
 											connect('wss://agar.' + location + '/ws1/?token=' + token);
 										});
 									});
 
 									clearInterval(interval);
-									interval = setInterval(() => {
-										FP.then(fp => fp.get()).then(result => {
+									interval = setInterval(function() {
+										FP.then(function (fp) { return fp.get() }).then(function (result) {
 											localStorage.setItem('agarv1ident', result.visitorId);
 
 											let ban = false;
@@ -419,8 +419,8 @@
 						}).error(function() {
 							$('#overlays').show();
 
-							grecaptcha.ready(() => {
-								grecaptcha.execute('6LdxZMspAAAAAOVZOMGJQ_yJo2hBI9QAbShSr_F3', { action: 'connect' }).then(token => {
+							grecaptcha.ready(function() {
+								grecaptcha.execute('6LdxZMspAAAAAOVZOMGJQ_yJo2hBI9QAbShSr_F3', { action: 'connect' }).then(function (token) {
 									connect('wss://agar.' + location + '/ws1/?token=' + token);
 								});
 							});
@@ -429,8 +429,8 @@
 				}).error(function() {
 					$('#overlays').show();
 
-					grecaptcha.ready(() => {
-						grecaptcha.execute('6LdxZMspAAAAAOVZOMGJQ_yJo2hBI9QAbShSr_F3', { action: 'connect' }).then(token => {
+					grecaptcha.ready(function() {
+						grecaptcha.execute('6LdxZMspAAAAAOVZOMGJQ_yJo2hBI9QAbShSr_F3', { action: 'connect' }).then(function(token) {
 							connect('wss://agar.' + location + '/ws1/?token=' + token);
 						});
 					});
