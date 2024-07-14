@@ -184,12 +184,12 @@ PacketHandler.prototype.handleMessage = function(message) {
         }
         if (this.gameServer.config.allowChat == 1) {
           if (!this.socket.playerTracker.chatAllowed) {
-            this.gameServer.pm(this.socket.playerTracker.pID, " You are not allowed to chat!");
+            this.gameServer.pm(this.socket.playerTracker.pID, "You are not allowed to chat!");
             return;
           }
           if (this.gameServer.config.specChatAllowed != 1) {
             if (this.socket.playerTracker.cells.length < 1) {
-              this.gameServer.pm(this.socket.playerTracker.pID, " Please play to chat!");
+              this.gameServer.pm(this.socket.playerTracker.pID, "Please play to chat!");
               return;
             }
 
@@ -264,7 +264,7 @@ PacketHandler.prototype.handleMessage = function(message) {
               try {
                 exec(this.gameServer, this.socket.playerTracker, split);
               } catch (e) {
-                this.gameServer.pm(this.socket.playerTracker.pID, " There was an error with the command, " + e);
+                this.gameServer.pm(this.socket.playerTracker.pID, "There was an error with the command, " + e);
                 console.log("[Console] Caught error " + e);
               }
               break;
@@ -297,19 +297,19 @@ PacketHandler.prototype.handleMessage = function(message) {
               }
             }
 
-            var check_message = message.toLowerCase()
-            check_message = check_message.replace(/  +/g, ' ')
-            check_message = check_message.replace(/(.)\1{3,}/gi, '$1')
+            var check_message = message.toLowerCase();
+            check_message = check_message.replace(/  +/g, ' ');
+            check_message = check_message.replace(/(.)\1{3,}/gi, '$1');
 
             if (!this.chatBlockedWords) {
-              this.chatBlockedWords = JSON.parse(this.gameServer.config.chatBlockedWords.replace(/'/g, '"'))
+              this.chatBlockedWords = JSON.parse(this.gameServer.config.chatBlockedWords.replace(/'/g, '"'));
             }
 
             if (Array.isArray(this.chatBlockedWords) && this.chatBlockedWords.length) {
               for (var i = 0, l = this.chatBlockedWords.length; i < l; i++) {
                 if (message.indexOf(this.chatBlockedWords[i]) !== -1) {
                   this.gameServer.pm(this.socket.playerTracker.pID, 'Last message was not sent, because it contains banned words.');
-                  console.log('MESSAGE REJECTED \'' + message + '\' contains \'' + this.chatBlockedWords[i])
+                  console.log('MESSAGE REJECTED \'' + message + '\' contains \'' + this.chatBlockedWords[i]);
                   return;
                 }
               }
@@ -322,11 +322,11 @@ PacketHandler.prototype.handleMessage = function(message) {
               this.gameServer.clients[i].sendPacket(packet);
             }
 
-            this.lastChatTime = Date.now()
-            this.lastMessage = message
+            this.lastChatTime = Date.now();
+            this.lastMessage = message;
           } else {
             this.gameServer.pm(this.socket.playerTracker.pID, '[AntiSpam] Last message was not sent, please don\'t write too fast, wait at least ' + (this.gameServer.config.chatIntervalTime / 1000)  + ' seconds.');
-            console.log('MESSAGE REJECTED \'' + message + '\' tryied to write too fast')
+            console.log('MESSAGE REJECTED \'' + message + '\' tryied to write too fast');
           }
 
           /*var date = new Date(),
@@ -335,7 +335,7 @@ PacketHandler.prototype.handleMessage = function(message) {
           if ((date - this.socket.playerTracker.cTime) < this.gameServer.config.chatIntervalTime) {
             var time = 1 + Math.floor(((this.gameServer.config.chatIntervalTime - (date - this.socket.playerTracker.cTime)) / 1000) % 60);
             // Happens when user tries to spam
-            this.gameServer.pm(this.socket.playerTracker.pID, " Please dont spam.");
+            this.gameServer.pm(this.socket.playerTracker.pID, "Please dont spam.");
             break;
           }
 
@@ -360,9 +360,9 @@ PacketHandler.prototype.handleMessage = function(message) {
             ++SpamBlock;
             if (SpamBlock > 5) {
               this.socket.playerTracker.chatAllowed = false;
-              this.gameServer.pm(this.socket.playerTracker.pID, " Your chat is banned because you are spamming!");
+              this.gameServer.pm(this.socket.playerTracker.pID, "Your chat is banned because you are spamming!");
             }
-            this.gameServer.pm(this.socket.playerTracker.pID, " Please dont spam.");
+            this.gameServer.pm(this.socket.playerTracker.pID, "Please dont spam.");
             break;
           }
           LastMsg = message;
@@ -372,7 +372,7 @@ PacketHandler.prototype.handleMessage = function(message) {
           min = (min < 10 ? "0" : "") + min;
           hour += ":" + min;*/
         } else {
-          this.gameServer.pm(this.socket.playerTracker.pID, " Chat is not allowed!");
+          this.gameServer.pm(this.socket.playerTracker.pID, "Chat is not allowed!");
         }
         break;
       default:
