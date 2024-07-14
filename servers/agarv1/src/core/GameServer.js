@@ -404,7 +404,7 @@ module.exports = class GameServer {
 
 			let origin = ws.upgradeReq.rawHeaders[ws.upgradeReq.rawHeaders.indexOf('Origin') + 1];
 
-			if (origin !== 'https://emupedia.net' && origin !== 'https://emupedia.org' && origin !== 'https://emuos.org' && origin !== 'https://emuos.net' && origin !== 'http://localhost:58585') {
+			if (origin !== 'https://emupedia.net' && origin !== 'https://emupedia.org' && origin !== 'https://emupedia.games' && origin !== 'https://emuos.org' && origin !== 'https://emuos.net' && origin !== 'https://emuos.games' && origin !== 'http://localhost:58585') {
 				console.log('[' + (new Date().toISOString().replace('T', ' ')) + '] Origin: ' + origin + ' REFUSED');
 				ws.close();
 				return;
