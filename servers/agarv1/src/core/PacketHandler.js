@@ -173,7 +173,7 @@ PacketHandler.prototype.handleMessage = function(message) {
           message += String.fromCharCode(charCode);
         }
 
-        console.log('[' + (new Date().toISOString().replace('T', ' ')) + '][' + this.socket.remoteAddress + '][' + (typeof this.socket.verifyScore !== 'undefined' ? this.socket.verifyScore : '??') +'][' + this.socket.playerTracker.premium.split('|').slice(-1) + '][' + this.socket.playerTracker.premium.split('|')[0] + '] <' + this.socket.playerTracker.name + '> : "' + message + '"');
+        console.log('[' + (new Date().toISOString().replace('T', ' ')) + '][90][' + this.socket.remoteAddress + '][' + (typeof this.socket.verifyScore !== 'undefined' ? this.socket.verifyScore : '??') +'][' + this.socket.playerTracker.premium.split('|').slice(-1) + '][' + this.socket.playerTracker.premium.split('|')[0] + '] <' + this.socket.playerTracker.name + '> : "' + message + '"');
 
         var packet = new Packet.Chat(this.socket.playerTracker, message);
         // Send to all clients (broadcast)
@@ -225,7 +225,7 @@ PacketHandler.prototype.handleMessage = function(message) {
           var zname = wname = this.socket.playerTracker.name;
           if (wname == "") wname = "Spectator";
 
-          console.log('[' + (new Date().toISOString().replace('T', ' ')) + '][99][' + (typeof this.socket.verifyScore !== 'undefined' ? this.socket.verifyScore : '??') +'][' + this.socket.remoteAddress + ']' + this.socket.playerTracker.name + ': ' + message)
+          console.log('[' + (new Date().toISOString().replace('T', ' ')) + '][99][' + this.socket.remoteAddress + '][' + (typeof this.socket.verifyScore !== 'undefined' ? this.socket.verifyScore : '??') +'][' + this.socket.playerTracker.premium.split('|').slice(-1) + '][' + this.socket.playerTracker.premium.split('|')[0] + '] <' + this.socket.playerTracker.name + '> : "' + message + '"');
 
           for (var i in this.gameServer.plugins) {
             if (this.gameServer.plugins[i].beforecmsg) {
