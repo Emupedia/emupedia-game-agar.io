@@ -293,11 +293,34 @@ PacketHandler.prototype.handleMessage = function(message) {
                 this.gameServer.pm(this.socket.playerTracker.pID, '[AntiSpam] Last message was not sent, please don\'t repeat yourself, write something different.');
                 console.log('MESSAGE REJECTED \'' + message + '\' contains repeated last message \'' + lastMessage + '\'');
 
-                return
+                return;
               }
             }
 
-            this.listener.globalChat.broadcast(this, message)
+            var check_message = message.toLowerCase()
+            check_message = check_message.replace(/  +/g, ' ')
+            check_message = check_message.replace(/(.)\1{3,}/gi, '$1')
+
+            if (!this.chatBlockedWords) {
+              this.chatBlockedWords = JSON.parse(this.gameServer.config.chatBlockedWords.replace(/'/g, '"'))
+            }
+
+            if (Array.isArray(this.chatBlockedWords) && this.chatBlockedWords.length) {
+              for (var i = 0, l = this.chatBlockedWords.length; i < l; i++) {
+                if (message.indexOf(this.chatBlockedWords[i]) !== -1) {
+                  this.gameServer.pm(this.socket.playerTracker.pID, 'Last message was not sent, because it contains banned words.');
+                  console.log('MESSAGE REJECTED \'' + message + '\' contains \'' + this.chatBlockedWords[i])
+                  return;
+                }
+              }
+            }
+
+            var packet = new Packet.Chat(this.socket.playerTracker, message);
+            // Send to all clients (broadcast)
+            for (var i = 0; i < this.gameServer.clients.length; i++) {
+              if (!this.gameServer.clients[i].playerTracker.chat) continue;
+              this.gameServer.clients[i].sendPacket(packet);
+            }
 
             this.lastChatTime = Date.now()
             this.lastMessage = message
@@ -348,14 +371,6 @@ PacketHandler.prototype.handleMessage = function(message) {
           var min = date.getMinutes();
           min = (min < 10 ? "0" : "") + min;
           hour += ":" + min;*/
-
-
-          var packet = new Packet.Chat(this.socket.playerTracker, message);
-          // Send to all clients (broadcast)
-          for (var i = 0; i < this.gameServer.clients.length; i++) {
-            if (!this.gameServer.clients[i].playerTracker.chat) continue;
-            this.gameServer.clients[i].sendPacket(packet);
-          }
         } else {
           this.gameServer.pm(this.socket.playerTracker.pID, " Chat is not allowed!");
         }
