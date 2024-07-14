@@ -320,7 +320,7 @@
 				var form = document.getElementById('form');
 
 				if (form && typeof form['reportValidity'] === 'function' && form.reportValidity()) {
-					setNick((document.getElementById('skin').value !== '' ? '<' : '') + sanitizeString(document.getElementById('skin').value) + '|' + (agarv1ident ? agarv1ident : '') + (document.getElementById('skin').value !== '' ?  '>' : '') + document.getElementById('nick').value);
+					setNick('<' + sanitizeString(document.getElementById('skin').value) + '|' + (agarv1ident ? agarv1ident : '') + '>' + document.getElementById('nick').value);
 				}
 			}
 
@@ -437,7 +437,7 @@
 						e.preventDefault();
 
 						if (!isSpectating) {
-							setNick((document.getElementById('skin').value !== '' ? '<' : '') + sanitizeString(document.getElementById('skin').value) + '|' + (agarv1ident ? agarv1ident : '') + (document.getElementById('skin').value !== '' ?  '>' : '') + document.getElementById('nick').value);
+							setNick('<' + sanitizeString(document.getElementById('skin').value) + '|' + (agarv1ident ? agarv1ident : '') + '>' + document.getElementById('nick').value);
 						}
 					}
 				});
