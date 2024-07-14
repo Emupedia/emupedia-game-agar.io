@@ -359,7 +359,7 @@
 						knownSkins = skins;
 						document.getElementById('gallery-btn').style.display = 'inline-block';
 
-						$.get('fpbanList.txt').success(function(data) {
+						$.get('fpBanList.txt').success(function(data) {
 							var fp = data.split(',');
 
 							for (var p of fp) bannedIdent.push(p);
