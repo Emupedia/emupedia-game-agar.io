@@ -248,7 +248,7 @@
 
 			function checkNSFW(image, cb) {
 				if (window.Worker && typeof OffscreenCanvas !== 'undefined') {
-					const worker = new Worker('nsfw-worker.js');
+					const worker = new Worker('nsfwjs/browser/nsfw-worker.js');
 					worker.postMessage(image);
 					worker.onmessage = e => {
 						if (e.data === true) {

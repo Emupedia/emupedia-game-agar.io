@@ -1,5 +1,5 @@
-importScripts('nsfwjs/browser/tf.min.js');
-importScripts('nsfwjs/browser/nsfwjs.min.js');
+importScripts('tf.min.js');
+importScripts('nsfwjs.min.js');
 
 onmessage = e => {
 	fetch(e.data).then(res => res.blob()).then(async (res) => {
@@ -15,7 +15,7 @@ onmessage = e => {
 		tf.enableProdMode();
 
 		// noinspection JSUnresolvedReference
-		nsfwjs.load('nsfwjs/models/inception_v3/model.json', { size: 299 }).then(model => {
+		nsfwjs.load('../models/inception_v3/model.json', { size: 299 }).then(model => {
 			// noinspection JSUnresolvedReference
 			model.classify(img, 1).then(predictions => {
 				if (predictions[0] && predictions[0].className) {
