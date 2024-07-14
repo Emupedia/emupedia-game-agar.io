@@ -304,8 +304,12 @@
 
 			var knownSkins = [];
 
-			function sanitizeString(str) {
+			function sanitizeSkin(str) {
 				return str.replace(/[^a-zA-Z0-9_\- ]/gim, '').trim();
+			}
+
+			function sanitizeNick(str) {
+				return str.replace(/[<>|]/gim, '').trim();
 			}
 
 			function openSkinsList() {
@@ -320,7 +324,7 @@
 				var form = document.getElementById('form');
 
 				if (form && typeof form['reportValidity'] === 'function' && form.reportValidity()) {
-					setNick('<' + sanitizeString(document.getElementById('skin').value) + '|' + (agarv1ident ? agarv1ident : '') + '>' + document.getElementById('nick').value);
+					setNick('<' + sanitizeSkin(document.getElementById('skin').value) + '|' + (agarv1ident ? agarv1ident : '') + '>' + sanitizeNick(document.getElementById('nick').value));
 				}
 			}
 
@@ -437,7 +441,7 @@
 						e.preventDefault();
 
 						if (!isSpectating) {
-							setNick('<' + sanitizeString(document.getElementById('skin').value) + '|' + (agarv1ident ? agarv1ident : '') + '>' + document.getElementById('nick').value);
+							setNick('<' + sanitizeSkin(document.getElementById('skin').value) + '|' + (agarv1ident ? agarv1ident : '') + '>' + sanitizeNick(document.getElementById('nick').value));
 						}
 					}
 				});

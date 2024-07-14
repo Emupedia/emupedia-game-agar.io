@@ -215,9 +215,9 @@ module.exports = class PlayerTracker {
 
   getSizes() {
     var s = 0;
-      for (var i = 0; i < this.cells.length; i++) {
-        if (!this.cells[i]) return; // Error
-        if (!this.cells[i]) {
+    for (var i = 0; i < this.cells.length; i++) {
+      if (!this.cells[i]) return; // Error
+      if (!this.cells[i]) {
         continue;
       }
       s += this.cells[i].getSize();
@@ -244,119 +244,119 @@ module.exports = class PlayerTracker {
   update() {
     if (this.checkTick <= 0) {
 
-    if (this.gameServer.config.mousefilter == 1 && this.gameServer.mfre == true) { // Mouse filter code when gameserver detects duplicates
-      if (this.vt > 20) {
-        this.vt = 0;
-        var re = 0;
-        for (var i in this.gameServer.clients) {
-          var client = this.gameServer.clients[i].playerTracker;
-          if (Math.abs(client.mouse.x - this.mouse.x < 2) && Math.abs(this.mouse.y - client.mouse.y) < 2) { // check to see if mouse's loxation is similar to others
-            var ismi = true;
-          } else {
-            var ismi = false;
-          }
-          if (ismi && (!client.nospawn) && (typeof client.socket.remoteAddress != "undefined") && (this.gameServer.whlist.indexOf(this.socket.remoteAddress) == -1)) {
-            re++;
-          }
-        }
-        if (re > this.gameServer.config.mbchance) { // if there is over 5 duplicates
+      if (this.gameServer.config.mousefilter == 1 && this.gameServer.mfre == true) { // Mouse filter code when gameserver detects duplicates
+        if (this.vt > 20) {
+          this.vt = 0;
+          var re = 0;
           for (var i in this.gameServer.clients) {
             var client = this.gameServer.clients[i].playerTracker;
-            if (Math.abs(client.mouse.x - this.mouse.x < 2) && Math.abs(this.mouse.y - client.mouse.y) < 2) {
+            if (Math.abs(client.mouse.x - this.mouse.x < 2) && Math.abs(this.mouse.y - client.mouse.y) < 2) { // check to see if mouse's loxation is similar to others
               var ismi = true;
             } else {
               var ismi = false;
             }
             if (ismi && (!client.nospawn) && (typeof client.socket.remoteAddress != "undefined") && (this.gameServer.whlist.indexOf(this.socket.remoteAddress) == -1)) {
-              this.gameServer.banned.push(client.socket.remoteAddress); // Ban
-              var len = client.cells.length;
-              for (var j = 0; j < len; j++) {
-                this.gameServer.removeNode(client.cells[0]); // kill
+              re++;
+            }
+          }
+          if (re > this.gameServer.config.mbchance) { // if there is over 5 duplicates
+            for (var i in this.gameServer.clients) {
+              var client = this.gameServer.clients[i].playerTracker;
+              if (Math.abs(client.mouse.x - this.mouse.x < 2) && Math.abs(this.mouse.y - client.mouse.y) < 2) {
+                var ismi = true;
+              } else {
+                var ismi = false;
+              }
+              if (ismi && (!client.nospawn) && (typeof client.socket.remoteAddress != "undefined") && (this.gameServer.whlist.indexOf(this.socket.remoteAddress) == -1)) {
+                this.gameServer.banned.push(client.socket.remoteAddress); // Ban
+                var len = client.cells.length;
+                for (var j = 0; j < len; j++) {
+                  this.gameServer.removeNode(client.cells[0]); // kill
+                }
               }
             }
+
+
           }
 
 
+        } else {
+
+          this.vt++;
+        }
+      } else {
+        if(this.vt > 0) this.vt--;
+      }
+
+
+
+      if (this.score > this.gameServer.topscore + 10) {
+        if (this.gameServer.config.highscore == 1) {
+          if (this.name != this.gameServer.topusername) {
+            var self = this;
+            fs.readFile(__dirname + '../highscores.txt', 'utf-8', function (err, score) {
+              self.gameServer.oldtopscores.score = self.gameServer.topscore;
+              self.gameServer.oldtopscores.name = self.gameServer.topusername;
+              // todo replace readFileSync with readFile - this causes lag!!!
+              self.gameServer.highscores = Math.floor(self.gameServer.topscore) + " By " + self.gameServer.topusername + "\n" + score;
+              // todo replace writeFileSync with writeFile - this causes lag!!!
+              fs.writeFile(__dirname + '../highscores.txt', self.gameServer.highscores);
+            });
+          }
+          this.gameServer.topscore = Math.floor(this.score);
+          this.gameServer.topusername = this.name;
+
+          if (this.gameServer.config.showtopscore == 1) {
+            console.log("[Console] " + this.name + " Made a new high score of " + Math.floor(this.score));
+          }
+        } else {
+          if (this.name != this.gameServer.topusername) {
+            this.gameServer.oldtopscores.score = this.gameServer.topscore;
+            this.gameServer.oldtopscores.name = this.gameServer.topusername;
+
+
+          }
+          this.gameServer.topscore = Math.floor(this.score);
+          this.gameServer.topusername = this.name;
+          if (this.gameServer.config.showtopscore == 1) {
+            console.log("[Console] " + this.name + " Made a new high score of " + Math.floor(this.score));
+          }
         }
 
-
-      } else {
-
-        this.vt++;
       }
+
+      this.checkTick = 40;
     } else {
-      if(this.vt > 0) this.vt--;
-    }
-
-
-
-    if (this.score > this.gameServer.topscore + 10) {
-if (this.gameServer.config.highscore == 1) {
-      if (this.name != this.gameServer.topusername) {
-        var self = this;
-        fs.readFile(__dirname + '../highscores.txt', 'utf-8', function (err, score) {
-          self.gameServer.oldtopscores.score = self.gameServer.topscore;
-          self.gameServer.oldtopscores.name = self.gameServer.topusername;
-          // todo replace readFileSync with readFile - this causes lag!!!
-          self.gameServer.highscores = Math.floor(self.gameServer.topscore) + " By " + self.gameServer.topusername + "\n" + score;
-          // todo replace writeFileSync with writeFile - this causes lag!!!
-          fs.writeFile(__dirname + '../highscores.txt', self.gameServer.highscores);
-        });
-      }
-      this.gameServer.topscore = Math.floor(this.score);
-      this.gameServer.topusername = this.name;
-
-      if (this.gameServer.config.showtopscore == 1) {
-        console.log("[Console] " + this.name + " Made a new high score of " + Math.floor(this.score));
-      }
-    } else {
-       if (this.name != this.gameServer.topusername) {
-      this.gameServer.oldtopscores.score = this.gameServer.topscore;
-          this.gameServer.oldtopscores.name = this.gameServer.topusername;
-
-
-       }
-             this.gameServer.topscore = Math.floor(this.score);
-      this.gameServer.topusername = this.name;
-      if (this.gameServer.config.showtopscore == 1) {
-        console.log("[Console] " + this.name + " Made a new high score of " + Math.floor(this.score));
-      }
-    }
+      this.checkTick --;
 
     }
-
-this.checkTick = 40;
-} else {
-  this.checkTick --;
-
-}
 
     // Actions buffer (So that people cant spam packets)
     if (this.socket.packetHandler.pressSpace) { // Split cell
 
-   if (this.op.pressSpace(this.gameServer, this)) this.gameServer.gameMode.pressSpace(this.gameServer, this);
+      if (this.op.pressSpace(this.gameServer, this)) this.gameServer.gameMode.pressSpace(this.gameServer, this);
       this.socket.packetHandler.pressSpace = false;
     }
 
     if (this.socket.packetHandler.pressW) { // Eject mass
-    if (this.op.pressW(this.gameServer, this)) this.gameServer.gameMode.pressW(this.gameServer, this);
+      if (this.op.pressW(this.gameServer, this)) this.gameServer.gameMode.pressW(this.gameServer, this);
       this.socket.packetHandler.pressW = false;
     }
 
     if (this.socket.packetHandler.pressQ) { // Q Press
-    if (this.op.pressQ(this.gameServer,this)) this.gameServer.gameMode.pressQ(this.gameServer, this);
+      if (this.op.pressQ(this.gameServer,this)) this.gameServer.gameMode.pressQ(this.gameServer, this);
       this.socket.packetHandler.pressQ = false;
     }
     if (this.socket.packetHandler.pressE) { // E Press
-    this.op.pressE(this.gameServer,this)
+      this.op.pressE(this.gameServer,this)
       this.socket.packetHandler.pressE = false;
     }
     if (this.socket.packetHandler.pressR) { // R Press
-    this.op.pressR(this.gameServer,this)
+      this.op.pressR(this.gameServer,this)
       this.socket.packetHandler.pressR = false;
     }
     if (this.socket.packetHandler.pressT) { // R Press
-    this.op.pressT(this.gameServer,this)
+      this.op.pressT(this.gameServer,this)
       this.socket.packetHandler.pressT = false;
     }
 
@@ -564,26 +564,26 @@ this.checkTick = 40;
     this.centerPos.x = X / len;
     this.centerPos.y = Y / len;
   };
-getQuadrant(gameServer) { // Players quads are different and also factor in their viewboxes
-  var x = this.centerPos.x;
-  var y = this.centerPos.y;
-  var config = gameServer.config
-  var borderH = Math.round((config.borderBottom + config.borderTop) / 2);
-  var borderV = Math.round((config.borderRight + config.borderLeft) / 2);
-  var xbuffer = this.sightRangeX; // it is so that at the border of the quadrant, you can see other quadrants
-  var ybuffer = this.sightRangeY; // but if in the middle, it would only loop through the players quadrant
-  if (x > borderV + xbuffer && y > borderH + ybuffer) {
-    return 4;
-  } else if (x > borderV + xbuffer && y <= borderH - ybuffer) {
-    return 1;
-  } else if (x <= borderV - xbuffer && y > borderH + ybuffer) {
-    return 3;
-  } else if (x <= borderV - xbuffer && y <= borderH - ybuffer) {
-    return 2;
-  } else {
-    return false;
-  }
-};
+  getQuadrant(gameServer) { // Players quads are different and also factor in their viewboxes
+    var x = this.centerPos.x;
+    var y = this.centerPos.y;
+    var config = gameServer.config
+    var borderH = Math.round((config.borderBottom + config.borderTop) / 2);
+    var borderV = Math.round((config.borderRight + config.borderLeft) / 2);
+    var xbuffer = this.sightRangeX; // it is so that at the border of the quadrant, you can see other quadrants
+    var ybuffer = this.sightRangeY; // but if in the middle, it would only loop through the players quadrant
+    if (x > borderV + xbuffer && y > borderH + ybuffer) {
+      return 4;
+    } else if (x > borderV + xbuffer && y <= borderH - ybuffer) {
+      return 1;
+    } else if (x <= borderV - xbuffer && y > borderH + ybuffer) {
+      return 3;
+    } else if (x <= borderV - xbuffer && y <= borderH - ybuffer) {
+      return 2;
+    } else {
+      return false;
+    }
+  };
   calcViewBox() {
     if (this.spectate) {
       // Spectate mode
@@ -603,18 +603,18 @@ getQuadrant(gameServer) { // Players quads are different and also factor in thei
     this.viewBox.height = this.sightRangeY;
 
     var newVisible = [];
-var quad = this.getQuadrant(this.gameServer);
+    var quad = this.getQuadrant(this.gameServer);
     this.gameServer.getWorld().getNodes().forEach((node)=> {
       if (!node) return;
-if (quad && quad != node.quadrant) return; // if players quad is different, skip.
+      if (quad && quad != node.quadrant) return; // if players quad is different, skip.
       if (node.visibleCheck(this.viewBox, this.centerPos)) {
         // Cell is in range of viewBox
- if ((!node.watch || node.watch == -1) && !this.isBot) node.watch = this.pID;
+        if ((!node.watch || node.watch == -1) && !this.isBot) node.watch = this.pID;
         newVisible.push(node);
       } else {
-if ((node.watch == this.pID || node.watch == -1) && !this.isBot) node.watch = false;
+        if ((node.watch == this.pID || node.watch == -1) && !this.isBot) node.watch = false;
 
-}
+      }
     });
 
     return newVisible;
