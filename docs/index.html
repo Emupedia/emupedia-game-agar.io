@@ -221,7 +221,7 @@
 					</div>
 					<div class="form-group">
 						<input id="nick" class="form-control" style="display: inline-block;" placeholder="Nick" maxlength="15" />
-						<input id="skin" class="form-control" style="display: inline-block;" placeholder="Skin Name" maxlength="25" />
+						<input id="skin" class="form-control" style="display: inline-block;" placeholder="Skin Name" maxlength="25" pattern="[a-zA-Z0-9_\- ]+" oninvalid="this.setCustomValidity('Only letters, numbers, spaces and \'_\' and \'-\') allowed')" onchange="try{setCustomValidity('')}catch(e){}" />
 					</div>
 					<div id="locationUnknown"></div>
 					<div class="form-group clearfix">
@@ -320,7 +320,7 @@
 				var form = document.getElementById('form');
 
 				if (form && typeof form['reportValidity'] === 'function' && form.reportValidity()) {
-					setNick((document.getElementById('skin').value !== '' ?  '<' : '') + sanitizeString(document.getElementById('skin').value) + (document.getElementById('skin').value !== '' ?  '>' : '') + sanitizeString(document.getElementById('nick').value));
+					setNick((document.getElementById('skin').value !== '' ?  '<' : '') + sanitizeString(document.getElementById('skin').value) + document.getElementById('skin').value !== '' ?  '>' : '' + document.getElementById('nick').value);
 				}
 			}
 
@@ -355,7 +355,7 @@
 						knownSkins = skins;
 						document.getElementById('gallery-btn').style.display = 'inline-block';
 
-						$.get('banList.txt').success(function(data) {
+						$.get('fpbanList.txt').success(function(data) {
 							var fp = data.split(',');
 
 							for (var p of fp) bannedIdent.push(p);
@@ -378,7 +378,7 @@
 								if (ban) {
 									$('#chat_textbox').hide();
 									$('#overlays').hide();
-									$('#connecting div').html('<h3 style="text-align: center">Your are banned 😭</h3><hr class="top" /><p style="text-align: center">You are banned from the game because you broke the rules while uploading custom skins.</p><h1 style="text-align: center;">Your unban code is<br /><br />' + btoa(agarv1ident).replace(/(.{10})/g, "$1<br />") + '</h1>');
+									$('#connecting div').html('<h3 style="text-align: center">You are banned 😭</h3><hr class="top" /><p style="text-align: center">You are banned from the game because you broke the rules either spamming the chat or while uploading custom skins.</p><a class="text-center" style="display: block; color: red;" href="https://discord.gg/emupedia-510149138491506688" target="_blank">Join us on Discord!</a><h1 style="text-align: center;">Your unban code is<br /><br />' + btoa(agarv1ident).replace(/(.{10})/g, "$1<br />") + '</h1>');
 									$('#connecting').show();
 								} else {
 									$('#overlays').show();
@@ -405,7 +405,7 @@
 											if (ban) {
 												$('#chat_textbox').hide();
 												$('#overlays').hide();
-												$('#connecting div').html('<h3>Your are banned 😭</h3><hr class="top" /><p style="text-align: center">You are banned from the game because you broke the rules while uploading custom skins.</p><h1 style="text-align: center;">Your unban code is<br /><br />' + btoa(agarv1ident).replace(/(.{10})/g, "$1<br />") + '</h1>');
+												$('#connecting div').html('<h3 style="text-align: center">You are banned 😭</h3><hr class="top" /><p style="text-align: center">You are banned from the game because you broke the rules either spamming the chat or while uploading custom skins.</p><a class="text-center" style="display: block; color: red;" href="https://discord.gg/emupedia-510149138491506688" target="_blank">Join us on Discord!</a><h1 style="text-align: center;">Your unban code is<br /><br />' + btoa(agarv1ident).replace(/(.{10})/g, "$1<br />") + '</h1>');
 												$('#connecting').show();
 											}
 										});
@@ -437,7 +437,7 @@
 						e.preventDefault();
 
 						if (!isSpectating) {
-							setNick((document.getElementById('skin').value !== '' ? '<' : '') + sanitizeString(document.getElementById('skin').value) + (document.getElementById('skin').value !== '' ?  '>' : '') + sanitizeString(document.getElementById('nick').value));
+							setNick((document.getElementById('skin').value !== '' ? '<' : '') + sanitizeString(document.getElementById('skin').value) + (document.getElementById('skin').value !== '' ?  '>' : '') + document.getElementById('nick').value);
 						}
 					}
 				});
