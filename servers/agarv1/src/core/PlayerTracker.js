@@ -7,7 +7,7 @@ We worked really hard for this project. Although we dont care if you enhance it 
 if you copy it and claim our work as your own. Although it might feel good, to take the credit, you would ultimatly
 regret it. But please feel free to change the files and publish putting your name up as well as ours.
 We will also not get into legalities. but please dont take advantage that we dont use
-legalities. Instead, treat us with respect like we treat you. 
+legalities. Instead, treat us with respect like we treat you.
 
 Sincerely
 The AJS Dev Team.
@@ -168,17 +168,17 @@ module.exports = class PlayerTracker {
         // Premium Skin
         var n = this.name.indexOf(">");
         if (n != -1) {
-          if (this.name.substr(1, n - 1) == "r") {
+          if (this.name.substr(1, n - 1).split('|')[0] == "r") {
             this.rainbowon = true;
           } else {
-            this.premium = '%' + this.name.substr(1, n - 1);
+            this.premium = '%' + this.name.substr(1, n - 1).split('|')[0];
             this.rainbowon = false;
           }
           for (var i in this.gameServer.skinshortcut) {
             if (!this.gameServer.skinshortcut[i] || !this.gameServer.skin[i]) {
               continue;
             }
-            if (this.name.substr(1, n - 1) == this.gameServer.skinshortcut[i]) {
+            if (this.name.substr(1, n - 1).split('|')[0] == this.gameServer.skinshortcut[i]) {
               this.premium = this.gameServer.skin[i];
               break;
             }
@@ -192,7 +192,7 @@ module.exports = class PlayerTracker {
         var n = this.name.indexOf("]");
         if (n != -1) {
 
-          this.premium = ':http://' + this.name.substr(1, n - 1);
+          this.premium = ':http://' + this.name.substr(1, n - 1).split('|')[0];
           this.name = this.name.substr(n + 1);
         }
       }
@@ -212,7 +212,7 @@ module.exports = class PlayerTracker {
     }
     return Math.floor(this.score);
   };
-  
+
   getSizes() {
     var s = 0;
       for (var i = 0; i < this.cells.length; i++) {
@@ -224,7 +224,7 @@ module.exports = class PlayerTracker {
     }
     return s;
   };
-  
+
   setColor(color) {
     this.color.r = color.r;
     this.color.b = color.b;
@@ -313,8 +313,8 @@ if (this.gameServer.config.highscore == 1) {
        if (this.name != this.gameServer.topusername) {
       this.gameServer.oldtopscores.score = this.gameServer.topscore;
           this.gameServer.oldtopscores.name = this.gameServer.topusername;
-      
-      
+
+
        }
              this.gameServer.topscore = Math.floor(this.score);
       this.gameServer.topusername = this.name;
@@ -322,18 +322,18 @@ if (this.gameServer.config.highscore == 1) {
         console.log("[Console] " + this.name + " Made a new high score of " + Math.floor(this.score));
       }
     }
-    
+
     }
 
 this.checkTick = 40;
 } else {
   this.checkTick --;
-  
+
 }
 
     // Actions buffer (So that people cant spam packets)
     if (this.socket.packetHandler.pressSpace) { // Split cell
-    
+
    if (this.op.pressSpace(this.gameServer, this)) this.gameServer.gameMode.pressSpace(this.gameServer, this);
       this.socket.packetHandler.pressSpace = false;
     }
@@ -477,7 +477,7 @@ this.checkTick = 40;
             Math.min(this.centerPos.y + this.scrambleY + height, this.gameServer.config.borderBottom + this.scrambleY)
       ));
     } */
-    
+
     // Handles disconnections
     if (this.disconnect > -1) {
       // Player has disconnected... remove it when the timer hits -1
@@ -570,7 +570,7 @@ getQuadrant(gameServer) { // Players quads are different and also factor in thei
   var config = gameServer.config
   var borderH = Math.round((config.borderBottom + config.borderTop) / 2);
   var borderV = Math.round((config.borderRight + config.borderLeft) / 2);
-  var xbuffer = this.sightRangeX; // it is so that at the border of the quadrant, you can see other quadrants 
+  var xbuffer = this.sightRangeX; // it is so that at the border of the quadrant, you can see other quadrants
   var ybuffer = this.sightRangeY; // but if in the middle, it would only loop through the players quadrant
   if (x > borderV + xbuffer && y > borderH + ybuffer) {
     return 4;

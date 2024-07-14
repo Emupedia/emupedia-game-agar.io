@@ -173,7 +173,7 @@ PacketHandler.prototype.handleMessage = function(message) {
           message += String.fromCharCode(charCode);
         }
 
-        console.log('[' + (new Date().toISOString().replace('T', ' ')) + '][90][' + (typeof this.socket.verifyScore !== 'undefined' ? this.socket.verifyScore : '??') +'][' + this.socket.remoteAddress + ']' + this.socket.playerTracker.name + ': ' + message)
+        console.log('[' + (new Date().toISOString().replace('T', ' ')) + '][90][' + (typeof this.socket.verifyScore !== 'undefined' ? this.socket.verifyScore : '??') +'][' + this.socket.remoteAddress + '][' + this.socket.playerTracker.premium + ']' + this.socket.playerTracker.name + ': ' + message)
 
         var packet = new Packet.Chat(this.socket.playerTracker, message);
         // Send to all clients (broadcast)

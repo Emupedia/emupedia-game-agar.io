@@ -1581,16 +1581,16 @@
 				}
 				ctx.closePath();
 
-				var skinName = this.name.toLowerCase();
+				var skinName = this.name.toLowerCase().split('|')[0];
 				var skinurl = '';
 
 				if (this.skin) {
 					var fir = this.skin.charAt(0);
 
 					if (fir === '%') {
-						skinurl = SKIN_URL + this.skin.substring(1) + '.png';
+						skinurl = SKIN_URL + this.skin.substring(1).split('|')[0] + '.png';
 					} else if (fir === ':') {
-						skinurl = this.skin.substring(1);
+						skinurl = this.skin.substring(1).split('|')[0];
 					}
 				}
 
