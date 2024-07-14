@@ -34,6 +34,8 @@ module.exports = class PlayerTracker {
     this.updateBuffer = Math.floor(Math.random() * 500) + 1;
     this.chatAllowed = true;
     this.chat = true;
+    this.lastChatTime;
+    this.lastMessage;
     this.isAdmin = false;
     this.reservedNamesMap = [];
     this.checkTick = 40;

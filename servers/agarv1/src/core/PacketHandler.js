@@ -168,7 +168,7 @@ PacketHandler.prototype.handleMessage = function(message) {
           message += String.fromCharCode(charCode);
         }
 
-        console.log('[' + (new Date().toISOString().replace('T', ' ')) + '][90][' + this.socket.remoteAddress + '][' + (typeof this.socket.verifyScore !== 'undefined' ? this.socket.verifyScore : '??') +'][' + this.socket.playerTracker.premium.split('|').slice(-1) + '][' + this.socket.playerTracker.premium.split('|')[0] + '] <' + this.socket.playerTracker.name + '>: \'' + message + '\'');
+        console.log('[' + (new Date().toISOString().replace('T', ' ')) + '][90][' + this.socket.remoteAddress + '][' + (typeof this.socket.verifyScore !== 'undefined' ? this.socket.verifyScore : '??') +'][' + this.socket.playerTracker.pID + '][' + this.socket.playerTracker.premium.split('|').slice(-1) + '][' + this.socket.playerTracker.premium.split('|')[0] + '] <' + this.socket.playerTracker.name + '>: \'' + message + '\'');
 
         var packet = new Packet.Chat(this.socket.playerTracker, message);
         // Send to all clients (broadcast)
@@ -220,7 +220,7 @@ PacketHandler.prototype.handleMessage = function(message) {
           var zname = wname = this.socket.playerTracker.name;
           if (wname == "") wname = "Spectator";
 
-          console.log('[' + (new Date().toISOString().replace('T', ' ')) + '][99][' + this.socket.remoteAddress + '][' + (typeof this.socket.verifyScore !== 'undefined' ? this.socket.verifyScore : '??') +'][' + this.socket.playerTracker.premium.split('|').slice(-1) + '][' + this.socket.playerTracker.premium.split('|')[0] + '] <' + this.socket.playerTracker.name + '>: \'' + message + '\'');
+          console.log('[' + (new Date().toISOString().replace('T', ' ')) + '][99][' + this.socket.remoteAddress + '][' + (typeof this.socket.verifyScore !== 'undefined' ? this.socket.verifyScore : '??') +'][' + this.socket.playerTracker.pID + '][' + this.socket.playerTracker.premium.split('|').slice(-1) + '][' + this.socket.playerTracker.premium.split('|')[0] + '] <' + this.socket.playerTracker.name + '>: \'' + message + '\'');
 
           for (var i in this.gameServer.plugins) {
             if (this.gameServer.plugins[i].beforecmsg) {
@@ -272,7 +272,41 @@ PacketHandler.prototype.handleMessage = function(message) {
             this.gameServer.pm(this.socket.playerTracker.pID, "That is not a valid command! Do /help for a list of commands!");
             break;
           }
-          var date = new Date(),
+
+          message = message.replace(/  +/g, ' ');
+          message = message.trim();
+
+          if (!message) return;
+
+          if (message === '') {
+            this.gameServer.pm(this.socket.playerTracker.pID, '[AntiSpam] Last message was not sent, cannot send empty message.');
+            console.log('MESSAGE REJECTED \'' + message + '\' is empty');
+            return;
+          }
+
+          var lastChatTime = this.lastChatTime;
+          var lastMessage = this.lastMessage;
+
+          if (!lastChatTime || (Date.now() - lastChatTime >= this.gameServer.config.chatIntervalTime)) {
+            if (lastMessage) {
+              if ((lastMessage === message || ~lastMessage.indexOf(message) || ~message.indexOf(lastMessage)) && message.length >= 10) {
+                this.gameServer.pm(this.socket.playerTracker.pID, '[AntiSpam] Last message was not sent, please don\'t repeat yourself, write something different.');
+                console.log('MESSAGE REJECTED \'' + message + '\' contains repeated last message \'' + lastMessage + '\'');
+
+                return
+              }
+            }
+
+            this.listener.globalChat.broadcast(this, message)
+
+            this.lastChatTime = Date.now()
+            this.lastMessage = message
+          } else {
+            this.gameServer.pm(this.socket.playerTracker.pID, '[AntiSpam] Last message was not sent, please don\'t write too fast, wait at least ' + (this.gameServer.config.chatIntervalTime / 1000)  + ' seconds.');
+            console.log('MESSAGE REJECTED \'' + message + '\' tryied to write too fast')
+          }
+
+          /*var date = new Date(),
             hour = date.getHours();
 
           if ((date - this.socket.playerTracker.cTime) < this.gameServer.config.chatIntervalTime) {
@@ -303,7 +337,7 @@ PacketHandler.prototype.handleMessage = function(message) {
             ++SpamBlock;
             if (SpamBlock > 5) {
               this.socket.playerTracker.chatAllowed = false;
-              this.gameServer.pm(this.socket.playerTracker.pID, " Your chat is banned because you are spammin!");
+              this.gameServer.pm(this.socket.playerTracker.pID, " Your chat is banned because you are spamming!");
             }
             this.gameServer.pm(this.socket.playerTracker.pID, " Please dont spam.");
             break;
@@ -313,9 +347,8 @@ PacketHandler.prototype.handleMessage = function(message) {
           hour = (hour < 10 ? "0" : "") + hour;
           var min = date.getMinutes();
           min = (min < 10 ? "0" : "") + min;
-          hour += ":" + min;
+          hour += ":" + min;*/
 
-          var fs = require('fs');
 
           var packet = new Packet.Chat(this.socket.playerTracker, message);
           // Send to all clients (broadcast)
