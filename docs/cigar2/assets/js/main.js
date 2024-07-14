@@ -2924,11 +2924,10 @@
 		}
 
 		if (el) {
-			let message = $('<div id="copy-msg">Skin URL Copied to Clipboard!</div>')
-
-			$(el).parent().parent().after(message)
-
-			message.fadeOut(2000, () => $(this).remove());
+			let message = document.createElement('div');
+			message.innerText = 'Skin URL Copied to Clipboard!';
+			el.parentElement.parentElement.after(message);
+			setTimeout(() => message.remove(), 2000);
 		}
 	}
 

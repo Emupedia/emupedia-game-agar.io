@@ -205,7 +205,7 @@
 		</style>
 	</head>
 	<body>
-		<div id="gallery" onclick="if (event.target === this) this.style.display = 'none';" style="display: none;">
+		<div id="gallery" style="display: none;">
 			<div id="gallery-content">
 				<div id="gallery-header">Skins</div>
 				<div id="gallery-body"></div>
@@ -225,25 +225,25 @@
 					</div>
 					<div id="locationUnknown"></div>
 					<div class="form-group clearfix">
-						<button class="btn btn-play btn-primary pull-left" onclick="start(); return false;" >Play</button>
-						<button id="spectateBtn" class="btn btn-warning btn-spectate pull-left" onclick="spectate(); return false;">Spectate</button>
-						<button class="btn btn-info btn-settings pull-right" onclick="jQuery('#settings').toggle(); return false;" ><i class="glyphicon glyphicon-cog"></i></button>
-						<button id="gallery-btn" onclick="openSkinsList(); return false;" class="btn btn-play btn-primary btn-needs-server btn-info">Choose Skin</button>
+						<button id="play-btn" class="btn btn-play btn-primary pull-left">Play</button>
+						<button id="spectate-btn" class="btn btn-warning btn-spectate pull-left">Spectate</button>
+						<button id="settings-btn" class="btn btn-info btn-settings pull-right"><i class="glyphicon glyphicon-cog"></i></button>
+						<button id="gallery-btn" class="btn btn-play btn-primary btn-needs-server btn-info">Choose Skin</button>
 					</div>
 					<div id="cantc" style="display:none;">
 						<h4>Cannot connect to server, click the reconnect button below to try again</h4><br>
 					</div>
 					<div class="checkbox" id="settings" style="display:none;">
 						<div style="margin: 6px;">
-							<label><input id="cskin" onchange="setSkins(!jQuery(this).is(':checked'));" type="checkbox"> No skins</label>
-							<label><input id="cname" onchange="setNames(!jQuery(this).is(':checked'));"	type="checkbox"> No names</label>
-							<label><input id="cdark" onchange="setDarkTheme(jQuery(this).is(':checked'));" type="checkbox"> Dark Theme</label>
-							<label><input id="ccolor" onchange="setColors(jQuery(this).is(':checked'));" type="checkbox"> No colors</label>
-							<label><input id="cmass" onchange="setShowMass(jQuery(this).is(':checked'));" type="checkbox"> Show	mass</label>
-							<label><input id="cchat" onchange="setHideChat(jQuery(this).is(':checked'));" type="checkbox"> Hide chat</label>
-							<label><input id="csmooth" onchange="setSmooth(jQuery(this).is(':checked'));" type="checkbox"> Smooth Render</label>
-							<label><input id="cacid" onchange="setAcid(jQuery(this).is(':checked'));" type="checkbox"> Acid	mode</label>
-							<label><input id="cgrid" onchange="setHideGrid(jQuery(this).is(':checked'));" type="checkbox">Hide Grid</label>
+							<label><input id="cskin" onchange="setSkins(!$(this).is(':checked'));" type="checkbox" /> No skins</label>
+							<label><input id="cname" onchange="setNames(!$(this).is(':checked'));" type="checkbox" /> No names</label>
+							<label><input id="cdark" onchange="setDarkTheme($(this).is(':checked'));" type="checkbox" /> Dark Theme</label>
+							<label><input id="ccolor" onchange="setColors($(this).is(':checked'));" type="checkbox" /> No colors</label>
+							<label><input id="cmass" onchange="setShowMass($(this).is(':checked'));" type="checkbox" /> Show mass</label>
+							<label><input id="cchat" onchange="setHideChat($(this).is(':checked'));" type="checkbox" /> Hide chat</label>
+							<label><input id="csmooth" onchange="setSmooth($(this).is(':checked'));" type="checkbox" /> Smooth Render</label>
+							<label><input id="cacid" onchange="setAcid($(this).is(':checked'));" type="checkbox"> Acid mode</label>
+							<label><input id="cgrid" onchange="setHideGrid($(this).is(':checked'));" type="checkbox" />Hide Grid</label>
 						</div>
 					</div>
 				</form>
@@ -271,186 +271,16 @@
 		<canvas height="600" id="canvas" width="800"></canvas>
 
 		<form>
-			<input id="chat_textbox" maxlength="70" autocomplete="off" placeholder="Press Enter to chat!" type="text">
+			<input id="chat_textbox" maxlength="70" autocomplete="off" placeholder="Press Enter to chat!" type="text" />
 		</form>
 
 		<div id="skins" style="display: none;" title="Skins List (Click Your Skin)"></div>
 
 		<script src="https://www.google.com/recaptcha/api.js?render=6LdxZMspAAAAAOVZOMGJQ_yJo2hBI9QAbShSr_F3"></script>
-		<script src="js/jquery-1.11.3.min.js"></script>
+		<script src="js/jquery-2.1.4.min.js"></script>
 		<script src="js/fp.umd.min.js"></script>
-		<script>jQuery.noConflict();</script>
 		<script src="js/vector2.js"></script>
-		<script src="main.js?v=18"></script>
-
-		<script type="text/javascript">
-			var externallyFramed;
-			var FP = FingerprintJS.load();
-			var agarv1ident;
-			var bannedIdent = [];
-			var interval;
-
-			try {
-				externallyFramed = window.top.location.host !== window.location.host;
-			} catch (e) {
-				externallyFramed = true;
-			}
-
-			if (externallyFramed) {
-				try {
-					window.top.location = window.location;
-				} catch (e) {}
-			}
-
-			var knownSkins = [];
-
-			function sanitizeSkin(str) {
-				return str.replace(/[^a-zA-Z0-9_\- ]/gim, '').trim();
-			}
-
-			function sanitizeNick(str) {
-				return str.replace(/[<>|]/gim, '').trim();
-			}
-
-			function openSkinsList() {
-				if (document.getElementById('gallery-body').innerHTML === '') {
-					buildGallery();
-				}
-
-				document.getElementById('gallery').style.display = 'flex';
-			}
-
-			function start() {
-				var form = document.getElementById('form');
-
-				if (form && typeof form['reportValidity'] === 'function' && form.reportValidity()) {
-					setNick('<' + sanitizeSkin(document.getElementById('skin').value) + '|' + (agarv1ident ? agarv1ident : '') + '>' + sanitizeNick(document.getElementById('nick').value));
-				}
-			}
-
-			function changeSkin(skin) {
-				document.getElementById('skin').value = sanitizeSkin(skin);
-				document.getElementById('gallery').style.display = 'none';
-			}
-
-			function buildGallery() {
-				var sortedSkins = knownSkins.sort();
-				var c = '';
-
-				for (var skin in sortedSkins) {
-					if (sortedSkins[skin] !== '') {
-						c += '<li class="skin" onclick="changeSkin(\'' + sortedSkins[skin] + '\')">';
-							c += '<img class="circular" loading="lazy" src="./skins/' + sortedSkins[skin] + '.png">';
-							c += '<h4 class="skinName">' + sortedSkins[skin] + '</h4>';
-						c += '</li>';
-					}
-				}
-
-				document.getElementById('gallery-body').innerHTML = '<ul id="skinsUL">' + c + '</ul>';
-			}
-
-			jQuery(document).ready(function($) {
-				var location = ~window.location.hostname.indexOf('emupedia.net') ? 'emupedia.net' : (~window.location.hostname.indexOf('emupedia.org') ? 'emupedia.org' : (~window.location.hostname.indexOf('emupedia.games') ? 'emupedia.games' : (~window.location.hostname.indexOf('emuos.net') ? 'emuos.net' : (~window.location.hostname.indexOf('emuos.org') ? 'emuos.org' : (~window.location.hostname.indexOf('emuos.games') ? 'emuos.games' : 'emupedia.net')))));
-
-				$.get('skinList.txt', function(data, status) {
-					if (status === 'success') {
-						var skins = data.split(',');
-						if (skins.length === 0) return;
-						knownSkins = skins;
-						document.getElementById('gallery-btn').style.display = 'inline-block';
-
-						$.get('fpBanList.txt').success(function(data) {
-							var fp = data.split(',');
-
-							for (var p of fp) bannedIdent.push(p);
-
-							try {
-								agarv1ident = localStorage.getItem('agarv1ident');
-							} catch (e) {}
-
-							FP.then(function (fp) { return fp.get() }).then(function(result) {
-								localStorage.setItem('agarv1ident', result.visitorId);
-
-								var ban = false;
-
-								bannedIdent.forEach(function(val) {
-									if (agarv1ident === val) {
-										ban = true;
-									}
-								});
-
-								if (ban) {
-									$('#chat_textbox').hide();
-									$('#overlays').hide();
-									$('#connecting div').html('<h3 style="text-align: center">You are banned 😭</h3><hr class="top" /><p style="text-align: center">You are banned from the game because you broke the rules either spamming the chat or while uploading custom skins.</p><a class="text-center" style="display: block; color: red;" href="https://discord.gg/emupedia-510149138491506688" target="_blank">Join us on Discord!</a><h1 style="text-align: center;">Your unban code is<br /><br />' + btoa(agarv1ident).replace(/(.{10})/g, "$1<br />") + '</h1>');
-									$('#connecting').show();
-								} else {
-									$('#overlays').show();
-
-									grecaptcha.ready(function() {
-										grecaptcha.execute('6LdxZMspAAAAAOVZOMGJQ_yJo2hBI9QAbShSr_F3', { action: 'connect' }).then(function(token) {
-											connect('wss://agar.' + location + '/ws1/?token=' + token);
-										});
-									});
-
-									clearInterval(interval);
-									interval = setInterval(function() {
-										FP.then(function (fp) { return fp.get() }).then(function (result) {
-											localStorage.setItem('agarv1ident', result.visitorId);
-
-											let ban = false;
-
-											bannedIdent.forEach(function(val) {
-												if (agarv1ident === val) {
-													ban = true;
-												}
-											});
-
-											if (ban) {
-												$('#chat_textbox').hide();
-												$('#overlays').hide();
-												$('#connecting div').html('<h3 style="text-align: center">You are banned 😭</h3><hr class="top" /><p style="text-align: center">You are banned from the game because you broke the rules either spamming the chat or while uploading custom skins.</p><a class="text-center" style="display: block; color: red;" href="https://discord.gg/emupedia-510149138491506688" target="_blank">Join us on Discord!</a><h1 style="text-align: center;">Your unban code is<br /><br />' + btoa(agarv1ident).replace(/(.{10})/g, "$1<br />") + '</h1>');
-												$('#connecting').show();
-											}
-										});
-									}, 10000);
-								}
-							});
-						}).error(function() {
-							$('#overlays').show();
-
-							grecaptcha.ready(function() {
-								grecaptcha.execute('6LdxZMspAAAAAOVZOMGJQ_yJo2hBI9QAbShSr_F3', { action: 'connect' }).then(function (token) {
-									connect('wss://agar.' + location + '/ws1/?token=' + token);
-								});
-							});
-						});
-					}
-				}).error(function() {
-					$('#overlays').show();
-
-					grecaptcha.ready(function() {
-						grecaptcha.execute('6LdxZMspAAAAAOVZOMGJQ_yJo2hBI9QAbShSr_F3', { action: 'connect' }).then(function(token) {
-							connect('wss://agar.' + location + '/ws1/?token=' + token);
-						});
-					});
-				});
-
-				$('input').keypress(function(e) {
-					if (e.which === '13') {
-						e.preventDefault();
-
-						if (!isSpectating) {
-							setNick('<' + sanitizeSkin(document.getElementById('skin').value) + '|' + (agarv1ident ? agarv1ident : '') + '>' + sanitizeNick(document.getElementById('nick').value));
-						}
-					}
-				});
-
-				$('#chat_textbox').off('paste').on('paste', function(e) {
-					e.preventDefault();
-					return false;
-				});
-			});
-		</script>
+		<script src="js/main.js?v=18"></script>
+		<script src="js/interface.js?v=1"></script>
 	</body>
 </html>

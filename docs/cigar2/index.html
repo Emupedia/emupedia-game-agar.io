@@ -82,7 +82,7 @@
 						<button id="gallery-btn" onclick="openSkinsList()" class="btn btn-play btn-primary btn-needs-server btn-info">Choose Skin</button>
 						<button id="show-upload-btn" onclick="openUpload()" class="btn btn-play btn-primary btn-needs-server btn-info">Upload Skin</button>
 						<button id="unban-btn" onclick="openUnban()" class="btn btn-play btn-primary btn-needs-server btn-info" style="display: none;">Unban</button>
-						<button class="btn btn-success btn-settings pull-right" onclick="$('#settings').toggle()" ><i class="glyphicon glyphicon-cog"></i></button>
+						<button class="btn btn-success btn-settings pull-right" onclick="document.getElementById('settings').style.display = document.getElementById('settings').style.display === 'none' ? 'block' : 'none'" ><i class="glyphicon glyphicon-cog"></i></button>
 					</div>
 
 					<div id="settings" class="checkbox" style="display: none;">
@@ -280,10 +280,9 @@
 		</div>
 
 		<script src="https://www.google.com/recaptcha/api.js?render=6LdxZMspAAAAAOVZOMGJQ_yJo2hBI9QAbShSr_F3"></script>
-		<script src="assets/js/jquery-1.11.3.min.js"></script>
 		<script src="assets/js/fp.umd.min.js"></script>
 		<script src="assets/js/nipplejs.js"></script>
 		<script src="assets/js/quadtree.js"></script>
-		<script src="assets/js/main.js?v=111"></script>
+		<script src="assets/js/main.js?v=112"></script>
 	</body>
 </html>
