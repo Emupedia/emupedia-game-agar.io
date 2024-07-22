@@ -66,7 +66,7 @@
 					</div>
 
 					<div class="form-wrapper">
-						<div class="form-label-wrapper" style="width: 100%;">
+						<div class="form-label-wrapper" style="width: 100%; display: none;">
 							<label id="server-list"><span>Server</span>
 								<select id="server" class="form-control" onchange="setserver(this.value)" required>
 									<option value="eu" selected>EU</option>
@@ -74,14 +74,14 @@
 								</select>
 							</label>
 						</div>
-						<button id="play-btn" class="btn btn-play btn-primary btn-needs-server pull-left">Play</button>
-						<button id="spectate-btn" onclick="spectate()" class="btn btn-warning btn-spectate btn-needs-server pull-left">Spectate</button>
+						<button id="play-btn" class="btn btn-play btn-primary btn-needs-server pull-left"><i class="glyphicon glyphicon-play"></i>&nbsp;Play</button>
+						<button id="spectate-btn" onclick="spectate()" class="btn btn-warning btn-spectate btn-needs-server pull-left"><i class="glyphicon glyphicon-eye-open"></i>&nbsp;Spectate</button>
 					</div>
 
 					<div class="form-wrapper">
-						<button id="gallery-btn" onclick="openSkinsList()" class="btn btn-play btn-primary btn-needs-server btn-info">Choose Skin</button>
-						<button id="show-upload-btn" onclick="openUpload()" class="btn btn-play btn-primary btn-needs-server btn-info">Upload Skin</button>
-						<button id="unban-btn" onclick="openUnban()" class="btn btn-play btn-primary btn-needs-server btn-info" style="display: none;">Unban</button>
+						<button id="gallery-btn" onclick="openSkinsList()" class="btn btn-play btn-primary btn-needs-server btn-info"><i class="glyphicon glyphicon-folder-open"></i>&nbsp;&nbsp;Choose Skin</button>
+						<button id="show-upload-btn" onclick="openUpload()" class="btn btn-play btn-primary btn-needs-server btn-info"><i class="glyphicon glyphicon-cloud-upload"></i>&nbsp;&nbsp;Upload Skin</button>
+						<button id="unban-btn" onclick="openUnban()" class="btn btn-play btn-primary btn-needs-server btn-info" style="display: none;"><i class="glyphicon glyphicon-log-in"></i>&nbsp;Unban</button>
 						<button class="btn btn-success btn-settings pull-right" onclick="document.getElementById('settings').style.display = document.getElementById('settings').style.display === 'none' ? 'block' : 'none'" ><i class="glyphicon glyphicon-cog"></i></button>
 					</div>
 
@@ -169,7 +169,11 @@
 						<h2 class="title">News</h2>
 						<hr class="top" />
 						<div class="text">
-							<b>06/06/2024</b>
+							<b>22/07/2024</b>
+							<ul>
+								<li>Removed <b>US Server</b> because very low usage</li>
+							</ul>
+							<hr /><b>06/06/2024</b>
 							<ul>
 								<li>Added <b>US Server</b> for improved latency and ping</li>
 							</ul>
@@ -283,6 +287,6 @@
 		<script src="assets/js/fp.umd.min.js"></script>
 		<script src="assets/js/nipplejs.js"></script>
 		<script src="assets/js/quadtree.js"></script>
-		<script src="assets/js/main.js?v=112"></script>
+		<script src="assets/js/main.js?v=113"></script>
 	</body>
 </html>
