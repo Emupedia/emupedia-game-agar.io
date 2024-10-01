@@ -578,7 +578,7 @@
 
 			const mass = (~~(this.s * this.s / 100)).toString();
 
-			if (this.fp && mass > 100) {
+			if (settings.showIdenticon && this.fp && mass > 100) {
 				let y = this.y;
 
 				y += 2 * Math.max(this.s / 4.5, this.nameSize / 1.5);
@@ -1186,6 +1186,7 @@
 		darkTheme: false,
 		showColor: true,
 		showMass: false,
+		showIdenticon: false,
 		_showChat: true,
 		get showChat() {
 			return this._showChat;
