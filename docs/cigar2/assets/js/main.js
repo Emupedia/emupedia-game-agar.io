@@ -583,7 +583,7 @@
 
 				y += 2 * Math.max(this.s / 4.5, this.nameSize / 1.5);
 
-				drawText(ctx, 'fp', this.x, y, this.nameSize * 4, this.drawNameSize * 2, this.fp, '#ffffff');
+				drawText(ctx, 'fp', this.x, y, this.nameSize * 4, this.drawNameSize * 2, this.fp, settings.showColor ? this.borderColor.toHex() : '#e5e5e5');
 			}
 
 			if (this.name && settings.showNames) {
@@ -1906,10 +1906,16 @@
 			for (let j = 0; j < 4; j++) {
 				if (arr[i * 4 + j] === 1) {
 					ctx.fillStyle = `rgb(${r}, ${g}, ${b})`;
+					ctx.lineWidth = 5;
+					ctx.strokeStyle = color;
 					ctx.fillRect(blockWidth * j, blockWidth * i, blockWidth, blockWidth);
+					ctx.strokeRect(blockWidth * j, blockWidth * i, blockWidth, blockWidth);
 					ctx.fillRect(size - blockWidth*( j + 1), blockWidth * i, blockWidth, blockWidth);
+					ctx.strokeRect(size - blockWidth*( j + 1), blockWidth * i, blockWidth, blockWidth);
 					ctx.fillRect(blockWidth*j, size - blockWidth *(i + 1), blockWidth, blockWidth);
+					ctx.strokeRect(blockWidth*j, size - blockWidth *(i + 1), blockWidth, blockWidth);
 					ctx.fillRect(size - blockWidth * (j + 1), size - blockWidth * (i + 1), blockWidth, blockWidth);
+					ctx.strokeRect(size - blockWidth * (j + 1), size - blockWidth * (i + 1), blockWidth, blockWidth);
 				}
 			}
 		}
