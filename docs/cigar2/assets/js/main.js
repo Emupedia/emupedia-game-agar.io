@@ -363,6 +363,7 @@
 			this.cellColor = cellColor || Color.fromHex('#ffffff');
 			this.borderColor = borderColor || (cellColor ? cellColor.darker() : Color.fromHex('#ffffff'));
 			this.setSkin(skin, name);
+			this.fp = skin && skin !== '' ? skin.split('|')[4] : null
 			this.jagged = flags.jagged;
 			this.ejected = flags.ejected;
 			this.born = syncUpdStamp;
@@ -574,14 +575,27 @@
 		}
 		drawText(ctx) {
 			if (this.s < 20 || this.jagged) return;
-			if (this.name && settings.showNames) {
-				drawText(ctx, false, this.x, this.y, this.nameSize, this.drawNameSize, this.name, this.nameColor ? this.nameColor.toHex().toUpperCase() : '#ffffff');
-			}
-			if (settings.showMass && (cells.mine.indexOf(this.id) !== -1 || cells.mine.length === 0)) {
-				const mass = (~~(this.s * this.s / 100)).toString();
+
+			const mass = (~~(this.s * this.s / 100)).toString();
+
+			if (this.fp && mass > 100) {
 				let y = this.y;
+
+				y += 2 * Math.max(this.s / 4.5, this.nameSize / 1.5);
+
+				drawText(ctx, 'fp', this.x, y, this.nameSize * 4, this.drawNameSize * 2, this.fp, '#ffffff');
+			}
+
+			if (this.name && settings.showNames) {
+				drawText(ctx, 'name', this.x, this.y, this.nameSize, this.drawNameSize, this.name, this.nameColor ? this.nameColor.toHex().toUpperCase() : '#ffffff');
+			}
+
+			if (settings.showMass && (cells.mine.indexOf(this.id) !== -1 || cells.mine.length === 0)) {
+				let y = this.y;
+
 				if (this.name && settings.showNames) y += Math.max(this.s / 4.5, this.nameSize / 1.5);
-				drawText(ctx, true, this.x, y, this.nameSize / 2, this.drawNameSize / 2, mass);
+
+				drawText(ctx, 'mass', this.x, y, this.nameSize / 2, this.drawNameSize / 2, mass);
 			}
 		}
 	}
@@ -1746,6 +1760,21 @@
 		window.requestAnimationFrame(drawGame);
 	}
 
+	function drawSkinPreview(url, canvas) {
+		const image = new Image();
+		image.crossOrigin = 'Anonymous';
+
+		image.onload = function() {
+			canvas.width = image.width;
+			canvas.height = image.height;
+
+			const ctx = canvas.getContext('2d');
+			ctx.drawImage(image, 0, 0);
+		};
+
+		image.src = url;
+	}
+
 	function cellSort(a, b) {
 		return a.s === b.s ? a.id - b.id : a.s - b.s;
 	}
@@ -1808,6 +1837,13 @@
 				}
 			}
 		}
+
+		for (const i of cachedFp.keys()) {
+			if (syncAppStamp - cachedFp.get(i).accessTime >= 5000) {
+				cachedFp.delete(i);
+			}
+		}
+
 		for (const i of cachedMass.keys()) {
 			if (syncAppStamp - cachedMass.get(i).accessTime >= 5000) {
 				cachedMass.delete(i);
@@ -1821,11 +1857,9 @@
 		}
 	}
 
-	// 2-var draw-stay cache
 	const cachedNames = new Map();
 	const cachedMass = new Map();
-	window.cachedNames = cachedNames;
-	window.cachedMass = cachedMass;
+	const cachedFp = new Map();
 
 	function drawTextOnto(canvas, ctx, text, size, color = '#ffffff') {
 		ctx.font = size + 'px Ubuntu';
@@ -1841,6 +1875,43 @@
 		ctx.translate(canvas.width / 2, 2 * size);
 		(ctx.lineWidth !== 1) && ctx.strokeText(text, 0, 0);
 		ctx.fillText(text, 0, 0);
+	}
+
+	function drawIdenticon(canvas, ctx, hash, size, color = '#ffffff') {
+		canvas.width = size;
+		canvas.height = size;
+
+		let blockWidth = size / 8;
+
+		const arr = [];
+
+		for (let i = 0; i < hash.length; i += 8) {
+			const word = parseInt(hash.slice(i, i + 8), 16);
+
+			for (let j = 0; j < 32; j++) {
+				arr.push((word >> j) & 1);
+			}
+		}
+
+		let r = 0, g = 0, b = 0;
+
+		for (let i = 0; i < 8; i++) {
+			r += arr[16+i] << i;
+			g += arr[24+i] << i;
+			b += arr[32+i] << i;
+		}
+
+		for (let i = 0; i < 4; i++) {
+			for (let j = 0; j < 4; j++) {
+				if (arr[i * 4 + j] === 1) {
+					ctx.fillStyle = `rgb(${r}, ${g}, ${b})`;
+					ctx.fillRect(blockWidth * j, blockWidth * i, blockWidth, blockWidth);
+					ctx.fillRect(size - blockWidth*( j + 1), blockWidth * i, blockWidth, blockWidth);
+					ctx.fillRect(blockWidth*j, size - blockWidth *(i + 1), blockWidth, blockWidth);
+					ctx.fillRect(size - blockWidth * (j + 1), size - blockWidth * (i + 1), blockWidth, blockWidth);
+				}
+			}
+		}
 	}
 
 	function drawRaw(ctx, x, y, text, size, color = '#ffffff') {
@@ -1876,6 +1947,31 @@
 		};
 
 		cachedNames.get(value).set(size, cache);
+
+		return cache;
+	}
+
+	function newFpCache(value, size, color = '#ffffff') {
+		const canvas = document.createElement('canvas');
+		const ctx = canvas.getContext('2d');
+
+		drawIdenticon(canvas, ctx, value, size, color);
+
+		if (!cachedFp.has(value)) {
+			cachedFp.set(value, new Map());
+		}
+
+		const cache = {
+			width: canvas.width,
+			height: canvas.height,
+			canvas: canvas,
+			value: value,
+			size: size,
+			color: color,
+			accessTime: syncAppStamp
+		};
+
+		cachedFp.get(value).set(size, cache);
 
 		return cache;
 	}
@@ -1928,6 +2024,22 @@
 		return newNameCache(value, size, color);
 	}
 
+	function getFpCache(value, size, color = '#ffffff') {
+		if (!cachedFp.has(value)) {
+			return newFpCache(value, size, color);
+		}
+
+		const sizes = Array.from(cachedFp.get(value).keys());
+
+		for (let i = 0, l = sizes.length; i < l; i++) {
+			if (toleranceTest(size, sizes[i], size / 4)) {
+				return cachedFp.get(value).get(sizes[i]);
+			}
+		}
+
+		return newFpCache(value, size, color);
+	}
+
 	function getMassCache(size) {
 		const sizes = Array.from(cachedMass.keys());
 		for (let i = 0, l = sizes.length; i < l; i++) {
@@ -1938,46 +2050,67 @@
 		return newMassCache(size);
 	}
 
-	function drawText(ctx, isMass, x, y, size, drawSize, value, color = '#ffffff') {
+	function drawText(ctx, type, x, y, size, drawSize, value, color = '#ffffff') {
 		ctx.save();
 
-		if (size > 500) {
+		if (size > 500 && type !== 'fp') {
 			return drawRaw(ctx, x, y, value, drawSize, color);
 		}
 
 		ctx.imageSmoothingQuality = 'high';
 
-		if (isMass) {
-			const cache = getMassCache(size);
-			cache.accessTime = syncAppStamp;
-			const canvases = cache.canvases;
-			const correctionScale = drawSize / cache.size;
+		switch(type) {
+			case 'mass':
+			{
+				const cache = getMassCache(size);
+				cache.accessTime = syncAppStamp;
+				const canvases = cache.canvases;
+				const correctionScale = drawSize / cache.size;
 
-			// calculate width
-			let width = 0;
-			for (let i = 0; i < value.length; i++) {
-				width += canvases[value[i]].width - 2 * cache.lineWidth;
+				// calculate width
+				let width = 0;
+				for (let i = 0; i < value.length; i++) {
+					width += canvases[value[i]].width - 2 * cache.lineWidth;
+				}
+
+				ctx.scale(correctionScale, correctionScale);
+				x /= correctionScale;
+				y /= correctionScale;
+				x -= width / 2;
+
+				for (let i = 0; i < value.length; i++) {
+					const item = canvases[value[i]];
+					ctx.drawImage(item.canvas, x, y - item.height / 2);
+					x += item.width - 2 * cache.lineWidth;
+				}
 			}
+			break;
 
-			ctx.scale(correctionScale, correctionScale);
-			x /= correctionScale;
-			y /= correctionScale;
-			x -= width / 2;
-
-			for (let i = 0; i < value.length; i++) {
-				const item = canvases[value[i]];
-				ctx.drawImage(item.canvas, x, y - item.height / 2);
-				x += item.width - 2 * cache.lineWidth;
+			case 'name':
+			{
+				const cache = getNameCache(value, size, color);
+				cache.accessTime = syncAppStamp;
+				const canvas = cache.canvas;
+				const correctionScale = drawSize / cache.size;
+				ctx.scale(correctionScale, correctionScale);
+				x /= correctionScale;
+				y /= correctionScale;
+				ctx.drawImage(canvas, x - canvas.width / 2, y - canvas.height / 2);
 			}
-		} else {
-			const cache = getNameCache(value, size, color);
-			cache.accessTime = syncAppStamp;
-			const canvas = cache.canvas;
-			const correctionScale = drawSize / cache.size;
-			ctx.scale(correctionScale, correctionScale);
-			x /= correctionScale;
-			y /= correctionScale;
-			ctx.drawImage(canvas, x - canvas.width / 2, y - canvas.height / 2);
+			break;
+
+			case 'fp':
+			{
+				const cache = getFpCache(value, size, color);
+				cache.accessTime = syncAppStamp;
+				const canvas = cache.canvas;
+				const correctionScale = drawSize / cache.size;
+				ctx.scale(correctionScale, correctionScale);
+				x /= correctionScale;
+				y /= correctionScale;
+				ctx.drawImage(canvas, x - canvas.width / 2, y - canvas.height / 2);
+			}
+			break;
 		}
 
 		ctx.restore();
@@ -2308,7 +2441,7 @@
 		};
 
 		const changeCellColor = e => {
-			byId('previewSkin').src = './assets/img/transparent.png';
+			drawSkinPreview('./assets/img/transparent.png', byId('previewSkin'));
 			byId('previewSkin').style.backgroundImage = 'none';
 			byId('previewSkin').style.backgroundColor = settings.showColor ? e.target.value : '#ffffff';
 			settings.cellColor = e.target.value;
@@ -2324,18 +2457,18 @@
 							if (!bannedSkins.has(saved_skin)) {
 								byId('previewSkin').onerror = () => {
 									byId('previewSkin').onerror = null;
-									byId('previewSkin').src = './assets/img/transparent.png';
+									drawSkinPreview('./assets/img/transparent.png', byId('previewSkin'));
 								};
-								byId('previewSkin').src = saved_skin;
+								drawSkinPreview(saved_skin, byId('previewSkin'));
 							} else {
-								byId('previewSkin').src = './assets/img/banned.png';
+								drawSkinPreview('./assets/img/banned.png', byId('previewSkin'));
 							}
 						} else {
 							byId('previewSkin').onerror = () => {
 								byId('previewSkin').onerror = null;
-								byId('previewSkin').src = './assets/img/transparent.png';
+								drawSkinPreview('./assets/img/transparent.png', byId('previewSkin'));
 							};
-							byId('previewSkin').src = `${SKIN_URL}${saved_skin}.png`;
+							drawSkinPreview(`${SKIN_URL}${saved_skin}.png`, byId('previewSkin'));
 						}
 
 						if (settings.fillSkin) {
@@ -2344,11 +2477,11 @@
 							byId('previewSkin').style.backgroundImage = 'url(./assets/img/checkerboard.png)';
 						}
 					} else {
-						byId('previewSkin').src = './assets/img/transparent.png';
+						drawSkinPreview('./assets/img/transparent.png', byId('previewSkin'));
 						byId('previewSkin').style.backgroundImage = 'none';
 					}
 				} else {
-					byId('previewSkin').src = './assets/img/transparent.png';
+					drawSkinPreview('./assets/img/transparent.png', byId('previewSkin'));
 					byId('previewSkin').style.backgroundImage = 'none';
 				}
 			} else {
@@ -2360,18 +2493,18 @@
 							if (!bannedSkins.has(saved_skin)) {
 								byId('previewSkin').onerror = () => {
 									byId('previewSkin').onerror = null;
-									byId('previewSkin').src = './assets/img/transparent.png';
+									drawSkinPreview('./assets/img/transparent.png', byId('previewSkin'));
 								};
-								byId('previewSkin').src = saved_skin;
+								drawSkinPreview(saved_skin, byId('previewSkin'));
 							} else {
-								byId('previewSkin').src = './assets/img/banned.png';
+								drawSkinPreview('./assets/img/banned.png', byId('previewSkin'));
 							}
 						} else {
 							byId('previewSkin').onerror = () => {
 								byId('previewSkin').onerror = null;
-								byId('previewSkin').src = './assets/img/transparent.png';
+								drawSkinPreview('./assets/img/transparent.png', byId('previewSkin'));
 							};
-							byId('previewSkin').src = `${SKIN_URL}${saved_skin}.png`;
+							drawSkinPreview(`${SKIN_URL}${saved_skin}.png`, byId('previewSkin'));
 						}
 
 						if (settings.fillSkin) {
@@ -2380,11 +2513,11 @@
 							byId('previewSkin').style.backgroundImage = 'url(./assets/img/checkerboard.png)';
 						}
 					} else {
-						byId('previewSkin').src = './assets/img/transparent.png';
+						drawSkinPreview('./assets/img/transparent.png', byId('previewSkin'));
 						byId('previewSkin').style.backgroundImage = 'none';
 					}
 				} else {
-					byId('previewSkin').src = './assets/img/transparent.png';
+					drawSkinPreview('./assets/img/transparent.png', byId('previewSkin'));
 					byId('previewSkin').style.backgroundImage = 'none';
 				}
 			}
@@ -2418,26 +2551,26 @@
 						if (!bannedSkins.has(saved_skin)) {
 							byId('previewSkin').onerror = () => {
 								byId('previewSkin').onerror = null;
-								byId('previewSkin').src = './assets/img/transparent.png';
+								drawSkinPreview('./assets/img/transparent.png', byId('previewSkin'));
 							};
-							byId('previewSkin').src = saved_skin;
+							drawSkinPreview(saved_skin, byId('previewSkin'));
 						} else {
-							byId('previewSkin').src = './assets/img/banned.png';
+							drawSkinPreview('./assets/img/banned.png', byId('previewSkin'));
 						}
 					} else {
 						byId('previewSkin').onerror = () => {
 							byId('previewSkin').onerror = null;
-							byId('previewSkin').src = './assets/img/transparent.png';
+							drawSkinPreview('./assets/img/transparent.png', byId('previewSkin'));
 						};
-						byId('previewSkin').src = `${SKIN_URL}${saved_skin}.png`;
+						drawSkinPreview(`${SKIN_URL}${saved_skin}.png`, byId('previewSkin'));
 					}
 				} else {
-					byId('previewSkin').src = './assets/img/transparent.png';
+					drawSkinPreview('./assets/img/transparent.png', byId('previewSkin'));
 					byId('previewSkin').style.backgroundImage = 'none';
 					byId('previewSkin').style.backgroundColor = settings.showColor ? (settings.cellColor !== '#ffffff' ? settings.cellColor : randomColor) : '#ffffff';
 				}
 			} else {
-				byId('previewSkin').src = './assets/img/transparent.png';
+				drawSkinPreview('./assets/img/transparent.png', byId('previewSkin'));
 				byId('previewSkin').style.backgroundImage = 'none';
 				byId('previewSkin').style.backgroundColor = settings.showColor ? (settings.cellColor !== '#ffffff' ? settings.cellColor : randomColor) : '#ffffff';
 			}
@@ -2451,7 +2584,7 @@
 					if (settings.skin !== '' && settings.skin !== ' ') {
 						byId('previewSkin').style.backgroundImage = 'url(./assets/img/checkerboard.png)';
 					} else {
-						byId('previewSkin').src = './assets/img/transparent.png';
+						drawSkinPreview('./assets/img/transparent.png', byId('previewSkin'));
 						byId('previewSkin').style.backgroundImage = 'none';
 						byId('previewSkin').style.backgroundColor = settings.showColor ? randomColor : '#ffffff';
 					}
@@ -2820,9 +2953,9 @@
 		let sk;
 
 		if (e === null) {
-			sk = s;
+			sk = s.trim();
 		} else {
-			sk = e.target.value;
+			sk = e.target.value.trim();
 		}
 
 		// noinspection JSUnresolvedReference
@@ -2830,7 +2963,7 @@
 			byId('skin').value = sk;
 		}
 
-		settings.skin = sk;
+		settings.skin = sk.trim();
 
 		if (sk !== '' && sk !== ' ' && settings.skinnames.indexOf(sk) === -1) {
 			settings.skinnames.push(sk);
@@ -2847,21 +2980,21 @@
 					if (!bannedSkins.has(saved_skin)) {
 						byId('previewSkin').onerror = () => {
 							byId('previewSkin').onerror = null;
-							byId('previewSkin').src = './assets/img/transparent.png';
+							drawSkinPreview('./assets/img/transparent.png', byId('previewSkin'));
 						};
-						byId('previewSkin').src = saved_skin;
+						drawSkinPreview(saved_skin, byId('previewSkin'));
 					} else {
-						byId('previewSkin').src = './assets/img/banned.png';
+						drawSkinPreview('./assets/img/banned.png', byId('previewSkin'));
 					}
 				} else {
 					byId('previewSkin').onerror = () => {
 						byId('previewSkin').onerror = null;
-						byId('previewSkin').src = './assets/img/transparent.png';
+						drawSkinPreview('./assets/img/transparent.png', byId('previewSkin'));
 					};
-					byId('previewSkin').src = `${SKIN_URL}${saved_skin}.png`;
+					drawSkinPreview(`${SKIN_URL}${saved_skin}.png`, byId('previewSkin'));
 				}
 			} else {
-				byId('previewSkin').src = './assets/img/transparent.png';
+				drawSkinPreview('./assets/img/transparent.png', byId('previewSkin'));
 			}
 		}
 
