@@ -30,6 +30,7 @@
 		</div>
 
 		<input type="text" id="chat_textbox" placeholder="Press enter to chat" maxlength="100" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+		<input type="button" id="chat_clear" value="✖" title="Clear chat" />
 
 		<div id="gallery" onclick="if (event.target === this) this.hide()" style="display: none;">
 			<div id="gallery-content">
@@ -170,7 +171,11 @@
 						<h2 class="title">News</h2>
 						<hr class="top" />
 						<div class="text">
-							<b>01/10/2024</b>
+							<b>10/10/2024</b>
+							<ul>
+								<li>Added <b>Clear Chat</b> button, so you can clear the chat manually</li>
+							</ul>
+							<hr /><b>01/10/2024</b>
 							<ul>
 								<li>Added <b>Identicon</b> to better identify friends or enemies, each device has a specific unique <b>Icon</b></li>
 								<li>Added <b>Identicons</b> checkbox in <b>Settings</b></li>

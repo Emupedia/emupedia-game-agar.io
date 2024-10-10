@@ -281,6 +281,21 @@ label#nick-list:after, label#skin-list:after {
 	background: rgba(0, 0, 0, .5);
 }
 
+#chat_clear {
+	transition: all .5s ease-in-out;
+	position: absolute;
+	z-index: 1;
+	bottom: 10px;
+	background: rgba(0, 0, 0, .2);
+	border: 0;
+	outline: none;
+	color: #777;
+	height: 30px;
+	left: 310px;
+	width: 30px;
+	font-family: Ubuntu, sans-serif;
+}
+
 #footer {
 	text-align: center;
 	margin-bottom: 10px;

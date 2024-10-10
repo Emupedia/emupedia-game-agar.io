@@ -193,7 +193,7 @@
 
 	class Logger {
 		static get verbosity() {
-			return 4;
+			return 2;
 		}
 		static error() {
 			if (Logger.verbosity > 0) console.error.apply(null, arguments);
@@ -1163,6 +1163,7 @@
 	let escOverlayShown = false;
 	let isTyping = false;
 	let chatBox = null;
+	let chatClear = null;
 	let mapCenterSet = false;
 	let minionControlled = false;
 	let touched = false;
@@ -1195,6 +1196,7 @@
 			this._showChat = a;
 			if (!chatBox) return;
 			a ? chatBox.show() : chatBox.hide();
+			a ? chatClear.show() : chatClear.hide();
 		},
 		showMinimap: true,
 		showPosition: false,
@@ -2263,6 +2265,7 @@
 		mainCanvas = document.getElementById('canvas');
 		mainCtx = mainCanvas.getContext('2d');
 		chatBox = byId('chat_textbox');
+		chatClear = byId('chat_clear');
 		soundsVolume = byId('soundsVolume');
 		mainCanvas.focus();
 
@@ -2286,6 +2289,7 @@
 					wsCleanup();
 					hideESCOverlay();
 					byId('chat_textbox').hide();
+					byId('chat_clear').hide();
 					byId('connecting-content').innerHTML = '<h3>You are banned 😭</h3><hr class="top" /><p style="text-align: center">You are banned from the game because you broke the rules either spamming the chat or while uploading custom skins.</p><a class="text-center" style="display: block; color: red;" href="https://discord.gg/emupedia-510149138491506688" target="_blank">Join us on Discord!</a><h1 style="text-align: center;">Your unban code is<br /><br />' + btoa(settings.fp).replace(/(.{10})/g, "$1<br />") + '</h1>';
 					byId('connecting').show(0.5);
 				}
@@ -2678,6 +2682,7 @@
 		byId('skin').addEventListener('change', changeSkin);
 		byId('toggleFullscreen').addEventListener('change', changeFullscreen);
 		byId('fullscreenBtn').addEventListener('click', () => byId('toggleFullscreen').click());
+		byId('chat_clear').addEventListener('click', () => { chat.messages = chat.messages.slice(-1); drawChat() });
 		byId('fillSkin').addEventListener('change', changeFillSkin);
 		byId('disableTouchControls').addEventListener('change', changeDisableTouchControls);
 		byId('flipTouchControls').addEventListener('change', changeFlipTouchControls);
@@ -2711,7 +2716,7 @@
 				case 0:
 					if (settings.leftClick) {
 						if (touched) return;
-						if (byId('overlays').contains(event.target) || byId('chat_textbox').contains(event.target)) return;
+						if (byId('overlays').contains(event.target) || byId('chat_textbox').contains(event.target) || byId('chat_clear').contains(event.target)) return;
 
 						clearInterval(feedMacroIntervalID);
 						let code = UINT8_CACHE[minionControlled ? 0x17 : 0x15];
@@ -2749,14 +2754,14 @@
 			if (typeof event['isTrusted'] !== 'boolean' || event['isTrusted'] === false) return;
 
 			if (settings.rightClick && event.button === 2) {
-				if (byId('overlays').contains(event.target) || byId('chat_textbox').contains(event.target)) return;
+				if (byId('overlays').contains(event.target) || byId('chat_textbox').contains(event.target) || byId('chat_clear').contains(event.target)) return;
 
 				let code = UINT8_CACHE[minionControlled ? 0x16 : 0x11];
 				wsSend(code);
 				wsSend(code);
 			}
 
-			if (!byId('overlays').contains(event.target) && !byId('chat_textbox').contains(event.target)) {
+			if (!byId('overlays').contains(event.target) && !byId('chat_textbox').contains(event.target) && !byId('chat_clear').contains(event.target)) {
 				event.preventDefault();
 				return false;
 			}
@@ -2925,6 +2930,7 @@
 								wsCleanup();
 								hideESCOverlay();
 								byId('chat_textbox').hide();
+								byId('chat_clear').hide();
 								byId('connecting-content').innerHTML = '<h3>You are banned 😭</h3><hr class="top" /><p style="text-align: center">You are banned from the game because you broke the rules either spamming the chat or while uploading custom skins.</p><a class="text-center" style="display: block; color: red;" href="https://discord.gg/emupedia-510149138491506688" target="_blank">Join us on Discord!</a><h1 style="text-align: center;">Your unban code is<br /><br />' + btoa(settings.fp).replace(/(.{10})/g, "$1<br />") + '</h1>';
 								byId('connecting').show(0.5);
 							} else {
