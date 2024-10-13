@@ -31,6 +31,10 @@
 
 		<input type="text" id="chat_textbox" placeholder="Press enter to chat" maxlength="100" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
 		<input type="button" id="chat_clear" value="✖" title="Clear chat" />
+		<div id="zoom_container" style="display: none;">
+			<label for="zoom">Zoom</label>
+			<input type="range" id="zoom" min="1" max="4" step="any" />
+		</div>
 
 		<div id="gallery" onclick="if (event.target === this) this.hide()" style="display: none;">
 			<div id="gallery-content">
@@ -102,6 +106,7 @@
 							<label><input id="showBorder" type="checkbox" />Border</label>
 							<label><input id="showGrid" type="checkbox" />Grid</label>
 							<label><input id="moreZoom" type="checkbox" />Zoom Out</label>
+							<label><input id="showZoom" type="checkbox" />Show Zoom Slider</label>
 							<label><input id="backgroundSectors" type="checkbox" />Background Sectors</label>
 							<label><input id="jellyPhysics" type="checkbox" />Jelly Physics</label>
 							<label>
@@ -141,6 +146,7 @@
 						<div class="text">
 							<p class="text-center">
 								Move your <kbd>MOUSE</kbd> / <kbd>TOUCH</kbd> to control your Cell<br />
+								<kbd>Mouse Wheel</kbd> or <kbd>F</kbd> and <kbd>V</kbd> to Zoom in and out<br />
 								Press <kbd>W</kbd> or <kbd>Left Click</kbd> to Eject Mass<br />
 								<!--Press <kbd>Q</kbd> to control Minion<br />-->
 								Press <kbd>SPACE</kbd> to Split your Cell once<br />
@@ -171,7 +177,13 @@
 						<h2 class="title">News</h2>
 						<hr class="top" />
 						<div class="text">
-							<b>10/10/2024</b>
+							<b>13/10/2024</b>
+							<ul>
+								<li>Added <kbd>F</kbd> and <kbd>V</kbd> keys to Zoom in and out</li>
+								<li>Added <b>Zoom Slider</b> to Zoom in and out</li>
+								<li>Added <b>Show Zoom Slider</b> checkbox in <b>Settings</b></li>
+							</ul>
+							<hr /><b>10/10/2024</b>
 							<ul>
 								<li>Added <b>Clear Chat</b> button, so you can clear the chat manually</li>
 							</ul>

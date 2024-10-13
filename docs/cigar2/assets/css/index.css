@@ -26,6 +26,11 @@ html, body, * {
 	background: #555;
 }
 
+input[type='range'] {
+	accent-color: #888;
+	height: 10px;
+}
+
 a {
 	color: #000;
 	text-decoration: underline;
@@ -293,6 +298,22 @@ label#nick-list:after, label#skin-list:after {
 	height: 30px;
 	left: 310px;
 	width: 30px;
+	font-family: Ubuntu, sans-serif;
+}
+
+#zoom_container {
+	position: absolute;
+	z-index: 1;
+	bottom: 10px;
+	background: rgba(0, 0, 0, .2);
+	border: 0;
+	outline: none;
+	color: #777;
+	height: 30px;
+	left: 340px;
+	width: 120px;
+	text-align: center;
+	font-size: 10px;
 	font-family: Ubuntu, sans-serif;
 }
 

@@ -635,6 +635,15 @@
 		this.style.opacity = 1;
 	}
 
+	Element.prototype.toggle = function () {
+		// noinspection JSUnresolvedReference
+		if (this.style.display === 'none') {
+			this.show();
+		} else {
+			this.hide();
+		}
+	}
+
 	function cleanupObject(object) {
 		for (const i in object) delete object[i];
 	}
@@ -1205,6 +1214,7 @@
 		playSounds: true,
 		soundsVolume: 0.5,
 		moreZoom: false,
+		showZoom: false,
 		fillSkin: true,
 		backgroundSectors: false,
 		jellyPhysics: false,
@@ -1784,21 +1794,26 @@
 
 	function cameraUpdate() {
 		const myCells = [];
+
 		for (const id of cells.mine) {
 			const cell = cells.byId.get(id);
+
 			if (cell) myCells.push(cell);
 		}
+
 		if (myCells.length > 0) {
 			let x = 0;
 			let y = 0;
 			let s = 0;
 			let score = 0;
+
 			for (const cell of myCells) {
 				score += ~~(cell.ns * cell.ns / 100);
 				x += cell.x;
 				y += cell.y;
 				s += cell.s;
 			}
+
 			camera.target.x = x / myCells.length;
 			camera.target.y = y / myCells.length;
 			camera.sizeScale = Math.pow(Math.min(64 / s, 1), 0.4);
@@ -1814,6 +1829,7 @@
 			camera.x += (camera.target.x - camera.x) / 20;
 			camera.y += (camera.target.y - camera.y) / 20;
 		}
+
 		camera.scale += (camera.target.scale - camera.scale) / 9;
 	}
 
@@ -2191,6 +2207,20 @@
 				wsSend(UINT8_CACHE[0x12]);
 				minionControlled = !minionControlled;
 			}
+
+			if (key === 'f') {
+				camera.userZoom += 0.4;
+				camera.userZoom = Math.max(camera.userZoom, settings.moreZoom ? 0.1 : 1);
+				camera.userZoom = Math.min(camera.userZoom, 4);
+				byId('zoom').value = camera.userZoom;
+			}
+
+			if (key === 'v') {
+				camera.userZoom -= 0.4;
+				camera.userZoom = Math.max(camera.userZoom, settings.moreZoom ? 0.1 : 1);
+				camera.userZoom = Math.min(camera.userZoom, 4);
+				byId('zoom').value = camera.userZoom;
+			}
 		}
 	}
 
@@ -2211,6 +2241,7 @@
 		camera.userZoom *= event.deltaY > 0 ? 0.8 : 1.2;
 		camera.userZoom = Math.max(camera.userZoom, settings.moreZoom ? 0.1 : 1);
 		camera.userZoom = Math.min(camera.userZoom, 4);
+		byId('zoom').value = camera.userZoom;
 	}
 
 	function checkBanCounter() {
@@ -2699,6 +2730,17 @@
 		byId('darkTheme').addEventListener('change', changeDarkTheme);
 		byId('overlays').addEventListener('click', overlayClick)
 		byId('menuBtn').addEventListener('click', menuClick);
+		byId('showZoom').addEventListener('change', e => e.target.checked ? byId('zoom_container').style.display = 'grid' : byId('zoom_container').style.display = 'none');
+		byId('moreZoom').addEventListener('change', e => { byId('zoom').setAttribute('min', e.target.checked ? 0.1 : 1); camera.userZoom < (e.target.checked ? 0.1 : 1) ? (camera.userZoom = e.target.checked ? 0.1 : 1) : '' });
+		byId('zoom').addEventListener('input', e => (camera.userZoom = e.target.value));
+
+		byId('zoom').setAttribute('min', settings.moreZoom ? 0.1 : 1);
+
+		if (settings.showZoom) {
+			byId('zoom_container').style.display = 'grid';
+		} else {
+			byId('zoom_container').style.display = 'none';
+		}
 
 		if (checkBanCounter() > 2) {
 			byClass('upload-btn-wrapper')[0].remove();
