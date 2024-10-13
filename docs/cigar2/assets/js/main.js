@@ -689,8 +689,10 @@
 		KeyW: 'w',
 		KeyQ: 'q',
 		KeyE: 'e',
+		KeyF: 'f',
 		KeyR: 'r',
 		KeyT: 't',
+		KeyV: 'v',
 		KeyZ: 'z',
 		KeyX: 'x',
 		KeyC: 'c'
@@ -1239,11 +1241,14 @@
 		w: false,
 		z: false,
 		e: false,
+		f: false,
 		r: false,
 		t: false,
+		v: false,
 		q: false,
 		x: false,
 		c: false,
+		ctrl: false,
 		enter: false,
 		escape: false
 	};
@@ -2151,6 +2156,14 @@
 	function keydown(event) {
 		if (typeof event['isTrusted'] !== 'boolean' || event['isTrusted'] === false) return;
 
+		if (event.ctrlKey === true) {
+			pressed['ctrl'] = true;
+
+			if (event.which == '61' || event.which == '107' || event.which == '173' || event.which == '109' || event.which == '187' || event.which == '189') {
+				event.preventDefault();
+			}
+		}
+
 		const key = processKey(event);
 
 		if (pressed[key]) return;
@@ -2227,6 +2240,10 @@
 	function keyup(event) {
 		if (typeof event['isTrusted'] !== 'boolean' || event['isTrusted'] === false) return;
 
+		if (event.ctrlKey === true) {
+			pressed['ctrl'] = false;
+		}
+
 		const key = processKey(event);
 
 		if (Object.hasOwnProperty.call(pressed, key)) pressed[key] = false;
@@ -2237,6 +2254,11 @@
 
 	function handleScroll(event) {
 		if (typeof event['isTrusted'] !== 'boolean' || event['isTrusted'] === false) return;
+
+		if (pressed['ctrl']) {
+			event.preventDefault();
+		}
+
 		if (event.target !== mainCanvas) return;
 		camera.userZoom *= event.deltaY > 0 ? 0.8 : 1.2;
 		camera.userZoom = Math.max(camera.userZoom, settings.moreZoom ? 0.1 : 1);
@@ -2749,7 +2771,7 @@
 
 		window.addEventListener('beforeunload', storeSettings);
 
-		document.addEventListener('wheel', handleScroll, { passive: true });
+		document.addEventListener('wheel', handleScroll, { passive: false });
 
 		document.addEventListener('mousedown', event => {
 			if (typeof event['isTrusted'] !== 'boolean' || event['isTrusted'] === false) return;
