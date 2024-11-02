@@ -1051,7 +1051,7 @@
 
 	function sendPlay(name) {
 		const writer = new Writer(true);
-		writer.setUint8(0x00);
+		writer.setUint8(0x01);
 		writer.setStringUTF8(name);
 		wsSend(writer);
 	}
@@ -3017,7 +3017,7 @@
 	};
 
 	window.spectate = () => {
-		wsSend(UINT8_CACHE[0x1]);
+		wsSend(UINT8_CACHE[0x0]);
 		stats.maxScore = 0;
 		hideESCOverlay();
 	};
