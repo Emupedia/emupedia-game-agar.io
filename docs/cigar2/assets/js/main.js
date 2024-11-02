@@ -657,6 +657,7 @@
 	const VIRUS_POINTS = 100;
 	const PI_2 = Math.PI * 2;
 	const UINT8_CACHE = {
+		0x0: new Uint8Array([0x0]),
 		0x1: new Uint8Array([0x1]),
 		0x11: new Uint8Array([0x11]),
 		0x12: new Uint8Array([0x12]),
