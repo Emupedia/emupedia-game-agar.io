@@ -83,6 +83,7 @@ class LegacyProtocol extends Protocol {
 
 			const chatName = this.filterName(readZTString(reader, this.protocol))
 			this.connection.player.chatName = chatName ? chatName : this.connection.player.chatName
+			this.logger.inform(`[${this.connection.remoteAddress}][${this.connection.verifyScore}][${this.connection.player.id ? this.connection.player.id : 0}] Player '${this.connection.player.chatName}' has connected to the server`);
 
 			return;
 		}
@@ -91,6 +92,7 @@ class LegacyProtocol extends Protocol {
 			case 0:
 				const spawningName = this.filterName(readZTString(reader, this.protocol))
 				this.connection.spawningName = spawningName ? spawningName : this.connection.spawningName
+				this.logger.inform(`[${this.connection.remoteAddress}][${this.connection.verifyScore}][${this.connection.player.id ? this.connection.player.id : 0}][${this.connection.player.cellSkin ? this.connection.player.cellSkin.split('|').slice(-1) : ''}] Player '${this.connection.player.chatName}' has spawned into the game`);
 				break;
 			case 1:
 				this.connection.requestingSpectate = true;

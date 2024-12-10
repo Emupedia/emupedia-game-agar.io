@@ -105,6 +105,7 @@ class Connection extends Router {
 	 */
 	onChatMessage(message) {
 		message = message.replace(/  +/g, ' ')
+		message = message.replace(/(.)\1{3,}/gi, '$1$1$1$1')
 		message = message.trim()
 
 		if (!message) return
@@ -128,7 +129,7 @@ class Connection extends Router {
 
 		if (!lastChatTime || (Date.now() - lastChatTime >= this.settings.chatCooldown)) {
 			if (lastMessage) {
-				if ((lastMessage === message || ~lastMessage.indexOf(message) || ~message.indexOf(lastMessage)) && message.length >= 10) {
+				if ((lastMessage === message || ~lastMessage.indexOf(message) && lastMessage.length >= 10 || ~message.indexOf(lastMessage) && message.length >= 10)) {
 					this.listener.globalChat.directMessage(null, this, '[AntiSpam] Last message was not sent, please don\'t repeat yourself, write something different.')
 					this.listener.logger.inform(`MESSAGE REJECTED '${message}' contains repeated last message '${lastMessage}'`)
 
