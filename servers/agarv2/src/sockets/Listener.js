@@ -58,6 +58,7 @@ class Listener {
 	verifyClient(info, response) {
 		const ip = typeof info.req.headers['x-real-ip'] !== 'undefined' ? info.req.headers['x-real-ip'] : info.req.socket.remoteAddress;
 		const address = filterIPAddress(ip);
+		const userAgent = typeof info.req.headers['user-agent'] !== 'undefined' ? info.req.headers['user-agent'] : 'Unknown User Agent';
 		this.logger.onAccess(`REQUEST FROM ${address}, ${info.secure ? "" : "not "}secure, Origin: ${info.origin}`);
 
 		if (this.connections.length > this.settings.listenerMaxConnections) {
@@ -70,6 +71,12 @@ class Listener {
 
 		if (acceptedOrigins.length > 0 && acceptedOrigins.indexOf(info.origin) === -1) {
 			this.logger.inform(`listenerAcceptedOrigins doesn't contain ${info.origin}`);
+
+			return void response(false, 403, "Forbidden");
+		}
+
+		if (userAgent.length > 0 && userAgent.indexOf('headless') !== -1) {
+			this.logger.inform(`UserAgent seems to be Headless UA: '${userAgent}'`);
 
 			return void response(false, 403, "Forbidden");
 		}

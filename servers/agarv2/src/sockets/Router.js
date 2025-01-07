@@ -108,7 +108,7 @@ class Router {
 		let skin;
 
 		if (this.settings.playerAllowSkinInName) {
-			const regex = /\<(.*)\>(.*)/.exec(name);
+			const regex = /<(.*)>(.*)/.exec(name);
 
 			if (regex !== null) {
 				name = regex[2];

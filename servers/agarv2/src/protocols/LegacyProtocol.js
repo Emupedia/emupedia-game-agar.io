@@ -51,7 +51,7 @@ class LegacyProtocol extends Protocol {
 
 		for (let i = 0, l = this.settings.chatFilteredPhrases.length; i < l; i++) {
 			if (newname.toLowerCase().indexOf(this.settings.chatFilteredPhrases[i].toLowerCase()) !== -1) {
-				newname = newname.replace(new RegExp(this.settings.chatFilteredPhrases[i], 'gi'), '')
+				newname = newname.replace(new RegExp(this.settings.chatFilteredPhrases[i].toLowerCase(), 'gi'), '')
 			}
 		}
 
@@ -89,15 +89,15 @@ class LegacyProtocol extends Protocol {
 		}
 
 		switch (messageId) {
-			case 0:
+			case 1:
 				const spawningName = this.filterName(readZTString(reader, this.protocol))
 				this.connection.spawningName = spawningName ? spawningName : this.connection.spawningName
 				this.logger.inform(`[${this.connection.remoteAddress}][${this.connection.verifyScore}][${this.connection.player.id ? this.connection.player.id : 0}][${this.connection.player.cellSkin ? this.connection.player.cellSkin.split('|').slice(-1) : ''}] Player '${this.connection.player.chatName}' has spawned into the game`);
 				break;
-			case 1:
+			case 0:
 				this.connection.requestingSpectate = true;
 				break;
-			case 16:
+			case 15:
 				switch (reader.length) {
 					case 13:
 						this.connection.mouseX = reader.readInt32();
