@@ -375,7 +375,9 @@
 
 			if (cells.mine.remove(this.id) && cells.mine.length === 0) {
 				if (settings.autoRespawn && !escOverlayShown) {
+					allowClick = true;
 					byId('play-btn').click();
+					allowClick = false;
 				} else {
 					showESCOverlay();
 				}
@@ -673,6 +675,24 @@
 	const LOCATION = ~window.location.hostname.indexOf('emupedia.net') ? 'emupedia.net' : (~window.location.hostname.indexOf('emupedia.org') ? 'emupedia.org' : (~window.location.hostname.indexOf('emupedia.games') ? 'emupedia.games' : (~window.location.hostname.indexOf('emuos.net') ? 'emuos.net' : (~window.location.hostname.indexOf('emuos.org') ? 'emuos.org' : (~window.location.hostname.indexOf('emuos.games') ? 'emuos.games' : 'emupedia.net')))));
 	const SERVERS = ['agar' + '.' + LOCATION + '/ws2/', 'agar2' + '.' + LOCATION + '/ws2/'];
 	const GEO = {'eu': SERVERS[0], 'us': SERVERS[0]};
+	const TC = new BroadcastChannel('agar2');
+
+	TC.onmessage = event => {
+		if (event.data.type === 'check') {
+			TC.postMessage({ type: 'ac' });
+		} else if (event.data.type === 'ac') {
+			if (!isActive) {
+				setInterval(() => {
+					wsCleanup();
+					hideESCOverlay();
+					byId('chat_textbox').hide();
+					byId('chat_clear').hide();
+					byId('connecting-content').innerHTML = '<h3>Multisession Warning</h3><hr class="top" /><p style="text-align: center">Multiple game instances are not allowed.<br />Close all other game instances and reload.</p>';
+					byId('connecting').show(0.5);
+				}, 1000)
+			}
+		}
+	};
 
 	const KEY_TO_OPCODE = {
 		e: UINT8_CACHE[0x16],
@@ -1043,7 +1063,7 @@
 
 	function sendMouseMove(x, y) {
 		const writer = new Writer(true);
-		writer.setUint8(0x10);
+		writer.setUint8(0x0F);
 		writer.setUint32(x);
 		writer.setUint32(y);
 		writer._b.push(0, 0, 0, 0);
@@ -1176,6 +1196,8 @@
 	let chatClear = null;
 	let mapCenterSet = false;
 	let minionControlled = false;
+	let isActive = false;
+	let allowClick = false;
 	let touched = false;
 	let mouseX = NaN;
 	let mouseY = NaN;
@@ -1917,9 +1939,9 @@
 		let r = 0, g = 0, b = 0;
 
 		for (let i = 0; i < 8; i++) {
-			r += arr[16+i] << i;
-			g += arr[24+i] << i;
-			b += arr[32+i] << i;
+			r += arr[16 + i] << i;
+			g += arr[24 + i] << i;
+			b += arr[32 + i] << i;
 		}
 
 		for (let i = 0; i < 4; i++) {
@@ -2302,16 +2324,46 @@
 		}
 	}
 
-	function getServerPing(url) {
-		const start = performance.now()
-		// TODO
-		return {
-			url,
-			responseTime: Math.floor(performance.now() - start)
+	function checkBots() {
+		function checkCDC() {
+			function hasConstructorAlias(window, constructor) {
+				for (const prop of window.Object.getOwnPropertyNames(window)) {
+					if (prop === constructor.name || prop === 'token' || prop === 'getAsyncToken') continue;
+					if (window[prop] === constructor) return true;
+				}
+
+				return false
+			}
+
+			for (const prop of window.Object.getOwnPropertyNames(window)) {
+				if (/^cdc_[a-zA-Z0-9]{22}_(Array|Promise|Symbol)$/.test(prop)) return true;
+			}
+
+			return hasConstructorAlias(window, window.Array) && hasConstructorAlias(window, window.Promise) && hasConstructorAlias(window, window.Symbol);
 		}
+
+		// noinspection JSUnresolvedReference
+		return [
+			checkCDC()
+		]
+	}
+
+	function announcePresence() {
+		TC.postMessage({ type: 'check' });
+		setTimeout(announcePresence, 1000);
 	}
 
 	function init() {
+		TC.postMessage({ type: 'check' });
+
+		setTimeout(() => {
+			if (!isActive) {
+				isActive = true;
+			}
+
+			announcePresence();
+		}, 500);
+
 		mainCanvas = document.getElementById('canvas');
 		mainCtx = mainCanvas.getContext('2d');
 		chatBox = byId('chat_textbox');
@@ -2828,14 +2880,16 @@
 			}
 		});
 
-		byId('play-btn').addEventListener('click', () => {
+		byId('play-btn').addEventListener('click', event => {
+			if (!allowClick && (typeof event['isTrusted'] !== 'boolean' || event['isTrusted'] === false)) return;
+
 			const skin = settings.skin;
 			const nameColor = settings.nameColor;
 			const cellColor = settings.cellColor;
 			const borderColor = settings.borderColor;
 			const fp = settings.fp;
 
-			sendPlay('<' + (skin ? `${skin}` : '') + '|' + (nameColor ? `${nameColor}` : '') + '|' + (cellColor ? `${cellColor}` : '') + '|' + (borderColor ? `${borderColor}` : '') + '|' + (fp ? `${fp}` : '') + '>' + Cell.parseName(settings.nick));
+			sendPlay('<' + (skin ? `${skin.trim().replace(/[<>|]/g, '').substring(0, 30)}` : '') + '|' + (nameColor ? `${nameColor.trim().replace(/[<>|]/g, '').substring(0, 7)}` : '') + '|' + (cellColor ? `${cellColor.trim().replace(/[<>|]/g, '').substring(0, 7)}` : '') + '|' + (borderColor ? `${borderColor.trim().replace(/[<>|]/g, '').substring(0, 7)}` : '') + '|' + (fp ? `${fp.trim().replace(/[<>|]/g, '').substring(0, 32)}` : '') + '>' + Cell.parseName(settings.nick));
 
 			hideESCOverlay();
 			storeSettings();
@@ -2936,68 +2990,45 @@
 
 					for (const skin of skins) bannedSkins.add(skin);
 
-					fetch('https://cloudflare.net/cdn-cgi/trace').then(resp => resp.text()).then(dat => {
-						let lines = dat.split('\n');
-						let keyValue = '';
-						let trace = [];
+					loadSettings();
 
-						lines.forEach(line => {
-							keyValue = line.split('=');
+					FP.then(fp => fp.get()).then(result => {
+						settings.fp = result.visitorId;
+						storeSettings();
+					});
 
-							if (keyValue[0] !== '' && keyValue[0] !== 'ts' && keyValue[0] !== 'uag') {
-								trace[keyValue[0]] = decodeURIComponent(keyValue[1] || '');
+					fetch('../fpBanList.txt').then(resp => resp.text()).then(data => {
+						const fp = data.split(',').filter(name => name.length > 0);
+
+						for (const p of fp) bannedFP.add(p);
+
+						let ban = false;
+						let bot = false;
+
+						loadSettings();
+
+						bannedFP.forEach(val => {
+							if (settings.fp === val) {
+								ban = true;
 							}
 						});
 
-						try {
-							// noinspection JSCheckFunctionSignatures,JSUnusedLocalSymbols
-							crypto.subtle.digest('SHA-1', new TextEncoder().encode(trace)).then(res => {
-								ident = ''; //Array.from(new Uint8Array(res)).map((i) => i.toString(16).padStart(2, '0')).join('');
+						checkBots().forEach(val => {
+							if (val) {
+								bot = true;
+							}
+						});
 
-								loadSettings();
-
-								FP.then(fp => fp.get()).then(result => {
-									settings.fp = ident !== '' ? (ident + '|' + result.visitorId) : result.visitorId;
-									storeSettings();
-								});
-							});
-						} catch (e) {
-							console.error(e);
-
-							loadSettings();
-
-							FP.then(fp => fp.get()).then(result => {
-								settings.fp = result.visitorId;
-								storeSettings();
-							});
+						if (ban || bot) {
+							wsCleanup();
+							hideESCOverlay();
+							byId('chat_textbox').hide();
+							byId('chat_clear').hide();
+							byId('connecting-content').innerHTML = '<h3>You are banned 😭</h3><hr class="top" /><p style="text-align: center">You are banned from the game because you broke the rules either spamming the chat or while uploading custom skins or because you are using bots.</p><a class="text-center" style="display: block; color: red;" href="https://discord.gg/emupedia-510149138491506688" target="_blank">Join us on Discord!</a><h1 style="text-align: center;">Your unban code is<br /><br />' + btoa(settings.fp).replace(/(.{10})/g, "$1<br />") + '</h1>';
+							byId('connecting').show(0.5);
+						} else {
+							init();
 						}
-
-						fetch('../fpBanList.txt').then(resp => resp.text()).then(data => {
-							const fp = data.split(',').filter(name => name.length > 0);
-
-							for (const p of fp) bannedFP.add(p);
-
-							let ban = false;
-
-							loadSettings();
-
-							bannedFP.forEach(val => {
-								if (settings.fp === val) {
-									ban = true;
-								}
-							});
-
-							if (ban) {
-								wsCleanup();
-								hideESCOverlay();
-								byId('chat_textbox').hide();
-								byId('chat_clear').hide();
-								byId('connecting-content').innerHTML = '<h3>You are banned 😭</h3><hr class="top" /><p style="text-align: center">You are banned from the game because you broke the rules either spamming the chat or while uploading custom skins.</p><a class="text-center" style="display: block; color: red;" href="https://discord.gg/emupedia-510149138491506688" target="_blank">Join us on Discord!</a><h1 style="text-align: center;">Your unban code is<br /><br />' + btoa(settings.fp).replace(/(.{10})/g, "$1<br />") + '</h1>';
-								byId('connecting').show(0.5);
-							} else {
-								init();
-							}
-						});
 					});
 				});
 			});
