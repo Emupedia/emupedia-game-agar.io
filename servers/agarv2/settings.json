@@ -416,7 +416,7 @@
     "playerRoamViewScale": 0.4,
     "playerViewScaleMult": 1,
     "playerMinViewScale": 0.01,
-    "playerMaxNameLength": 100,
+    "playerMaxNameLength": 105,
     "playerAllowSkinInName": true,
     "playerMinSize": 32,
     "playerSpawnSize": 32,

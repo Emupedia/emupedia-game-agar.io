@@ -60,6 +60,7 @@ class Listener {
 		const address = filterIPAddress(ip);
 		const userAgent = typeof info.req.headers['user-agent'] !== 'undefined' ? info.req.headers['user-agent'] : 'Unknown User Agent';
 		this.logger.onAccess(`REQUEST FROM ${address}, ${info.secure ? "" : "not "}secure, Origin: ${info.origin}`);
+		this.logger.onAccess(`IP: '${address}' Browser UA: '${userAgent}'`);
 
 		if (this.connections.length > this.settings.listenerMaxConnections) {
 			this.logger.inform("listenerMaxConnections reached, dropping new connections");
@@ -75,7 +76,7 @@ class Listener {
 			return void response(false, 403, "Forbidden");
 		}
 
-		if (userAgent.length > 0 && userAgent.indexOf('headless') !== -1) {
+		if (userAgent.length > 0 && userAgent.toLowerCase().indexOf('headless') !== -1 || userAgent.toLowerCase().indexOf('phantomjs') !== -1 || userAgent.toLowerCase().indexOf('electron') !== -1) {
 			this.logger.inform(`UserAgent seems to be Headless UA: '${userAgent}'`);
 
 			return void response(false, 403, "Forbidden");
