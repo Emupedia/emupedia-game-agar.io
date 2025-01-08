@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<!--suppress HtmlFormInputWithoutLabel, JSDeprecatedSymbols -->
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="minimal-ui, width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+		<meta name="description" content="Eat cells smaller than you and don't get eaten by the bigger ones, as an MMO">
+		<meta name="keywords" content="agario, agar, io, cell, cells, virus, bacteria, blob, game, games, web game, html5, fun, flash">
+		<meta name="robots" content="index, follow">
+		<meta name="mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+		<title>Agar.io v2.0</title>
+		<link rel="icon" type="image/png" href="assets/img/favicon.png">
+		<link href="https://fonts.googleapis.com/css?family=Ubuntu:700" rel="stylesheet" type="text/css">
+		<link href="assets/css/bootstrap.min.css" rel="stylesheet">
+		<link href="assets/css/index.css" rel="stylesheet">
+		<link href="assets/css/gallery.css" rel="stylesheet">
+	</head>
+
+	<body>
+		<canvas id="canvas" width="800" height="600"></canvas>
+
+		<div id="mobileStuff">
+			<div id="touch" style="display: none;"></div>
+			<div id="touchCircle" style="display: none;"></div>
+			<img id="menuBtn" style="display: none;" src="assets/img/menu.png" alt="" draggable="false" ondragstart="return false;"/>
+			<img id="fullscreenBtn" style="display: none;" src="assets/img/fullscreen.png" alt="" draggable="false" ondragstart="return false;" />
+			<img id="splitBtn" style="display: none;" src="assets/img/split.png" alt="" draggable="false" ondragstart="return false;" />
+			<img id="ejectBtn" style="display: none;" src="assets/img/eject.png" alt="" draggable="false" ondragstart="return false;" />
+		</div>
+
+		<input type="text" id="chat_textbox" placeholder="Press enter to chat" maxlength="100" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+		<input type="button" id="chat_clear" value="✖" title="Clear chat" />
+		<div id="zoom_container" style="display: none;">
+			<label for="zoom">Zoom</label>
+			<input type="range" id="zoom" min="1" max="4" step="any" />
+		</div>
+
+		<div id="gallery" onclick="if (event.target === this) this.hide()" style="display: none;">
+			<div id="gallery-content">
+				<div id="gallery-header">Skins</div>
+				<div id="gallery-body"></div>
+			</div>
+		</div>
+
+		<div id="overlays" style="display: none;">
+			<div id="helloDialog">
+				<div id="helloDialogContent">
+					<div>
+						<h2 class="title">Agar.io v2.0</h2>
+						<hr class="top" />
+					</div>
+
+					<div class="form-wrapper">
+						<div class="form-label-wrapper">
+							<label id="nick-list"><span>Nickname</span><input id="nick" list="nicknames" class="form-control" onfocus="this.oldvalue=this.value;this.value=''" onblur="if(this.value==='')this.value=this.oldvalue || ''" placeholder="Nickname" maxlength="16" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></label>
+							<datalist id="nicknames">
+								<option value=""> </option>
+							</datalist>
+						</div>
+						<div class="form-label-wrapper">
+							<label id="skin-list"><span>Skin</span><input id="skin" list="skinnames" class="form-control pull-right" onfocus="this.oldvalue=this.value;this.value=''" onblur="if(this.value==='')this.value=this.oldvalue || ''" placeholder="Skin Name" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></label>
+							<datalist id="skinnames">
+								<option value=""> </option>
+							</datalist>
+						</div>
+						<div class="form-label-wrapper">
+							<label><span>Copy</span><button id="copy-btn" class="btn btn-success pull-right" onclick="copyToClipboard(document.getElementById('skin').value, this)"><i class="glyphicon glyphicon-copy"></i></button></label>
+						</div>
+					</div>
+
+					<div class="form-wrapper">
+						<div class="form-label-wrapper" style="width: 100%; display: none;">
+							<label id="server-list"><span>Server</span>
+								<select id="server" class="form-control" onchange="setserver(this.value)" required>
+									<option value="eu" selected>EU</option>
+									<option value="us">US</option>
+								</select>
+							</label>
+						</div>
+						<button id="play-btn" class="btn btn-play btn-primary btn-needs-server pull-left"><i class="glyphicon glyphicon-play"></i>&nbsp;Play</button>
+						<button id="spectate-btn" onclick="spectate()" class="btn btn-warning btn-spectate btn-needs-server pull-left"><i class="glyphicon glyphicon-eye-open"></i>&nbsp;Spectate</button>
+					</div>
+
+					<div class="form-wrapper">
+						<button id="gallery-btn" onclick="openSkinsList()" class="btn btn-play btn-primary btn-needs-server btn-info"><i class="glyphicon glyphicon-folder-open"></i>&nbsp;&nbsp;Choose Skin</button>
+						<button id="unban-btn" onclick="openUnban()" class="btn btn-play btn-primary btn-needs-server btn-info" style="display: none;"><i class="glyphicon glyphicon-log-in"></i>&nbsp;Unban</button>
+						<button class="btn btn-success btn-settings pull-right" onclick="document.getElementById('settings').style.display = document.getElementById('settings').style.display === 'none' ? 'block' : 'none'" ><i class="glyphicon glyphicon-cog"></i></button>
+					</div>
+
+					<div id="settings" class="checkbox" style="display: none;">
+						<div style="margin: 6px;">
+							<label><input id="toggleFullscreen" type="checkbox" />Toggle Fullscreen</label>
+							<label><input id="showSkins" type="checkbox" />Skins</label>
+							<label><input id="fillSkin" type="checkbox" />Fill Skin</label>
+							<label><input id="showNames" type="checkbox" />Names</label>
+							<label><input id="darkTheme" type="checkbox" />Dark</label>
+							<label><input id="showColor" type="checkbox" />Color</label>
+							<label><input id="showMass" type="checkbox" />Mass</label>
+							<label><input id="showChat" type="checkbox" />Chat</label>
+							<label><input id="showMinimap" type="checkbox" />Minimap</label>
+							<label><input id="showPosition" type="checkbox" />Position</label>
+							<label><input id="showBorder" type="checkbox" />Border</label>
+							<label><input id="showGrid" type="checkbox" />Grid</label>
+							<label><input id="moreZoom" type="checkbox" />Zoom Out</label>
+							<label><input id="showZoom" type="checkbox" />Show Zoom Slider</label>
+							<label><input id="backgroundSectors" type="checkbox" />Background Sectors</label>
+							<label><input id="jellyPhysics" type="checkbox" />Jelly Physics</label>
+							<label>
+								<input id="playSounds" type="checkbox" />Sounds
+								<input id="soundsVolume" type="range" min="0" max="1" step="any">
+							</label>
+							<label><input id="feedMacro" type="checkbox" />Feed Macro</label>
+							<label><input id="splitMacro" type="checkbox" />Split Macro</label>
+							<label><input id="leftClick" type="checkbox" />Left Click</label>
+							<label><input id="middleClick" type="checkbox" />Middle Click</label>
+							<label><input id="rightClick" type="checkbox" />Right Click</label>
+							<label><input id="disableTouchControls" type="checkbox" />Disable Touch Controls</label>
+							<label><input id="useJoystick" type="checkbox" />Touch Joystick</label>
+							<label><input id="flipTouchControls" type="checkbox" />Flip Touch Controls</label>
+							<label><input id="autoRespawn" type="checkbox" />Toggle AutoRespawn</label>
+						</div>
+					</div>
+
+					<div id="preview">
+						<canvas id="previewSkin"></canvas>
+						<div id="previewName"></div>
+					</div>
+
+					<div id="colors" style="display: none;">
+						<label class="form-label-wrapper"><input id="bgColor" type="color" value="#ffffff" /><span>Background</span></label>
+						<label class="form-label-wrapper"><input id="nameColor" type="color" value="#ffffff" /><span>Name</span></label>
+						<label class="form-label-wrapper"><input id="cellColor" type="color" value="#ffffff" /><span>Color</span></label>
+						<label class="form-label-wrapper"><input id="borderColor" type="color" value="#ffffff" /><span>Border</span></label>
+					</div>
+				</div>
+
+				<div id="gameplay">
+					<div>
+						<h2 class="title">Gameplay</h2>
+						<hr class="top" />
+						<div class="text">
+							<p class="text-center">
+								Move your <kbd>MOUSE</kbd> / <kbd>TOUCH</kbd> to control your Cell<br />
+								<kbd>Mouse Wheel</kbd> or <kbd>F</kbd> and <kbd>V</kbd> to Zoom in and out<br />
+								Press <kbd>W</kbd> or <kbd>Left Click</kbd> to Eject Mass<br />
+								<!--Press <kbd>Q</kbd> to control Minion<br />-->
+								Press <kbd>SPACE</kbd> to Split your Cell once<br />
+								Press <kbd>X</kbd> or <kbd>Right Click</kbd> to do a Double Split<br />
+								Press <kbd>C</kbd> or <kbd>Middle Click</kbd> to do a Multi Split<br />
+							</p>
+							<hr />
+							<b>Objective:</b> The objective of Agar.io is to grow your cell by consuming smaller cells and avoiding larger ones. As you grow, you'll become more formidable and be able to consume even larger cells.<br /><br />
+							<b>Starting Out:</b> When you first join the game, you'll start as a small cell. Move around using your mouse to collect the colorful pellets scattered across the map. Eating pellets increases your size and mass.<br /><br />
+							<b>Movement:</b> To move your cell, you simply move your mouse cursor or use your touch screen by moving in the direction you want your cell to go. Your cell will follow the movement of your mouse cursor on the screen.<br /><br />
+							<b>Consume Smaller Cells:</b> Keep an eye out for smaller cells roaming nearby. As you grow larger, you'll be able to engulf these smaller cells to increase your mass. Approach them strategically to avoid being eaten by larger cells.<br /><br />
+							<b>Avoid Larger Cells:</b> Be cautious of larger cells, as they can consume you if you're smaller than they. Watch out for players who split to capture smaller cells, and try to anticipate their movements to stay safe.<br /><br />
+							<b>Splitting:</b> You can split your cell into multiple smaller pieces by pressing <kbd>SPACE</kbd>. Use this tactic to capture smaller cells or to escape from larger ones. You can also do a multiple splits by pressing <kbd>X</kbd> or <kbd>Z</kbd>. Remember, splitting also makes you more vulnerable, so use it wisely.<br /><br />
+							<b>Ejecting Mass:</b> While ejecting mass by pressing the <kbd>W</kbd> or <kbd>Left Click</kbd> can be beneficial, it also comes with risks. Ejected mass can be consumed by other players, including potential rivals. Additionally, ejecting mass reduces your cell's overall size, which may make you more vulnerable to being consumed by larger cells.<br /><br />
+							<b>Team Play (Optional):</b> In team mode, you can collaborate with other players to dominate the leaderboard. Team up with friends or other players to outmaneuver your opponents and conquer the game together.<br /><br />
+							<b>Grow and Dominate:</b> As you consume smaller cells and avoid being eaten, your cell will continue to grow in size. Aim to become the largest cell on the server and dominate the leaderboard.<br /><br />
+							<b>Watch Out for Viruses:</b> Throughout the map, you'll encounter green spiky circles known as viruses. Avoid colliding with these, as they can split your cell into smaller pieces if you're larger than they. Feeding viruses your mass from a direction will cause them to multiply in the opposite direction.<br /><br />
+							<b>Be Strategic:</b> Agar.io is as much about strategy as it is about skill. Pay attention to your surroundings, anticipate your opponents' moves, and use tactics like splitting and merging wisely to outsmart your rivals.<hr />
+							<p class="text-center">That's it for the basics of Agar.io! Now it's time to jump into the game and start growing your cell to become the biggest and most dominant player on the server.</p>
+							<hr />
+							<h5 class="text-center">Good luck, and have fun!</h5>
+						</div>
+					</div>
+				</div>
+
+				<div id="news">
+					<div>
+						<h2 class="title">News</h2>
+						<hr class="top" />
+						<div class="text">
+							<b>13/10/2024</b>
+							<ul>
+								<li>Added <kbd>F</kbd> and <kbd>V</kbd> keys to Zoom in and out</li>
+								<li>Added <b>Zoom Slider</b> to Zoom in and out</li>
+								<li>Added <b>Show Zoom Slider</b> checkbox in <b>Settings</b></li>
+							</ul>
+							<hr /><b>10/10/2024</b>
+							<ul>
+								<li>Added <b>Clear Chat</b> button, so you can clear the chat manually</li>
+							</ul>
+							<hr /><b>01/10/2024</b>
+							<ul>
+								<li>Added <b>Identicons</b> to better identify friends or enemies, each device has a specific unique <b>Icon</b></li>
+								<li>Added <b>Show Identicons</b> checkbox in <b>Settings</b></li>
+								<li>Removed tricks that allow to duplicate <b>Nicks</b> or <b>Skins</b> easily</li>
+							</ul>
+							<hr /><b>16/05/2024</b>
+							<ul>
+								<li>Fixed <b>AZERTY</b> keyboard mapping now <kbd>W</kbd> and <kbd>Z</kbd> both <b>Feed</b></li>
+								<li>Changed <b>Muti Split</b> to key <kbd>C</kbd> instead of <kbd>Z</kbd></li>
+								<li>Added <b>Disable Touch Controls</b> checkbox in <b>Settings</b></li>
+							</ul>
+							<hr /><b>15/05/2024</b>
+							<ul>
+								<li>Fixed a long-standing bug in <b>Chat</b> that prevented showing some messages sometimes</li>
+								<li>Added <b>Toggle Fullscreen</b> checkbox in <b>Settings</b></li>
+								<li>Implemented <b>AutoRespawn</b>, now you will automatically respawn without needing to press <b>Play</b> again</li>
+								<li>Added <b>Toggle AutoRespawn</b> checkbox in <b>Settings</b></li>
+								<li>Improved <b>Touch Controls</b> for mobile (added <b>Show Menu Button</b>, <b>Fullscreen Button</b>, fixed <b>Split Button</b> distance, prevent dragging Buttons)</li>
+							</ul>
+							<hr /><b>14/05/2024</b>
+							<ul>
+								<li>Splitting while using Touch controls ejected a bit of mass, this bug has now been fixed</li>
+								<li>Eject Macro is now working while using Touch controls</li>
+								<li>Improved Touch controls for mobile</li>
+							</ul>
+							<hr /><b>10/05/2024</b>
+							<ul>
+								<li>Re-enabled using Right Click on Menus and in Chat Box</li>
+								<li>Added possibility to <b>Flip Touch Controls</b> from right side to left side in <b>Settings</b></li>
+							</ul>
+							<hr /><b>01/05/2024</b>
+							<ul>
+								<li>Enabled auto-reconnect to server after a server restart</li>
+								<li>Improved Touch controls for mobile</li>
+							</ul>
+							<hr /><b>09/03/2024</b>
+							<ul>
+								<li>Added <b>Copy To Clipboard</b> button for <b>Current Selected Skin</b></li>
+								<li>Increased <b>Chat Area Size</b> to fit more messages</li>
+							</ul>
+							<hr /><b>28/02/2024</b>
+							<ul>
+								<li>Implemented <b>Touch Joystick</b> for mobile</li>
+								<li>Added <b>Touch Joystick</b> checkbox in <b>Settings</b></li>
+								<li>Uploading <kbd>gif</kbd> files is no longer allowed, the animation didn't work anyway, just first frame was shown</li>
+							</ul>
+							<hr /><b>20/02/2024</b>
+							<ul>
+								<li>Added toggle <b>Individual Mouse Clicks</b> checkboxes in <b>Settings</b></li>
+							</ul>
+							<hr /><b>17/02/2024</b>
+							<ul>
+								<li>Added <b>Double Split</b>, you can use <b>Double Split</b> by pressing <kbd>X</kbd> or <kbd>Right Click</kbd></li>
+								<li>Added <b>Multi Split Macro</b>, you can use <b>Multi Split Macro</b> by pressing <kbd>C</kbd> or <kbd>Middle Click</kbd></li>
+								<li>Added toggle checkbox in <b>Settings</b> for <b>Multi Split Macro</b></li>
+								<li>Added <b>Nickname</b> picker</li>
+								<li>Added <b>Skin Name</b> picker</li>
+								<li>Added <b>Dark Theme</b> for menus</li>
+							</ul>
+							<hr /><b>16/02/2024</b>
+							<ul>
+								<li>Fixed random background colors when using <b>Jelly Physics</b></li>
+								<li>Added <b>Feed Macro</b>, you can use <b>Feed Macro</b> by pressing <kbd>W</kbd> or <kbd>Left Click</kbd> and having <b>Feed Macro</b> checkbox checked in <b>Settings</b></li>
+								<li>Added toggle checkbox in <b>Settings</b> for <b>Feed Macro</b></li>
+								<li>Added <b>News</b> section</li>
+								<li>Added <b>Gameplay</b> section</li>
+							</ul>
+							<hr /><b>6/13/2023</b>
+							<ul>
+								<li>Added 1195 missing Skins</li>
+							</ul>
+							<hr />
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="connecting" style="display: none;">
+			<div id="connecting-content">
+				<h3>Trying to connect...</h3><hr class="top" />
+				<p>If you cannot connect to the servers, check if you have some antivirus or firewall blocking the connection.</p>
+			</div>
+		</div>
+
+		<script src="assets/js/nipplejs.js"></script>
+		<script src="assets/js/quadtree.js"></script>
+		<script src="assets/js/main.js"></script>
+	</body>
+</html>
