@@ -210,13 +210,20 @@
 	}
 
 	class Cell {
-		static parseName(name, limit = true) { // static method
-			if (typeof name !== 'undefined' && name !== null && name !== '')
-				return name.trim().replace(/[<>|]/g, '').substring(0, 16);
-
-			return name;
+		static parseSkinAndName(value) {
+			let [, skin, name] = /^(?:<(.*)>)?([^]*)/.exec(value || '');
+			return {
+				name: (name || '').trim(),
+				skin: (skin || '').trim()
+			};
 		}
-		constructor(id, x, y, s, name, nameColor, cellColor, borderColor, skin, flags) {
+		static parseName(value) {
+			return Cell.parseSkinAndName(value).name || '';
+		}
+		static parseSkin(value) {
+			return Cell.parseSkinAndName(value).skin || '';
+		}
+		constructor(id, x, y, s, name, color, skin, flags) {
 			this.destroyed = false;
 			this.diedBy = 0;
 			this.nameSize = 0;
@@ -233,11 +240,9 @@
 			this.os = s;
 			this.s = s;
 			this.ns = s;
-			this.name = Cell.parseName(name);
-			this.nameColor = nameColor || Color.fromHex('#ffffff');
-			this.cellColor = cellColor || Color.fromHex('#ffffff');
-			this.borderColor = borderColor || (cellColor ? cellColor.darker() : Color.fromHex('#ffffff'));
-			this.setSkin(skin, name);
+			this.setColor(color);
+			this.setName(name);
+			this.setSkin(skin);
 			this.jagged = flags.jagged;
 			this.ejected = flags.ejected;
 			this.born = syncUpdStamp;
@@ -355,40 +360,37 @@
 				curP.y = this.y + Math.sin(angle) * rl;
 			}
 		}
-		setSkin(value, name) {
+		setName(rawName) {
+			const { name, skin } = Cell.parseSkinAndName(rawName);
+			this.name = name;
+			this.setSkin(skin);
+		}
+		setSkin(value) {
 			let skinpic = value;
-
-			if (typeof skinpic !== 'undefined' && skinpic !== null && skinpic !== '') {
-				skinpic = skinpic.trim();
-
-				if (skinpic.indexOf('|') !== -1) {
-					skinpic = skinpic.split('|')[0];
-				}
-			}
 
 			if (typeof skinpic === 'undefined' || skinpic === null || skinpic === '') return;
 
 			this.skin = skinpic[0] === '%' ? skinpic.slice(1) : skinpic;
 
-			if (loadedSkins.has(this.skin) || bannedSkins.has(this.skin)) return;
+			if (loadedSkins.has(this.skin)) return;
 
 			const skin = new Image();
 
-			if (this.skin.startsWith('https://iili.io/') && !this.skin.endsWith('.gif')) {
-				skin.onerror = () => {
-					skin.onerror = null;
-					skin.src = './assets/img/transparent.png';
-				};
-				skin.src = `${this.skin}?nick=${name}`;
-			} else {
-				skin.onerror = () => {
-					skin.onerror = null;
-					skin.src = './assets/img/transparent.png';
-				};
-				skin.src = `${SKIN_URL}${this.skin}.png`;
-			}
+			skin.onerror = () => {
+				skin.onerror = null;
+				skin.src = './assets/img/transparent.png';
+			};
+			skin.src = `${SKIN_URL}${this.skin}.png`;
 
 			loadedSkins.set(this.skin, skin);
+		}
+		setColor(value) {
+			if (!value) {
+				Logger.warn('Got no color');
+				return;
+			}
+			this.color = value;
+			this.sColor = value.darker();
 		}
 		draw(ctx) {
 			ctx.save();
@@ -397,8 +399,8 @@
 			ctx.restore();
 		}
 		drawShape(ctx) {
-			ctx.fillStyle = settings.showColor ? this.cellColor.toHex() : '#ffffff';
-			ctx.strokeStyle = settings.showColor ? this.borderColor.toHex() : '#e5e5e5';
+			ctx.fillStyle = settings.showColor ? this.color.toHex() : '#ffffff';
+			ctx.strokeStyle = settings.showColor ? this.sColor.toHex() : '#e5e5e5';
 			ctx.lineWidth = Math.max(~~(this.s / 50), 10);
 
 			if (this.s > 20) {
@@ -470,10 +472,6 @@
 		return document.getElementById(id);
 	}
 
-	function byClass(clss, parent) {
-		return (parent || document).getElementsByClassName(clss);
-	}
-
 	const LOAD_START = Date.now();
 
 	Array.prototype.remove = function (a) {
@@ -535,8 +533,7 @@
 		0x19: new Uint8Array([0x19]),
 		0xFE: new Uint8Array([0xFE])
 	};
-	const LOCATION = ~window.location.hostname.indexOf('emupedia.net') ? 'emupedia.net' : (~window.location.hostname.indexOf('emupedia.org') ? 'emupedia.org' : (~window.location.hostname.indexOf('emupedia.games') ? 'emupedia.games' : (~window.location.hostname.indexOf('emuos.net') ? 'emuos.net' : (~window.location.hostname.indexOf('emuos.org') ? 'emuos.org' : (~window.location.hostname.indexOf('emuos.games') ? 'emuos.games' : 'emupedia.net')))));
-	const SERVERS = ['agar' + '.' + LOCATION + '/ws2/', 'agar2' + '.' + LOCATION + '/ws2/'];
+	const SERVERS = ['agar.ld24.net'];
 	const GEO = {'eu': SERVERS[0], 'us': SERVERS[0]};
 
 	const KEY_TO_OPCODE = {
@@ -605,23 +602,9 @@
 
 	function wsOpen() {
 		reconnectDelay = 1000;
-
 		byId('connecting').hide();
-
 		wsSend(new Uint8Array([0xFE, 6, 0, 0, 0]));
-
-		if (settings.nick !== '') {
-			const writer = new Writer(true);
-			writer.setUint8(0xFF);
-			writer.setUint8(1);
-			writer.setUint8(0);
-			writer.setUint8(0);
-			writer.setUint8(0);
-			writer.setStringUTF8(Cell.parseName(settings.nick));
-			wsSend(writer);
-		} else {
-			wsSend(new Uint8Array([0xFF, 1, 0, 0, 0]));
-		}
+		wsSend(new Uint8Array([0xFF, 1, 0, 0, 0]));
 	}
 
 	function wsError(error) {
@@ -668,8 +651,6 @@
 					cells.byId.get(killed).destroy(killer);
 				}
 
-				let skinParts = ['', '#ffffff', '#ffffff', '#ffffff'];
-
 				// update records
 				while (true) {
 					const id = reader.getUint32();
@@ -705,30 +686,11 @@
 						cell.ny = y;
 						cell.ns = s;
 
-						if (color) cell.cellColor = color;
-
-						if (name) cell.name = Cell.parseName(name);
-
-						if (skin) {
-							cell.setSkin(skin, name);
-
-							if (skin && Array.isArray(skin.split('|')) && skin.split('|').length > 1) {
-								skinParts = skin.split('|');
-								cell.nameColor = skinParts[1] !== '#ffffff' ? Color.fromHex(skinParts[1]) : color;
-								cell.cellColor = skinParts[2] !== '#ffffff' ? Color.fromHex(skinParts[2]) : color;
-								cell.borderColor = skinParts[3] !== '#ffffff' ? Color.fromHex(skinParts[3]) : color.darker();
-							}
-						}
+						if (color) cell.setColor(color);
+						if (name) cell.setName(name);
+						if (skin) cell.setSkin(skin);
 					} else {
-						const cell = new Cell(id, x, y, s, name, color, color, color?.darker(), skin, flags);
-
-						if (skin && Array.isArray(skin.split('|')) && skin.split('|').length > 1) {
-							skinParts = skin.split('|');
-							cell.nameColor = skinParts[1] !== '#ffffff' ? Color.fromHex(skinParts[1]) : color;
-							cell.cellColor = skinParts[2] !== '#ffffff' ? Color.fromHex(skinParts[2]) : color;
-							cell.borderColor = skinParts[3] !== '#ffffff' ? Color.fromHex(skinParts[3]) : color.darker();
-						}
-
+						const cell = new Cell(id, x, y, s, name, color, skin, flags);
 						cells.byId.set(id, cell);
 						cells.list.push(cell);
 					}
@@ -1009,7 +971,6 @@
 
 	const knownSkins = new Map();
 	const loadedSkins = new Map();
-	const bannedSkins = new Set();
 	const camera = {
 		x: 0,
 		y: 0,
@@ -1505,7 +1466,7 @@
 			for (const id of cells.mine) {
 				const cell = cells.byId.get(id);
 				if (!cell) continue;
-				mainCtx.fillStyle = cell.cellColor.toHex(); // repeat assignment of same color is OK
+				mainCtx.fillStyle = cell.color.toHex(); // repeat assignment of same color is OK
 				const x = beginX + (cell.x + halfWidth) * xScale;
 				const y = beginY + (cell.y + halfHeight) * yScale;
 				const r = Math.max(cell.s, 200) * (xScale + yScale) / 2;
@@ -2012,23 +1973,6 @@
 		byId('zoom').value = camera.userZoom;
 	}
 
-	function checkBanCounter() {
-		let banCounter = 0;
-
-		for (let skin in settings.skinnames) {
-			if (typeof settings.skinnames[skin] === 'string' && settings.skinnames[skin] !== '') {
-				// noinspection JSUnusedLocalSymbols
-				bannedSkins.forEach((value1, value2, set) => {
-					if (settings.skinnames[skin] === value2) {
-						banCounter++;
-					}
-				});
-			}
-		}
-
-		return banCounter;
-	}
-
 	function openFullscreen(elem) {
 		if (elem.requestFullscreen) {
 			elem.requestFullscreen();
@@ -2052,8 +1996,6 @@
 	}
 
 	function init() {
-		console.log('init()');
-
 		mainCanvas = document.getElementById('canvas');
 		mainCtx = mainCanvas.getContext('2d');
 		chatBox = byId('chat_textbox');
@@ -2228,23 +2170,11 @@
 					let saved_skin = settings.skin;
 
 					if (saved_skin !== '' && saved_skin !== ' ') {
-						if (saved_skin.startsWith('https://iili.io/') && !saved_skin.endsWith('.gif')) {
-							if (!bannedSkins.has(saved_skin)) {
-								byId('previewSkin').onerror = () => {
-									byId('previewSkin').onerror = null;
-									drawSkinPreview('./assets/img/transparent.png', byId('previewSkin'));
-								};
-								drawSkinPreview(saved_skin, byId('previewSkin'));
-							} else {
-								drawSkinPreview('./assets/img/banned.png', byId('previewSkin'));
-							}
-						} else {
-							byId('previewSkin').onerror = () => {
-								byId('previewSkin').onerror = null;
-								drawSkinPreview('./assets/img/transparent.png', byId('previewSkin'));
-							};
-							drawSkinPreview(`${SKIN_URL}${saved_skin}.png`, byId('previewSkin'));
-						}
+						byId('previewSkin').onerror = () => {
+							byId('previewSkin').onerror = null;
+							drawSkinPreview('./assets/img/transparent.png', byId('previewSkin'));
+						};
+						drawSkinPreview(`${SKIN_URL}${saved_skin}.png`, byId('previewSkin'));
 
 						if (settings.fillSkin) {
 							byId('previewSkin').style.backgroundImage = 'none';
@@ -2264,23 +2194,11 @@
 					let saved_skin = settings.skin;
 
 					if (saved_skin !== '' && saved_skin !== ' ') {
-						if (saved_skin.startsWith('https://iili.io/') && !saved_skin.endsWith('.gif')) {
-							if (!bannedSkins.has(saved_skin)) {
-								byId('previewSkin').onerror = () => {
-									byId('previewSkin').onerror = null;
-									drawSkinPreview('./assets/img/transparent.png', byId('previewSkin'));
-								};
-								drawSkinPreview(saved_skin, byId('previewSkin'));
-							} else {
-								drawSkinPreview('./assets/img/banned.png', byId('previewSkin'));
-							}
-						} else {
-							byId('previewSkin').onerror = () => {
-								byId('previewSkin').onerror = null;
-								drawSkinPreview('./assets/img/transparent.png', byId('previewSkin'));
-							};
-							drawSkinPreview(`${SKIN_URL}${saved_skin}.png`, byId('previewSkin'));
-						}
+						byId('previewSkin').onerror = () => {
+							byId('previewSkin').onerror = null;
+							drawSkinPreview('./assets/img/transparent.png', byId('previewSkin'));
+						};
+						drawSkinPreview(`${SKIN_URL}${saved_skin}.png`, byId('previewSkin'))
 
 						if (settings.fillSkin) {
 							byId('previewSkin').style.backgroundImage = 'none';
@@ -2322,23 +2240,11 @@
 				let saved_skin = settings.skin;
 
 				if (saved_skin !== '' && saved_skin !== ' ') {
-					if (saved_skin.startsWith('https://iili.io/') && !saved_skin.endsWith('.gif')) {
-						if (!bannedSkins.has(saved_skin)) {
-							byId('previewSkin').onerror = () => {
-								byId('previewSkin').onerror = null;
-								drawSkinPreview('./assets/img/transparent.png', byId('previewSkin'));
-							};
-							drawSkinPreview(saved_skin, byId('previewSkin'));
-						} else {
-							drawSkinPreview('./assets/img/banned.png', byId('previewSkin'));
-						}
-					} else {
-						byId('previewSkin').onerror = () => {
-							byId('previewSkin').onerror = null;
-							drawSkinPreview('./assets/img/transparent.png', byId('previewSkin'));
-						};
-						drawSkinPreview(`${SKIN_URL}${saved_skin}.png`, byId('previewSkin'));
-					}
+					byId('previewSkin').onerror = () => {
+						byId('previewSkin').onerror = null;
+						drawSkinPreview('./assets/img/transparent.png', byId('previewSkin'));
+					};
+					drawSkinPreview(`${SKIN_URL}${saved_skin}.png`, byId('previewSkin'));
 				} else {
 					drawSkinPreview('./assets/img/transparent.png', byId('previewSkin'));
 					byId('previewSkin').style.backgroundImage = 'none';
@@ -2475,11 +2381,6 @@
 			byId('zoom_container').style.display = 'none';
 		}
 
-		if (checkBanCounter() > 2) {
-			byClass('upload-btn-wrapper')[0].remove();
-			byId('show-upload-btn').remove();
-		}
-
 		window.addEventListener('beforeunload', storeSettings);
 
 		document.addEventListener('wheel', handleScroll, { passive: false });
@@ -2538,12 +2439,7 @@
 
 		byId('play-btn').addEventListener('click', event => {
 			const skin = settings.skin;
-			const nameColor = settings.nameColor;
-			const cellColor = settings.cellColor;
-			const borderColor = settings.borderColor;
-
-			sendPlay('<' + (skin ? `${skin.trim().replace(/[<>|]/g, '').substring(0, 30)}` : '') + '|' + (nameColor ? `${nameColor.trim().replace(/[<>|]/g, '').substring(0, 7)}` : '') + '|' + (cellColor ? `${cellColor.trim().replace(/[<>|]/g, '').substring(0, 7)}` : '') + '|' + (borderColor ? `${borderColor.trim().replace(/[<>|]/g, '').substring(0, 7)}` : '') + '|' + (fp ? `${fp.trim().replace(/[<>|]/g, '').substring(0, 32)}` : '') + '>' + Cell.parseName(settings.nick));
-
+			sendPlay((skin ? `<${skin}>` : '') + settings.nick);
 			hideESCOverlay();
 			storeSettings();
 		});
@@ -2590,8 +2486,6 @@
 	}
 
 	function start() {
-		console.log('start()');
-
 		let externallyFramed;
 
 		try {
@@ -2625,18 +2519,7 @@
 					if (knownSkins.get(i) !== stamp) knownSkins.delete(i);
 				}
 
-				fetch('skinBanList.txt').then(resp => resp.text()).then(data => {
-					const skins = data.split(',').filter(name => name.length > 0);
-
-					if (skins.length === 0) {
-						init();
-						return;
-					}
-
-					for (const skin of skins) bannedSkins.add(skin);
-
-					init();
-				});
+				init();
 			});
 		} catch (error) {
 			console.error(error);
@@ -2685,23 +2568,11 @@
 			let saved_skin = settings.skin;
 
 			if (saved_skin !== '' && saved_skin !== ' ') {
-				if (saved_skin.startsWith('https://iili.io/') && !saved_skin.endsWith('.gif')) {
-					if (!bannedSkins.has(saved_skin)) {
-						byId('previewSkin').onerror = () => {
-							byId('previewSkin').onerror = null;
-							drawSkinPreview('./assets/img/transparent.png', byId('previewSkin'));
-						};
-						drawSkinPreview(saved_skin, byId('previewSkin'));
-					} else {
-						drawSkinPreview('./assets/img/banned.png', byId('previewSkin'));
-					}
-				} else {
-					byId('previewSkin').onerror = () => {
-						byId('previewSkin').onerror = null;
-						drawSkinPreview('./assets/img/transparent.png', byId('previewSkin'));
-					};
-					drawSkinPreview(`${SKIN_URL}${saved_skin}.png`, byId('previewSkin'));
-				}
+				byId('previewSkin').onerror = () => {
+					byId('previewSkin').onerror = null;
+					drawSkinPreview('./assets/img/transparent.png', byId('previewSkin'));
+				};
+				drawSkinPreview(`${SKIN_URL}${saved_skin}.png`, byId('previewSkin'));
 			} else {
 				drawSkinPreview('./assets/img/transparent.png', byId('previewSkin'));
 			}
@@ -2710,33 +2581,12 @@
 		byId('gallery').hide();
 
 		storeSettings();
-
-		if (checkBanCounter() > 2) {
-			byId('show-upload-btn').remove();
-			byClass('upload-btn-wrapper')[0].remove();
-		}
 	};
 
 	window.openSkinsList = () => {
 		if (byId('gallery-body').innerHTML === '') buildGallery();
 		byId('gallery').show(0.5);
 	};
-
-	window.openUpload = () => {
-		// noinspection HtmlUnknownTarget
-		byId('upload-skin-content').innerHTML = '<iframe src="../upload.html" allowtransparency="true"></iframe>';
-		byId('upload-skin').show(0.5);
-	}
-
-	window.openUnban = () => {
-		// noinspection HtmlUnknownTarget
-		byId('unban-content').innerHTML = '<iframe src="../unban.html" allowtransparency="true"></iframe>';
-		byId('unban').show(0.5);
-	}
-
-	window.closeUpload = () => {
-		byId('upload-skin').hide();
-	}
 
 	window.copyToClipboard = (text, el) => {
 		if ('clipboard' in navigator) {
