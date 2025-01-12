@@ -441,7 +441,6 @@
 				if (settings.fillSkin) ctx.fill();
 				ctx.save(); // for the clip
 				ctx.clip();
-				if (settings.showTransparent) ctx.globalAlpha = 1 - parseFloat(transparentAlpha.value) || 1;
 				ctx.drawImage(skinImage, this.x - this.s, this.y - this.s, this.s * 2, this.s * 2);
 				ctx.restore();
 			} else {
