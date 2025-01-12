@@ -554,7 +554,9 @@
 			}
 			ctx.closePath();
 
-			if (this.destroyed) {
+			if (settings.showTransparent) {
+				ctx.globalAlpha = parseFloat(transparentAlpha.value) || 1;
+			} else if (this.destroyed) {
 				ctx.globalAlpha = Math.max(120 - Date.now() + this.dead, 0) / 120;
 			} else {
 				ctx.globalAlpha = Math.min(Date.now() - this.born, 120) / 120;
@@ -565,6 +567,7 @@
 				if (settings.fillSkin) ctx.fill();
 				ctx.save(); // for the clip
 				ctx.clip();
+				if (settings.showTransparent) ctx.globalAlpha = 0.3;
 				ctx.drawImage(skinImage, this.x - this.s, this.y - this.s, this.s * 2, this.s * 2);
 				ctx.restore();
 			} else {
@@ -1190,6 +1193,7 @@
 	let mainCanvas = null;
 	let mainCtx = null;
 	let soundsVolume;
+	let transparentAlpha;
 	let escOverlayShown = false;
 	let isTyping = false;
 	let chatBox = null;
@@ -1220,6 +1224,8 @@
 		showColor: true,
 		showMass: false,
 		showIdenticon: false,
+		showTransparent: true,
+		transparentAlpha: 0.75,
 		_showChat: true,
 		get showChat() {
 			return this._showChat;
@@ -2369,6 +2375,7 @@
 		chatBox = byId('chat_textbox');
 		chatClear = byId('chat_clear');
 		soundsVolume = byId('soundsVolume');
+		transparentAlpha = byId('transparentAlpha');
 		mainCanvas.focus();
 
 		loadSettings();

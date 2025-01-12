@@ -407,6 +407,18 @@ label#nick-list:after, label#skin-list:after {
 	vertical-align: middle;
 }
 
+#showTransparent:checked + #transparentAlpha {
+	display: inline;
+}
+
+#transparentAlpha {
+	display: none;
+	width: 100px;
+	height: 18px;
+	padding: 0;
+	vertical-align: middle;
+}
+
 #settings label {
 	margin-right: 10px;
 	user-select: none;

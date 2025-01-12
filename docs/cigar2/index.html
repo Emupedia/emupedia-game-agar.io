@@ -13,7 +13,7 @@
 		<link rel="icon" type="image/png" href="assets/img/favicon.png">
 		<link href="https://fonts.googleapis.com/css?family=Ubuntu:700" rel="stylesheet" type="text/css">
 		<link href="assets/css/bootstrap.min.css" rel="stylesheet">
-		<link href="assets/css/index.css?v=25" rel="stylesheet">
+		<link href="assets/css/index.css?v=26" rel="stylesheet">
 		<link href="assets/css/gallery.css" rel="stylesheet">
 	</head>
 
@@ -93,22 +93,26 @@
 					<div id="settings" class="checkbox" style="display: none;">
 						<div style="margin: 6px;">
 							<label><input id="toggleFullscreen" type="checkbox" />Toggle Fullscreen</label>
-							<label><input id="showSkins" type="checkbox" />Skins</label>
-							<label><input id="fillSkin" type="checkbox" />Fill Skin</label>
-							<label><input id="showNames" type="checkbox" />Names</label>
-							<label><input id="darkTheme" type="checkbox" />Dark</label>
-							<label><input id="showColor" type="checkbox" />Color</label>
-							<label><input id="showMass" type="checkbox" />Mass</label>
-							<label><input id="showIdenticon" type="checkbox" />Show Identicons</label>
-							<label><input id="showChat" type="checkbox" />Chat</label>
-							<label><input id="showMinimap" type="checkbox" />Minimap</label>
-							<label><input id="showPosition" type="checkbox" />Position</label>
-							<label><input id="showBorder" type="checkbox" />Border</label>
-							<label><input id="showGrid" type="checkbox" />Grid</label>
-							<label><input id="moreZoom" type="checkbox" />Zoom Out</label>
+							<label><input id="darkTheme" type="checkbox" />Dark Theme</label>
+							<label><input id="showSkins" type="checkbox" />Cell Skins</label>
+							<label><input id="fillSkin" type="checkbox" />Cell Fill Skin</label>
+							<label><input id="showNames" type="checkbox" />Cell Names</label>
+							<label><input id="showColor" type="checkbox" />Cell Colors</label>
+							<label><input id="showMass" type="checkbox" />Cell Mass</label>
+							<label><input id="jellyPhysics" type="checkbox" />Cell Jelly Physics</label>
+							<label><input id="showIdenticon" type="checkbox" />Cell Identicons</label>
+							<label>
+								<input id="showTransparent" type="checkbox" />Cell Transparency
+								<input id="transparentAlpha" type="range" min="0" max="1" step="any">
+							</label>
+							<label><input id="showChat" type="checkbox" />Show Chat</label>
+							<label><input id="showMinimap" type="checkbox" />Show Minimap</label>
+							<label><input id="showPosition" type="checkbox" />Show Position</label>
+							<label><input id="showBorder" type="checkbox" />Show Map Border</label>
+							<label><input id="showGrid" type="checkbox" />Show Map Grid</label>
+							<label><input id="backgroundSectors" type="checkbox" />Show Map Sectors</label>
+							<label><input id="moreZoom" type="checkbox" />Zoom Out Increase</label>
 							<label><input id="showZoom" type="checkbox" />Show Zoom Slider</label>
-							<label><input id="backgroundSectors" type="checkbox" />Background Sectors</label>
-							<label><input id="jellyPhysics" type="checkbox" />Jelly Physics</label>
 							<label>
 								<input id="playSounds" type="checkbox" />Sounds
 								<input id="soundsVolume" type="range" min="0" max="1" step="any">
@@ -121,7 +125,7 @@
 							<label><input id="disableTouchControls" type="checkbox" />Disable Touch Controls</label>
 							<label><input id="useJoystick" type="checkbox" />Touch Joystick</label>
 							<label><input id="flipTouchControls" type="checkbox" />Flip Touch Controls</label>
-							<label><input id="useFilters" type="checkbox" />Words Censorship</label>
+							<!--<label><input id="useFilters" type="checkbox" />Words Censorship</label>-->
 							<label><input id="autoRespawn" type="checkbox" />Toggle AutoRespawn</label>
 						</div>
 					</div>
@@ -180,6 +184,7 @@
 							<b>11/01/2025</b>
 							<ul>
 								<li>Added <b>Teams Server</b></li>
+								<li>Added <b>Cell Transparency</b> checkbox in <b>Settings</b></li>
 							</ul>
 							<hr /><b>13/10/2024</b>
 							<ul>
@@ -196,14 +201,6 @@
 								<li>Added <b>Identicons</b> to better identify friends or enemies, each device has a specific unique <b>Icon</b></li>
 								<li>Added <b>Show Identicons</b> checkbox in <b>Settings</b></li>
 								<li>Removed tricks that allow to duplicate <b>Nicks</b> or <b>Skins</b> easily</li>
-							</ul>
-							<hr /><b>22/07/2024</b>
-							<ul>
-								<li>Removed <b>US Server</b> because very low usage</li>
-							</ul>
-							<hr /><b>06/06/2024</b>
-							<ul>
-								<li>Added <b>US Server</b> for improved latency and ping</li>
 							</ul>
 							<hr /><b>16/05/2024</b>
 							<ul>
@@ -313,6 +310,6 @@
 		<script src="assets/js/fp.umd.min.js"></script>
 		<script src="assets/js/nipplejs.js"></script>
 		<script src="assets/js/quadtree.js"></script>
-		<script src="assets/js/main.min.js?v=125"></script>
+		<script src="assets/js/main.min.js?v=126"></script>
 	</body>
 </html>
