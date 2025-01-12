@@ -555,7 +555,7 @@
 			ctx.closePath();
 
 			if (settings.showTransparent) {
-				ctx.globalAlpha = parseFloat(transparentAlpha.value) || 1;
+				ctx.globalAlpha = 1 - parseFloat(transparentAlpha.value) || 1;
 			} else if (this.destroyed) {
 				ctx.globalAlpha = Math.max(120 - Date.now() + this.dead, 0) / 120;
 			} else {
@@ -567,7 +567,7 @@
 				if (settings.fillSkin) ctx.fill();
 				ctx.save(); // for the clip
 				ctx.clip();
-				if (settings.showTransparent) ctx.globalAlpha = 0.3;
+				if (settings.showTransparent) ctx.globalAlpha = 1 - parseFloat(transparentAlpha.value) || 1;
 				ctx.drawImage(skinImage, this.x - this.s, this.y - this.s, this.s * 2, this.s * 2);
 				ctx.restore();
 			} else {
@@ -1224,7 +1224,7 @@
 		showColor: true,
 		showMass: false,
 		showIdenticon: false,
-		showTransparent: true,
+		showTransparent: false,
 		transparentAlpha: 0.75,
 		_showChat: true,
 		get showChat() {
