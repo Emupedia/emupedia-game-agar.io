@@ -2312,10 +2312,9 @@
 
 		if (settings.nameColor !== '#ffffff') {
 			byId('nameColor').value = settings.nameColor;
-			byId('previewName').style.color = settings.showColor ? settings.nameColor : '#ffffff';
-		} else {
-			byId('previewName').style.color = settings.showColor ? randomColor : '#ffffff';
 		}
+
+		byId('previewName').style.color = settings.showColor ? settings.nameColor : '#ffffff';
 
 		if (settings.cellColor !== '#ffffff') {
 			byId('cellColor').value = settings.cellColor;
