@@ -2819,6 +2819,10 @@
 			byId('zoom_container').style.display = 'none';
 		}
 
+		if (settings.flipTouchControls) {
+			changeFlipTouchControls()
+		}
+
 		if (checkBanCounter() > 2) {
 			byClass('upload-btn-wrapper')[0].remove();
 			byId('show-upload-btn').remove();

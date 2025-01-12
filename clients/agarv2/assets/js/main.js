@@ -2370,6 +2370,10 @@
 			byId('zoom_container').style.display = 'none';
 		}
 
+		if (settings.flipTouchControls) {
+			changeFlipTouchControls()
+		}
+
 		window.addEventListener('beforeunload', storeSettings);
 
 		document.addEventListener('wheel', handleScroll, { passive: false });
