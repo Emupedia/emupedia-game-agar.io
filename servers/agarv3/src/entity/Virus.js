@@ -30,12 +30,23 @@ class Virus extends Cell {
         if (!cell.owner) return;
         let config = this.gameServer.config,
             cellsLeft = (config.virusMaxCells || config.playerMaxCells) - cell.owner.cells.length;
+
         if (cellsLeft <= 0) return;
+
         let splitCount,
             splitMass,
             splitMin = config.virusSplitDiv,
             cellMass = cell._mass,
             splits = [];
+
+        if (config.virusSplitEqual) {
+            splitCount = Math.min(~~(cellMass / splitMin), cellsLeft);
+            splitMass = cellMass / (1 + splitCount);
+            for (var i = 0; i < splitCount; i++)
+                splits.push(splitMass);
+            return this.explodeCell(cell, splits);
+        }
+
         if (cellMass / cellsLeft < splitMin) {
             splitCount = 2;
             splitMass = cellMass / splitCount;
@@ -44,6 +55,7 @@ class Virus extends Cell {
             while (splitCount-- > 0) splits.push(splitMass);
             return this.explode(cell, splits);
         }
+
         let massLeft = cellMass / 2;
         splitMass = cellMass / 2;
         while (cellsLeft-- > 0) {

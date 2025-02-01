@@ -110,6 +110,7 @@ class GameServer {
             virusMaxAmount: 100,
             virusEjectSpeed: 780,
             virusSplitDiv: 36,
+            virusSplitEqual: 0,
             virusRandomColor: 0,
             virusEatMult: 1.1576,
             virusMaxCells: 16,
