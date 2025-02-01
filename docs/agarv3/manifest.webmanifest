@@ -1,0 +1,35 @@
+{
+	"id": "/",
+	"name": "Agar.io v3.0",
+	"short_name": "Agar.io v3.0",
+	"dir": "auto",
+	"lang": "en-US",
+	"description": "Eat cells smaller than you and don't get eaten by the bigger ones, as an MMO",
+	"categories": ["entertainment", "games", "social"],
+	"display": "fullscreen",
+	"orientation": "landscape-primary",
+	"theme_color": "#162dad",
+	"background_color": "#0a0a0a",
+	"start_url": "/",
+	"icons": [{
+		"src": "assets/img/favicon.png",
+		"sizes": "32x32",
+		"type": "image/png",
+		"purpose": "maskable monochrome"
+	} , {
+		"src": "assets/img/favicon.svg",
+		"sizes": "any",
+		"purpose": "any"
+	}],
+	"screenshots": [{
+		"src": "assets/img/screenshot-wide.png",
+		"sizes": "2532x1170",
+		"type": "image/png",
+		"form_factor": "wide"
+	} , {
+		"src": "assets/img/screenshot-narrow.png",
+		"sizes": "1170x2532",
+		"type": "image/png",
+		"form_factor": "narrow"
+	}]
+}
