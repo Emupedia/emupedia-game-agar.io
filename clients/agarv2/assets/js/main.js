@@ -535,7 +535,7 @@
 		0x19: new Uint8Array([0x19]),
 		0xFE: new Uint8Array([0xFE])
 	};
-	const SERVERS = ['agar.ld24.net'];
+	const SERVERS = ['ds.lifecells.io'];
 	const GEO = {'eu': SERVERS[0], 'us': SERVERS[0]};
 
 	const KEY_TO_OPCODE = {

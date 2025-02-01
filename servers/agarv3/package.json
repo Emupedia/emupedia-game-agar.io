@@ -1,0 +1,27 @@
+{
+    "name": "MultiOgar-Edited",
+    "version": "2.0.0",
+    "description": "Open source edited multi-protocol Ogar server",
+    "author": "Agarian (https://github.com/agarian-2)",
+    "homepage": "https://github.com/agarian-2/MultiOgar",
+    "license": "Apache-2.0",
+    "main": "src/index.js",
+    "dependencies": {
+        "curl": "^0.1.4",
+        "eris": "^0.11.2",
+        "figlet": "latest",
+        "path": "^0.12.7",
+        "ws": "1.1.5"
+    },
+    "devDependencies": {},
+    "scripts": {
+        "start": "cd src && node index"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/agarian-2/MultiOgar"
+    },
+    "bugs": {
+        "url": "https://github.com/agarian-2/MultiOgar"
+    }
+}

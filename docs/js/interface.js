@@ -66,11 +66,13 @@ $(function() {
 					} else {
 						$('#overlays').show();
 
-						grecaptcha.ready(function() {
+						/*grecaptcha.ready(function() {
 							grecaptcha.execute('6LdxZMspAAAAAOVZOMGJQ_yJo2hBI9QAbShSr_F3', { action: 'connect' }).then(function(token) {
 								connect('wss://agar.' + location + '/ws1/?token=' + token);
 							});
-						});
+						});*/
+
+						connect('wss://agar.' + location + '/ws1/');
 
 						clearInterval(interval);
 						interval = setInterval(function() {
@@ -98,21 +100,25 @@ $(function() {
 			}).error(function() {
 				$('#overlays').show();
 
-				grecaptcha.ready(function() {
+				/*grecaptcha.ready(function() {
 					grecaptcha.execute('6LdxZMspAAAAAOVZOMGJQ_yJo2hBI9QAbShSr_F3', { action: 'connect' }).then(function (token) {
 						connect('wss://agar.' + location + '/ws1/?token=' + token);
 					});
-				});
+				});*/
+
+				connect('wss://agar.' + location + '/ws1/');
 			});
 		}
 	}).error(function() {
 		$('#overlays').show();
 
-		grecaptcha.ready(function() {
+		/*grecaptcha.ready(function() {
 			grecaptcha.execute('6LdxZMspAAAAAOVZOMGJQ_yJo2hBI9QAbShSr_F3', { action: 'connect' }).then(function(token) {
 				connect('wss://agar.' + location + '/ws1/?token=' + token);
 			});
-		});
+		});*/
+
+		connect('wss://agar.' + location + '/ws1/');
 	});
 
 	$('input').keypress(function(e) {

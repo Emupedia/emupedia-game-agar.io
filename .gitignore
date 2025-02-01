@@ -1,11 +1,10 @@
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 
-# compiled output
-/tmp
-/server/ssl
-
 # dependencies
 /node_modules
+/servers/agarv1/node_modules
+/servers/agarv2/node_modules
+/servers/agarv3/node_modules
 
 # profiling files
 chrome-profiler-events.json

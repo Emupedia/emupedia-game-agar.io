@@ -419,9 +419,9 @@ module.exports = class GameServer {
         return;
       }
 
-      const url_parts = urll.parse(ws.upgradeReq.url, true);
+      /*const url_parts = urll.parse(ws.upgradeReq.url, true);
       const query = url_parts.query;
-			const secret_key = 'INSERT SECRET KEY';
+      const secret_key = 'INSERT SECRET KEY';
       const verify_url = 'https://www.google.com/recaptcha/api/siteverify?secret=' + secret_key + '&response=' + query.token;
 
       request(verify_url, { json: true }, function(error, response, body) {
@@ -436,7 +436,7 @@ module.exports = class GameServer {
           console.log('[' + (new Date().toISOString().replace('T', ' ')) + '] IP ' + ip + ' Token ' + query.token + ' Error ' + error + ' failed recaptcha');
           ws.close();
         }
-      });
+      });*/
 
       if (this.ipcounts[ip]) {
         this.ipcounts[ip]++;
