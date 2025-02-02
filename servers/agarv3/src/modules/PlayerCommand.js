@@ -147,7 +147,7 @@ class PlayerCommand {
 			this.writeLine("/lms: Enable Last Man Standing mode.");
 			this.writeLine("/rec: Toggle supersplitter mode.");
 			this.writeLine("/reset: Clear all, or specified nodes.");
-			this.writeLine("/pause: Pauses/unpauses the game."); // TODO: it softlocks the game without a console
+			// this.writeLine("/pause: Pauses/unpauses the game."); // TODO: it softlocks the game without a console
 			this.writeLine("/reload: Reset all config values to default.");
 			this.writeLine("/restart: Restart the server.");
 			this.writeLine("/exit: Shut down the server.");
@@ -530,7 +530,7 @@ class PlayerCommand {
 		this.playerTracker.setName(name);
 		return;
 	}
-	command_pause() {
+	pause() {
 		if (!this.playerTracker.OP.enabled) return this.writeLine("[ERROR] You must have OP mode to use this command.");
 		this.gameServer.running = !this.gameServer.running;
 		this.writeLine("You " + (!this.gameServer.running ? "paused" : "unpaused") + " the game.");
