@@ -2430,6 +2430,12 @@
 			}
 		});
 
+		document.addEventListener('visibilitychange', () => {
+			if (!document.hidden) {
+				mainCanvas.focus();
+			}
+		});
+
 		byId('play-btn').addEventListener('click', event => {
 			const skin = settings.skin;
 			sendPlay((skin ? `<${skin}>` : '') + settings.nick);
