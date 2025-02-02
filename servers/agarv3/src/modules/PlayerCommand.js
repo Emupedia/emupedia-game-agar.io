@@ -111,121 +111,104 @@ class PlayerCommand {
 	getName() {
 		return (!this.playerTracker.cells.length ? "A dead cell" : !this.playerTracker._name.length ? "An unnamed cell" : this.playerTracker._name).trim();
 	}
-	command_help(split) {
-		let page = parseInt(split[1]);
-
-		if (isNaN(page) || page < 1 || page > 3) return this.writeLine("[INFO] Type /help 1 to display the first page of commands (there are 3 total).");
-
-		if (page === 1) {
-
-			if (this.playerTracker.OP.enabled) {
-				this.writeLine("~~~~~~~~~~~~~~~PLAYER COMMANDS~~~~~~~~~~~~~");
-				this.writeLine("/playerlist: Get a list of players and bots with IDs.");
-				this.writeLine("/ban [playerID or IP]: Ban a player.");
-				this.writeLine("/unban [IP]: Unban an IP.");
-				this.writeLine("/banlist: Show a list of banned IPs.");
-			}
-
-			this.writeLine("~~~~~~~~~~~~~~~~~~COMMANDS~~~~~~~~~~~~~~~~~");
-			this.writeLine("/shortcuts: List command aliases.");
+	command_help() {
+		if (this.playerTracker.OP.enabled) {
+			this.writeLine("~~~~~~~~~~~~~~~~~BAN COMMANDS~~~~~~~~~~~~~~");
+			this.writeLine("/playerlist: Get a list of players and bots with IDs.");
+			this.writeLine("/ban [playerID or IP]: Ban a player.");
+			this.writeLine("/unban [IP]: Unban an IP.");
+			this.writeLine("/banlist: Show a list of banned IPs.");
+			this.writeLine("~~~~~~~~~~~~~~~OP COMMANDS~~~~~~~~~~~~~~~~~");
 			this.writeLine("/operator: Give yourself OP mode.");
+			this.writeLine("/ophelp: Show OP available keys.");
+			this.writeLine("/shortcuts: List command aliases.");
+			this.writeLine("/gamemode [gamemodeID] : Change the game mode. 0 - FFA, 1 - Teams, 2 - Experimental, 3 - Rainbow, 4 - Tournament, 5 - Hunger Games");
 			this.writeLine("/addbot: Add bots to the server.");
+			this.writeLine("/minion: Remove or give you minions.");
+			this.writeLine("/mass: Set your mass to a specified value.");
+			this.writeLine("/spawnmass: Set the mass that you spawn at.");
+			this.writeLine("/speed: Set your cell movement speed.");
 			this.writeLine("/board: Edit text on the leaderboard.");
 			this.writeLine("/border: Change the map size.");
 			this.writeLine("/change: Change a config value.");
 			this.writeLine("/chat: Broadcast a message to all players.");
-			this.writeLine("/color: Change your RGB color.");
 			this.writeLine("/debug: Show all total nodes in the game.");
-			this.writeLine("/explode: Explode yourself into ejected mass.");
 			this.writeLine("/freeze: Freeze your cell.");
-			this.writeLine("/getcolor: Get your cell color in RGB.");
-			this.writeLine("/help 2: Show page 2 of commands.");
-			this.writeLine("~~~~~~~~~~~~~~~~~~PAGE 1~~~~~~~~~~~~~~~~~~~");
-		}
-		if (page === 2) {
-			this.writeLine("~~~~~~~~~~~~~~~~~~COMMANDS~~~~~~~~~~~~~~~~~");
-			this.writeLine("/kick: Kick yourself from the server.");
-			this.writeLine("/kickbot: Kick all, or some bots.");
-			this.writeLine("/kickmi: Kick all, or some minions.");
-			this.writeLine("/kill: Suicide.");
-			this.writeLine("/killall: Kill all players.");
-			this.writeLine("/lms: Enable Last Man Standing mode.");
-			this.writeLine("/mass: Set your mass to a specified value.");
-			this.writeLine("/merge: Merge all your cells.");
-			this.writeLine("/minion: Remove or give you minions.");
-			this.writeLine("/name: Change your name.");
-			//this.writeLine("/pause: Pauses/unpauses the game."); // Temporarily disabled because it softlocks the game without console
-			this.writeLine("/rec: Toggle supersplitter mode.");
-			this.writeLine("/help 3: Show page 3 of commands.");
-			this.writeLine("~~~~~~~~~~~~~~~~~~PAGE 2~~~~~~~~~~~~~~~~~~~");
-		}
-		if (page === 3) {
-			this.writeLine("~~~~~~~~~~~~~~~~~~COMMANDS~~~~~~~~~~~~~~~~~~");
-			this.writeLine("/reload: Reset all config values to default.");
-			this.writeLine("/restart: Restart the server.");
-			this.writeLine("/replace: Replace your cell with an entity.");
-			this.writeLine("/reset: Clear all, or specified nodes.");
-			this.writeLine("/spawnmass: Set the mass that you spawn at.");
-			this.writeLine("/speed: Set your cell movement speed.");
+			this.writeLine("/explode: Explode yourself into ejected mass.");
 			this.writeLine("/split: Split your cell a specified amount.");
-			this.writeLine("/status: Show the server's current status.");
+			this.writeLine("/merge: Merge all your cells.");
 			this.writeLine("/teleport: Teleport to a specified location");
 			this.writeLine("/virus: Spawn a virus under you.");
 			this.writeLine("/foodcolor: Set the color of food spawned by the F key.");
+			this.writeLine("/replace: Replace your cell with an entity.");
+			this.writeLine("/kickbot: Kick all, or some bots.");
+			this.writeLine("/killall: Kill all players.");
+			this.writeLine("/kickmi: Kick all, or some minions.");
+			this.writeLine("/lms: Enable Last Man Standing mode.");
+			this.writeLine("/rec: Toggle supersplitter mode.");
+			this.writeLine("/reset: Clear all, or specified nodes.");
+			this.writeLine("/pause: Pauses/unpauses the game."); // TODO: it softlocks the game without a console
+			this.writeLine("/reload: Reset all config values to default.");
+			this.writeLine("/restart: Restart the server.");
 			this.writeLine("/exit: Shut down the server.");
-			this.writeLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 		}
+
+		this.writeLine("~~~~~~~~~~~~~~~PLAYER~COMMANDS~~~~~~~~~~~~~");
+		this.writeLine("/help: The list of supported commands.");
+		this.writeLine("/shortcuts: List command aliases.");
+		this.writeLine("/name: Change your name.");
+		this.writeLine("/getcolor: Get your cell color in RGB.");
+		this.writeLine("/setcolor: Change your RGB color.");
+		this.writeLine("/kill: Commit Suicide.");
+		this.writeLine("/kick: Kick yourself from the server.");
+		this.writeLine("/status: Show the server's current status.");
+		this.writeLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 	}
 	command_shortcuts() {
 		this.writeLine("~~~~~~~~~~~~~~~~~~SHORTCUTS~~~~~~~~~~~~~~~~~~");
-		this.writeLine("/rp: Shortcut for replace.");
-		this.writeLine("/m: Shortcut for mass.");
-		this.writeLine("/sm: Shortcut for spawnmass.");
-		this.writeLine("/e: Shortcut for explode.");
+
+		if (this.playerTracker.OP.enabled) {
+			this.writeLine("/rp: Shortcut for replace.");
+			this.writeLine("/m: Shortcut for mass.");
+			this.writeLine("/sm: Shortcut for spawnmass.");
+			this.writeLine("/e: Shortcut for explode.");
+			this.writeLine("/ka: Shortcut for killall.");
+			this.writeLine("/s: Shortcut for speed.");
+			this.writeLine("/f: Shortcut for freeze.");
+			this.writeLine("/c: Shortcut for change.");
+			this.writeLine("/rp: Shortcut for replace.");
+			this.writeLine("/ab: Shortcut for addbot.");
+			this.writeLine("/kb: Shortcut for kickbot.");
+			this.writeLine("/op: Alias for operator.");
+		}
+
 		this.writeLine("/k: Shortcut for kill.");
-		this.writeLine("/ka: Shortcut for killall.");
-		this.writeLine("/s: Shortcut for speed.");
-		this.writeLine("/f: Shortcut for freeze.");
-		this.writeLine("/c: Shortcut for change.");
-		this.writeLine("/rp: Shortcut for replace.");
-		this.writeLine("/ab: Shortcut for addbot.");
-		this.writeLine("/kb: Shortcut for kickbot.");
-		this.writeLine("/op: Alias for operator.");
-		this.writeLine("~~~~~~~~~~~~~~~~~~~~PAGE 4~~~~~~~~~~~~~~~~~~~");
+		this.writeLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 	}
 	command_ophelp(split) {
-		let page = parseInt(split[1]);
-		if (isNaN(page) || page < 1 || page > 2) return this.writeLine("[INFO] Type /ophelp 1 to display the first page of OP keys (there are 2 total).");
-		if (page === 1) {
-			this.writeLine("~~~~~~~~~~OP MODE KEYS~~~~~~~~~~");
-			this.writeLine(" E : Minions split.");
-			this.writeLine(" R : Minions eject.");
-			this.writeLine(" T : Minions freeze.");
-			this.writeLine(" P : Minions collect food.");
-			this.writeLine(" Q : Minions follow cell.");
-			this.writeLine(" O : Freeze yourself.");
-			this.writeLine(" M : Force merge.");
-			this.writeLine(" I : Supersplitter mode.");
-			this.writeLine(" K : Suicide.");
-			this.writeLine(" Y : Gain mass.");
-			this.writeLine(" U : Lose mass.");
-			this.writeLine(" L : Clear all entities.");
-			this.writeLine(" H : Explode into ejected mass.");
-			this.writeLine("~~~~~~~~~~~~~PAGE 1~~~~~~~~~~~~~");
-		}
-		if (page === 2) {
-			this.writeLine("~~~~~~~~~~OP MODE KEYS~~~~~~~~~~");
-			this.writeLine(" Z : Change own color.");
-			this.writeLine(" S : Spawn virus at mouse.");
-			this.writeLine(" J : Spawn food at mouse.");
-			this.writeLine(" B : Edit J key food color.");
-			this.writeLine(" C : Edit J key food size.");
-			this.writeLine(" G : Teleport to mouse.");
-			this.writeLine(" V : Ejects mass at the mouse.");
-			this.writeLine(" X : Rainbow mode.");
-			this.writeLine("This is the last page of keys.");
-			this.writeLine("~~~~~~~~~~~~~PAGE 2~~~~~~~~~~~~~");
-		}
+		this.writeLine("~~~~~~~~~~OP MODE KEYS~~~~~~~~~~");
+		this.writeLine(" E : Minions split.");
+		this.writeLine(" R : Minions eject.");
+		this.writeLine(" T : Minions freeze.");
+		this.writeLine(" P : Minions collect food.");
+		this.writeLine(" Q : Minions follow cell.");
+		this.writeLine(" O : Freeze yourself.");
+		this.writeLine(" M : Force merge.");
+		this.writeLine(" I : Supersplitter mode.");
+		this.writeLine(" K : Suicide.");
+		this.writeLine(" Y : Gain mass.");
+		this.writeLine(" U : Lose mass.");
+		this.writeLine(" L : Clear all entities.");
+		this.writeLine(" H : Explode into ejected mass.");
+		this.writeLine(" Z : Change own color.");
+		this.writeLine(" S : Spawn virus at mouse.");
+		this.writeLine(" J : Spawn food at mouse.");
+		this.writeLine(" B : Edit J key food color.");
+		this.writeLine(" C : Edit J key food size.");
+		this.writeLine(" G : Teleport to mouse.");
+		this.writeLine(" V : Ejects mass at the mouse.");
+		this.writeLine(" X : Rainbow mode.");
+		this.writeLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 	}
 	command_addbot(split) {
 		if (!this.playerTracker.OP.enabled) return this.writeLine("[ERROR] You must have OP mode to use this command.");
@@ -284,6 +267,7 @@ class PlayerCommand {
 		}
 	}
 	command_banlist() {
+		if (!this.playerTracker.OP.enabled) return this.writeLine("[ERROR] You must have OP mode to use this command.");
 		if (!this.gameServer.ipBanList.length) return this.writeLine("There are no banned IPs to list.");
 
 		this.writeLine("Showing " + this.gameServer.ipBanList.length + " banned IPs: ");
@@ -326,6 +310,7 @@ class PlayerCommand {
 	}
 	command_unban(split) {
 		if (!this.playerTracker.OP.enabled) return this.writeLine("[ERROR] You must have OP mode to use this command.");
+
 		if (split.length < 2 || !split[1] || split[1].trim().length < 1) return this.writeLine("[ERROR] Please specify a valid IP.");
 		let ip = split[1].trim(), index = this.gameServer.ipBanList.indexOf(ip);
 		if (index < 0) return this.writeLine("[ERROR] The specified IP " + ip + " is not in the ban list.");
@@ -335,8 +320,7 @@ class PlayerCommand {
 	}
 	command_board(split) {
 		if (!this.playerTracker.OP.enabled) return this.writeLine("[ERROR] You must have OP mode to use this command.");
-		let newLB = [],
-			input = split[1];
+		let newLB = [], input = split[1];
 		if (split.length > this.gameServer.config.serverMaxLB + 1) return this.writeLine("[ERROR] The limit for lines of text on the leaderboard is " + this.gameServer.config.serverMaxLB + ".");
 		for (let i = 1; i < split.length; i++) {
 			if (split[i]) newLB[i - 1] = split[i];
@@ -359,8 +343,7 @@ class PlayerCommand {
 	}
 	command_border(split) {
 		if (!this.playerTracker.OP.enabled) return this.writeLine("[ERROR] You must have OP mode to use this command.");
-		let width = parseInt(split[1]),
-			height = parseInt(split[2]);
+		let width = parseInt(split[1]), height = parseInt(split[2]);
 		if (isNaN(width) || isNaN(height)) return this.writeLine("[ERROR] Please specify a valid border width/height.");
 		for (;this.gameServer.nodesEject.length;) this.gameServer.removeNode(this.gameServer.nodesEject[0]);
 		for (;this.gameServer.nodesFood.length;) this.gameServer.removeNode(this.gameServer.nodesFood[0]);
@@ -374,8 +357,7 @@ class PlayerCommand {
 	command_change(split) {
 		if (!this.playerTracker.OP.enabled) return this.writeLine("[ERROR] You must have OP mode to use this command.");
 		if (split.length < 3) return this.writeLine("[ERROR] Please specify a valid value for this config.");
-		let key = split[1],
-			value = split[2];
+		let key = split[1], value = split[2];
 		if (value.indexOf(".") !== -1) value = parseFloat(value);
 		else value = parseInt(value);
 		if (value == null || isNaN(value)) return this.writeLine("[ERROR] Invalid value: " + value + ".");
@@ -389,22 +371,6 @@ class PlayerCommand {
 		if (!this.playerTracker.OP.enabled) return this.writeLine("[ERROR] You must have OP mode to use this command.");
 		this.gameServer.broadcastMSG(String(split.slice(1, split.length).join(" ")));
 		this.writeLine("Succesfully sent your message to all players.");
-	}
-	command_color(split) {
-		if (!this.playerTracker.OP.enabled) return this.writeLine("[ERROR] You must have OP mode to use this command.");
-		let color = {
-			r: 0,
-			g: 0,
-			b: 0
-		};
-		color.r = Math.max(Math.min(parseInt(split[1]), 255), 0);
-		color.g = Math.max(Math.min(parseInt(split[2]), 255), 0);
-		color.b = Math.max(Math.min(parseInt(split[3]), 255), 0);
-		if (!this.playerTracker.cells.length) return this.writeLine("[ERROR] You are either dead or not playing.");
-		if (isNaN(color.r) || isNaN(color.g) || isNaN(color.b)) return this.writeLine("[ERROR] Please specify a valid RGB color.");
-		this.playerTracker.color = color;
-		for (let i = 0; i < this.playerTracker.cells.length; i++) this.playerTracker.cells[i].color = color;
-		this.writeLine("Changed your color to (" + color.r + ", " + color.g + ", " + color.b + ").");
 	}
 	command_debug() {
 		if (!this.playerTracker.OP.enabled) return this.writeLine("[ERROR] You must have OP mode to use this command.");
@@ -423,16 +389,11 @@ class PlayerCommand {
 		for (let i = 0; i < this.playerTracker.cells.length; i++) {
 			let cell = this.playerTracker.cells[i];
 			while (cell._size > 31.623) {
-				let angle = 6.28 * Math.random(),
-					loss = this.gameServer.config.ejectMinSize;
+				let angle = 6.28 * Math.random(), loss = this.gameServer.config.ejectMinSize;
 				if (this.gameServer.config.ejectMaxSize > loss) loss = Math.random() * (this.gameServer.config.ejectMaxSize - loss) + loss;
 				let size = cell.radius - (loss + 5) * (loss + 5);
 				cell.setSize(Math.sqrt(size));
-				let pos = {
-						x: cell.position.x + angle,
-						y: cell.position.y + angle
-					},
-					eject = new Entity.EjectedMass(this.gameServer, null, pos, loss);
+				let pos = { x: cell.position.x + angle, y: cell.position.y + angle }, eject = new Entity.EjectedMass(this.gameServer, null, pos, loss);
 				if (this.gameServer.config.ejectRandomColor === 1) eject.color = this.gameServer.randomColor();
 				else eject.color = this.playerTracker.color;
 				eject.setBoost(this.gameServer.config.ejectSpeed * Math.random(), angle);
@@ -448,12 +409,24 @@ class PlayerCommand {
 		this.playerTracker.frozen = !this.playerTracker.frozen;
 		this.writeLine("You are " + (this.playerTracker.frozen ? "now" : "no longer") + " frozen.");
 	}
+	command_setcolor(split) {
+		//if (!this.playerTracker.OP.enabled) return this.writeLine("[ERROR] You must have OP mode to use this command.");
+		let color = { r: 0, g: 0, b: 0 };
+		color.r = Math.max(Math.min(parseInt(split[1]), 255), 0);
+		color.g = Math.max(Math.min(parseInt(split[2]), 255), 0);
+		color.b = Math.max(Math.min(parseInt(split[3]), 255), 0);
+		if (!this.playerTracker.cells.length) return this.writeLine("[ERROR] You are either dead or not playing.");
+		if (isNaN(color.r) || isNaN(color.g) || isNaN(color.b)) return this.writeLine("[ERROR] Please specify a valid RGB color.");
+		this.playerTracker.color = color;
+		for (let i = 0; i < this.playerTracker.cells.length; i++) this.playerTracker.cells[i].color = color;
+		this.writeLine("Changed your color to (" + color.r + ", " + color.g + ", " + color.b + ").");
+	}
 	command_getcolor() {
 		if (!this.playerTracker.cells.length) return this.writeLine("[ERROR] You are either dead or not playing.");
 		this.writeLine("Your RGB color is (" + this.playerTracker.color.r + ", " + this.playerTracker.color.g + ", " + this.playerTracker.color.b + ").");
 	}
 	command_kick() {
-		if (!this.playerTracker.OP.enabled) return this.writeLine("[ERROR] You must have OP mode to use this command.");
+		// if (!this.playerTracker.OP.enabled) return this.writeLine("[ERROR] You must have OP mode to use this command.");
 		this.playerTracker.socket.close(1000, "You kicked yourself from the server, idiot.");
 		this.writeLine("You kicked yourself...");
 	}
@@ -489,7 +462,7 @@ class PlayerCommand {
 		else this.writeLine("You kicked " + removed + " minions.");
 	}
 	command_kill() {
-		//if (!this.playerTracker.OP.enabled) return this.writeLine("[ERROR] You must have OP mode to use this command.");
+		// if (!this.playerTracker.OP.enabled) return this.writeLine("[ERROR] You must have OP mode to use this command.");
 		if (!this.playerTracker.cells.length) return this.writeLine("[ERROR] You're not spawned in the game.");
 
 		for (;this.playerTracker.cells.length;) {
@@ -536,18 +509,10 @@ class PlayerCommand {
 	}
 	command_minion(split) {
 		if (!this.playerTracker.OP.enabled) return this.writeLine("[ERROR] You must have OP mode to use this command.");
-		let add = split[1],
-			name = split.slice(2, split.length).join(" ");
+		let add = split[1], name = split.slice(2, split.length).join(" ");
 		if (isNaN(add) && add !== "remove") return this.writeLine("[ERROR] Invalid number of minions to add.");
 		if (this.playerTracker.minion.control && (add === "remove" || !add)) {
-			this.playerTracker.minion = {
-				control: false,
-				split: false,
-				eject: false,
-				frozen: false,
-				collect: false,
-				follow: false
-			};
+			this.playerTracker.minion = { control: false, split: false, eject: false, frozen: false, collect: false, follow: false };
 			this.playerTracker.minions = [];
 			this.writeLine("Succesfully removed your minions.");
 		} else {
@@ -557,7 +522,7 @@ class PlayerCommand {
 		}
 	}
 	command_name(split) {
-		if (!this.playerTracker.OP.enabled) return this.writeLine("[ERROR] You must have OP mode to use this command.");
+		// if (!this.playerTracker.OP.enabled) return this.writeLine("[ERROR] You must have OP mode to use this command.");
 		let name = split.slice(1, split.length).join(" ");
 		if (typeof name === "undefined") return this.writeLine("[ERROR] Please type a valid name.");
 		if (!this.playerTracker.cells.length) return this.writeLine("[ERROR] You are either dead or not playing.");
@@ -565,11 +530,11 @@ class PlayerCommand {
 		this.playerTracker.setName(name);
 		return;
 	}
-	/*pause() {
-	 if (!this.playerTracker.OP.enabled) return this.writeLine("[ERROR] You must have OP mode to use this command.");
-	 this.gameServer.running = !this.gameServer.running;
-	 this.writeLine("You " + (!this.gameServer.running ? "paused" : "unpaused") + " the game.");
-	 }*/
+	command_pause() {
+		if (!this.playerTracker.OP.enabled) return this.writeLine("[ERROR] You must have OP mode to use this command.");
+		this.gameServer.running = !this.gameServer.running;
+		this.writeLine("You " + (!this.gameServer.running ? "paused" : "unpaused") + " the game.");
+	}
 	command_rec() {
 		if (!this.playerTracker.OP.enabled) return this.writeLine("[ERROR] You must have OP mode to use this command.");
 		this.playerTracker.recMode = !this.playerTracker.recMode;
@@ -684,31 +649,28 @@ class PlayerCommand {
 		this.writeLine("You forced yourself to split " + amount + " times.");
 	}
 	command_status() {
-		let humans = 0,
-			bots = 0,
-			mem = process.memoryUsage();
+		let humans = 0, bots = 0, mem = process.memoryUsage();
 		for (let i = 0; i < this.gameServer.clients.length; i++) {
 			if ("_socket" in this.gameServer.clients[i]) humans++;
 			else bots++;
 		}
 		let scores = [];
 		for (let i = 0; i < this.gameServer.clients.length; i++) {
-			let totalMass = 0,
-				client = this.gameServer.clients[i].playerTracker;
+			let totalMass = 0, client = this.gameServer.clients[i].playerTracker;
 			for (let j = 0; j < client.cells.length; j++) totalMass += this.gameServer.sizeToMass(client.cells[j]._size);
 			scores.push(totalMass);
 		}
 		if (!this.gameServer.clients.length) scores = [0];
 		this.writeLine("~~~~~~~~~~~~~~~~~STATUS~~~~~~~~~~~~~~~~~"),
-			this.writeLine("Connected Players: " + this.gameServer.clients.length + "/" + this.gameServer.config.serverMaxConnect + "."),
-			this.writeLine("Total Players: " + humans + "."),
-			this.writeLine("Total Bots: " + bots + "."),
-			this.writeLine("Average Score: " + (scores.reduce((x, y) => x + y) / scores.length).toFixed(2) + "."),
-			this.writeLine("Server Uptime: " + Math.floor(process.uptime() / 60) + " minutes."),
-			this.writeLine("Current Memory Usage: " + Math.round(mem.heapUsed / 1048576 * 10) / 10 + "/" + Math.round(mem.heapTotal / 1048576 * 10) / 10 + " MB."),
-			this.writeLine("Current Game Mode: " + this.gameServer.gameMode.name + "."),
-			this.writeLine("Current Update Time: " + this.gameServer.updateTimeAvg.toFixed(3) + " ms (" + ini.getLagMessage(this.gameServer.updateTimeAvg) + ")."),
-			this.writeLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+		this.writeLine("Connected Players: " + this.gameServer.clients.length + "/" + this.gameServer.config.serverMaxConnect + ".");
+		this.writeLine("Total Players: " + humans + ".");
+		this.writeLine("Total Bots: " + bots + ".");
+		this.writeLine("Average Score: " + (scores.reduce((x, y) => x + y) / scores.length).toFixed(2) + ".");
+		this.writeLine("Server Uptime: " + Math.floor(process.uptime() / 60) + " minutes.");
+		this.writeLine("Current Memory Usage: " + Math.round(mem.heapUsed / 1048576 * 10) / 10 + "/" + Math.round(mem.heapTotal / 1048576 * 10) / 10 + " MB.");
+		this.writeLine("Current Game Mode: " + this.gameServer.gameMode.name + ".");
+		this.writeLine("Current Update Time: " + this.gameServer.updateTimeAvg.toFixed(3) + " ms (" + ini.getLagMessage(this.gameServer.updateTimeAvg) + ").");
+		this.writeLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 	}
 	command_teleport(split) {
 		if (!this.playerTracker.OP.enabled) return this.writeLine("[ERROR] You must have OP mode to use this command.");
@@ -735,11 +697,14 @@ class PlayerCommand {
 	}
 	command_operator(split) {
 		let password = parseInt(split[1]);
+
 		if (isNaN(password)) password = split[1];
-		if (password != this.gameServer.config.serverChatPassword) {
+
+		if (password !== this.gameServer.config.serverChatPassword) {
 			Log.warn(this.getName() + " tried to use OP mode, but typed the incorrect password.");
 			return this.writeLine("That password is incorrect.");
 		}
+
 		this.playerTracker.OP.enabled = !this.playerTracker.OP.enabled;
 		this.writeLine("You " + (this.playerTracker.OP.enabled ? "now" : "no longer") + " have OP mode.");
 		this.playerTracker.OP.enabled ? Log.info(this.getName() + " gave themself OP mode.") : Log.info(this.getName() + " removed OP mode from themself.");
@@ -747,8 +712,7 @@ class PlayerCommand {
 	command_gamemode(split) {
 		if (!this.playerTracker.OP.enabled) return this.writeLine("[ERROR] You must have OP mode to use this command.");
 		try {
-			let id = parseInt(split[1]),
-				gameMode = GameMode.get(id);
+			let id = parseInt(split[1]), gameMode = GameMode.get(id);
 			this.gameServer.gameMode.onChange(this.gameServer);
 			this.gameServer.gameMode = gameMode;
 			this.gameServer.gameMode.onServerInit(this.gameServer);
