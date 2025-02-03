@@ -10,7 +10,7 @@
 	"orientation": "landscape-primary",
 	"theme_color": "#162dad",
 	"background_color": "#0a0a0a",
-	"start_url": "/",
+	"start_url": "/emupedia-game-agar.io/agarv3/",
 	"icons": [{
 		"src": "assets/img/favicon.png",
 		"sizes": "32x32",
