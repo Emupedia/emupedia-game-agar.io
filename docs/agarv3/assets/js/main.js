@@ -936,10 +936,18 @@
 	});
 
 	const chat = Object.create({
+		viewportHeight: window.innerHeight,
+		scrollbarWidth: 8,
+		lineHeightSpacing: 8,
+		lineTopSpacing: 25,
+		leftTextSpacing: 4,
+		isDraggingScroll:false,
+		scrollOffset: 0,
+		scrollDragOffset: 0,
 		messages: [],
 		waitUntil: 0,
 		canvas: document.createElement('canvas'),
-		visible: false,
+		visible: false
 	});
 
 	const stats = Object.create({
@@ -977,7 +985,6 @@
 	let syncUpdStamp = Date.now();
 	let syncAppStamp = Date.now();
 
-	let ident = '';
 	let mainCanvas = null;
 	let mainCtx = null;
 	let soundsVolume;
@@ -1172,6 +1179,68 @@
 		}
 	}
 
+	function computeLineHeight(ctx, font = '18px Ubuntu') {
+		ctx.font = font;
+
+		const metrics = ctx.measureText("M");
+
+		if (metrics.actualBoundingBoxAscent !== undefined && metrics.actualBoundingBoxDescent !== undefined) {
+			return metrics.actualBoundingBoxAscent + metrics.actualBoundingBoxDescent;
+		}
+
+		const fontSizeMatch = font.match(/(\d+)px/);
+
+		return fontSizeMatch ? parseInt(fontSizeMatch[1]) : 18;
+	}
+
+	function resetChatScroll() {
+		chat.scrollOffset = 0;
+		drawChat();
+	}
+
+	function updateChatScrollFromMouse(mouseY) {
+		const canvas = chat.canvas;
+		const ctx = canvas.getContext('2d');
+		const font = '18px Ubuntu';
+		ctx.font = font;
+		const baseLineHeight = computeLineHeight(ctx, font);
+		const lineHeight = baseLineHeight + chat.lineHeightSpacing;
+		const effectiveViewportHeight = chat.viewportHeight - (chat.lineTopSpacing * lineHeight);
+		const visibleCount = Math.floor(effectiveViewportHeight / lineHeight);
+		const trackHeight = visibleCount * lineHeight;
+		const trackY = effectiveViewportHeight - trackHeight;
+		const thumbHeight = trackHeight * visibleCount / chat.messages.length;
+
+		let newThumbY = mouseY - chat.scrollDragOffset;
+		newThumbY = Math.max(trackY, Math.min(newThumbY, trackY + trackHeight - thumbHeight));
+		const fraction = (trackY + trackHeight - thumbHeight - newThumbY) / (trackHeight - thumbHeight);
+		chat.scrollOffset = Math.round(fraction * (chat.messages.length - visibleCount));
+		chat.scrollOffset = Math.max(0, Math.min(chat.scrollOffset, chat.messages.length - visibleCount));
+	}
+
+	function getChatScrollThumbInfo() {
+		const ctx = chat.canvas.getContext('2d');
+		const font = '18px Ubuntu';
+		ctx.font = font;
+		const baseLineHeight = computeLineHeight(ctx, font);
+		const lineHeight = baseLineHeight + chat.lineHeightSpacing;
+		const effectiveViewportHeight = chat.viewportHeight - (chat.lineTopSpacing * lineHeight);
+		const visibleCount = Math.floor(effectiveViewportHeight / lineHeight);
+
+		const trackHeight = visibleCount * lineHeight;
+		const trackY = effectiveViewportHeight - trackHeight;
+		const thumbHeight = trackHeight * visibleCount / chat.messages.length;
+
+		return {
+			trackY: trackY,
+			trackHeight: trackHeight,
+			thumbHeight: thumbHeight,
+			visibleCount: visibleCount,
+			lineHeight: lineHeight,
+			effectiveViewportHeight: effectiveViewportHeight
+		};
+	}
+
 	function drawChat() {
 		if (chat.messages.length === 0 && settings.showChat)
 			return chat.visible = false;
@@ -1180,49 +1249,80 @@
 
 		const canvas = chat.canvas;
 		const ctx = canvas.getContext('2d');
-		const latestMessages = chat.messages.slice(-30);
+		const font = '18px Ubuntu';
+		const baseLineHeight = computeLineHeight(ctx, font);
+		const lineHeight = baseLineHeight + chat.lineHeightSpacing;
+		const textLeftMargin = chat.scrollbarWidth + chat.leftTextSpacing;
+		const effectiveViewportHeight = chat.viewportHeight - (18 * lineHeight);
+		const visibleCount = Math.floor(effectiveViewportHeight / lineHeight);
+
+		if (chat.scrollOffset > chat.messages.length - visibleCount) {
+			chat.scrollOffset = Math.max(0, chat.messages.length - visibleCount);
+		}
+
+		const startIndex = Math.max(0, chat.messages.length - visibleCount - chat.scrollOffset);
+		const endIndex = chat.messages.length - chat.scrollOffset;
+		const visibleMessages = chat.messages.slice(startIndex, endIndex);
+
 		const lines = [];
 
-		for (let i = 0; i < latestMessages.length; i++) {
+		for (let i = 0; i < visibleMessages.length; i++) {
 			lines.push([{
-				text: latestMessages[i].name,
-				color: latestMessages[i].color
+				text: visibleMessages[i].name,
+				color: visibleMessages[i].color
 			} , {
-				text: ` ${latestMessages[i].message}`,
+				text: ` ${visibleMessages[i].message}`,
 				color: Color.fromHex(settings.darkTheme ? '#ffffff' : '#000000')
 			}]);
 		}
 
 		window.lines = lines;
 
-		let width = 0;
-		let height = 20 * lines.length + 2;
+		let textWidth = textLeftMargin;
 
 		for (let i = 0; i < lines.length; i++) {
-			let thisLineWidth = 10;
-			let complexes = lines[i];
-
-			for (let j = 0; j < complexes.length; j++) {
-				ctx.font = '18px Ubuntu';
-				complexes[j].width = ctx.measureText(complexes[j].text).width;
-				thisLineWidth += complexes[j].width;
+			let lineWidth = textLeftMargin;
+			let parts = lines[i];
+			for (let j = 0; j < parts.length; j++) {
+				// Set the font before measuring.
+				ctx.font = font;
+				parts[j].width = ctx.measureText(parts[j].text).width;
+				lineWidth += parts[j].width;
 			}
-
-			width = Math.max(thisLineWidth, width);
+			textWidth = Math.max(textWidth, lineWidth);
 		}
 
-		canvas.width = width;
-		canvas.height = height;
+		canvas.width = textWidth;
+		canvas.height = effectiveViewportHeight;
+
+		ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+		if (chat.messages.length > visibleCount) {
+			const trackHeight = visibleCount * lineHeight;
+			const trackY = effectiveViewportHeight - trackHeight;
+			const thumbHeight = trackHeight * visibleCount / chat.messages.length;
+			const fraction = chat.scrollOffset / (chat.messages.length - visibleCount);
+			const thumbY = trackY + trackHeight - thumbHeight - fraction * (trackHeight - thumbHeight);
+
+			ctx.fillStyle = '#ccc';
+			ctx.fillRect(0, trackY, chat.scrollbarWidth, trackHeight);
+			ctx.fillStyle = '#888';
+			ctx.fillRect(0, thumbY, chat.scrollbarWidth, thumbHeight);
+		}
+
+		ctx.textBaseline = 'bottom';
 
 		for (let i = 0; i < lines.length; i++) {
-			let width = 0;
-			let complexes = lines[i];
+			let x = textLeftMargin;
 
-			for (let j = 0; j < complexes.length; j++) {
-				ctx.font = '18px Ubuntu';
-				ctx.fillStyle = settings.showColor ? complexes[j].color.toHex() : '#ffffff';
-				ctx.fillText(complexes[j].text, width, 20 * (1 + i));
-				width += complexes[j].width;
+			const y = effectiveViewportHeight - (i * lineHeight);
+			const parts = lines[lines.length - 1 - i];
+
+			for (let j = 0; j < parts.length; j++) {
+				ctx.font = font;
+				ctx.fillStyle = settings.showColor ? parts[j].color.toHex() : '#ffffff';
+				ctx.fillText(parts[j].text, x, y);
+				x += parts[j].width;
 			}
 		}
 	}
@@ -1870,6 +1970,27 @@
 
 		if (Object.hasOwnProperty.call(pressed, key)) pressed[key] = true;
 
+		if (event.key === 'ArrowUp' || event.key === 'ArrowDown') {
+			const ctx = chat.canvas.getContext('2d');
+			const font = '18px Ubuntu';
+			const baseLineHeight = computeLineHeight(ctx, font);
+			const lineHeight = baseLineHeight + chat.lineHeightSpacing;
+			const effectiveViewportHeight = chat.viewportHeight - (chat.lineTopSpacing * lineHeight);
+			const visibleCount = Math.floor(effectiveViewportHeight / lineHeight);
+
+			if (event.key === 'ArrowUp') {
+				if (chat.scrollOffset < chat.messages.length - visibleCount) {
+					chat.scrollOffset++;
+					drawChat();
+				}
+			} else if (event.key === 'ArrowDown') {
+				if (chat.scrollOffset > 0) {
+					chat.scrollOffset--;
+					drawChat();
+				}
+			}
+		}
+
 		if (key === 'enter') {
 			if (escOverlayShown || !settings.showChat) return;
 
@@ -1877,6 +1998,7 @@
 				chatBox.blur();
 				if (chatBox.value.length > 0) sendChat(chatBox.value);
 				chatBox.value = '';
+				resetChatScroll();
 			} else {
 				chatBox.focus();
 			}
@@ -2383,6 +2505,7 @@
 				case 0:
 					if (settings.leftClick) {
 						if (touched) return;
+						if (chat.isDraggingScroll) return;
 						if (byId('overlays').contains(event.target) || byId('chat_textbox').contains(event.target) || byId('chat_clear').contains(event.target)) return;
 
 						clearInterval(feedMacroIntervalID);
@@ -2405,6 +2528,21 @@
 		});
 
 		document.addEventListener('mouseup', event => {
+			if (chat.isDraggingScroll) {
+				chat.isDraggingScroll = false;
+
+				const rect = mainCanvas.getBoundingClientRect();
+				const mouseX = event.clientX - rect.left;
+				const scaledMouseX = mouseX / camera.viewportScale;
+				const chatX = 10 / camera.viewportScale;
+
+				if (scaledMouseX - chatX <= chat.scrollbarWidth) {
+					mainCanvas.style.cursor = 'grab';
+				} else {
+					mainCanvas.style.cursor = 'default';
+				}
+			}
+
 			switch (event.button) {
 				case 0:
 					if (settings.leftClick) clearInterval(feedMacroIntervalID);
@@ -2413,6 +2551,19 @@
 					if (settings.middleClick) clearInterval(splitMacroIntervalID);
 					break;
 			}
+		});
+
+		document.addEventListener('mousemove', event => {
+			if (!chat.isDraggingScroll) return;
+
+			const rect = mainCanvas.getBoundingClientRect();
+			const mouseY = event.clientY - rect.top;
+			const scaledMouseY = mouseY / camera.viewportScale;
+			const chatY = (mainCanvas.height - 55) / camera.viewportScale - chat.canvas.height;
+			const chatLocalY = scaledMouseY - chatY;
+
+			updateChatScrollFromMouse(chatLocalY);
+			drawChat();
 		});
 
 		document.addEventListener('contextmenu', event => {
@@ -2460,10 +2611,84 @@
 			drawChat();
 		};
 
-		mainCanvas.onmousemove = event => {
+		mainCanvas.addEventListener('mousemove', event => {
 			mouseX = event.clientX;
 			mouseY = event.clientY;
-		};
+
+			if (chat.isDraggingScroll) return;
+
+			const rect = mainCanvas.getBoundingClientRect();
+			const chatMouseX = event.clientX - rect.left;
+			const chatMouseY = event.clientY - rect.top;
+			const scaledMouseX = chatMouseX / camera.viewportScale;
+			const scaledMouseY = chatMouseY / camera.viewportScale;
+			const chatX = 10 / camera.viewportScale;
+			const chatY = (mainCanvas.height - 55) / camera.viewportScale - chat.canvas.height;
+			const chatWidth = chat.canvas.width;
+			const chatHeight = chat.canvas.height;
+
+			if (scaledMouseX >= chatX && scaledMouseX <= chatX + chatWidth && scaledMouseY >= chatY && scaledMouseY <= chatY + chatHeight) {
+				const ctx = chat.canvas.getContext('2d');
+				const font = '18px Ubuntu';
+				ctx.font = font;
+				const baseLineHeight = computeLineHeight(ctx, font);
+				const lineHeight = baseLineHeight + chat.lineHeightSpacing;
+				const effectiveViewportHeight = chat.viewportHeight - (chat.lineTopSpacing * lineHeight);
+				const visibleCount = Math.floor(effectiveViewportHeight / lineHeight);
+
+				if (chat.messages.length > visibleCount) {
+					const trackHeight = visibleCount * lineHeight;
+					const trackY = effectiveViewportHeight - trackHeight;
+					const chatLocalY = scaledMouseY - chatY;
+					const chatLocalX = scaledMouseX - chatX;
+
+					if (chatLocalX <= chat.scrollbarWidth && chatLocalY >= trackY && chatLocalY <= trackY + trackHeight) {
+						mainCanvas.style.cursor = 'grab';
+					} else {
+						mainCanvas.style.cursor = 'default';
+					}
+				} else {
+					mainCanvas.style.cursor = 'default';
+				}
+			} else {
+				mainCanvas.style.cursor = 'default';
+			}
+		});
+
+		mainCanvas.addEventListener('mousedown', event => {
+			const rect = mainCanvas.getBoundingClientRect();
+			const mouseX = event.clientX - rect.left;
+			const mouseY = event.clientY - rect.top;
+			const scaledMouseX = mouseX / camera.viewportScale;
+			const scaledMouseY = mouseY / camera.viewportScale;
+
+			const chatX = 10 / camera.viewportScale;
+			const chatY = (mainCanvas.height - 55) / camera.viewportScale - chat.canvas.height;
+			const chatWidth = chat.canvas.width;
+			const chatHeight = chat.canvas.height;
+
+			if (scaledMouseX >= chatX && scaledMouseX <= chatX + chatWidth && scaledMouseY >= chatY && scaledMouseY <= chatY + chatHeight) {
+				const chatLocalX = scaledMouseX - chatX;
+				const chatLocalY = scaledMouseY - chatY;
+
+				if (chatLocalX <= chat.scrollbarWidth) {
+					const thumbInfo = getChatScrollThumbInfo();
+					const currentThumbTop = thumbInfo.trackY + thumbInfo.trackHeight - thumbInfo.thumbHeight - ((chat.scrollOffset / (chat.messages.length - thumbInfo.visibleCount)) * (thumbInfo.trackHeight - thumbInfo.thumbHeight));
+
+					if (chatLocalY >= currentThumbTop && chatLocalY <= currentThumbTop + thumbInfo.thumbHeight) {
+						chat.scrollDragOffset = chatLocalY - currentThumbTop;
+					} else {
+						chat.scrollDragOffset = thumbInfo.thumbHeight / 2;
+					}
+
+					chat.isDraggingScroll = true;
+					mainCanvas.style.cursor = 'grabbing';
+					updateChatScrollFromMouse(chatLocalY);
+					drawChat();
+					event.preventDefault();
+				}
+			}
+		});
 
 		setInterval(() => sendMouseMove((mouseX - mainCanvas.width / 2) / camera.scale + camera.x, (mouseY - mainCanvas.height / 2) / camera.scale + camera.y), 40);
 
