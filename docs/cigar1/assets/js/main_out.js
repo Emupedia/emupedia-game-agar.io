@@ -1,5 +1,5 @@
 (function(wHandle, wjQuery) {
-    var CONNECTION_URL = "wss://ds.lifecells.io", // Default Connection
+    var CONNECTION_URL = "wss://agar2.emupedia.net/ws3/", // Default Connection
         SKIN_URL = "./skins/"; // Skin Directory
 
     wHandle.setserver = function(arg) {
