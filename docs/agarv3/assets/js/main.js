@@ -939,7 +939,7 @@
 		viewportHeight: window.innerHeight,
 		scrollbarWidth: 8,
 		lineHeightSpacing: 8,
-		lineTopSpacing: 25,
+		lineTopSpacing: 20,
 		leftTextSpacing: 4,
 		isDraggingScroll:false,
 		scrollOffset: 0,
@@ -1182,7 +1182,7 @@
 	function computeLineHeight(ctx, font = '18px Ubuntu') {
 		ctx.font = font;
 
-		const metrics = ctx.measureText("M");
+		const metrics = ctx.measureText('M');
 
 		if (metrics.actualBoundingBoxAscent !== undefined && metrics.actualBoundingBoxDescent !== undefined) {
 			return metrics.actualBoundingBoxAscent + metrics.actualBoundingBoxDescent;
@@ -1202,7 +1202,6 @@
 		const canvas = chat.canvas;
 		const ctx = canvas.getContext('2d');
 		const font = '18px Ubuntu';
-		ctx.font = font;
 		const baseLineHeight = computeLineHeight(ctx, font);
 		const lineHeight = baseLineHeight + chat.lineHeightSpacing;
 		const effectiveViewportHeight = chat.viewportHeight - (chat.lineTopSpacing * lineHeight);
@@ -1221,12 +1220,10 @@
 	function getChatScrollThumbInfo() {
 		const ctx = chat.canvas.getContext('2d');
 		const font = '18px Ubuntu';
-		ctx.font = font;
 		const baseLineHeight = computeLineHeight(ctx, font);
 		const lineHeight = baseLineHeight + chat.lineHeightSpacing;
 		const effectiveViewportHeight = chat.viewportHeight - (chat.lineTopSpacing * lineHeight);
 		const visibleCount = Math.floor(effectiveViewportHeight / lineHeight);
-
 		const trackHeight = visibleCount * lineHeight;
 		const trackY = effectiveViewportHeight - trackHeight;
 		const thumbHeight = trackHeight * visibleCount / chat.messages.length;
@@ -1253,7 +1250,7 @@
 		const baseLineHeight = computeLineHeight(ctx, font);
 		const lineHeight = baseLineHeight + chat.lineHeightSpacing;
 		const textLeftMargin = chat.scrollbarWidth + chat.leftTextSpacing;
-		const effectiveViewportHeight = chat.viewportHeight - (18 * lineHeight);
+		const effectiveViewportHeight = chat.viewportHeight - (chat.lineTopSpacing * lineHeight);
 		const visibleCount = Math.floor(effectiveViewportHeight / lineHeight);
 
 		if (chat.scrollOffset > chat.messages.length - visibleCount) {
@@ -1283,12 +1280,13 @@
 		for (let i = 0; i < lines.length; i++) {
 			let lineWidth = textLeftMargin;
 			let parts = lines[i];
+
 			for (let j = 0; j < parts.length; j++) {
-				// Set the font before measuring.
 				ctx.font = font;
 				parts[j].width = ctx.measureText(parts[j].text).width;
 				lineWidth += parts[j].width;
 			}
+
 			textWidth = Math.max(textWidth, lineWidth);
 		}
 
@@ -2628,25 +2626,14 @@
 			const chatHeight = chat.canvas.height;
 
 			if (scaledMouseX >= chatX && scaledMouseX <= chatX + chatWidth && scaledMouseY >= chatY && scaledMouseY <= chatY + chatHeight) {
-				const ctx = chat.canvas.getContext('2d');
-				const font = '18px Ubuntu';
-				ctx.font = font;
-				const baseLineHeight = computeLineHeight(ctx, font);
-				const lineHeight = baseLineHeight + chat.lineHeightSpacing;
-				const effectiveViewportHeight = chat.viewportHeight - (chat.lineTopSpacing * lineHeight);
-				const visibleCount = Math.floor(effectiveViewportHeight / lineHeight);
+				const chatLocalX = scaledMouseX - chatX;
+				const chatLocalY = scaledMouseY - chatY;
+				const thumbInfo = getChatScrollThumbInfo();
+				const trackTop = thumbInfo.trackY;
+				const trackBottom = thumbInfo.trackY + thumbInfo.trackHeight;
 
-				if (chat.messages.length > visibleCount) {
-					const trackHeight = visibleCount * lineHeight;
-					const trackY = effectiveViewportHeight - trackHeight;
-					const chatLocalY = scaledMouseY - chatY;
-					const chatLocalX = scaledMouseX - chatX;
-
-					if (chatLocalX <= chat.scrollbarWidth && chatLocalY >= trackY && chatLocalY <= trackY + trackHeight) {
-						mainCanvas.style.cursor = 'grab';
-					} else {
-						mainCanvas.style.cursor = 'default';
-					}
+				if (chat.messages.length > thumbInfo.visibleCount && chatLocalX <= chat.scrollbarWidth && chatLocalY >= trackTop && chatLocalY <= trackBottom) {
+					mainCanvas.style.cursor = 'grab';
 				} else {
 					mainCanvas.style.cursor = 'default';
 				}
