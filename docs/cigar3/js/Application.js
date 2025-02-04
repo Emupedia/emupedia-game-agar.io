@@ -61,14 +61,14 @@ export default class {
 
     drawRainbowBorder() {
         if (this.rainbowSprite) this.rainbowSprite.destroy()
-        
+
         const border = this.core.net.border
         this.rainbowSprite = new PIXI.Sprite.from('./sprites/rainbow-border.png')
         this.rainbowSprite.anchor.set(0.5)
         this.rainbowSprite.width = border.width * 1.043
         this.rainbowSprite.height = border.height * 1.043
         this.colorMatrix = new PIXI.filters.ColorMatrixFilter()
-        this.rainbowSprite.filters = [this.colorMatrix] 
+        this.rainbowSprite.filters = [this.colorMatrix]
         this.hueDegree = 0
         this.rainbowSprite.visible = this.core.settings.rainbowBorder
 
@@ -141,7 +141,7 @@ export default class {
 
     initMinimap() {
         const view = this.minimapView = document.getElementById("minimap-view")
-        this.minimapRenderer = new PIXI.Renderer({ 
+        this.minimapRenderer = new PIXI.Renderer({
             view,
             width: 250,
             height: 250,
@@ -158,8 +158,11 @@ export default class {
 
     initRenderer() {
         const view = this.view = document.getElementById("view")
-        this.renderer = new PIXI.Renderer({ 
+        // const gl = view.getContext('webgl')
+        this.renderer = new PIXI.Renderer({
             view,
+            // context: gl,
+            // forceCanvas: true,
             width: innerWidth,
             height: innerHeight,
             antialiasing: false,

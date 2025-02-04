@@ -168,7 +168,9 @@ export default class UserInterface {
         for (const id in this.core.app.skins) {
             contentStr += `
             <div class="modal-skin-tile">
-                <div class="round" style="background-size: contain; background-repeat: no-repeat; background-color: var(--less-dark); width:${thirdSize}px; height:${thirdSize}px; background-image: url('${this.core.app.skins[id].src}')"></div>
+                <div class="round" style="border-radius: 100%; background-size: contain; background-repeat: no-repeat; background-color: var(--less-dark); width:${thirdSize}px; height:${thirdSize}px;">
+                    <img style="border-radius: 100%; width: ${thirdSize}px; height: ${thirdSize}px" src="${this.core.app.skins[id].src}" loading="lazy" alt="" />
+                </div>
                 <div id="skin-${id}" class="button center">Use</div>
             </div>
             `
