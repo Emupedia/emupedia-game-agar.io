@@ -46,7 +46,7 @@ export default class Cell {
             const texture = this.core.app.renderer.generateTexture(Cell.SPRITE)
             Cell.SPRITE.removeChildren()
             texture.baseTexture.mipmap = true
-            Cell.PENDING_SPRITES_SKIN_CACHE.get(skin).forEach(sprite => { sprite.texture = texture })
+            Cell.PENDING_SPRITES_SKIN_CACHE.get(skin).forEach(sprite => { sprite && sprite.texture ? (sprite.texture = texture) : '' })
             Cell.PENDING_SPRITES_SKIN_CACHE.delete(skin)
             Cell.SKIN_CACHE[skin] = { texture, loading: false, loaded: true }
         })
