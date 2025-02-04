@@ -37,7 +37,7 @@ export default class Cell {
 
         Cell.PENDING_SPRITES_SKIN_CACHE.set(skin, [this.sprite])
         Cell.SKIN_CACHE[skin] = { texture: this.core.app.textures.cell, loading: true, loaded: false }
-        PIXI.Texture.fromURL(skin).then(loadedTexture => {
+        PIXI.Texture.fromURL('./skins/' + skin + '.png').then(loadedTexture => {
             const graphics = new PIXI.Graphics()
             graphics.beginTextureFill({ texture: loadedTexture })
             graphics.drawCircle(256, 256, 256)
@@ -66,7 +66,7 @@ export default class Cell {
         Cell.NAME_CACHE.set(name, texture)
         return texture
     }
-    
+
     _getMassInstance() {
         const mass = Cell.MASS_POOL.shift()
         if (mass) return mass
@@ -81,9 +81,9 @@ export default class Cell {
         else nameSprite = new PIXI.Sprite(this._getNameTexture(value))
 
         if (this.nameSprite) this.nameSprite.destroy()
-        
+
         nameSprite.anchor.set(.5)
-        nameSprite.scale.set(1) 
+        nameSprite.scale.set(1)
         this.sprite.addChild(nameSprite)
         this.nameSprite = nameSprite
     }
