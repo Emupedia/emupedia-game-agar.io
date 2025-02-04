@@ -1,0 +1,5262 @@
+{
+    "0": {
+        "src": "./skins/2ch.png",
+        "label": "2ch"
+    },
+    "1": {
+        "src": "./skins/3ezzy.png",
+        "label": "3ezzy"
+    },
+    "2": {
+        "src": "./skins/3lkoos.png",
+        "label": "3lkoos"
+    },
+    "3": {
+        "src": "./skins/4chan.png",
+        "label": "4chan"
+    },
+    "4": {
+        "src": "./skins/52k.png",
+        "label": "52k"
+    },
+    "5": {
+        "src": "./skins/8.png",
+        "label": "8"
+    },
+    "6": {
+        "src": "./skins/8ch.png",
+        "label": "8ch"
+    },
+    "7": {
+        "src": "./skins/9gag.png",
+        "label": "9gag"
+    },
+    "8": {
+        "src": "./skins/abductor.png",
+        "label": "abductor"
+    },
+    "9": {
+        "src": "./skins/acorn.png",
+        "label": "acorn"
+    },
+    "10": {
+        "src": "./skins/ada.png",
+        "label": "ada"
+    },
+    "11": {
+        "src": "./skins/adventurer.png",
+        "label": "adventurer"
+    },
+    "12": {
+        "src": "./skins/aer.png",
+        "label": "aer"
+    },
+    "13": {
+        "src": "./skins/african_lion.png",
+        "label": "african lion"
+    },
+    "14": {
+        "src": "./skins/agario.png",
+        "label": "agario"
+    },
+    "15": {
+        "src": "./skins/agarmurfs.png",
+        "label": "agarmurfs"
+    },
+    "16": {
+        "src": "./skins/agent_morel.png",
+        "label": "agent morel"
+    },
+    "17": {
+        "src": "./skins/air_bag.png",
+        "label": "air bag"
+    },
+    "18": {
+        "src": "./skins/alb.png",
+        "label": "alb"
+    },
+    "19": {
+        "src": "./skins/albania.png",
+        "label": "albania"
+    },
+    "20": {
+        "src": "./skins/alejo.png",
+        "label": "alejo"
+    },
+    "21": {
+        "src": "./skins/alejoyoutube.png",
+        "label": "alejoyoutube"
+    },
+    "22": {
+        "src": "./skins/alejoyt.png",
+        "label": "alejoyt"
+    },
+    "23": {
+        "src": "./skins/alejoyt2.png",
+        "label": "alejoyt2"
+    },
+    "24": {
+        "src": "./skins/alien_artist.png",
+        "label": "alien artist"
+    },
+    "25": {
+        "src": "./skins/alien_blast.png",
+        "label": "alien blast"
+    },
+    "26": {
+        "src": "./skins/alien_tree.png",
+        "label": "alien tree"
+    },
+    "27": {
+        "src": "./skins/alone.png",
+        "label": "alone"
+    },
+    "28": {
+        "src": "./skins/amazed.png",
+        "label": "amazed"
+    },
+    "29": {
+        "src": "./skins/amber.png",
+        "label": "amber"
+    },
+    "30": {
+        "src": "./skins/amur.png",
+        "label": "amur"
+    },
+    "31": {
+        "src": "./skins/ancient_relic.png",
+        "label": "ancient relic"
+    },
+    "32": {
+        "src": "./skins/angies_sammish.png",
+        "label": "angies sammish"
+    },
+    "33": {
+        "src": "./skins/angry.png",
+        "label": "angry"
+    },
+    "34": {
+        "src": "./skins/apocalypse_rider.png",
+        "label": "apocalypse rider"
+    },
+    "35": {
+        "src": "./skins/apple.png",
+        "label": "apple"
+    },
+    "36": {
+        "src": "./skins/appleface.png",
+        "label": "appleface"
+    },
+    "37": {
+        "src": "./skins/april_fool.png",
+        "label": "april fool"
+    },
+    "38": {
+        "src": "./skins/aqua.png",
+        "label": "aqua"
+    },
+    "39": {
+        "src": "./skins/aqugly.png",
+        "label": "aqugly"
+    },
+    "40": {
+        "src": "./skins/araizon.png",
+        "label": "araizon"
+    },
+    "41": {
+        "src": "./skins/araneaphyx.png",
+        "label": "araneaphyx"
+    },
+    "42": {
+        "src": "./skins/archer.png",
+        "label": "archer"
+    },
+    "43": {
+        "src": "./skins/archery_king.png",
+        "label": "archery king"
+    },
+    "44": {
+        "src": "./skins/argentina.png",
+        "label": "argentina"
+    },
+    "45": {
+        "src": "./skins/aries.png",
+        "label": "aries"
+    },
+    "46": {
+        "src": "./skins/arievil.png",
+        "label": "arievil"
+    },
+    "47": {
+        "src": "./skins/ark_raider.png",
+        "label": "ark raider"
+    },
+    "48": {
+        "src": "./skins/army.png",
+        "label": "army"
+    },
+    "49": {
+        "src": "./skins/ashwin.png",
+        "label": "ashwin"
+    },
+    "50": {
+        "src": "./skins/ashwinyt.png",
+        "label": "ashwinyt"
+    },
+    "51": {
+        "src": "./skins/astral_deer.png",
+        "label": "astral deer"
+    },
+    "52": {
+        "src": "./skins/astronaut.png",
+        "label": "astronaut"
+    },
+    "53": {
+        "src": "./skins/attabouy.png",
+        "label": "attabouy"
+    },
+    "54": {
+        "src": "./skins/aurorax.png",
+        "label": "aurorax"
+    },
+    "55": {
+        "src": "./skins/australia.png",
+        "label": "australia"
+    },
+    "56": {
+        "src": "./skins/austria.png",
+        "label": "austria"
+    },
+    "57": {
+        "src": "./skins/awkward.png",
+        "label": "awkward"
+    },
+    "58": {
+        "src": "./skins/ayy-lmao.png",
+        "label": "ayy-lmao"
+    },
+    "59": {
+        "src": "./skins/babadook.png",
+        "label": "babadook"
+    },
+    "60": {
+        "src": "./skins/baby_gator.png",
+        "label": "baby gator"
+    },
+    "61": {
+        "src": "./skins/backswing.png",
+        "label": "backswing"
+    },
+    "62": {
+        "src": "./skins/baddie.png",
+        "label": "baddie"
+    },
+    "63": {
+        "src": "./skins/badger.png",
+        "label": "badger"
+    },
+    "64": {
+        "src": "./skins/bad_bone.png",
+        "label": "bad bone"
+    },
+    "65": {
+        "src": "./skins/bad_boy.png",
+        "label": "bad boy"
+    },
+    "66": {
+        "src": "./skins/bad_clover.png",
+        "label": "bad clover"
+    },
+    "67": {
+        "src": "./skins/bad_pigeon.png",
+        "label": "bad pigeon"
+    },
+    "68": {
+        "src": "./skins/bad_santa.png",
+        "label": "bad santa"
+    },
+    "69": {
+        "src": "./skins/bahrain.png",
+        "label": "bahrain"
+    },
+    "70": {
+        "src": "./skins/bait.png",
+        "label": "bait"
+    },
+    "71": {
+        "src": "./skins/baldman.png",
+        "label": "baldman"
+    },
+    "72": {
+        "src": "./skins/bald_eagle.png",
+        "label": "bald eagle"
+    },
+    "73": {
+        "src": "./skins/banana.png",
+        "label": "banana"
+    },
+    "74": {
+        "src": "./skins/bandit.png",
+        "label": "bandit"
+    },
+    "75": {
+        "src": "./skins/bang.png",
+        "label": "bang"
+    },
+    "76": {
+        "src": "./skins/bangladesh.png",
+        "label": "bangladesh"
+    },
+    "77": {
+        "src": "./skins/baobao.png",
+        "label": "baobao"
+    },
+    "78": {
+        "src": "./skins/barrel.png",
+        "label": "barrel"
+    },
+    "79": {
+        "src": "./skins/baseball.png",
+        "label": "baseball"
+    },
+    "80": {
+        "src": "./skins/baseball_clash.png",
+        "label": "baseball clash"
+    },
+    "81": {
+        "src": "./skins/basilisk.png",
+        "label": "basilisk"
+    },
+    "82": {
+        "src": "./skins/basketball.png",
+        "label": "basketball"
+    },
+    "83": {
+        "src": "./skins/bass_bomb.png",
+        "label": "bass bomb"
+    },
+    "84": {
+        "src": "./skins/bat.png",
+        "label": "bat"
+    },
+    "85": {
+        "src": "./skins/battle_angel.png",
+        "label": "battle angel"
+    },
+    "86": {
+        "src": "./skins/bat_ball.png",
+        "label": "bat ball"
+    },
+    "87": {
+        "src": "./skins/bear.png",
+        "label": "bear"
+    },
+    "88": {
+        "src": "./skins/beardy_girl.png",
+        "label": "beardy girl"
+    },
+    "89": {
+        "src": "./skins/beastleo.png",
+        "label": "beastleo"
+    },
+    "90": {
+        "src": "./skins/beat_box.png",
+        "label": "beat box"
+    },
+    "91": {
+        "src": "./skins/beetoothven.png",
+        "label": "beetoothven"
+    },
+    "92": {
+        "src": "./skins/behemoth.png",
+        "label": "behemoth"
+    },
+    "93": {
+        "src": "./skins/belgium.png",
+        "label": "belgium"
+    },
+    "94": {
+        "src": "./skins/berlusconi.png",
+        "label": "berlusconi"
+    },
+    "95": {
+        "src": "./skins/berserker.png",
+        "label": "berserker"
+    },
+    "96": {
+        "src": "./skins/best_friends.png",
+        "label": "best friends"
+    },
+    "97": {
+        "src": "./skins/best_gift.png",
+        "label": "best gift"
+    },
+    "98": {
+        "src": "./skins/bewitched.png",
+        "label": "bewitched"
+    },
+    "99": {
+        "src": "./skins/big_banjo.png",
+        "label": "big banjo"
+    },
+    "100": {
+        "src": "./skins/big_eyes.png",
+        "label": "big eyes"
+    },
+    "101": {
+        "src": "./skins/big_horn.png",
+        "label": "big horn"
+    },
+    "102": {
+        "src": "./skins/big_jaw.png",
+        "label": "big jaw"
+    },
+    "103": {
+        "src": "./skins/big_muggy.png",
+        "label": "big muggy"
+    },
+    "104": {
+        "src": "./skins/big_mustagus.png",
+        "label": "big mustagus"
+    },
+    "105": {
+        "src": "./skins/big_power.png",
+        "label": "big power"
+    },
+    "106": {
+        "src": "./skins/biker.png",
+        "label": "biker"
+    },
+    "107": {
+        "src": "./skins/bionic.png",
+        "label": "bionic"
+    },
+    "108": {
+        "src": "./skins/bionic_ram.png",
+        "label": "bionic ram"
+    },
+    "109": {
+        "src": "./skins/birdie.png",
+        "label": "birdie"
+    },
+    "110": {
+        "src": "./skins/bird_mask.png",
+        "label": "bird mask"
+    },
+    "111": {
+        "src": "./skins/birthday_blob.png",
+        "label": "birthday blob"
+    },
+    "112": {
+        "src": "./skins/birthday_cia.png",
+        "label": "birthday cia"
+    },
+    "113": {
+        "src": "./skins/birthday_doge.png",
+        "label": "birthday doge"
+    },
+    "114": {
+        "src": "./skins/birthday_lol.png",
+        "label": "birthday lol"
+    },
+    "115": {
+        "src": "./skins/birthday_sanik.png",
+        "label": "birthday sanik"
+    },
+    "116": {
+        "src": "./skins/birthday_sir.png",
+        "label": "birthday sir"
+    },
+    "117": {
+        "src": "./skins/birthday_troll.png",
+        "label": "birthday troll"
+    },
+    "118": {
+        "src": "./skins/birthday_wojak.png",
+        "label": "birthday wojak"
+    },
+    "119": {
+        "src": "./skins/birthosaur.png",
+        "label": "birthosaur"
+    },
+    "120": {
+        "src": "./skins/bite.png",
+        "label": "bite"
+    },
+    "121": {
+        "src": "./skins/bitter.png",
+        "label": "bitter"
+    },
+    "122": {
+        "src": "./skins/blackdragon.png",
+        "label": "blackdragon"
+    },
+    "123": {
+        "src": "./skins/blackhole.png",
+        "label": "blackhole"
+    },
+    "124": {
+        "src": "./skins/blackleg.png",
+        "label": "blackleg"
+    },
+    "125": {
+        "src": "./skins/black_beard.png",
+        "label": "black beard"
+    },
+    "126": {
+        "src": "./skins/black_cat.png",
+        "label": "black cat"
+    },
+    "127": {
+        "src": "./skins/black_panther.png",
+        "label": "black panther"
+    },
+    "128": {
+        "src": "./skins/blatter.png",
+        "label": "blatter"
+    },
+    "129": {
+        "src": "./skins/blobby_boy.png",
+        "label": "blobby boy"
+    },
+    "130": {
+        "src": "./skins/blueberry.png",
+        "label": "blueberry"
+    },
+    "131": {
+        "src": "./skins/blue_skull.png",
+        "label": "blue skull"
+    },
+    "132": {
+        "src": "./skins/blue_swirl.png",
+        "label": "blue swirl"
+    },
+    "133": {
+        "src": "./skins/boar.png",
+        "label": "boar"
+    },
+    "134": {
+        "src": "./skins/bolt_samurai.png",
+        "label": "bolt samurai"
+    },
+    "135": {
+        "src": "./skins/bom.png",
+        "label": "bom"
+    },
+    "136": {
+        "src": "./skins/bomb.png",
+        "label": "bomb"
+    },
+    "137": {
+        "src": "./skins/boot.png",
+        "label": "boot"
+    },
+    "138": {
+        "src": "./skins/bootlegger.png",
+        "label": "bootlegger"
+    },
+    "139": {
+        "src": "./skins/borggy.png",
+        "label": "borggy"
+    },
+    "140": {
+        "src": "./skins/boris.png",
+        "label": "boris"
+    },
+    "141": {
+        "src": "./skins/bosnia.png",
+        "label": "bosnia"
+    },
+    "142": {
+        "src": "./skins/botswana.png",
+        "label": "botswana"
+    },
+    "143": {
+        "src": "./skins/bottle_map.png",
+        "label": "bottle map"
+    },
+    "144": {
+        "src": "./skins/bowling.png",
+        "label": "bowling"
+    },
+    "145": {
+        "src": "./skins/brave_heart_lion.png",
+        "label": "brave heart lion"
+    },
+    "146": {
+        "src": "./skins/brax.png",
+        "label": "brax"
+    },
+    "147": {
+        "src": "./skins/brazil.png",
+        "label": "brazil"
+    },
+    "148": {
+        "src": "./skins/bread.png",
+        "label": "bread"
+    },
+    "149": {
+        "src": "./skins/breakfast.png",
+        "label": "breakfast"
+    },
+    "150": {
+        "src": "./skins/bright_heart_raccoon.png",
+        "label": "bright heart raccoon"
+    },
+    "151": {
+        "src": "./skins/brofist.png",
+        "label": "brofist"
+    },
+    "152": {
+        "src": "./skins/brooklyn.png",
+        "label": "brooklyn"
+    },
+    "153": {
+        "src": "./skins/bruiser_goat.png",
+        "label": "bruiser goat"
+    },
+    "154": {
+        "src": "./skins/brute_prankster.png",
+        "label": "brute prankster"
+    },
+    "155": {
+        "src": "./skins/bubbabutt.png",
+        "label": "bubbabutt"
+    },
+    "156": {
+        "src": "./skins/bubblesaurus.png",
+        "label": "bubblesaurus"
+    },
+    "157": {
+        "src": "./skins/bug.png",
+        "label": "bug"
+    },
+    "158": {
+        "src": "./skins/bulba.png",
+        "label": "bulba"
+    },
+    "159": {
+        "src": "./skins/bulgaria.png",
+        "label": "bulgaria"
+    },
+    "160": {
+        "src": "./skins/bullet_man.png",
+        "label": "bullet man"
+    },
+    "161": {
+        "src": "./skins/bullseye.png",
+        "label": "bullseye"
+    },
+    "162": {
+        "src": "./skins/bull_king.png",
+        "label": "bull king"
+    },
+    "163": {
+        "src": "./skins/bull_skull.png",
+        "label": "bull skull"
+    },
+    "164": {
+        "src": "./skins/bunny.png",
+        "label": "bunny"
+    },
+    "165": {
+        "src": "./skins/bunnytron.png",
+        "label": "bunnytron"
+    },
+    "166": {
+        "src": "./skins/burger_face.png",
+        "label": "burger face"
+    },
+    "167": {
+        "src": "./skins/burly_man.png",
+        "label": "burly man"
+    },
+    "168": {
+        "src": "./skins/burner.png",
+        "label": "burner"
+    },
+    "169": {
+        "src": "./skins/bush.png",
+        "label": "bush"
+    },
+    "170": {
+        "src": "./skins/byzantium.png",
+        "label": "byzantium"
+    },
+    "171": {
+        "src": "./skins/cactus.png",
+        "label": "cactus"
+    },
+    "172": {
+        "src": "./skins/cactus_flower.png",
+        "label": "cactus flower"
+    },
+    "173": {
+        "src": "./skins/cake_master.png",
+        "label": "cake master"
+    },
+    "174": {
+        "src": "./skins/calaca.png",
+        "label": "calaca"
+    },
+    "175": {
+        "src": "./skins/calavera.png",
+        "label": "calavera"
+    },
+    "176": {
+        "src": "./skins/calico_jack.png",
+        "label": "calico jack"
+    },
+    "177": {
+        "src": "./skins/cambodia.png",
+        "label": "cambodia"
+    },
+    "178": {
+        "src": "./skins/cameron.png",
+        "label": "cameron"
+    },
+    "179": {
+        "src": "./skins/canada.png",
+        "label": "canada"
+    },
+    "180": {
+        "src": "./skins/cancer.png",
+        "label": "cancer"
+    },
+    "181": {
+        "src": "./skins/cancerous.png",
+        "label": "cancerous"
+    },
+    "182": {
+        "src": "./skins/candlelight.png",
+        "label": "candlelight"
+    },
+    "183": {
+        "src": "./skins/candy.png",
+        "label": "candy"
+    },
+    "184": {
+        "src": "./skins/candy_genious.png",
+        "label": "candy genious"
+    },
+    "185": {
+        "src": "./skins/candy_troll.png",
+        "label": "candy troll"
+    },
+    "186": {
+        "src": "./skins/cannonball.png",
+        "label": "cannonball"
+    },
+    "187": {
+        "src": "./skins/capn_joe.png",
+        "label": "capn joe"
+    },
+    "188": {
+        "src": "./skins/capsicum.png",
+        "label": "capsicum"
+    },
+    "189": {
+        "src": "./skins/captain_skull.png",
+        "label": "captain skull"
+    },
+    "190": {
+        "src": "./skins/caribbean_corsair.png",
+        "label": "caribbean corsair"
+    },
+    "191": {
+        "src": "./skins/carp.png",
+        "label": "carp"
+    },
+    "192": {
+        "src": "./skins/carrot.png",
+        "label": "carrot"
+    },
+    "193": {
+        "src": "./skins/cat.png",
+        "label": "cat"
+    },
+    "194": {
+        "src": "./skins/caterpillar.png",
+        "label": "caterpillar"
+    },
+    "195": {
+        "src": "./skins/cat_burglar.png",
+        "label": "cat burglar"
+    },
+    "196": {
+        "src": "./skins/cat_cauldron.png",
+        "label": "cat cauldron"
+    },
+    "197": {
+        "src": "./skins/cat_duck.png",
+        "label": "cat duck"
+    },
+    "198": {
+        "src": "./skins/cave_painting.png",
+        "label": "cave painting"
+    },
+    "199": {
+        "src": "./skins/cave_troll.png",
+        "label": "cave troll"
+    },
+    "200": {
+        "src": "./skins/celebration_hat.png",
+        "label": "celebration hat"
+    },
+    "201": {
+        "src": "./skins/champion.png",
+        "label": "champion"
+    },
+    "202": {
+        "src": "./skins/chaplin.png",
+        "label": "chaplin"
+    },
+    "203": {
+        "src": "./skins/char.png",
+        "label": "char"
+    },
+    "204": {
+        "src": "./skins/chavez.png",
+        "label": "chavez"
+    },
+    "205": {
+        "src": "./skins/cheesy.png",
+        "label": "cheesy"
+    },
+    "206": {
+        "src": "./skins/cheshire.png",
+        "label": "cheshire"
+    },
+    "207": {
+        "src": "./skins/chicken.png",
+        "label": "chicken"
+    },
+    "208": {
+        "src": "./skins/chief.png",
+        "label": "chief"
+    },
+    "209": {
+        "src": "./skins/chihuahua.png",
+        "label": "chihuahua"
+    },
+    "210": {
+        "src": "./skins/chikadahr.png",
+        "label": "chikadahr"
+    },
+    "211": {
+        "src": "./skins/chile.png",
+        "label": "chile"
+    },
+    "212": {
+        "src": "./skins/chilled_homie.png",
+        "label": "chilled homie"
+    },
+    "213": {
+        "src": "./skins/chillpanzee.png",
+        "label": "chillpanzee"
+    },
+    "214": {
+        "src": "./skins/china.png",
+        "label": "china"
+    },
+    "215": {
+        "src": "./skins/china_dragon.png",
+        "label": "china dragon"
+    },
+    "216": {
+        "src": "./skins/chip_cookie.png",
+        "label": "chip cookie"
+    },
+    "217": {
+        "src": "./skins/chirpy_raptor.png",
+        "label": "chirpy raptor"
+    },
+    "218": {
+        "src": "./skins/choco_egg.png",
+        "label": "choco egg"
+    },
+    "219": {
+        "src": "./skins/choco_heart.png",
+        "label": "choco heart"
+    },
+    "220": {
+        "src": "./skins/chomper.png",
+        "label": "chomper"
+    },
+    "221": {
+        "src": "./skins/christmas_kittie.png",
+        "label": "christmas kittie"
+    },
+    "222": {
+        "src": "./skins/chromatic_peafowl.png",
+        "label": "chromatic peafowl"
+    },
+    "223": {
+        "src": "./skins/chrono_ranger.png",
+        "label": "chrono ranger"
+    },
+    "224": {
+        "src": "./skins/chupacabra.png",
+        "label": "chupacabra"
+    },
+    "225": {
+        "src": "./skins/cia.png",
+        "label": "cia"
+    },
+    "226": {
+        "src": "./skins/circle.png",
+        "label": "circle"
+    },
+    "227": {
+        "src": "./skins/clever.png",
+        "label": "clever"
+    },
+    "228": {
+        "src": "./skins/clinton.png",
+        "label": "clinton"
+    },
+    "229": {
+        "src": "./skins/cloud.png",
+        "label": "cloud"
+    },
+    "230": {
+        "src": "./skins/cloud_prism.png",
+        "label": "cloud prism"
+    },
+    "231": {
+        "src": "./skins/cobra.png",
+        "label": "cobra"
+    },
+    "232": {
+        "src": "./skins/coconuts.png",
+        "label": "coconuts"
+    },
+    "233": {
+        "src": "./skins/cog_attack.png",
+        "label": "cog attack"
+    },
+    "234": {
+        "src": "./skins/coil.png",
+        "label": "coil"
+    },
+    "235": {
+        "src": "./skins/colombia.png",
+        "label": "colombia"
+    },
+    "236": {
+        "src": "./skins/color_runner.png",
+        "label": "color runner"
+    },
+    "237": {
+        "src": "./skins/colossus.png",
+        "label": "colossus"
+    },
+    "238": {
+        "src": "./skins/concentrated.png",
+        "label": "concentrated"
+    },
+    "239": {
+        "src": "./skins/confederate.png",
+        "label": "confederate"
+    },
+    "240": {
+        "src": "./skins/cookie.png",
+        "label": "cookie"
+    },
+    "241": {
+        "src": "./skins/cookie_mouse.png",
+        "label": "cookie mouse"
+    },
+    "242": {
+        "src": "./skins/cookie_robber.png",
+        "label": "cookie robber"
+    },
+    "243": {
+        "src": "./skins/cool.png",
+        "label": "cool"
+    },
+    "244": {
+        "src": "./skins/cool_agent.png",
+        "label": "cool agent"
+    },
+    "245": {
+        "src": "./skins/cool_bunny.png",
+        "label": "cool bunny"
+    },
+    "246": {
+        "src": "./skins/cool_guy.png",
+        "label": "cool guy"
+    },
+    "247": {
+        "src": "./skins/cool_lion.png",
+        "label": "cool lion"
+    },
+    "248": {
+        "src": "./skins/cootie.png",
+        "label": "cootie"
+    },
+    "249": {
+        "src": "./skins/cosmic_horse.png",
+        "label": "cosmic horse"
+    },
+    "250": {
+        "src": "./skins/cosmic_wolf.png",
+        "label": "cosmic wolf"
+    },
+    "251": {
+        "src": "./skins/cosmo_pirate.png",
+        "label": "cosmo pirate"
+    },
+    "252": {
+        "src": "./skins/cougar.png",
+        "label": "cougar"
+    },
+    "253": {
+        "src": "./skins/coyote.png",
+        "label": "coyote"
+    },
+    "254": {
+        "src": "./skins/cozy_heart_penguin.png",
+        "label": "cozy heart penguin"
+    },
+    "255": {
+        "src": "./skins/crazy.png",
+        "label": "crazy"
+    },
+    "256": {
+        "src": "./skins/crazy_ball.png",
+        "label": "crazy ball"
+    },
+    "257": {
+        "src": "./skins/crazy_bolt.png",
+        "label": "crazy bolt"
+    },
+    "258": {
+        "src": "./skins/crazy_brain.png",
+        "label": "crazy brain"
+    },
+    "259": {
+        "src": "./skins/crazy_eye.png",
+        "label": "crazy eye"
+    },
+    "260": {
+        "src": "./skins/crazy_love.png",
+        "label": "crazy love"
+    },
+    "261": {
+        "src": "./skins/crazy_rudolph.png",
+        "label": "crazy rudolph"
+    },
+    "262": {
+        "src": "./skins/crazy_sombrero.png",
+        "label": "crazy sombrero"
+    },
+    "263": {
+        "src": "./skins/creepy_cracker.png",
+        "label": "creepy cracker"
+    },
+    "264": {
+        "src": "./skins/creepy_crepe.png",
+        "label": "creepy crepe"
+    },
+    "265": {
+        "src": "./skins/croatia.png",
+        "label": "croatia"
+    },
+    "266": {
+        "src": "./skins/crocodile.png",
+        "label": "crocodile"
+    },
+    "267": {
+        "src": "./skins/croc_fu.png",
+        "label": "croc fu"
+    },
+    "268": {
+        "src": "./skins/crow.png",
+        "label": "crow"
+    },
+    "269": {
+        "src": "./skins/crystal.png",
+        "label": "crystal"
+    },
+    "270": {
+        "src": "./skins/cthulhu.png",
+        "label": "cthulhu"
+    },
+    "271": {
+        "src": "./skins/cuba.png",
+        "label": "cuba"
+    },
+    "272": {
+        "src": "./skins/cupcake.png",
+        "label": "cupcake"
+    },
+    "273": {
+        "src": "./skins/cupid.png",
+        "label": "cupid"
+    },
+    "274": {
+        "src": "./skins/cuppy.png",
+        "label": "cuppy"
+    },
+    "275": {
+        "src": "./skins/cursed_blade.png",
+        "label": "cursed blade"
+    },
+    "276": {
+        "src": "./skins/cursed_samurai.png",
+        "label": "cursed samurai"
+    },
+    "277": {
+        "src": "./skins/cute_bunny.png",
+        "label": "cute bunny"
+    },
+    "278": {
+        "src": "./skins/cybernaut.png",
+        "label": "cybernaut"
+    },
+    "279": {
+        "src": "./skins/cyber_agent.png",
+        "label": "cyber agent"
+    },
+    "280": {
+        "src": "./skins/cyber_demon.png",
+        "label": "cyber demon"
+    },
+    "281": {
+        "src": "./skins/cyber_guard.png",
+        "label": "cyber guard"
+    },
+    "282": {
+        "src": "./skins/cyber_kid.png",
+        "label": "cyber kid"
+    },
+    "283": {
+        "src": "./skins/cyber_monk.png",
+        "label": "cyber monk"
+    },
+    "284": {
+        "src": "./skins/cyber_psychic.png",
+        "label": "cyber psychic"
+    },
+    "285": {
+        "src": "./skins/cyber_punk.png",
+        "label": "cyber punk"
+    },
+    "286": {
+        "src": "./skins/cyber_scarab.png",
+        "label": "cyber scarab"
+    },
+    "287": {
+        "src": "./skins/cyborg_clown.png",
+        "label": "cyborg clown"
+    },
+    "288": {
+        "src": "./skins/dancer.png",
+        "label": "dancer"
+    },
+    "289": {
+        "src": "./skins/dapper_dog.png",
+        "label": "dapper dog"
+    },
+    "290": {
+        "src": "./skins/dark_matter.png",
+        "label": "dark matter"
+    },
+    "291": {
+        "src": "./skins/dark_sorceress.png",
+        "label": "dark sorceress"
+    },
+    "292": {
+        "src": "./skins/dark_wings.png",
+        "label": "dark wings"
+    },
+    "293": {
+        "src": "./skins/darts_of_fury.png",
+        "label": "darts of fury"
+    },
+    "294": {
+        "src": "./skins/dasher.png",
+        "label": "dasher"
+    },
+    "295": {
+        "src": "./skins/dattebayo.png",
+        "label": "dattebayo"
+    },
+    "296": {
+        "src": "./skins/davyborg.png",
+        "label": "davyborg"
+    },
+    "297": {
+        "src": "./skins/dazzled.png",
+        "label": "dazzled"
+    },
+    "298": {
+        "src": "./skins/deadly_piranha.png",
+        "label": "deadly piranha"
+    },
+    "299": {
+        "src": "./skins/death.png",
+        "label": "death"
+    },
+    "300": {
+        "src": "./skins/deathly_mine.png",
+        "label": "deathly mine"
+    },
+    "301": {
+        "src": "./skins/death_mouse.png",
+        "label": "death mouse"
+    },
+    "302": {
+        "src": "./skins/defiled_scarecrow.png",
+        "label": "defiled scarecrow"
+    },
+    "303": {
+        "src": "./skins/delighted.png",
+        "label": "delighted"
+    },
+    "304": {
+        "src": "./skins/delli.png",
+        "label": "delli"
+    },
+    "305": {
+        "src": "./skins/demolition_expert.png",
+        "label": "demolition expert"
+    },
+    "306": {
+        "src": "./skins/demon.png",
+        "label": "demon"
+    },
+    "307": {
+        "src": "./skins/demonic_helmet.png",
+        "label": "demonic helmet"
+    },
+    "308": {
+        "src": "./skins/denmark.png",
+        "label": "denmark"
+    },
+    "309": {
+        "src": "./skins/derpy_dilophosaurus.png",
+        "label": "derpy dilophosaurus"
+    },
+    "310": {
+        "src": "./skins/derpy_elasmosaurus.png",
+        "label": "derpy elasmosaurus"
+    },
+    "311": {
+        "src": "./skins/derpy_parasaurolophus.png",
+        "label": "derpy parasaurolophus"
+    },
+    "312": {
+        "src": "./skins/derpy_stegosaurus.png",
+        "label": "derpy stegosaurus"
+    },
+    "313": {
+        "src": "./skins/derpy_triceratops.png",
+        "label": "derpy triceratops"
+    },
+    "314": {
+        "src": "./skins/derpy_t_rex.png",
+        "label": "derpy t rex"
+    },
+    "315": {
+        "src": "./skins/desert_fox.png",
+        "label": "desert fox"
+    },
+    "316": {
+        "src": "./skins/desert_worm.png",
+        "label": "desert worm"
+    },
+    "317": {
+        "src": "./skins/destroyer.png",
+        "label": "destroyer"
+    },
+    "318": {
+        "src": "./skins/detective.png",
+        "label": "detective"
+    },
+    "319": {
+        "src": "./skins/devadip.png",
+        "label": "devadip"
+    },
+    "320": {
+        "src": "./skins/devilish.png",
+        "label": "devilish"
+    },
+    "321": {
+        "src": "./skins/devious.png",
+        "label": "devious"
+    },
+    "322": {
+        "src": "./skins/devourer.png",
+        "label": "devourer"
+    },
+    "323": {
+        "src": "./skins/diamonds.png",
+        "label": "diamonds"
+    },
+    "324": {
+        "src": "./skins/dilma.png",
+        "label": "dilma"
+    },
+    "325": {
+        "src": "./skins/direction_giver.png",
+        "label": "direction giver"
+    },
+    "326": {
+        "src": "./skins/diva.png",
+        "label": "diva"
+    },
+    "327": {
+        "src": "./skins/diver.png",
+        "label": "diver"
+    },
+    "328": {
+        "src": "./skins/divine_pearl.png",
+        "label": "divine pearl"
+    },
+    "329": {
+        "src": "./skins/dj_stice.png",
+        "label": "dj stice"
+    },
+    "330": {
+        "src": "./skins/dog.png",
+        "label": "dog"
+    },
+    "331": {
+        "src": "./skins/doge.png",
+        "label": "doge"
+    },
+    "332": {
+        "src": "./skins/doggie.png",
+        "label": "doggie"
+    },
+    "333": {
+        "src": "./skins/dog_life.png",
+        "label": "dog life"
+    },
+    "334": {
+        "src": "./skins/dohnut.png",
+        "label": "dohnut"
+    },
+    "335": {
+        "src": "./skins/dollhouse.png",
+        "label": "dollhouse"
+    },
+    "336": {
+        "src": "./skins/donuts.png",
+        "label": "donuts"
+    },
+    "337": {
+        "src": "./skins/doomsday.png",
+        "label": "doomsday"
+    },
+    "338": {
+        "src": "./skins/dracool.png",
+        "label": "dracool"
+    },
+    "339": {
+        "src": "./skins/dragon.png",
+        "label": "dragon"
+    },
+    "340": {
+        "src": "./skins/dragon_god.png",
+        "label": "dragon god"
+    },
+    "341": {
+        "src": "./skins/dragon_griffin.png",
+        "label": "dragon griffin"
+    },
+    "342": {
+        "src": "./skins/dragon_haze.png",
+        "label": "dragon haze"
+    },
+    "343": {
+        "src": "./skins/dragon_hydra.png",
+        "label": "dragon hydra"
+    },
+    "344": {
+        "src": "./skins/dragon_razor.png",
+        "label": "dragon razor"
+    },
+    "345": {
+        "src": "./skins/dragon_twin.png",
+        "label": "dragon twin"
+    },
+    "346": {
+        "src": "./skins/dragon_viper.png",
+        "label": "dragon viper"
+    },
+    "347": {
+        "src": "./skins/droid.png",
+        "label": "droid"
+    },
+    "348": {
+        "src": "./skins/drumstick.png",
+        "label": "drumstick"
+    },
+    "349": {
+        "src": "./skins/dry_face.png",
+        "label": "dry face"
+    },
+    "350": {
+        "src": "./skins/dr_cosmos.png",
+        "label": "dr cosmos"
+    },
+    "351": {
+        "src": "./skins/duckface.png",
+        "label": "duckface"
+    },
+    "352": {
+        "src": "./skins/duck_target.png",
+        "label": "duck target"
+    },
+    "353": {
+        "src": "./skins/dumboon.png",
+        "label": "dumboon"
+    },
+    "354": {
+        "src": "./skins/dumpling.png",
+        "label": "dumpling"
+    },
+    "355": {
+        "src": "./skins/dunk.png",
+        "label": "dunk"
+    },
+    "356": {
+        "src": "./skins/dunker.png",
+        "label": "dunker"
+    },
+    "357": {
+        "src": "./skins/dust_brain.png",
+        "label": "dust brain"
+    },
+    "358": {
+        "src": "./skins/dynamite.png",
+        "label": "dynamite"
+    },
+    "359": {
+        "src": "./skins/dynamite_guy.png",
+        "label": "dynamite guy"
+    },
+    "360": {
+        "src": "./skins/ea.png",
+        "label": "ea"
+    },
+    "361": {
+        "src": "./skins/eager_alien.png",
+        "label": "eager alien"
+    },
+    "362": {
+        "src": "./skins/eagle.png",
+        "label": "eagle"
+    },
+    "363": {
+        "src": "./skins/earth.png",
+        "label": "earth"
+    },
+    "364": {
+        "src": "./skins/earth_day.png",
+        "label": "earth day"
+    },
+    "365": {
+        "src": "./skins/easter_chick.png",
+        "label": "easter chick"
+    },
+    "366": {
+        "src": "./skins/easter_island.png",
+        "label": "easter island"
+    },
+    "367": {
+        "src": "./skins/eclipse_hunter.png",
+        "label": "eclipse hunter"
+    },
+    "368": {
+        "src": "./skins/egg.png",
+        "label": "egg"
+    },
+    "369": {
+        "src": "./skins/egypt.png",
+        "label": "egypt"
+    },
+    "370": {
+        "src": "./skins/egyptian_plague.png",
+        "label": "egyptian plague"
+    },
+    "371": {
+        "src": "./skins/egypt_ankh.png",
+        "label": "egypt ankh"
+    },
+    "372": {
+        "src": "./skins/egypt_anubis.png",
+        "label": "egypt anubis"
+    },
+    "373": {
+        "src": "./skins/egypt_cleopatra.png",
+        "label": "egypt cleopatra"
+    },
+    "374": {
+        "src": "./skins/egypt_egyptian_cat.png",
+        "label": "egypt egyptian cat"
+    },
+    "375": {
+        "src": "./skins/egypt_mummy_king.png",
+        "label": "egypt mummy king"
+    },
+    "376": {
+        "src": "./skins/egypt_pharaoh.png",
+        "label": "egypt pharaoh"
+    },
+    "377": {
+        "src": "./skins/egypt_scarab.png",
+        "label": "egypt scarab"
+    },
+    "378": {
+        "src": "./skins/elbillion.png",
+        "label": "elbillion"
+    },
+    "379": {
+        "src": "./skins/elder_master.png",
+        "label": "elder master"
+    },
+    "380": {
+        "src": "./skins/eleanor_of_light.png",
+        "label": "eleanor of light"
+    },
+    "381": {
+        "src": "./skins/electronic_girl.png",
+        "label": "electronic girl"
+    },
+    "382": {
+        "src": "./skins/electro_chick.png",
+        "label": "electro chick"
+    },
+    "383": {
+        "src": "./skins/electro_jelly.png",
+        "label": "electro jelly"
+    },
+    "384": {
+        "src": "./skins/elephant_ball.png",
+        "label": "elephant ball"
+    },
+    "385": {
+        "src": "./skins/elf_helper.png",
+        "label": "elf helper"
+    },
+    "386": {
+        "src": "./skins/elven_noble.png",
+        "label": "elven noble"
+    },
+    "387": {
+        "src": "./skins/el_coyote.png",
+        "label": "el coyote"
+    },
+    "388": {
+        "src": "./skins/enokuous.png",
+        "label": "enokuous"
+    },
+    "389": {
+        "src": "./skins/entertainer.png",
+        "label": "entertainer"
+    },
+    "390": {
+        "src": "./skins/estonia.png",
+        "label": "estonia"
+    },
+    "391": {
+        "src": "./skins/eternal_snake.png",
+        "label": "eternal snake"
+    },
+    "392": {
+        "src": "./skins/european-union.png",
+        "label": "european-union"
+    },
+    "393": {
+        "src": "./skins/evil.png",
+        "label": "evil"
+    },
+    "394": {
+        "src": "./skins/evileye.png",
+        "label": "evileye"
+    },
+    "395": {
+        "src": "./skins/evilmonkey.png",
+        "label": "evilmonkey"
+    },
+    "396": {
+        "src": "./skins/evil_genie.png",
+        "label": "evil genie"
+    },
+    "397": {
+        "src": "./skins/evil_master.png",
+        "label": "evil master"
+    },
+    "398": {
+        "src": "./skins/evil_pumpkin.png",
+        "label": "evil pumpkin"
+    },
+    "399": {
+        "src": "./skins/excalibur.png",
+        "label": "excalibur"
+    },
+    "400": {
+        "src": "./skins/eye.png",
+        "label": "eye"
+    },
+    "401": {
+        "src": "./skins/eyeball.png",
+        "label": "eyeball"
+    },
+    "402": {
+        "src": "./skins/eyepatch.png",
+        "label": "eyepatch"
+    },
+    "403": {
+        "src": "./skins/f4.png",
+        "label": "f4"
+    },
+    "404": {
+        "src": "./skins/face.png",
+        "label": "face"
+    },
+    "405": {
+        "src": "./skins/facebook.png",
+        "label": "facebook"
+    },
+    "406": {
+        "src": "./skins/facepunch.png",
+        "label": "facepunch"
+    },
+    "407": {
+        "src": "./skins/fake_chest.png",
+        "label": "fake chest"
+    },
+    "408": {
+        "src": "./skins/fallen.png",
+        "label": "fallen"
+    },
+    "409": {
+        "src": "./skins/fallen_one.png",
+        "label": "fallen one"
+    },
+    "410": {
+        "src": "./skins/fangtooth.png",
+        "label": "fangtooth"
+    },
+    "411": {
+        "src": "./skins/faun.png",
+        "label": "faun"
+    },
+    "412": {
+        "src": "./skins/feather_dragon.png",
+        "label": "feather dragon"
+    },
+    "413": {
+        "src": "./skins/feminism.png",
+        "label": "feminism"
+    },
+    "414": {
+        "src": "./skins/festive_monkey.png",
+        "label": "festive monkey"
+    },
+    "415": {
+        "src": "./skins/fidel.png",
+        "label": "fidel"
+    },
+    "416": {
+        "src": "./skins/finland.png",
+        "label": "finland"
+    },
+    "417": {
+        "src": "./skins/firebird.png",
+        "label": "firebird"
+    },
+    "418": {
+        "src": "./skins/firespitter.png",
+        "label": "firespitter"
+    },
+    "419": {
+        "src": "./skins/fire_face.png",
+        "label": "fire face"
+    },
+    "420": {
+        "src": "./skins/fire_golem.png",
+        "label": "fire golem"
+    },
+    "421": {
+        "src": "./skins/fire_rooster.png",
+        "label": "fire rooster"
+    },
+    "422": {
+        "src": "./skins/fly.png",
+        "label": "fly"
+    },
+    "423": {
+        "src": "./skins/flying_cork.png",
+        "label": "flying cork"
+    },
+    "424": {
+        "src": "./skins/flying_saucer.png",
+        "label": "flying saucer"
+    },
+    "425": {
+        "src": "./skins/football.png",
+        "label": "football"
+    },
+    "426": {
+        "src": "./skins/football_strike.png",
+        "label": "football strike"
+    },
+    "427": {
+        "src": "./skins/footprint.png",
+        "label": "footprint"
+    },
+    "428": {
+        "src": "./skins/forest_spirit.png",
+        "label": "forest spirit"
+    },
+    "429": {
+        "src": "./skins/fox.png",
+        "label": "fox"
+    },
+    "430": {
+        "src": "./skins/fox_mask.png",
+        "label": "fox mask"
+    },
+    "431": {
+        "src": "./skins/france.png",
+        "label": "france"
+    },
+    "432": {
+        "src": "./skins/frankenstein.png",
+        "label": "frankenstein"
+    },
+    "433": {
+        "src": "./skins/frankie.png",
+        "label": "frankie"
+    },
+    "434": {
+        "src": "./skins/frankie_tomankie.png",
+        "label": "frankie tomankie"
+    },
+    "435": {
+        "src": "./skins/free_skies.png",
+        "label": "free skies"
+    },
+    "436": {
+        "src": "./skins/french_kingdom.png",
+        "label": "french kingdom"
+    },
+    "437": {
+        "src": "./skins/frenzy.png",
+        "label": "frenzy"
+    },
+    "438": {
+        "src": "./skins/fries.png",
+        "label": "fries"
+    },
+    "439": {
+        "src": "./skins/frog.png",
+        "label": "frog"
+    },
+    "440": {
+        "src": "./skins/frog_thai.png",
+        "label": "frog thai"
+    },
+    "441": {
+        "src": "./skins/frost_hand.png",
+        "label": "frost hand"
+    },
+    "442": {
+        "src": "./skins/full.png",
+        "label": "full"
+    },
+    "443": {
+        "src": "./skins/funguys.png",
+        "label": "funguys"
+    },
+    "444": {
+        "src": "./skins/funky.png",
+        "label": "funky"
+    },
+    "445": {
+        "src": "./skins/funny_face.png",
+        "label": "funny face"
+    },
+    "446": {
+        "src": "./skins/funshine_bear.png",
+        "label": "funshine bear"
+    },
+    "447": {
+        "src": "./skins/furious.png",
+        "label": "furious"
+    },
+    "448": {
+        "src": "./skins/fury_bird.png",
+        "label": "fury bird"
+    },
+    "449": {
+        "src": "./skins/fury_cat.png",
+        "label": "fury cat"
+    },
+    "450": {
+        "src": "./skins/future_art.png",
+        "label": "future art"
+    },
+    "451": {
+        "src": "./skins/gahhhlic.png",
+        "label": "gahhhlic"
+    },
+    "452": {
+        "src": "./skins/galaxy.png",
+        "label": "galaxy"
+    },
+    "453": {
+        "src": "./skins/game_host.png",
+        "label": "game host"
+    },
+    "454": {
+        "src": "./skins/gamma.png",
+        "label": "gamma"
+    },
+    "455": {
+        "src": "./skins/gargoyle.png",
+        "label": "gargoyle"
+    },
+    "456": {
+        "src": "./skins/gdk-xmas.png",
+        "label": "gdk-xmas"
+    },
+    "457": {
+        "src": "./skins/geisha.png",
+        "label": "geisha"
+    },
+    "458": {
+        "src": "./skins/geminhate.png",
+        "label": "geminhate"
+    },
+    "459": {
+        "src": "./skins/gemini.png",
+        "label": "gemini"
+    },
+    "460": {
+        "src": "./skins/general.png",
+        "label": "general"
+    },
+    "461": {
+        "src": "./skins/german-empire.png",
+        "label": "german-empire"
+    },
+    "462": {
+        "src": "./skins/germany.png",
+        "label": "germany"
+    },
+    "463": {
+        "src": "./skins/getdeadkid.png",
+        "label": "getdeadkid"
+    },
+    "464": {
+        "src": "./skins/ghost.png",
+        "label": "ghost"
+    },
+    "465": {
+        "src": "./skins/ghosties.png",
+        "label": "ghosties"
+    },
+    "466": {
+        "src": "./skins/ghost_reaper.png",
+        "label": "ghost reaper"
+    },
+    "467": {
+        "src": "./skins/giant_human.png",
+        "label": "giant human"
+    },
+    "468": {
+        "src": "./skins/giant_skull.png",
+        "label": "giant skull"
+    },
+    "469": {
+        "src": "./skins/giant_snake.png",
+        "label": "giant snake"
+    },
+    "470": {
+        "src": "./skins/giant_spider.png",
+        "label": "giant spider"
+    },
+    "471": {
+        "src": "./skins/gingerbread.png",
+        "label": "gingerbread"
+    },
+    "472": {
+        "src": "./skins/gladiatrix.png",
+        "label": "gladiatrix"
+    },
+    "473": {
+        "src": "./skins/glub.png",
+        "label": "glub"
+    },
+    "474": {
+        "src": "./skins/gnome_mage.png",
+        "label": "gnome mage"
+    },
+    "475": {
+        "src": "./skins/gobbler.png",
+        "label": "gobbler"
+    },
+    "476": {
+        "src": "./skins/goblin.png",
+        "label": "goblin"
+    },
+    "477": {
+        "src": "./skins/goddess_aona.png",
+        "label": "goddess aona"
+    },
+    "478": {
+        "src": "./skins/golden_axe.png",
+        "label": "golden axe"
+    },
+    "479": {
+        "src": "./skins/golden_mask.png",
+        "label": "golden mask"
+    },
+    "480": {
+        "src": "./skins/golden_rat.png",
+        "label": "golden rat"
+    },
+    "481": {
+        "src": "./skins/goldfish.png",
+        "label": "goldfish"
+    },
+    "482": {
+        "src": "./skins/gold_coin.png",
+        "label": "gold coin"
+    },
+    "483": {
+        "src": "./skins/gold_pot.png",
+        "label": "gold pot"
+    },
+    "484": {
+        "src": "./skins/gold_rush.png",
+        "label": "gold rush"
+    },
+    "485": {
+        "src": "./skins/golf_battle.png",
+        "label": "golf battle"
+    },
+    "486": {
+        "src": "./skins/good.png",
+        "label": "good"
+    },
+    "487": {
+        "src": "./skins/good_boy.png",
+        "label": "good boy"
+    },
+    "488": {
+        "src": "./skins/gooey.png",
+        "label": "gooey"
+    },
+    "489": {
+        "src": "./skins/gopher.png",
+        "label": "gopher"
+    },
+    "490": {
+        "src": "./skins/gorilla.png",
+        "label": "gorilla"
+    },
+    "491": {
+        "src": "./skins/gotxu.png",
+        "label": "gotxu"
+    },
+    "492": {
+        "src": "./skins/gouache.png",
+        "label": "gouache"
+    },
+    "493": {
+        "src": "./skins/grandma.png",
+        "label": "grandma"
+    },
+    "494": {
+        "src": "./skins/great_white.png",
+        "label": "great white"
+    },
+    "495": {
+        "src": "./skins/great_zilla.png",
+        "label": "great zilla"
+    },
+    "496": {
+        "src": "./skins/greece.png",
+        "label": "greece"
+    },
+    "497": {
+        "src": "./skins/greenman.png",
+        "label": "greenman"
+    },
+    "498": {
+        "src": "./skins/green_grub.png",
+        "label": "green grub"
+    },
+    "499": {
+        "src": "./skins/grey.png",
+        "label": "grey"
+    },
+    "500": {
+        "src": "./skins/grey_fang.png",
+        "label": "grey fang"
+    },
+    "501": {
+        "src": "./skins/grinch.png",
+        "label": "grinch"
+    },
+    "502": {
+        "src": "./skins/grizzly.png",
+        "label": "grizzly"
+    },
+    "503": {
+        "src": "./skins/groovy_canvas.png",
+        "label": "groovy canvas"
+    },
+    "504": {
+        "src": "./skins/grumpy_frog.png",
+        "label": "grumpy frog"
+    },
+    "505": {
+        "src": "./skins/gryphon.png",
+        "label": "gryphon"
+    },
+    "506": {
+        "src": "./skins/gryphon_boss.png",
+        "label": "gryphon boss"
+    },
+    "507": {
+        "src": "./skins/guardian.png",
+        "label": "guardian"
+    },
+    "508": {
+        "src": "./skins/guard_dog.png",
+        "label": "guard dog"
+    },
+    "509": {
+        "src": "./skins/guerrilla_boss.png",
+        "label": "guerrilla boss"
+    },
+    "510": {
+        "src": "./skins/guinea_pig.png",
+        "label": "guinea pig"
+    },
+    "511": {
+        "src": "./skins/guitarist.png",
+        "label": "guitarist"
+    },
+    "512": {
+        "src": "./skins/gummy.png",
+        "label": "gummy"
+    },
+    "513": {
+        "src": "./skins/gunky.png",
+        "label": "gunky"
+    },
+    "514": {
+        "src": "./skins/guri.png",
+        "label": "guri"
+    },
+    "515": {
+        "src": "./skins/gymnast.png",
+        "label": "gymnast"
+    },
+    "516": {
+        "src": "./skins/halloween.png",
+        "label": "halloween"
+    },
+    "517": {
+        "src": "./skins/hamburguer.png",
+        "label": "hamburguer"
+    },
+    "518": {
+        "src": "./skins/happy.png",
+        "label": "happy"
+    },
+    "519": {
+        "src": "./skins/happy_croc.png",
+        "label": "happy croc"
+    },
+    "520": {
+        "src": "./skins/happy_hat.png",
+        "label": "happy hat"
+    },
+    "521": {
+        "src": "./skins/happy_soda.png",
+        "label": "happy soda"
+    },
+    "522": {
+        "src": "./skins/hard_shroom.png",
+        "label": "hard shroom"
+    },
+    "523": {
+        "src": "./skins/haste.png",
+        "label": "haste"
+    },
+    "524": {
+        "src": "./skins/hat.png",
+        "label": "hat"
+    },
+    "525": {
+        "src": "./skins/hatter.png",
+        "label": "hatter"
+    },
+    "526": {
+        "src": "./skins/hazmat.png",
+        "label": "hazmat"
+    },
+    "527": {
+        "src": "./skins/head_ball_2.png",
+        "label": "head ball 2"
+    },
+    "528": {
+        "src": "./skins/healing_potion.png",
+        "label": "healing potion"
+    },
+    "529": {
+        "src": "./skins/health_fixer.png",
+        "label": "health fixer"
+    },
+    "530": {
+        "src": "./skins/heart.png",
+        "label": "heart"
+    },
+    "531": {
+        "src": "./skins/heartbreaker.png",
+        "label": "heartbreaker"
+    },
+    "532": {
+        "src": "./skins/heavy_metal.png",
+        "label": "heavy metal"
+    },
+    "533": {
+        "src": "./skins/hello_reaper.png",
+        "label": "hello reaper"
+    },
+    "534": {
+        "src": "./skins/helm.png",
+        "label": "helm"
+    },
+    "535": {
+        "src": "./skins/helmet.png",
+        "label": "helmet"
+    },
+    "536": {
+        "src": "./skins/hero.png",
+        "label": "hero"
+    },
+    "537": {
+        "src": "./skins/hillary.png",
+        "label": "hillary"
+    },
+    "538": {
+        "src": "./skins/hitler.png",
+        "label": "hitler"
+    },
+    "539": {
+        "src": "./skins/hobgoblin.png",
+        "label": "hobgoblin"
+    },
+    "540": {
+        "src": "./skins/hockey.png",
+        "label": "hockey"
+    },
+    "541": {
+        "src": "./skins/hollande.png",
+        "label": "hollande"
+    },
+    "542": {
+        "src": "./skins/hong-kong.png",
+        "label": "hong-kong"
+    },
+    "543": {
+        "src": "./skins/hornet.png",
+        "label": "hornet"
+    },
+    "544": {
+        "src": "./skins/hornhead.png",
+        "label": "hornhead"
+    },
+    "545": {
+        "src": "./skins/horse_boot.png",
+        "label": "horse boot"
+    },
+    "546": {
+        "src": "./skins/horse_shoe.png",
+        "label": "horse shoe"
+    },
+    "547": {
+        "src": "./skins/hotdog.png",
+        "label": "hotdog"
+    },
+    "548": {
+        "src": "./skins/hotx.png",
+        "label": "hotx"
+    },
+    "549": {
+        "src": "./skins/hot_coffee.png",
+        "label": "hot coffee"
+    },
+    "550": {
+        "src": "./skins/hot_pepper.png",
+        "label": "hot pepper"
+    },
+    "551": {
+        "src": "./skins/hot_taco.png",
+        "label": "hot taco"
+    },
+    "552": {
+        "src": "./skins/hungary.png",
+        "label": "hungary"
+    },
+    "553": {
+        "src": "./skins/hungry.png",
+        "label": "hungry"
+    },
+    "554": {
+        "src": "./skins/hunter.png",
+        "label": "hunter"
+    },
+    "555": {
+        "src": "./skins/hunter_fox.png",
+        "label": "hunter fox"
+    },
+    "556": {
+        "src": "./skins/hunter_z.png",
+        "label": "hunter z"
+    },
+    "557": {
+        "src": "./skins/huntsman.png",
+        "label": "huntsman"
+    },
+    "558": {
+        "src": "./skins/husky.png",
+        "label": "husky"
+    },
+    "559": {
+        "src": "./skins/husky_brawl.png",
+        "label": "husky brawl"
+    },
+    "560": {
+        "src": "./skins/hyper_coffee.png",
+        "label": "hyper coffee"
+    },
+    "561": {
+        "src": "./skins/icecream.png",
+        "label": "icecream"
+    },
+    "562": {
+        "src": "./skins/icecreamy.png",
+        "label": "icecreamy"
+    },
+    "563": {
+        "src": "./skins/ice_griffin.png",
+        "label": "ice griffin"
+    },
+    "564": {
+        "src": "./skins/icky.png",
+        "label": "icky"
+    },
+    "565": {
+        "src": "./skins/icon.png",
+        "label": "icon"
+    },
+    "566": {
+        "src": "./skins/icy_braid.png",
+        "label": "icy braid"
+    },
+    "567": {
+        "src": "./skins/idea.png",
+        "label": "idea"
+    },
+    "568": {
+        "src": "./skins/idol.png",
+        "label": "idol"
+    },
+    "569": {
+        "src": "./skins/ignis.png",
+        "label": "ignis"
+    },
+    "570": {
+        "src": "./skins/imperial-japan.png",
+        "label": "imperial-japan"
+    },
+    "571": {
+        "src": "./skins/in-cog-nito.png",
+        "label": "in-cog-nito"
+    },
+    "572": {
+        "src": "./skins/india.png",
+        "label": "india"
+    },
+    "573": {
+        "src": "./skins/indiana.png",
+        "label": "indiana"
+    },
+    "574": {
+        "src": "./skins/indonesia.png",
+        "label": "indonesia"
+    },
+    "575": {
+        "src": "./skins/infernando.png",
+        "label": "infernando"
+    },
+    "576": {
+        "src": "./skins/infernus.png",
+        "label": "infernus"
+    },
+    "577": {
+        "src": "./skins/inflamed.png",
+        "label": "inflamed"
+    },
+    "578": {
+        "src": "./skins/invader.png",
+        "label": "invader"
+    },
+    "579": {
+        "src": "./skins/iran.png",
+        "label": "iran"
+    },
+    "580": {
+        "src": "./skins/iraq.png",
+        "label": "iraq"
+    },
+    "581": {
+        "src": "./skins/ireland.png",
+        "label": "ireland"
+    },
+    "582": {
+        "src": "./skins/iridian_tiger.png",
+        "label": "iridian tiger"
+    },
+    "583": {
+        "src": "./skins/ironfist_titus.png",
+        "label": "ironfist titus"
+    },
+    "584": {
+        "src": "./skins/iron_titan.png",
+        "label": "iron titan"
+    },
+    "585": {
+        "src": "./skins/irs.png",
+        "label": "irs"
+    },
+    "586": {
+        "src": "./skins/isaacx.png",
+        "label": "isaacx"
+    },
+    "587": {
+        "src": "./skins/italy.png",
+        "label": "italy"
+    },
+    "588": {
+        "src": "./skins/jab.png",
+        "label": "jab"
+    },
+    "589": {
+        "src": "./skins/jade.png",
+        "label": "jade"
+    },
+    "590": {
+        "src": "./skins/jade_dragon.png",
+        "label": "jade dragon"
+    },
+    "591": {
+        "src": "./skins/jaja.png",
+        "label": "jaja"
+    },
+    "592": {
+        "src": "./skins/jamaica.png",
+        "label": "jamaica"
+    },
+    "593": {
+        "src": "./skins/japan.png",
+        "label": "japan"
+    },
+    "594": {
+        "src": "./skins/jarbrain.png",
+        "label": "jarbrain"
+    },
+    "595": {
+        "src": "./skins/jelly.png",
+        "label": "jelly"
+    },
+    "596": {
+        "src": "./skins/jellyblob.png",
+        "label": "jellyblob"
+    },
+    "597": {
+        "src": "./skins/jellyfish_ball.png",
+        "label": "jellyfish ball"
+    },
+    "598": {
+        "src": "./skins/jelly_bear.png",
+        "label": "jelly bear"
+    },
+    "599": {
+        "src": "./skins/jelly_diver.png",
+        "label": "jelly diver"
+    },
+    "600": {
+        "src": "./skins/jolly_santa.png",
+        "label": "jolly santa"
+    },
+    "601": {
+        "src": "./skins/jordan.png",
+        "label": "jordan"
+    },
+    "602": {
+        "src": "./skins/jotun.png",
+        "label": "jotun"
+    },
+    "603": {
+        "src": "./skins/judo_fighter.png",
+        "label": "judo fighter"
+    },
+    "604": {
+        "src": "./skins/jumper.png",
+        "label": "jumper"
+    },
+    "605": {
+        "src": "./skins/jumping_mouse.png",
+        "label": "jumping mouse"
+    },
+    "606": {
+        "src": "./skins/jungle_tiger.png",
+        "label": "jungle tiger"
+    },
+    "607": {
+        "src": "./skins/jupiter.png",
+        "label": "jupiter"
+    },
+    "608": {
+        "src": "./skins/karate_parrot.png",
+        "label": "karate parrot"
+    },
+    "609": {
+        "src": "./skins/kbkb.png",
+        "label": "kbkb"
+    },
+    "610": {
+        "src": "./skins/kc.png",
+        "label": "kc"
+    },
+    "611": {
+        "src": "./skins/kempo_tiger.png",
+        "label": "kempo tiger"
+    },
+    "612": {
+        "src": "./skins/killer_mask.png",
+        "label": "killer mask"
+    },
+    "613": {
+        "src": "./skins/killer_octopus.png",
+        "label": "killer octopus"
+    },
+    "614": {
+        "src": "./skins/kim-jong-un.png",
+        "label": "kim-jong-un"
+    },
+    "615": {
+        "src": "./skins/kim_jong-un.png",
+        "label": "kim jong-un"
+    },
+    "616": {
+        "src": "./skins/king.png",
+        "label": "king"
+    },
+    "617": {
+        "src": "./skins/king_ghoulish.png",
+        "label": "king ghoulish"
+    },
+    "618": {
+        "src": "./skins/king_lion.png",
+        "label": "king lion"
+    },
+    "619": {
+        "src": "./skins/kiss.png",
+        "label": "kiss"
+    },
+    "620": {
+        "src": "./skins/kiss_boy.png",
+        "label": "kiss boy"
+    },
+    "621": {
+        "src": "./skins/kiss_girl.png",
+        "label": "kiss girl"
+    },
+    "622": {
+        "src": "./skins/kobe.png",
+        "label": "kobe"
+    },
+    "623": {
+        "src": "./skins/kong.png",
+        "label": "kong"
+    },
+    "624": {
+        "src": "./skins/kraken.png",
+        "label": "kraken"
+    },
+    "625": {
+        "src": "./skins/krakenuts.png",
+        "label": "krakenuts"
+    },
+    "626": {
+        "src": "./skins/krav_monki.png",
+        "label": "krav monki"
+    },
+    "627": {
+        "src": "./skins/kristoffer.png",
+        "label": "kristoffer"
+    },
+    "628": {
+        "src": "./skins/kurdistan.png",
+        "label": "kurdistan"
+    },
+    "629": {
+        "src": "./skins/kuwait.png",
+        "label": "kuwait"
+    },
+    "630": {
+        "src": "./skins/lady_liberty.png",
+        "label": "lady liberty"
+    },
+    "631": {
+        "src": "./skins/last_judgment.png",
+        "label": "last judgment"
+    },
+    "632": {
+        "src": "./skins/last_master_cyber_commando.png",
+        "label": "last master cyber commando"
+    },
+    "633": {
+        "src": "./skins/last_master_duel_master.png",
+        "label": "last master duel master"
+    },
+    "634": {
+        "src": "./skins/last_master_elite_pilot.png",
+        "label": "last master elite pilot"
+    },
+    "635": {
+        "src": "./skins/last_master_red_pulse.png",
+        "label": "last master red pulse"
+    },
+    "636": {
+        "src": "./skins/last_master_roller_bot.png",
+        "label": "last master roller bot"
+    },
+    "637": {
+        "src": "./skins/last_master_space_warrior.png",
+        "label": "last master space warrior"
+    },
+    "638": {
+        "src": "./skins/latvia.png",
+        "label": "latvia"
+    },
+    "639": {
+        "src": "./skins/lava_beast.png",
+        "label": "lava beast"
+    },
+    "640": {
+        "src": "./skins/lead.png",
+        "label": "lead"
+    },
+    "641": {
+        "src": "./skins/leaf_clover.png",
+        "label": "leaf clover"
+    },
+    "642": {
+        "src": "./skins/lebanon.png",
+        "label": "lebanon"
+    },
+    "643": {
+        "src": "./skins/leech.png",
+        "label": "leech"
+    },
+    "644": {
+        "src": "./skins/leo.png",
+        "label": "leo"
+    },
+    "645": {
+        "src": "./skins/leodroid.png",
+        "label": "leodroid"
+    },
+    "646": {
+        "src": "./skins/leopard.png",
+        "label": "leopard"
+    },
+    "647": {
+        "src": "./skins/leprechaun.png",
+        "label": "leprechaun"
+    },
+    "648": {
+        "src": "./skins/leviathan.png",
+        "label": "leviathan"
+    },
+    "649": {
+        "src": "./skins/le_smash.png",
+        "label": "le smash"
+    },
+    "650": {
+        "src": "./skins/liberty.png",
+        "label": "liberty"
+    },
+    "651": {
+        "src": "./skins/lightning.png",
+        "label": "lightning"
+    },
+    "652": {
+        "src": "./skins/lion.png",
+        "label": "lion"
+    },
+    "653": {
+        "src": "./skins/lit.png",
+        "label": "lit"
+    },
+    "654": {
+        "src": "./skins/lithuania.png",
+        "label": "lithuania"
+    },
+    "655": {
+        "src": "./skins/lizard.png",
+        "label": "lizard"
+    },
+    "656": {
+        "src": "./skins/lop_bunny.png",
+        "label": "lop bunny"
+    },
+    "657": {
+        "src": "./skins/lotsa_heart_elephant.png",
+        "label": "lotsa heart elephant"
+    },
+    "658": {
+        "src": "./skins/lovely.png",
+        "label": "lovely"
+    },
+    "659": {
+        "src": "./skins/lovesick.png",
+        "label": "lovesick"
+    },
+    "660": {
+        "src": "./skins/lovesick_ted.png",
+        "label": "lovesick ted"
+    },
+    "661": {
+        "src": "./skins/love_arrow.png",
+        "label": "love arrow"
+    },
+    "662": {
+        "src": "./skins/love_cat.png",
+        "label": "love cat"
+    },
+    "663": {
+        "src": "./skins/luchador.png",
+        "label": "luchador"
+    },
+    "664": {
+        "src": "./skins/lucky_doll.png",
+        "label": "lucky doll"
+    },
+    "665": {
+        "src": "./skins/lucky_rat.png",
+        "label": "lucky rat"
+    },
+    "666": {
+        "src": "./skins/lurid.png",
+        "label": "lurid"
+    },
+    "667": {
+        "src": "./skins/luxembourg.png",
+        "label": "luxembourg"
+    },
+    "668": {
+        "src": "./skins/m4j.png",
+        "label": "m4j"
+    },
+    "669": {
+        "src": "./skins/madame_moo.png",
+        "label": "madame moo"
+    },
+    "670": {
+        "src": "./skins/madjawz.png",
+        "label": "madjawz"
+    },
+    "671": {
+        "src": "./skins/madshroom.png",
+        "label": "madshroom"
+    },
+    "672": {
+        "src": "./skins/mad_cap.png",
+        "label": "mad cap"
+    },
+    "673": {
+        "src": "./skins/mad_fragment.png",
+        "label": "mad fragment"
+    },
+    "674": {
+        "src": "./skins/mad_monkey.png",
+        "label": "mad monkey"
+    },
+    "675": {
+        "src": "./skins/mad_muffin.png",
+        "label": "mad muffin"
+    },
+    "676": {
+        "src": "./skins/mad_ramon.png",
+        "label": "mad ramon"
+    },
+    "677": {
+        "src": "./skins/mage.png",
+        "label": "mage"
+    },
+    "678": {
+        "src": "./skins/magic_gerbil.png",
+        "label": "magic gerbil"
+    },
+    "679": {
+        "src": "./skins/magic_hat.png",
+        "label": "magic hat"
+    },
+    "680": {
+        "src": "./skins/majnoon.png",
+        "label": "majnoon"
+    },
+    "681": {
+        "src": "./skins/major_eagle.png",
+        "label": "major eagle"
+    },
+    "682": {
+        "src": "./skins/makinbakin.png",
+        "label": "makinbakin"
+    },
+    "683": {
+        "src": "./skins/maldivas.png",
+        "label": "maldivas"
+    },
+    "684": {
+        "src": "./skins/maldives.png",
+        "label": "maldives"
+    },
+    "685": {
+        "src": "./skins/mammoth.png",
+        "label": "mammoth"
+    },
+    "686": {
+        "src": "./skins/mansuy.png",
+        "label": "mansuy"
+    },
+    "687": {
+        "src": "./skins/maple.png",
+        "label": "maple"
+    },
+    "688": {
+        "src": "./skins/maracas.png",
+        "label": "maracas"
+    },
+    "689": {
+        "src": "./skins/marauder.png",
+        "label": "marauder"
+    },
+    "690": {
+        "src": "./skins/mariachi.png",
+        "label": "mariachi"
+    },
+    "691": {
+        "src": "./skins/mari_monshroom.png",
+        "label": "mari monshroom"
+    },
+    "692": {
+        "src": "./skins/mars.png",
+        "label": "mars"
+    },
+    "693": {
+        "src": "./skins/mask.png",
+        "label": "mask"
+    },
+    "694": {
+        "src": "./skins/masked.png",
+        "label": "masked"
+    },
+    "695": {
+        "src": "./skins/masked_menace.png",
+        "label": "masked menace"
+    },
+    "696": {
+        "src": "./skins/matjoy.png",
+        "label": "matjoy"
+    },
+    "697": {
+        "src": "./skins/matriarchy.png",
+        "label": "matriarchy"
+    },
+    "698": {
+        "src": "./skins/mechanicat.png",
+        "label": "mechanicat"
+    },
+    "699": {
+        "src": "./skins/mechatron.png",
+        "label": "mechatron"
+    },
+    "700": {
+        "src": "./skins/mecha_destroyer.png",
+        "label": "mecha destroyer"
+    },
+    "701": {
+        "src": "./skins/mecha_parrot.png",
+        "label": "mecha parrot"
+    },
+    "702": {
+        "src": "./skins/mecha_toad.png",
+        "label": "mecha toad"
+    },
+    "703": {
+        "src": "./skins/mega_mecha.png",
+        "label": "mega mecha"
+    },
+    "704": {
+        "src": "./skins/mega_power.png",
+        "label": "mega power"
+    },
+    "705": {
+        "src": "./skins/melting_man.png",
+        "label": "melting man"
+    },
+    "706": {
+        "src": "./skins/mercury.png",
+        "label": "mercury"
+    },
+    "707": {
+        "src": "./skins/merkel.png",
+        "label": "merkel"
+    },
+    "708": {
+        "src": "./skins/merry_outlaw.png",
+        "label": "merry outlaw"
+    },
+    "709": {
+        "src": "./skins/merry_pencil.png",
+        "label": "merry pencil"
+    },
+    "710": {
+        "src": "./skins/metal_face.png",
+        "label": "metal face"
+    },
+    "711": {
+        "src": "./skins/metal_scorpion.png",
+        "label": "metal scorpion"
+    },
+    "712": {
+        "src": "./skins/meteor.png",
+        "label": "meteor"
+    },
+    "713": {
+        "src": "./skins/mexican_skull.png",
+        "label": "mexican skull"
+    },
+    "714": {
+        "src": "./skins/mexico.png",
+        "label": "mexico"
+    },
+    "715": {
+        "src": "./skins/mico.png",
+        "label": "mico"
+    },
+    "716": {
+        "src": "./skins/midnight_wolf.png",
+        "label": "midnight wolf"
+    },
+    "717": {
+        "src": "./skins/midnight_yeti.png",
+        "label": "midnight yeti"
+    },
+    "718": {
+        "src": "./skins/mighty.png",
+        "label": "mighty"
+    },
+    "719": {
+        "src": "./skins/mindseye.png",
+        "label": "mindseye"
+    },
+    "720": {
+        "src": "./skins/minhvu.png",
+        "label": "minhvu"
+    },
+    "721": {
+        "src": "./skins/mini_football.png",
+        "label": "mini football"
+    },
+    "722": {
+        "src": "./skins/mini_militia.png",
+        "label": "mini militia"
+    },
+    "723": {
+        "src": "./skins/minotaur.png",
+        "label": "minotaur"
+    },
+    "724": {
+        "src": "./skins/mischievous.png",
+        "label": "mischievous"
+    },
+    "725": {
+        "src": "./skins/mister.png",
+        "label": "mister"
+    },
+    "726": {
+        "src": "./skins/mistik.png",
+        "label": "mistik"
+    },
+    "727": {
+        "src": "./skins/mistletoe_madness.png",
+        "label": "mistletoe madness"
+    },
+    "728": {
+        "src": "./skins/monday_worker.png",
+        "label": "monday worker"
+    },
+    "729": {
+        "src": "./skins/monk.png",
+        "label": "monk"
+    },
+    "730": {
+        "src": "./skins/monster.png",
+        "label": "monster"
+    },
+    "731": {
+        "src": "./skins/monster_blob.png",
+        "label": "monster blob"
+    },
+    "732": {
+        "src": "./skins/moofun.png",
+        "label": "moofun"
+    },
+    "733": {
+        "src": "./skins/moon.png",
+        "label": "moon"
+    },
+    "734": {
+        "src": "./skins/moonlight_banshee.png",
+        "label": "moonlight banshee"
+    },
+    "735": {
+        "src": "./skins/moonlight_metal_ghoul.png",
+        "label": "moonlight metal ghoul"
+    },
+    "736": {
+        "src": "./skins/moonlight_night_hunter.png",
+        "label": "moonlight night hunter"
+    },
+    "737": {
+        "src": "./skins/moonlight_psycho.png",
+        "label": "moonlight psycho"
+    },
+    "738": {
+        "src": "./skins/moonlight_red_fiend.png",
+        "label": "moonlight red fiend"
+    },
+    "739": {
+        "src": "./skins/moonlight_wendigo.png",
+        "label": "moonlight wendigo"
+    },
+    "740": {
+        "src": "./skins/moon_alisa.png",
+        "label": "moon alisa"
+    },
+    "741": {
+        "src": "./skins/moon_ship.png",
+        "label": "moon ship"
+    },
+    "742": {
+        "src": "./skins/moose.png",
+        "label": "moose"
+    },
+    "743": {
+        "src": "./skins/mountain.png",
+        "label": "mountain"
+    },
+    "744": {
+        "src": "./skins/mouse.png",
+        "label": "mouse"
+    },
+    "745": {
+        "src": "./skins/moustache_mask.png",
+        "label": "moustache mask"
+    },
+    "746": {
+        "src": "./skins/mr_banana.png",
+        "label": "mr banana"
+    },
+    "747": {
+        "src": "./skins/mr_boss.png",
+        "label": "mr boss"
+    },
+    "748": {
+        "src": "./skins/mr_charming.png",
+        "label": "mr charming"
+    },
+    "749": {
+        "src": "./skins/mr_freedom.png",
+        "label": "mr freedom"
+    },
+    "750": {
+        "src": "./skins/mr_goose.png",
+        "label": "mr goose"
+    },
+    "751": {
+        "src": "./skins/mr_pumpkin.png",
+        "label": "mr pumpkin"
+    },
+    "752": {
+        "src": "./skins/mr_puzzled.png",
+        "label": "mr puzzled"
+    },
+    "753": {
+        "src": "./skins/mr_spanks.png",
+        "label": "mr spanks"
+    },
+    "754": {
+        "src": "./skins/mr_strange.png",
+        "label": "mr strange"
+    },
+    "755": {
+        "src": "./skins/mummy.png",
+        "label": "mummy"
+    },
+    "756": {
+        "src": "./skins/murder_ball.png",
+        "label": "murder ball"
+    },
+    "757": {
+        "src": "./skins/mushroom.png",
+        "label": "mushroom"
+    },
+    "758": {
+        "src": "./skins/mushroom_bot.png",
+        "label": "mushroom bot"
+    },
+    "759": {
+        "src": "./skins/mushroom_face.png",
+        "label": "mushroom face"
+    },
+    "760": {
+        "src": "./skins/mutant.png",
+        "label": "mutant"
+    },
+    "761": {
+        "src": "./skins/mutant_herb.png",
+        "label": "mutant herb"
+    },
+    "762": {
+        "src": "./skins/muu.png",
+        "label": "muu"
+    },
+    "763": {
+        "src": "./skins/mystic_bird.png",
+        "label": "mystic bird"
+    },
+    "764": {
+        "src": "./skins/n0psa.png",
+        "label": "n0psa"
+    },
+    "765": {
+        "src": "./skins/narwuul.png",
+        "label": "narwuul"
+    },
+    "766": {
+        "src": "./skins/nasa.png",
+        "label": "nasa"
+    },
+    "767": {
+        "src": "./skins/nazi.png",
+        "label": "nazi"
+    },
+    "768": {
+        "src": "./skins/necktie_cat.png",
+        "label": "necktie cat"
+    },
+    "769": {
+        "src": "./skins/necro_strangler.png",
+        "label": "necro strangler"
+    },
+    "770": {
+        "src": "./skins/neila.png",
+        "label": "neila"
+    },
+    "771": {
+        "src": "./skins/neon_bug.png",
+        "label": "neon bug"
+    },
+    "772": {
+        "src": "./skins/neon_dog.png",
+        "label": "neon dog"
+    },
+    "773": {
+        "src": "./skins/neptune.png",
+        "label": "neptune"
+    },
+    "774": {
+        "src": "./skins/neptunus_spider.png",
+        "label": "neptunus spider"
+    },
+    "775": {
+        "src": "./skins/nerdy.png",
+        "label": "nerdy"
+    },
+    "776": {
+        "src": "./skins/netherlands.png",
+        "label": "netherlands"
+    },
+    "777": {
+        "src": "./skins/nibblebug.png",
+        "label": "nibblebug"
+    },
+    "778": {
+        "src": "./skins/nice_doggy.png",
+        "label": "nice doggy"
+    },
+    "779": {
+        "src": "./skins/nigeria.png",
+        "label": "nigeria"
+    },
+    "780": {
+        "src": "./skins/nightfury.png",
+        "label": "nightfury"
+    },
+    "781": {
+        "src": "./skins/nightmare.png",
+        "label": "nightmare"
+    },
+    "782": {
+        "src": "./skins/nomster.png",
+        "label": "nomster"
+    },
+    "783": {
+        "src": "./skins/north-korea.png",
+        "label": "north-korea"
+    },
+    "784": {
+        "src": "./skins/north_korea.png",
+        "label": "north korea"
+    },
+    "785": {
+        "src": "./skins/norway.png",
+        "label": "norway"
+    },
+    "786": {
+        "src": "./skins/nose.png",
+        "label": "nose"
+    },
+    "787": {
+        "src": "./skins/nuclear.png",
+        "label": "nuclear"
+    },
+    "788": {
+        "src": "./skins/nuke.png",
+        "label": "nuke"
+    },
+    "789": {
+        "src": "./skins/nutcracker.png",
+        "label": "nutcracker"
+    },
+    "790": {
+        "src": "./skins/nvr_insectoid.png",
+        "label": "nvr insectoid"
+    },
+    "791": {
+        "src": "./skins/nvr_shadow.png",
+        "label": "nvr shadow"
+    },
+    "792": {
+        "src": "./skins/nvr_shuriken.png",
+        "label": "nvr shuriken"
+    },
+    "793": {
+        "src": "./skins/nvr_silent_fox.png",
+        "label": "nvr silent fox"
+    },
+    "794": {
+        "src": "./skins/nvr_steel_ram.png",
+        "label": "nvr steel ram"
+    },
+    "795": {
+        "src": "./skins/nvr_zap.png",
+        "label": "nvr zap"
+    },
+    "796": {
+        "src": "./skins/obama.png",
+        "label": "obama"
+    },
+    "797": {
+        "src": "./skins/octoeira.png",
+        "label": "octoeira"
+    },
+    "798": {
+        "src": "./skins/octogummy.png",
+        "label": "octogummy"
+    },
+    "799": {
+        "src": "./skins/octopus.png",
+        "label": "octopus"
+    },
+    "800": {
+        "src": "./skins/oculus_orbus.png",
+        "label": "oculus orbus"
+    },
+    "801": {
+        "src": "./skins/odd.png",
+        "label": "odd"
+    },
+    "802": {
+        "src": "./skins/ogre.png",
+        "label": "ogre"
+    },
+    "803": {
+        "src": "./skins/olympus_ares.png",
+        "label": "olympus ares"
+    },
+    "804": {
+        "src": "./skins/olympus_hades.png",
+        "label": "olympus hades"
+    },
+    "805": {
+        "src": "./skins/olympus_hercules.png",
+        "label": "olympus hercules"
+    },
+    "806": {
+        "src": "./skins/olympus_medusa.png",
+        "label": "olympus medusa"
+    },
+    "807": {
+        "src": "./skins/olympus_poseidon.png",
+        "label": "olympus poseidon"
+    },
+    "808": {
+        "src": "./skins/olympus_zeus.png",
+        "label": "olympus zeus"
+    },
+    "809": {
+        "src": "./skins/omega.png",
+        "label": "omega"
+    },
+    "810": {
+        "src": "./skins/omega_blast.png",
+        "label": "omega blast"
+    },
+    "811": {
+        "src": "./skins/omicron.png",
+        "label": "omicron"
+    },
+    "812": {
+        "src": "./skins/omnom_gator.png",
+        "label": "omnom gator"
+    },
+    "813": {
+        "src": "./skins/omnom_lion.png",
+        "label": "omnom lion"
+    },
+    "814": {
+        "src": "./skins/omnom_snek.png",
+        "label": "omnom snek"
+    },
+    "815": {
+        "src": "./skins/oni.png",
+        "label": "oni"
+    },
+    "816": {
+        "src": "./skins/onion_king.png",
+        "label": "onion king"
+    },
+    "817": {
+        "src": "./skins/ooze.png",
+        "label": "ooze"
+    },
+    "818": {
+        "src": "./skins/orc_grunt.png",
+        "label": "orc grunt"
+    },
+    "819": {
+        "src": "./skins/orc_warrior.png",
+        "label": "orc warrior"
+    },
+    "820": {
+        "src": "./skins/origin.png",
+        "label": "origin"
+    },
+    "821": {
+        "src": "./skins/owl.png",
+        "label": "owl"
+    },
+    "822": {
+        "src": "./skins/pakistan.png",
+        "label": "pakistan"
+    },
+    "823": {
+        "src": "./skins/paladin.png",
+        "label": "paladin"
+    },
+    "824": {
+        "src": "./skins/palin.png",
+        "label": "palin"
+    },
+    "825": {
+        "src": "./skins/palm_tree.png",
+        "label": "palm tree"
+    },
+    "826": {
+        "src": "./skins/panda.png",
+        "label": "panda"
+    },
+    "827": {
+        "src": "./skins/pandamonium.png",
+        "label": "pandamonium"
+    },
+    "828": {
+        "src": "./skins/panda_fun.png",
+        "label": "panda fun"
+    },
+    "829": {
+        "src": "./skins/panther.png",
+        "label": "panther"
+    },
+    "830": {
+        "src": "./skins/parrot.png",
+        "label": "parrot"
+    },
+    "831": {
+        "src": "./skins/party_bones.png",
+        "label": "party bones"
+    },
+    "832": {
+        "src": "./skins/party_howl.png",
+        "label": "party howl"
+    },
+    "833": {
+        "src": "./skins/party_mode.png",
+        "label": "party mode"
+    },
+    "834": {
+        "src": "./skins/party_time.png",
+        "label": "party time"
+    },
+    "835": {
+        "src": "./skins/patriarchy.png",
+        "label": "patriarchy"
+    },
+    "836": {
+        "src": "./skins/patronx.png",
+        "label": "patronx"
+    },
+    "837": {
+        "src": "./skins/pencil.png",
+        "label": "pencil"
+    },
+    "838": {
+        "src": "./skins/penguin.png",
+        "label": "penguin"
+    },
+    "839": {
+        "src": "./skins/pepe_loco.png",
+        "label": "pepe loco"
+    },
+    "840": {
+        "src": "./skins/peppegario.png",
+        "label": "peppegario"
+    },
+    "841": {
+        "src": "./skins/performer.png",
+        "label": "performer"
+    },
+    "842": {
+        "src": "./skins/peru.png",
+        "label": "peru"
+    },
+    "843": {
+        "src": "./skins/pewdiepie.png",
+        "label": "pewdiepie"
+    },
+    "844": {
+        "src": "./skins/phantom.png",
+        "label": "phantom"
+    },
+    "845": {
+        "src": "./skins/piccolo.png",
+        "label": "piccolo"
+    },
+    "846": {
+        "src": "./skins/pickeyes.png",
+        "label": "pickeyes"
+    },
+    "847": {
+        "src": "./skins/pie_slice.png",
+        "label": "pie slice"
+    },
+    "848": {
+        "src": "./skins/pig.png",
+        "label": "pig"
+    },
+    "849": {
+        "src": "./skins/piglet.png",
+        "label": "piglet"
+    },
+    "850": {
+        "src": "./skins/pig_ball.png",
+        "label": "pig ball"
+    },
+    "851": {
+        "src": "./skins/pika.png",
+        "label": "pika"
+    },
+    "852": {
+        "src": "./skins/pilgrim.png",
+        "label": "pilgrim"
+    },
+    "853": {
+        "src": "./skins/pinata.png",
+        "label": "pinata"
+    },
+    "854": {
+        "src": "./skins/pinata_warden.png",
+        "label": "pinata warden"
+    },
+    "855": {
+        "src": "./skins/pineappleface.png",
+        "label": "pineappleface"
+    },
+    "856": {
+        "src": "./skins/pinehead.png",
+        "label": "pinehead"
+    },
+    "857": {
+        "src": "./skins/pirate.png",
+        "label": "pirate"
+    },
+    "858": {
+        "src": "./skins/pirate_maiden.png",
+        "label": "pirate maiden"
+    },
+    "859": {
+        "src": "./skins/pixel_kong.png",
+        "label": "pixel kong"
+    },
+    "860": {
+        "src": "./skins/pixie.png",
+        "label": "pixie"
+    },
+    "861": {
+        "src": "./skins/pizza.png",
+        "label": "pizza"
+    },
+    "862": {
+        "src": "./skins/plague.png",
+        "label": "plague"
+    },
+    "863": {
+        "src": "./skins/planet_cat.png",
+        "label": "planet cat"
+    },
+    "864": {
+        "src": "./skins/pluto.png",
+        "label": "pluto"
+    },
+    "865": {
+        "src": "./skins/poet.png",
+        "label": "poet"
+    },
+    "866": {
+        "src": "./skins/poison_rose.png",
+        "label": "poison rose"
+    },
+    "867": {
+        "src": "./skins/pokeball.png",
+        "label": "pokeball"
+    },
+    "868": {
+        "src": "./skins/pokerface.png",
+        "label": "pokerface"
+    },
+    "869": {
+        "src": "./skins/poker_ace.png",
+        "label": "poker ace"
+    },
+    "870": {
+        "src": "./skins/poland.png",
+        "label": "poland"
+    },
+    "871": {
+        "src": "./skins/polar_bear.png",
+        "label": "polar bear"
+    },
+    "872": {
+        "src": "./skins/poppyns.png",
+        "label": "poppyns"
+    },
+    "873": {
+        "src": "./skins/porky.png",
+        "label": "porky"
+    },
+    "874": {
+        "src": "./skins/portugal.png",
+        "label": "portugal"
+    },
+    "875": {
+        "src": "./skins/power.png",
+        "label": "power"
+    },
+    "876": {
+        "src": "./skins/power_badger.png",
+        "label": "power badger"
+    },
+    "877": {
+        "src": "./skins/power_fighter.png",
+        "label": "power fighter"
+    },
+    "878": {
+        "src": "./skins/power_girl.png",
+        "label": "power girl"
+    },
+    "879": {
+        "src": "./skins/power_glove.png",
+        "label": "power glove"
+    },
+    "880": {
+        "src": "./skins/power_mask.png",
+        "label": "power mask"
+    },
+    "881": {
+        "src": "./skins/power_ninja.png",
+        "label": "power ninja"
+    },
+    "882": {
+        "src": "./skins/prankster.png",
+        "label": "prankster"
+    },
+    "883": {
+        "src": "./skins/prey.png",
+        "label": "prey"
+    },
+    "884": {
+        "src": "./skins/primal.png",
+        "label": "primal"
+    },
+    "885": {
+        "src": "./skins/princess_swift.png",
+        "label": "princess swift"
+    },
+    "886": {
+        "src": "./skins/prismatic_jackal.png",
+        "label": "prismatic jackal"
+    },
+    "887": {
+        "src": "./skins/prodota.png",
+        "label": "prodota"
+    },
+    "888": {
+        "src": "./skins/prussia.png",
+        "label": "prussia"
+    },
+    "889": {
+        "src": "./skins/psychopanda.png",
+        "label": "psychopanda"
+    },
+    "890": {
+        "src": "./skins/psycho_driller.png",
+        "label": "psycho driller"
+    },
+    "891": {
+        "src": "./skins/ptrn.png",
+        "label": "ptrn"
+    },
+    "892": {
+        "src": "./skins/pug.png",
+        "label": "pug"
+    },
+    "893": {
+        "src": "./skins/pumpkin.png",
+        "label": "pumpkin"
+    },
+    "894": {
+        "src": "./skins/pumpkitty.png",
+        "label": "pumpkitty"
+    },
+    "895": {
+        "src": "./skins/punk.png",
+        "label": "punk"
+    },
+    "896": {
+        "src": "./skins/purple_hacker.png",
+        "label": "purple hacker"
+    },
+    "897": {
+        "src": "./skins/putin.png",
+        "label": "putin"
+    },
+    "898": {
+        "src": "./skins/pyramid_eye.png",
+        "label": "pyramid eye"
+    },
+    "899": {
+        "src": "./skins/qing-dynasty.png",
+        "label": "qing-dynasty"
+    },
+    "900": {
+        "src": "./skins/queasy.png",
+        "label": "queasy"
+    },
+    "901": {
+        "src": "./skins/quebec.png",
+        "label": "quebec"
+    },
+    "902": {
+        "src": "./skins/queen.png",
+        "label": "queen"
+    },
+    "903": {
+        "src": "./skins/rabbit.png",
+        "label": "rabbit"
+    },
+    "904": {
+        "src": "./skins/rabid.png",
+        "label": "rabid"
+    },
+    "905": {
+        "src": "./skins/raccoon_jutsu.png",
+        "label": "raccoon jutsu"
+    },
+    "906": {
+        "src": "./skins/radar.png",
+        "label": "radar"
+    },
+    "907": {
+        "src": "./skins/radical_hand.png",
+        "label": "radical hand"
+    },
+    "908": {
+        "src": "./skins/rage.png",
+        "label": "rage"
+    },
+    "909": {
+        "src": "./skins/ragnarok.png",
+        "label": "ragnarok"
+    },
+    "910": {
+        "src": "./skins/raider.png",
+        "label": "raider"
+    },
+    "911": {
+        "src": "./skins/raid_boss.png",
+        "label": "raid boss"
+    },
+    "912": {
+        "src": "./skins/rainbow.png",
+        "label": "rainbow"
+    },
+    "913": {
+        "src": "./skins/rainbow_slap.png",
+        "label": "rainbow slap"
+    },
+    "914": {
+        "src": "./skins/rainbow_tusk.png",
+        "label": "rainbow tusk"
+    },
+    "915": {
+        "src": "./skins/ranger.png",
+        "label": "ranger"
+    },
+    "916": {
+        "src": "./skins/raptor.png",
+        "label": "raptor"
+    },
+    "917": {
+        "src": "./skins/rascal.png",
+        "label": "rascal"
+    },
+    "918": {
+        "src": "./skins/raspy_elf.png",
+        "label": "raspy elf"
+    },
+    "919": {
+        "src": "./skins/rastafari.png",
+        "label": "rastafari"
+    },
+    "920": {
+        "src": "./skins/rat.png",
+        "label": "rat"
+    },
+    "921": {
+        "src": "./skins/rayday.png",
+        "label": "rayday"
+    },
+    "922": {
+        "src": "./skins/receita-federal.png",
+        "label": "receita-federal"
+    },
+    "923": {
+        "src": "./skins/receita_federal.png",
+        "label": "receita federal"
+    },
+    "924": {
+        "src": "./skins/reckoning.png",
+        "label": "reckoning"
+    },
+    "925": {
+        "src": "./skins/reddit.png",
+        "label": "reddit"
+    },
+    "926": {
+        "src": "./skins/red_beard.png",
+        "label": "red beard"
+    },
+    "927": {
+        "src": "./skins/red_hot_watermelon.png",
+        "label": "red hot watermelon"
+    },
+    "928": {
+        "src": "./skins/reindeer.png",
+        "label": "reindeer"
+    },
+    "929": {
+        "src": "./skins/reptilian.png",
+        "label": "reptilian"
+    },
+    "930": {
+        "src": "./skins/rhino_boxer.png",
+        "label": "rhino boxer"
+    },
+    "931": {
+        "src": "./skins/ringmaster.png",
+        "label": "ringmaster"
+    },
+    "932": {
+        "src": "./skins/river_crocodile.png",
+        "label": "river crocodile"
+    },
+    "933": {
+        "src": "./skins/rocker.png",
+        "label": "rocker"
+    },
+    "934": {
+        "src": "./skins/rocket.png",
+        "label": "rocket"
+    },
+    "935": {
+        "src": "./skins/rocket_deer.png",
+        "label": "rocket deer"
+    },
+    "936": {
+        "src": "./skins/rockhopper.png",
+        "label": "rockhopper"
+    },
+    "937": {
+        "src": "./skins/rogue.png",
+        "label": "rogue"
+    },
+    "938": {
+        "src": "./skins/rogue_bunny.png",
+        "label": "rogue bunny"
+    },
+    "939": {
+        "src": "./skins/rogue_samurai.png",
+        "label": "rogue samurai"
+    },
+    "940": {
+        "src": "./skins/romania.png",
+        "label": "romania"
+    },
+    "941": {
+        "src": "./skins/rooster.png",
+        "label": "rooster"
+    },
+    "942": {
+        "src": "./skins/root_gnome.png",
+        "label": "root gnome"
+    },
+    "943": {
+        "src": "./skins/rose.png",
+        "label": "rose"
+    },
+    "944": {
+        "src": "./skins/rowdy_shroom.png",
+        "label": "rowdy shroom"
+    },
+    "945": {
+        "src": "./skins/russia.png",
+        "label": "russia"
+    },
+    "946": {
+        "src": "./skins/sabertooth.png",
+        "label": "sabertooth"
+    },
+    "947": {
+        "src": "./skins/sad.png",
+        "label": "sad"
+    },
+    "948": {
+        "src": "./skins/sagiastrous.png",
+        "label": "sagiastrous"
+    },
+    "949": {
+        "src": "./skins/sailor_seal.png",
+        "label": "sailor seal"
+    },
+    "950": {
+        "src": "./skins/salty_assault.png",
+        "label": "salty assault"
+    },
+    "951": {
+        "src": "./skins/samba.png",
+        "label": "samba"
+    },
+    "952": {
+        "src": "./skins/sandworm.png",
+        "label": "sandworm"
+    },
+    "953": {
+        "src": "./skins/sanik.png",
+        "label": "sanik"
+    },
+    "954": {
+        "src": "./skins/santa.png",
+        "label": "santa"
+    },
+    "955": {
+        "src": "./skins/santa_claus.png",
+        "label": "santa claus"
+    },
+    "956": {
+        "src": "./skins/saturn.png",
+        "label": "saturn"
+    },
+    "957": {
+        "src": "./skins/saudi_arabia.png",
+        "label": "saudi arabia"
+    },
+    "958": {
+        "src": "./skins/scar.png",
+        "label": "scar"
+    },
+    "959": {
+        "src": "./skins/scarecrow.png",
+        "label": "scarecrow"
+    },
+    "960": {
+        "src": "./skins/scary_teddy.png",
+        "label": "scary teddy"
+    },
+    "961": {
+        "src": "./skins/scavenger.png",
+        "label": "scavenger"
+    },
+    "962": {
+        "src": "./skins/scotland.png",
+        "label": "scotland"
+    },
+    "963": {
+        "src": "./skins/screamer.png",
+        "label": "screamer"
+    },
+    "964": {
+        "src": "./skins/screamin_meamie.png",
+        "label": "screamin meamie"
+    },
+    "965": {
+        "src": "./skins/scroll.png",
+        "label": "scroll"
+    },
+    "966": {
+        "src": "./skins/scythe.png",
+        "label": "scythe"
+    },
+    "967": {
+        "src": "./skins/seal.png",
+        "label": "seal"
+    },
+    "968": {
+        "src": "./skins/sealand.png",
+        "label": "sealand"
+    },
+    "969": {
+        "src": "./skins/seal_knight.png",
+        "label": "seal knight"
+    },
+    "970": {
+        "src": "./skins/sea_turtle.png",
+        "label": "sea turtle"
+    },
+    "971": {
+        "src": "./skins/seer.png",
+        "label": "seer"
+    },
+    "972": {
+        "src": "./skins/senor_avocado.png",
+        "label": "senor avocado"
+    },
+    "973": {
+        "src": "./skins/shadow_man.png",
+        "label": "shadow man"
+    },
+    "974": {
+        "src": "./skins/shark.png",
+        "label": "shark"
+    },
+    "975": {
+        "src": "./skins/sheep.png",
+        "label": "sheep"
+    },
+    "976": {
+        "src": "./skins/sheep_ball.png",
+        "label": "sheep ball"
+    },
+    "977": {
+        "src": "./skins/sheriff.png",
+        "label": "sheriff"
+    },
+    "978": {
+        "src": "./skins/shiny_tree.png",
+        "label": "shiny tree"
+    },
+    "979": {
+        "src": "./skins/shogun.png",
+        "label": "shogun"
+    },
+    "980": {
+        "src": "./skins/shot_of_love.png",
+        "label": "shot of love"
+    },
+    "981": {
+        "src": "./skins/shrieker.png",
+        "label": "shrieker"
+    },
+    "982": {
+        "src": "./skins/shuttle.png",
+        "label": "shuttle"
+    },
+    "983": {
+        "src": "./skins/silent_nun.png",
+        "label": "silent nun"
+    },
+    "984": {
+        "src": "./skins/silly_griffin.png",
+        "label": "silly griffin"
+    },
+    "985": {
+        "src": "./skins/silver.png",
+        "label": "silver"
+    },
+    "986": {
+        "src": "./skins/silverback.png",
+        "label": "silverback"
+    },
+    "987": {
+        "src": "./skins/silver_tusk.png",
+        "label": "silver tusk"
+    },
+    "988": {
+        "src": "./skins/simian_spectrum.png",
+        "label": "simian spectrum"
+    },
+    "989": {
+        "src": "./skins/sir.png",
+        "label": "sir"
+    },
+    "990": {
+        "src": "./skins/sir_bonesy.png",
+        "label": "sir bonesy"
+    },
+    "991": {
+        "src": "./skins/sixcess.png",
+        "label": "sixcess"
+    },
+    "992": {
+        "src": "./skins/skeleton.png",
+        "label": "skeleton"
+    },
+    "993": {
+        "src": "./skins/skelly.png",
+        "label": "skelly"
+    },
+    "994": {
+        "src": "./skins/skills.png",
+        "label": "skills"
+    },
+    "995": {
+        "src": "./skins/skillsyt.png",
+        "label": "skillsyt"
+    },
+    "996": {
+        "src": "./skins/skn.png",
+        "label": "skn"
+    },
+    "997": {
+        "src": "./skins/skullberry.png",
+        "label": "skullberry"
+    },
+    "998": {
+        "src": "./skins/skullpio.png",
+        "label": "skullpio"
+    },
+    "999": {
+        "src": "./skins/skull_artifact.png",
+        "label": "skull artifact"
+    },
+    "1000": {
+        "src": "./skins/skull_boss.png",
+        "label": "skull boss"
+    },
+    "1001": {
+        "src": "./skins/skull_bow.png",
+        "label": "skull bow"
+    },
+    "1002": {
+        "src": "./skins/skull_cactus.png",
+        "label": "skull cactus"
+    },
+    "1003": {
+        "src": "./skins/skull_claus.png",
+        "label": "skull claus"
+    },
+    "1004": {
+        "src": "./skins/skull_face.png",
+        "label": "skull face"
+    },
+    "1005": {
+        "src": "./skins/skull_magician.png",
+        "label": "skull magician"
+    },
+    "1006": {
+        "src": "./skins/skull_ribbon.png",
+        "label": "skull ribbon"
+    },
+    "1007": {
+        "src": "./skins/skull_samurai.png",
+        "label": "skull samurai"
+    },
+    "1008": {
+        "src": "./skins/skull_swords.png",
+        "label": "skull swords"
+    },
+    "1009": {
+        "src": "./skins/skyrocket.png",
+        "label": "skyrocket"
+    },
+    "1010": {
+        "src": "./skins/slartie.png",
+        "label": "slartie"
+    },
+    "1011": {
+        "src": "./skins/slaughter.png",
+        "label": "slaughter"
+    },
+    "1012": {
+        "src": "./skins/sleepy_fox.png",
+        "label": "sleepy fox"
+    },
+    "1013": {
+        "src": "./skins/slimeface.png",
+        "label": "slimeface"
+    },
+    "1014": {
+        "src": "./skins/slime_beast.png",
+        "label": "slime beast"
+    },
+    "1015": {
+        "src": "./skins/slingblade.png",
+        "label": "slingblade"
+    },
+    "1016": {
+        "src": "./skins/sliptoon.png",
+        "label": "sliptoon"
+    },
+    "1017": {
+        "src": "./skins/sluggy.png",
+        "label": "sluggy"
+    },
+    "1018": {
+        "src": "./skins/sly.png",
+        "label": "sly"
+    },
+    "1019": {
+        "src": "./skins/smash.png",
+        "label": "smash"
+    },
+    "1020": {
+        "src": "./skins/smelly.png",
+        "label": "smelly"
+    },
+    "1021": {
+        "src": "./skins/smile.png",
+        "label": "smile"
+    },
+    "1022": {
+        "src": "./skins/smooth_operator.png",
+        "label": "smooth operator"
+    },
+    "1023": {
+        "src": "./skins/smyg.png",
+        "label": "smyg"
+    },
+    "1024": {
+        "src": "./skins/snailbun.png",
+        "label": "snailbun"
+    },
+    "1025": {
+        "src": "./skins/snake.png",
+        "label": "snake"
+    },
+    "1026": {
+        "src": "./skins/snay-chocolate.png",
+        "label": "snay-chocolate"
+    },
+    "1027": {
+        "src": "./skins/snay-gang.png",
+        "label": "snay-gang"
+    },
+    "1028": {
+        "src": "./skins/snay.png",
+        "label": "snay"
+    },
+    "1029": {
+        "src": "./skins/sneddy-gaming.png",
+        "label": "sneddy-gaming"
+    },
+    "1030": {
+        "src": "./skins/snoochie_boochie.png",
+        "label": "snoochie boochie"
+    },
+    "1031": {
+        "src": "./skins/snout.png",
+        "label": "snout"
+    },
+    "1032": {
+        "src": "./skins/snowman.png",
+        "label": "snowman"
+    },
+    "1033": {
+        "src": "./skins/snowy_joe.png",
+        "label": "snowy joe"
+    },
+    "1034": {
+        "src": "./skins/snow_biker.png",
+        "label": "snow biker"
+    },
+    "1035": {
+        "src": "./skins/snow_friend.png",
+        "label": "snow friend"
+    },
+    "1036": {
+        "src": "./skins/snow_globe.png",
+        "label": "snow globe"
+    },
+    "1037": {
+        "src": "./skins/soccerball.png",
+        "label": "soccerball"
+    },
+    "1038": {
+        "src": "./skins/soccer_shoe.png",
+        "label": "soccer shoe"
+    },
+    "1039": {
+        "src": "./skins/soda_can.png",
+        "label": "soda can"
+    },
+    "1040": {
+        "src": "./skins/solareraseryt.png",
+        "label": "solareraseryt"
+    },
+    "1041": {
+        "src": "./skins/soloist.png",
+        "label": "soloist"
+    },
+    "1042": {
+        "src": "./skins/somalia.png",
+        "label": "somalia"
+    },
+    "1043": {
+        "src": "./skins/sombrero.png",
+        "label": "sombrero"
+    },
+    "1044": {
+        "src": "./skins/songsmith.png",
+        "label": "songsmith"
+    },
+    "1045": {
+        "src": "./skins/sonic.png",
+        "label": "sonic"
+    },
+    "1046": {
+        "src": "./skins/sonicgames.png",
+        "label": "sonicgames"
+    },
+    "1047": {
+        "src": "./skins/sonic_boom.png",
+        "label": "sonic boom"
+    },
+    "1048": {
+        "src": "./skins/sorceress.png",
+        "label": "sorceress"
+    },
+    "1049": {
+        "src": "./skins/soul_hunter.png",
+        "label": "soul hunter"
+    },
+    "1050": {
+        "src": "./skins/sour_candy.png",
+        "label": "sour candy"
+    },
+    "1051": {
+        "src": "./skins/south-korea.png",
+        "label": "south-korea"
+    },
+    "1052": {
+        "src": "./skins/south_africa.png",
+        "label": "south africa"
+    },
+    "1053": {
+        "src": "./skins/south_korea.png",
+        "label": "south korea"
+    },
+    "1054": {
+        "src": "./skins/spacehunter.png",
+        "label": "spacehunter"
+    },
+    "1055": {
+        "src": "./skins/space_dog.png",
+        "label": "space dog"
+    },
+    "1056": {
+        "src": "./skins/space_ink.png",
+        "label": "space ink"
+    },
+    "1057": {
+        "src": "./skins/space_warden.png",
+        "label": "space warden"
+    },
+    "1058": {
+        "src": "./skins/spain.png",
+        "label": "spain"
+    },
+    "1059": {
+        "src": "./skins/spectral_owl.png",
+        "label": "spectral owl"
+    },
+    "1060": {
+        "src": "./skins/spider.png",
+        "label": "spider"
+    },
+    "1061": {
+        "src": "./skins/spike.png",
+        "label": "spike"
+    },
+    "1062": {
+        "src": "./skins/spike_fish.png",
+        "label": "spike fish"
+    },
+    "1063": {
+        "src": "./skins/spike_flower.png",
+        "label": "spike flower"
+    },
+    "1064": {
+        "src": "./skins/spinner_kid.png",
+        "label": "spinner kid"
+    },
+    "1065": {
+        "src": "./skins/splatter.png",
+        "label": "splatter"
+    },
+    "1066": {
+        "src": "./skins/spogh.png",
+        "label": "spogh"
+    },
+    "1067": {
+        "src": "./skins/spongeee.png",
+        "label": "spongeee"
+    },
+    "1068": {
+        "src": "./skins/sprinter.png",
+        "label": "sprinter"
+    },
+    "1069": {
+        "src": "./skins/spy.png",
+        "label": "spy"
+    },
+    "1070": {
+        "src": "./skins/squi.png",
+        "label": "squi"
+    },
+    "1071": {
+        "src": "./skins/squiggle.png",
+        "label": "squiggle"
+    },
+    "1072": {
+        "src": "./skins/squirrel.png",
+        "label": "squirrel"
+    },
+    "1073": {
+        "src": "./skins/stalin.png",
+        "label": "stalin"
+    },
+    "1074": {
+        "src": "./skins/starball.png",
+        "label": "starball"
+    },
+    "1075": {
+        "src": "./skins/starfighter.png",
+        "label": "starfighter"
+    },
+    "1076": {
+        "src": "./skins/starfish.png",
+        "label": "starfish"
+    },
+    "1077": {
+        "src": "./skins/starplayer.png",
+        "label": "starplayer"
+    },
+    "1078": {
+        "src": "./skins/starsign_aries.png",
+        "label": "starsign aries"
+    },
+    "1079": {
+        "src": "./skins/starsign_cancer.png",
+        "label": "starsign cancer"
+    },
+    "1080": {
+        "src": "./skins/starsign_gemini.png",
+        "label": "starsign gemini"
+    },
+    "1081": {
+        "src": "./skins/starsign_leo.png",
+        "label": "starsign leo"
+    },
+    "1082": {
+        "src": "./skins/starsign_taurus.png",
+        "label": "starsign taurus"
+    },
+    "1083": {
+        "src": "./skins/stars_stripes.png",
+        "label": "stars stripes"
+    },
+    "1084": {
+        "src": "./skins/star_eagle.png",
+        "label": "star eagle"
+    },
+    "1085": {
+        "src": "./skins/star_pilot.png",
+        "label": "star pilot"
+    },
+    "1086": {
+        "src": "./skins/star_sentinel.png",
+        "label": "star sentinel"
+    },
+    "1087": {
+        "src": "./skins/statik.png",
+        "label": "statik"
+    },
+    "1088": {
+        "src": "./skins/stay_home.png",
+        "label": "stay home"
+    },
+    "1089": {
+        "src": "./skins/steam.png",
+        "label": "steam"
+    },
+    "1090": {
+        "src": "./skins/steampunk_cat.png",
+        "label": "steampunk cat"
+    },
+    "1091": {
+        "src": "./skins/steamworld_can_man.png",
+        "label": "steamworld can man"
+    },
+    "1092": {
+        "src": "./skins/steamworld_cogs.png",
+        "label": "steamworld cogs"
+    },
+    "1093": {
+        "src": "./skins/steamworld_dr_static.png",
+        "label": "steamworld dr static"
+    },
+    "1094": {
+        "src": "./skins/steamworld_steam_freak.png",
+        "label": "steamworld steam freak"
+    },
+    "1095": {
+        "src": "./skins/steamworld_the_tinker.png",
+        "label": "steamworld the tinker"
+    },
+    "1096": {
+        "src": "./skins/steamworld_think_tank.png",
+        "label": "steamworld think tank"
+    },
+    "1097": {
+        "src": "./skins/steam_diver.png",
+        "label": "steam diver"
+    },
+    "1098": {
+        "src": "./skins/steam_mask.png",
+        "label": "steam mask"
+    },
+    "1099": {
+        "src": "./skins/steam_skull.png",
+        "label": "steam skull"
+    },
+    "1100": {
+        "src": "./skins/stone_tool.png",
+        "label": "stone tool"
+    },
+    "1101": {
+        "src": "./skins/storm_fist.png",
+        "label": "storm fist"
+    },
+    "1102": {
+        "src": "./skins/strawberry.png",
+        "label": "strawberry"
+    },
+    "1103": {
+        "src": "./skins/street_bull.png",
+        "label": "street bull"
+    },
+    "1104": {
+        "src": "./skins/stretch_dog.png",
+        "label": "stretch dog"
+    },
+    "1105": {
+        "src": "./skins/strike.png",
+        "label": "strike"
+    },
+    "1106": {
+        "src": "./skins/striker.png",
+        "label": "striker"
+    },
+    "1107": {
+        "src": "./skins/stud.png",
+        "label": "stud"
+    },
+    "1108": {
+        "src": "./skins/stussy.png",
+        "label": "stussy"
+    },
+    "1109": {
+        "src": "./skins/sugar_dash.png",
+        "label": "sugar dash"
+    },
+    "1110": {
+        "src": "./skins/sumo.png",
+        "label": "sumo"
+    },
+    "1111": {
+        "src": "./skins/sun.png",
+        "label": "sun"
+    },
+    "1112": {
+        "src": "./skins/sunbath.png",
+        "label": "sunbath"
+    },
+    "1113": {
+        "src": "./skins/sunflower.png",
+        "label": "sunflower"
+    },
+    "1114": {
+        "src": "./skins/sunkey.png",
+        "label": "sunkey"
+    },
+    "1115": {
+        "src": "./skins/superstar.png",
+        "label": "superstar"
+    },
+    "1116": {
+        "src": "./skins/super_car.png",
+        "label": "super car"
+    },
+    "1117": {
+        "src": "./skins/suplex.png",
+        "label": "suplex"
+    },
+    "1118": {
+        "src": "./skins/supremus.png",
+        "label": "supremus"
+    },
+    "1119": {
+        "src": "./skins/surfer.png",
+        "label": "surfer"
+    },
+    "1120": {
+        "src": "./skins/surfin_bird.png",
+        "label": "surfin bird"
+    },
+    "1121": {
+        "src": "./skins/surprised_cat.png",
+        "label": "surprised cat"
+    },
+    "1122": {
+        "src": "./skins/swag_royalty.png",
+        "label": "swag royalty"
+    },
+    "1123": {
+        "src": "./skins/sweaty.png",
+        "label": "sweaty"
+    },
+    "1124": {
+        "src": "./skins/sweden.png",
+        "label": "sweden"
+    },
+    "1125": {
+        "src": "./skins/sweetie.png",
+        "label": "sweetie"
+    },
+    "1126": {
+        "src": "./skins/sweet_egg.png",
+        "label": "sweet egg"
+    },
+    "1127": {
+        "src": "./skins/sweet_tendril.png",
+        "label": "sweet tendril"
+    },
+    "1128": {
+        "src": "./skins/swimmer.png",
+        "label": "swimmer"
+    },
+    "1129": {
+        "src": "./skins/switzerland.png",
+        "label": "switzerland"
+    },
+    "1130": {
+        "src": "./skins/taco.png",
+        "label": "taco"
+    },
+    "1131": {
+        "src": "./skins/taiwan.png",
+        "label": "taiwan"
+    },
+    "1132": {
+        "src": "./skins/tape_guy.png",
+        "label": "tape guy"
+    },
+    "1133": {
+        "src": "./skins/target.png",
+        "label": "target"
+    },
+    "1134": {
+        "src": "./skins/taurus.png",
+        "label": "taurus"
+    },
+    "1135": {
+        "src": "./skins/tea_time.png",
+        "label": "tea time"
+    },
+    "1136": {
+        "src": "./skins/techno_kat.png",
+        "label": "techno kat"
+    },
+    "1137": {
+        "src": "./skins/techno_kid.png",
+        "label": "techno kid"
+    },
+    "1138": {
+        "src": "./skins/techno_ninja.png",
+        "label": "techno ninja"
+    },
+    "1139": {
+        "src": "./skins/techno_quack.png",
+        "label": "techno quack"
+    },
+    "1140": {
+        "src": "./skins/tender_heart_bear.png",
+        "label": "tender heart bear"
+    },
+    "1141": {
+        "src": "./skins/tennist.png",
+        "label": "tennist"
+    },
+    "1142": {
+        "src": "./skins/terra.png",
+        "label": "terra"
+    },
+    "1143": {
+        "src": "./skins/terrible.png",
+        "label": "terrible"
+    },
+    "1144": {
+        "src": "./skins/texas.png",
+        "label": "texas"
+    },
+    "1145": {
+        "src": "./skins/thailand.png",
+        "label": "thailand"
+    },
+    "1146": {
+        "src": "./skins/theorist.png",
+        "label": "theorist"
+    },
+    "1147": {
+        "src": "./skins/the_eagle.png",
+        "label": "the eagle"
+    },
+    "1148": {
+        "src": "./skins/the_gaunt.png",
+        "label": "the gaunt"
+    },
+    "1149": {
+        "src": "./skins/the_grin.png",
+        "label": "the grin"
+    },
+    "1150": {
+        "src": "./skins/the_maw.png",
+        "label": "the maw"
+    },
+    "1151": {
+        "src": "./skins/the_miasma.png",
+        "label": "the miasma"
+    },
+    "1152": {
+        "src": "./skins/the_oracle.png",
+        "label": "the oracle"
+    },
+    "1153": {
+        "src": "./skins/the_professional.png",
+        "label": "the professional"
+    },
+    "1154": {
+        "src": "./skins/the_reaper.png",
+        "label": "the reaper"
+    },
+    "1155": {
+        "src": "./skins/the_scorcher.png",
+        "label": "the scorcher"
+    },
+    "1156": {
+        "src": "./skins/the_stranger.png",
+        "label": "the stranger"
+    },
+    "1157": {
+        "src": "./skins/the_tiger.png",
+        "label": "the tiger"
+    },
+    "1158": {
+        "src": "./skins/thief.png",
+        "label": "thief"
+    },
+    "1159": {
+        "src": "./skins/thirst_quencher.png",
+        "label": "thirst quencher"
+    },
+    "1160": {
+        "src": "./skins/thirteen.png",
+        "label": "thirteen"
+    },
+    "1161": {
+        "src": "./skins/tigerpattern.png",
+        "label": "tigerpattern"
+    },
+    "1162": {
+        "src": "./skins/tiki_king.png",
+        "label": "tiki king"
+    },
+    "1163": {
+        "src": "./skins/time_doctor.png",
+        "label": "time doctor"
+    },
+    "1164": {
+        "src": "./skins/time_dude.png",
+        "label": "time dude"
+    },
+    "1165": {
+        "src": "./skins/timid.png",
+        "label": "timid"
+    },
+    "1166": {
+        "src": "./skins/tiny_jack.png",
+        "label": "tiny jack"
+    },
+    "1167": {
+        "src": "./skins/tiny_reaper.png",
+        "label": "tiny reaper"
+    },
+    "1168": {
+        "src": "./skins/titanomachy.png",
+        "label": "titanomachy"
+    },
+    "1169": {
+        "src": "./skins/tjoops.png",
+        "label": "tjoops"
+    },
+    "1170": {
+        "src": "./skins/toasty.png",
+        "label": "toasty"
+    },
+    "1171": {
+        "src": "./skins/toco.png",
+        "label": "toco"
+    },
+    "1172": {
+        "src": "./skins/toco_bones.png",
+        "label": "toco bones"
+    },
+    "1173": {
+        "src": "./skins/togoman.png",
+        "label": "togoman"
+    },
+    "1174": {
+        "src": "./skins/togomanyt.png",
+        "label": "togomanyt"
+    },
+    "1175": {
+        "src": "./skins/tomatoface.png",
+        "label": "tomatoface"
+    },
+    "1176": {
+        "src": "./skins/toon.png",
+        "label": "toon"
+    },
+    "1177": {
+        "src": "./skins/tooth_troll.png",
+        "label": "tooth troll"
+    },
+    "1178": {
+        "src": "./skins/torch_header.png",
+        "label": "torch header"
+    },
+    "1179": {
+        "src": "./skins/totta.png",
+        "label": "totta"
+    },
+    "1180": {
+        "src": "./skins/touche.png",
+        "label": "touche"
+    },
+    "1181": {
+        "src": "./skins/tough.png",
+        "label": "tough"
+    },
+    "1182": {
+        "src": "./skins/toxic.png",
+        "label": "toxic"
+    },
+    "1183": {
+        "src": "./skins/toxic_eater.png",
+        "label": "toxic eater"
+    },
+    "1184": {
+        "src": "./skins/tranqeeze.png",
+        "label": "tranqeeze"
+    },
+    "1185": {
+        "src": "./skins/treasure.png",
+        "label": "treasure"
+    },
+    "1186": {
+        "src": "./skins/treasure_explorer.png",
+        "label": "treasure explorer"
+    },
+    "1187": {
+        "src": "./skins/treasure_squiggly.png",
+        "label": "treasure squiggly"
+    },
+    "1188": {
+        "src": "./skins/trickster.png",
+        "label": "trickster"
+    },
+    "1189": {
+        "src": "./skins/troldir.png",
+        "label": "troldir"
+    },
+    "1190": {
+        "src": "./skins/troublemaker_bunny.png",
+        "label": "troublemaker bunny"
+    },
+    "1191": {
+        "src": "./skins/trump.png",
+        "label": "trump"
+    },
+    "1192": {
+        "src": "./skins/tsarist-russia.png",
+        "label": "tsarist-russia"
+    },
+    "1193": {
+        "src": "./skins/tsarist_russia.png",
+        "label": "tsarist russia"
+    },
+    "1194": {
+        "src": "./skins/tsipras.png",
+        "label": "tsipras"
+    },
+    "1195": {
+        "src": "./skins/tumblr.png",
+        "label": "tumblr"
+    },
+    "1196": {
+        "src": "./skins/tummy_filler.png",
+        "label": "tummy filler"
+    },
+    "1197": {
+        "src": "./skins/turkey.png",
+        "label": "turkey"
+    },
+    "1198": {
+        "src": "./skins/turkey2.png",
+        "label": "turkey2"
+    },
+    "1199": {
+        "src": "./skins/turtle.png",
+        "label": "turtle"
+    },
+    "1200": {
+        "src": "./skins/twisted.png",
+        "label": "twisted"
+    },
+    "1201": {
+        "src": "./skins/tyt.png",
+        "label": "tyt"
+    },
+    "1202": {
+        "src": "./skins/t_rex.png",
+        "label": "t rex"
+    },
+    "1203": {
+        "src": "./skins/uae.png",
+        "label": "uae"
+    },
+    "1204": {
+        "src": "./skins/ufo.png",
+        "label": "ufo"
+    },
+    "1205": {
+        "src": "./skins/ukraine.png",
+        "label": "ukraine"
+    },
+    "1206": {
+        "src": "./skins/ultimate_golf.png",
+        "label": "ultimate golf"
+    },
+    "1207": {
+        "src": "./skins/unbread.png",
+        "label": "unbread"
+    },
+    "1208": {
+        "src": "./skins/uncle_eagle.png",
+        "label": "uncle eagle"
+    },
+    "1209": {
+        "src": "./skins/uncle_sam.png",
+        "label": "uncle sam"
+    },
+    "1210": {
+        "src": "./skins/undead.png",
+        "label": "undead"
+    },
+    "1211": {
+        "src": "./skins/unga.png",
+        "label": "unga"
+    },
+    "1212": {
+        "src": "./skins/united-kingdom.png",
+        "label": "united-kingdom"
+    },
+    "1213": {
+        "src": "./skins/united_kingdom.png",
+        "label": "united kingdom"
+    },
+    "1214": {
+        "src": "./skins/universal_ranger.png",
+        "label": "universal ranger"
+    },
+    "1215": {
+        "src": "./skins/unknown_totem.png",
+        "label": "unknown totem"
+    },
+    "1216": {
+        "src": "./skins/uranus.png",
+        "label": "uranus"
+    },
+    "1217": {
+        "src": "./skins/usa.png",
+        "label": "usa"
+    },
+    "1218": {
+        "src": "./skins/ussr.png",
+        "label": "ussr"
+    },
+    "1219": {
+        "src": "./skins/vampire.png",
+        "label": "vampire"
+    },
+    "1220": {
+        "src": "./skins/vampy.png",
+        "label": "vampy"
+    },
+    "1221": {
+        "src": "./skins/varoufakis.png",
+        "label": "varoufakis"
+    },
+    "1222": {
+        "src": "./skins/vega.png",
+        "label": "vega"
+    },
+    "1223": {
+        "src": "./skins/venezuela.png",
+        "label": "venezuela"
+    },
+    "1224": {
+        "src": "./skins/venom.png",
+        "label": "venom"
+    },
+    "1225": {
+        "src": "./skins/venus.png",
+        "label": "venus"
+    },
+    "1226": {
+        "src": "./skins/vicious.png",
+        "label": "vicious"
+    },
+    "1227": {
+        "src": "./skins/victory_orc.png",
+        "label": "victory orc"
+    },
+    "1228": {
+        "src": "./skins/viking.png",
+        "label": "viking"
+    },
+    "1229": {
+        "src": "./skins/viktory.png",
+        "label": "viktory"
+    },
+    "1230": {
+        "src": "./skins/viletauro.png",
+        "label": "viletauro"
+    },
+    "1231": {
+        "src": "./skins/vinesauce.png",
+        "label": "vinesauce"
+    },
+    "1232": {
+        "src": "./skins/viper.png",
+        "label": "viper"
+    },
+    "1233": {
+        "src": "./skins/virgawful.png",
+        "label": "virgawful"
+    },
+    "1234": {
+        "src": "./skins/virginia.png",
+        "label": "virginia"
+    },
+    "1235": {
+        "src": "./skins/virgo.png",
+        "label": "virgo"
+    },
+    "1236": {
+        "src": "./skins/virtuoso.png",
+        "label": "virtuoso"
+    },
+    "1237": {
+        "src": "./skins/virus.png",
+        "label": "virus"
+    },
+    "1238": {
+        "src": "./skins/volcano.png",
+        "label": "volcano"
+    },
+    "1239": {
+        "src": "./skins/voracious.png",
+        "label": "voracious"
+    },
+    "1240": {
+        "src": "./skins/wacky_egg.png",
+        "label": "wacky egg"
+    },
+    "1241": {
+        "src": "./skins/wacky_hero.png",
+        "label": "wacky hero"
+    },
+    "1242": {
+        "src": "./skins/wacky_hyena.png",
+        "label": "wacky hyena"
+    },
+    "1243": {
+        "src": "./skins/wahfull.png",
+        "label": "wahfull"
+    },
+    "1244": {
+        "src": "./skins/walking_hand.png",
+        "label": "walking hand"
+    },
+    "1245": {
+        "src": "./skins/walko.png",
+        "label": "walko"
+    },
+    "1246": {
+        "src": "./skins/walrus_art.png",
+        "label": "walrus art"
+    },
+    "1247": {
+        "src": "./skins/walrus_ball.png",
+        "label": "walrus ball"
+    },
+    "1248": {
+        "src": "./skins/wannapieceofme.png",
+        "label": "wannapieceofme"
+    },
+    "1249": {
+        "src": "./skins/warhorse.png",
+        "label": "warhorse"
+    },
+    "1250": {
+        "src": "./skins/warrior.png",
+        "label": "warrior"
+    },
+    "1251": {
+        "src": "./skins/war_hero.png",
+        "label": "war hero"
+    },
+    "1252": {
+        "src": "./skins/war_mask.png",
+        "label": "war mask"
+    },
+    "1253": {
+        "src": "./skins/war_paint.png",
+        "label": "war paint"
+    },
+    "1254": {
+        "src": "./skins/war_tank.png",
+        "label": "war tank"
+    },
+    "1255": {
+        "src": "./skins/war_wings.png",
+        "label": "war wings"
+    },
+    "1256": {
+        "src": "./skins/wasp.png",
+        "label": "wasp"
+    },
+    "1257": {
+        "src": "./skins/wasted_mouse.png",
+        "label": "wasted mouse"
+    },
+    "1258": {
+        "src": "./skins/watermelon.png",
+        "label": "watermelon"
+    },
+    "1259": {
+        "src": "./skins/water_spirit.png",
+        "label": "water spirit"
+    },
+    "1260": {
+        "src": "./skins/watson.png",
+        "label": "watson"
+    },
+    "1261": {
+        "src": "./skins/weirdough.png",
+        "label": "weirdough"
+    },
+    "1262": {
+        "src": "./skins/wendy_axe.png",
+        "label": "wendy axe"
+    },
+    "1263": {
+        "src": "./skins/werewolf.png",
+        "label": "werewolf"
+    },
+    "1264": {
+        "src": "./skins/white_horse.png",
+        "label": "white horse"
+    },
+    "1265": {
+        "src": "./skins/wicked.png",
+        "label": "wicked"
+    },
+    "1266": {
+        "src": "./skins/wicked_cat.png",
+        "label": "wicked cat"
+    },
+    "1267": {
+        "src": "./skins/wicked_clown.png",
+        "label": "wicked clown"
+    },
+    "1268": {
+        "src": "./skins/wicked_frosty.png",
+        "label": "wicked frosty"
+    },
+    "1269": {
+        "src": "./skins/wicked_vendetta.png",
+        "label": "wicked vendetta"
+    },
+    "1270": {
+        "src": "./skins/wide_eye.png",
+        "label": "wide eye"
+    },
+    "1271": {
+        "src": "./skins/wild_cooper.png",
+        "label": "wild cooper"
+    },
+    "1272": {
+        "src": "./skins/wild_pepper.png",
+        "label": "wild pepper"
+    },
+    "1273": {
+        "src": "./skins/willie.png",
+        "label": "willie"
+    },
+    "1274": {
+        "src": "./skins/wilson.png",
+        "label": "wilson"
+    },
+    "1275": {
+        "src": "./skins/winter_dire_wolf.png",
+        "label": "winter dire wolf"
+    },
+    "1276": {
+        "src": "./skins/winter_goofy_yeti.png",
+        "label": "winter goofy yeti"
+    },
+    "1277": {
+        "src": "./skins/winter_ice_crystal.png",
+        "label": "winter ice crystal"
+    },
+    "1278": {
+        "src": "./skins/winter_ice_lord.png",
+        "label": "winter ice lord"
+    },
+    "1279": {
+        "src": "./skins/winter_snowboarder.png",
+        "label": "winter snowboarder"
+    },
+    "1280": {
+        "src": "./skins/winter_white_owl.png",
+        "label": "winter white owl"
+    },
+    "1281": {
+        "src": "./skins/winter_wolf.png",
+        "label": "winter wolf"
+    },
+    "1282": {
+        "src": "./skins/wisgarus_dragonslayer.png",
+        "label": "wisgarus dragonslayer"
+    },
+    "1283": {
+        "src": "./skins/wojak.png",
+        "label": "wojak"
+    },
+    "1284": {
+        "src": "./skins/wolf.png",
+        "label": "wolf"
+    },
+    "1285": {
+        "src": "./skins/wolf_boss.png",
+        "label": "wolf boss"
+    },
+    "1286": {
+        "src": "./skins/wolf_man.png",
+        "label": "wolf man"
+    },
+    "1287": {
+        "src": "./skins/wolf_paw.png",
+        "label": "wolf paw"
+    },
+    "1288": {
+        "src": "./skins/wolf_sigil.png",
+        "label": "wolf sigil"
+    },
+    "1289": {
+        "src": "./skins/woobs.png",
+        "label": "woobs"
+    },
+    "1290": {
+        "src": "./skins/world_end.png",
+        "label": "world end"
+    },
+    "1291": {
+        "src": "./skins/xray.png",
+        "label": "xray"
+    },
+    "1292": {
+        "src": "./skins/xxnetro.png",
+        "label": "xxnetro"
+    },
+    "1293": {
+        "src": "./skins/xxnetro2.png",
+        "label": "xxnetro2"
+    },
+    "1294": {
+        "src": "./skins/yaranaika.png",
+        "label": "yaranaika"
+    },
+    "1295": {
+        "src": "./skins/yellow_streak.png",
+        "label": "yellow streak"
+    },
+    "1296": {
+        "src": "./skins/yemeni.png",
+        "label": "yemeni"
+    },
+    "1297": {
+        "src": "./skins/young_bonny.png",
+        "label": "young bonny"
+    },
+    "1298": {
+        "src": "./skins/yuno.png",
+        "label": "yuno"
+    },
+    "1299": {
+        "src": "./skins/zany_tree.png",
+        "label": "zany tree"
+    },
+    "1300": {
+        "src": "./skins/zapnaut.png",
+        "label": "zapnaut"
+    },
+    "1301": {
+        "src": "./skins/zebrapattern.png",
+        "label": "zebrapattern"
+    },
+    "1302": {
+        "src": "./skins/zipper.png",
+        "label": "zipper"
+    },
+    "1303": {
+        "src": "./skins/zodiac_2017_capricorn.png",
+        "label": "zodiac 2017 capricorn"
+    },
+    "1304": {
+        "src": "./skins/zodiac_2017_libra.png",
+        "label": "zodiac 2017 libra"
+    },
+    "1305": {
+        "src": "./skins/zodiac_2017_sagittarius.png",
+        "label": "zodiac 2017 sagittarius"
+    },
+    "1306": {
+        "src": "./skins/zodiac_2017_scorpio.png",
+        "label": "zodiac 2017 scorpio"
+    },
+    "1307": {
+        "src": "./skins/zodiac_2018_aquarius.png",
+        "label": "zodiac 2018 aquarius"
+    },
+    "1308": {
+        "src": "./skins/zodiac_2018_pisces.png",
+        "label": "zodiac 2018 pisces"
+    },
+    "1309": {
+        "src": "./skins/zombie.png",
+        "label": "zombie"
+    },
+    "1310": {
+        "src": "./skins/zombie_dog.png",
+        "label": "zombie dog"
+    },
+    "1311": {
+        "src": "./skins/zombie_party.png",
+        "label": "zombie party"
+    },
+    "1312": {
+        "src": "./skins/zombishrum.png",
+        "label": "zombishrum"
+    },
+    "1313": {
+        "src": "./skins/zone.png",
+        "label": "zone"
+    },
+    "1314": {
+        "src": "./skins/zula_gorgon.png",
+        "label": "zula gorgon"
+    }
+}
