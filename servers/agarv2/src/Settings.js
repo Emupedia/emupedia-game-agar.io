@@ -38,6 +38,7 @@ const value = Object.seal({
 	worldPlayerBotSkins: [],
 	worldMinionsPerPlayer: 0,
 	worldMaxPlayers: 50,
+	worldEnforceMinCount: true,
 	worldMinCount: 0,
 	worldMaxCount: 2,
 	matchmakerNeedsQueuing: false,
@@ -83,9 +84,10 @@ const value = Object.seal({
 	playerMaxNameLength: 16,
 	playerAllowSkinInName: true,
 
-	playerMinSize: 32,
 	playerSpawnSize: 32,
+	playerMinSize: 32,
 	playerMaxSize: 1500,
+	playerMaxTotalMass: 500000,
 	playerMinSplitSize: 60,
 	playerMinEjectSize: 60,
 	playerSplitCap: 255,
@@ -102,7 +104,8 @@ const value = Object.seal({
 	playerMergeVersion: "old",
 	playerMergeTime: 30,
 	playerMergeTimeIncrease: 0.02,
-	playerDecayMult: 0.001
+	playerDecayMult: 0.001,
+	playerDecayMultOversize: 10
 });
 
 module.exports = value;

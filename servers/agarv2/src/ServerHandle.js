@@ -76,6 +76,12 @@ class ServerHandle {
 		this.ticker.start();
 		this.gamemode.onHandleStart();
 
+		if (this.settings.worldEnforceMinCount) {
+			while (Object.keys(this.worlds).length < this.settings.worldMaxCount) {
+				this.createWorld();
+			}
+		}
+
 		this.logger.inform("ticker begin");
 		this.logger.inform(`OgarII ${this.version}`);
 		this.logger.inform(`gamemode: ${this.gamemode.name}`);

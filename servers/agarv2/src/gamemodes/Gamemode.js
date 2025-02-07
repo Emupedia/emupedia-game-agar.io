@@ -108,6 +108,10 @@ class Gamemode {
 
 	/** @param {PlayerCell} cell @virtual */
 	getDecayMult(cell) {
+		if (cell.size > cell.world.settings.playerMaxSize) {
+			return cell.world.settings.playerDecayMultOversize;
+		}
+
 		return cell.world.settings.playerDecayMult;
 	}
 

@@ -42,6 +42,18 @@ class PlayerCell extends Cell {
 
 	/**
 	 * @param {Cell} other
+	 * @virtual
+	 */
+	whenAte(other) {
+		const mass = this.owner.ownedCells.reduce((total, cell) => total + cell.mass, 0);
+
+		if (mass < this.world.settings.playerMaxTotalMass) {
+			this.squareSize += other.squareSize;
+		}
+	}
+
+	/**
+	 * @param {Cell} other
 	 * @returns {CellEatResult}
 	 */
 	getEatResult(other) {
