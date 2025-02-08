@@ -11,7 +11,7 @@ if [ ! -d "../node_modules" ]; then
   fi
 fi
 
-COMMAND="node --trace-deprecation --max-old-space-size=2048 ../src/index.js"
+COMMAND="node --expose-gc --trace-deprecation --max-old-space-size=2048 ../src/index.js"
 
 while true; do
   echo "Starting command: $COMMAND"

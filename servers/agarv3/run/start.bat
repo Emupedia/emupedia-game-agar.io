@@ -12,7 +12,7 @@ IF NOT EXIST "..\node_modules" (
 )
 
 REM Set the command to run Node.js
-set "COMMAND=node --trace-deprecation --max-old-space-size=2048 ../src/index.js"
+set "COMMAND=node --expose-gc --trace-deprecation --max-old-space-size=2048 ../src/index.js"
 
 :loop
 echo Starting command: %COMMAND%
