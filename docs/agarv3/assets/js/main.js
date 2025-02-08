@@ -537,7 +537,7 @@
 	};
 	const LOCATION = ~window.location.hostname.indexOf('emupedia.net') ? 'emupedia.net' : (~window.location.hostname.indexOf('emupedia.org') ? 'emupedia.org' : (~window.location.hostname.indexOf('emupedia.games') ? 'emupedia.games' : (~window.location.hostname.indexOf('emuos.net') ? 'emuos.net' : (~window.location.hostname.indexOf('emuos.org') ? 'emuos.org' : (~window.location.hostname.indexOf('emuos.games') ? 'emuos.games' : 'emupedia.net')))));
 	const SERVERS = ['agar2' + '.' + LOCATION + '/ws3/'];
-	const GEO = {'eu': SERVERS[0], 'us': SERVERS[0]};
+	const GEO = {'eu': SERVERS[0], 'eu-ffa': SERVERS[0], 'us': SERVERS[0], 'eu-pvp': SERVERS[0]};
 
 	const KEY_TO_OPCODE = {
 		e: UINT8_CACHE[0x16],
