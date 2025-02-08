@@ -218,7 +218,8 @@ class LegacyProtocol extends Protocol {
 			playersTotal: stats.external,
 			playersAlive: stats.playing,
 			playersSpect: stats.spectating,
-			playersLimit: stats.limit
+			playersLimit: stats.limit,
+			world: stats.world
 		};
 
 		writeZTString(writer, JSON.stringify(Object.assign({}, legacy, stats)), this.protocol);

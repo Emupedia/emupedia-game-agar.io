@@ -55,7 +55,8 @@ class World {
 			name: null,
 			gamemode: null,
 			loadTime: NaN,
-			uptime: NaN
+			uptime: NaN,
+			worldId: this.id || 1
 		};
 
 		this.setBorder({x: this.settings.worldMapX, y: this.settings.worldMapY, w: this.settings.worldMapW, h: this.settings.worldMapH});
@@ -873,6 +874,7 @@ class World {
 		this.stats.gamemode = this.handle.gamemode.name;
 		this.stats.loadTime = this.handle.averageTickTime / this.handle.stepMult;
 		this.stats.uptime = Math.floor((Date.now() - this.handle.startTime.getTime()) / 1000);
+		this.stats.world = this.id;
 	}
 }
 

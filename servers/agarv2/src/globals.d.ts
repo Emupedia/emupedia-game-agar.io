@@ -57,6 +57,7 @@ interface WorldStats {
 	gamemode: string;
 	loadTime: number;
 	uptime: number;
+	world: number;
 }
 
 interface GenCommandTable {
