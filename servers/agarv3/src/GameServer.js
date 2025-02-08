@@ -67,6 +67,8 @@ class GameServer {
             serverTimeStep: 40,
             serverLBUpdate: 25,
             serverUserRoles: 0,
+            serverRestart: 0,
+            serverRestartTimes: '',
             // Client Configs
             serverChat: 1,
             serverChatAscii: 1,
@@ -201,7 +203,7 @@ class GameServer {
         Log.info("Current game mode is " + this.gameMode.name + ".");
         let botAmount = this.config.serverBots;
         if (botAmount) {
-            for (var i = 0; i < botAmount; i++) this.bots.addBot();
+            for (let i = 0; i < botAmount; i++) this.bots.addBot();
             Log.info("Added " + botAmount + " player bots.");
         }
     }
@@ -520,6 +522,62 @@ class GameServer {
         this.stepDateTime = Date.now();
         let start = process.hrtime(),
             self = this;
+
+        let date = new Date();
+        let dateFormatted = date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
+
+        // Restart times
+        let restarts = this.config.serverRestartTimes + "";
+        this.serverRestartTimes = restarts.split(' - ');
+
+        // Restart
+        if (this.config.serverRestart && this.tickCounter > 30) {
+            this.serverRestartTimes.forEach(time => {
+				if (dateFormatted === time) {
+					// this.httpServer = null;
+					// this.wsServer = null;
+					this.run = true;
+					this.lastNodeId = 1;
+					this.lastPlayerId = 1;
+
+					let botAmount = this.config.serverBots;
+
+					if (botAmount) {
+						for (let i = 0; i < botAmount; i++) this.bots.addBot();
+						Log.info("Added " + botAmount + " player bots.");
+					}
+
+					for (let i = 0; i < this.clients.length; i++) {
+						let client = this.clients[i];
+						try {
+							client.close();
+						} catch (e) {}
+					}
+
+					this.nodes = [];
+					this.nodesVirus = [];
+					this.nodesMother = [];
+					this.nodesFood = [];
+					this.nodesEjected = [];
+					this.nodesPlayer = [];
+					this.movingNodes = [];
+					this.commands = null;
+					this.tickCounter = 0;
+					this.startTime = Date.now();
+
+					if (global.gc) {
+						global.gc();
+						console.log("Garbage collection triggered.");
+					} else {
+						console.warn("Garbage collection is not exposed. Run Node with --expose-gc.");
+					}
+
+					this.setBorder(this.config.borderWidth, this.config.borderHeight);
+					this.quadTree = new QuadNode(this.border, 64, 32);
+				}
+			});
+        }
+
         if (this.running) {
             for (let i = 0; i < this.nodesPlayer.length; i++) {
                 let cell = this.nodesPlayer[i];
