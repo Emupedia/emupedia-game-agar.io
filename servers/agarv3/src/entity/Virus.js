@@ -42,9 +42,11 @@ class Virus extends Cell {
         if (config.virusSplitEqual) {
             splitCount = Math.min(~~(cellMass / splitMin), cellsLeft);
             splitMass = cellMass / (1 + splitCount);
-            for (var i = 0; i < splitCount; i++)
+
+			for (let i = 0; i < splitCount; i++)
                 splits.push(splitMass);
-            return this.explodeCell(cell, splits);
+
+			return this.explode(cell, splits);
         }
 
         if (cellMass / cellsLeft < splitMin) {

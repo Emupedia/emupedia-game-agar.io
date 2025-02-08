@@ -81,9 +81,11 @@ class PacketHandler {
         this.protocol = protocol;
         this.socket.sendPacket(new Packet.ClearAll());
         this.socket.sendPacket(new Packet.SetBorder(this.socket.playerTracker, this.gameServer.border, this.gameServer.config.serverGamemode, "MultiOgar-Edited " + this.gameServer.version));
-        //this.gameServer.sendChatMessage(null, this.socket.playerTracker, "MultiOgar " + this.gameServer.version);
+
         if (this.gameServer.config.serverWelcome1) this.gameServer.sendChatMessage(null, this.socket.playerTracker, this.gameServer.config.serverWelcome1);
         if (this.gameServer.config.serverWelcome2) this.gameServer.sendChatMessage(null, this.socket.playerTracker, this.gameServer.config.serverWelcome2);
+        if (this.gameServer.config.serverWelcome3) this.gameServer.sendChatMessage(null, this.socket.playerTracker, this.gameServer.config.serverWelcome3);
+        if (this.gameServer.config.serverWelcome4) this.gameServer.sendChatMessage(null, this.socket.playerTracker, this.gameServer.config.serverWelcome4);
         if (!this.gameServer.config.serverChat) this.gameServer.sendChatMessage(null, this.socket.playerTracker, "The chat is disabled.");
     }
     onJoin(message) {

@@ -2,7 +2,7 @@
 
 class ClearOwned {
     build() {
-        let buffer = new Buffer(1);
+        let buffer = Buffer.alloc(1);
         buffer.writeUInt8(0x14, 0, 1);
         return buffer;
     }

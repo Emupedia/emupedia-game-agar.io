@@ -75,6 +75,8 @@ class GameServer {
             serverName: "My Server",
             serverWelcome1: "Welcome to my MultiOgar-Edited server!",
             serverWelcome2: "",
+            serverWelcome3: "",
+            serverWelcome4: "",
             clientBind: "",
             filterBadWords: 1,
             serverChatPassword: "12345",
@@ -140,6 +142,7 @@ class GameServer {
             playerMergeTime: 30,
             playerDecayRate: .002,
             playerDecayCap: 0,
+            playerDecayRateAfterCap: 3,
             playerMaxNick: 30,
             playerDisconnectTime: 60,
             playerSplitSpeed: 780,
@@ -195,7 +198,7 @@ class GameServer {
         this.wsServer.on("error", this.socketError.bind(this));
         this.wsServer.on("connection", this.socketEvent.bind(this));
         this.httpServer.listen(this.config.serverPort, this.config.serverBind, this.onHttpOpen.bind(this));
-        // if (this.config.serverStatsPort > 0) this.startStatsServer(this.config.serverStatsPort);
+        if (this.config.serverStatsPort > 0) this.startStatsServer(this.config.serverStatsPort);
     }
     onHttpOpen() {
         setTimeout(this.timerLoopBind, 1);
@@ -251,25 +254,39 @@ class GameServer {
         process.exit(1);
     }
     socketEvent(ws) {
-        let logIP = ws._socket.remoteAddress + ":" + ws._socket.remotePort;
+        const clientIP = ws.upgradeReq.headers['x-forwarded-for'] || ws._socket.remoteAddress;
+        const clientPort = ws.upgradeReq.headers['x-forwarded-port'] || ws._socket.remotePort;
+        const userAgent = ws.upgradeReq.headers['user-agent'] || 'Unknown User Agent';
+        let logIP = clientIP + ":" + clientPort;
+
         ws.on("error", error => {
             Log.writeError("[" + logIP + "] " + error.stack);
         });
+
         if (this.config.serverMaxConnect && this.socketCount >= this.config.serverMaxConnect) return ws.close(1000, "Connection slots are full!");
-        if (this.checkIpBan(ws._socket.remoteAddress)) return ws.close(1000, "Your IP was banned!");
+
+        if (this.checkIpBan(clientIP)) return ws.close(1000, "Your IP was banned!");
+
         if (this.config.serverIpLimit) {
             let ipConnections = 0;
             for (let i = 0; i < this.clients.length; i++) {
                 let socket = this.clients[i];
-                if (socket.isConnected === false || socket.remoteAddress !== ws._socket.remoteAddress) continue;
+                if (socket.isConnected === false || socket.remoteAddress !== clientIP) continue;
                 ipConnections++;
             }
             if (ipConnections >= this.config.serverIpLimit) return ws.close(1000, "Player per IP limit reached!");
         }
-        if (this.config.clientBind.length && this.clientBind.indexOf(ws.upgradeReq.headers.origin) < 0) return ws.close(1000, "This client is not allowed!");
+
+        if (ws.upgradeReq.headers.origin !== 'http://localhost:58585' && this.config.clientBind.length && this.clientBind.indexOf(ws.upgradeReq.headers.origin) < 0) {
+            Log.write("The origin `" + ws.upgradeReq.headers.origin  + "` is not allowed!");
+            return ws.close(1000, "This client is not allowed!");
+        }
+
+        if (userAgent.length > 0 && (userAgent.toLowerCase().indexOf('headless') !== -1 || userAgent.toLowerCase().indexOf('electron') !== -1 || userAgent.toLowerCase().indexOf('phantomjs') !== -1)) ws.close(1000, "Player per IP limit reached!");
+
         ws.isConnected = true;
-        ws.remoteAddress = ws._socket.remoteAddress;
-        ws.remotePort = ws._socket.remotePort;
+        ws.remoteAddress = clientIP;
+        ws.remotePort = clientPort;
         ws.lastAliveTime = Date.now();
         Log.info("A new player has connected to the server.");
         Log.write("CONNECTED " + ws.remoteAddress + ":" + ws.remotePort + ", origin: \"" + ws.upgradeReq.headers.origin + "\"");
@@ -664,7 +681,7 @@ class GameServer {
                 if (cell == null || cell.isRemoved || size <= this.config.playerMinDecay) break;
                 let rate = this.config.playerDecayRate,
                     cap = this.config.playerDecayCap;
-                if (cap && cell._mass > cap) rate *= 10;
+                if (cap && cell._mass > cap) rate *= this.config.playerDecayRateAfterCap;
                 let decay = 1 - rate * this.gameMode.decayMod;
                 size = Math.sqrt(size * size * decay);
                 size = Math.max(size, this.config.playerMinDecay);

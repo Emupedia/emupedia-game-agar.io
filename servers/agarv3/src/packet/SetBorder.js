@@ -13,7 +13,7 @@ class SetBorder {
             scrambleY = this.playerTracker.scrambleY,
             b = this.border;
         if (this.gameType == null) {
-            let buffer = new Buffer(33);
+            let buffer = Buffer.alloc(33);
             buffer.writeUInt8(0x40, 0, 1);
             buffer.writeDoubleLE(b.minX + scrambleX, 1, 1);
             buffer.writeDoubleLE(b.minY + scrambleY, 9, 1);

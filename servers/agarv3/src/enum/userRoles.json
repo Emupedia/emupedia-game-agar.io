@@ -1,20 +1,20 @@
 [
-    { 
-        "ip":"127.0.0.1", 
+    {
+        "ip":"127.1.1.1",
         "password":"1340389",
         "role":"ADMIN",
-        "name":"Local Administrator" 
+        "name":"Local Administrator"
     },
-    { 
-        "ip":"127.0.0.1", 
-        "password":"",
+    {
+        "ip":"127.1.1.1",
+        "password":"asdasdasd",
         "role":"MODER",
-        "name":"Local Moderator" 
+        "name":"Local Moderator"
     },
-    { 
-        "ip":"127.0.0.1", 
-        "password":"",
+    {
+        "ip":"127.1.1.1",
+        "password":"gfdfgdgdg",
         "role":"USER",
-        "name":"Local User" 
+        "name":"Local User"
     }
 ]
