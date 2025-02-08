@@ -12,15 +12,15 @@ class LastManStanding extends FFA {
 	/**
 	 * @param {World} world
 	 */
-	canJoinWorld(world) {
-		return world.hadPlayers;
+	onNewWorld(world) {
+		world.hadPlayers = false;
 	}
 
 	/**
 	 * @param {World} world
 	 */
-	onNewWorld(world) {
-		world.hadPlayers = false;
+	canJoinWorld(world) {
+		return world.hadPlayers;
 	}
 
 	/**
@@ -28,6 +28,8 @@ class LastManStanding extends FFA {
 	 * @param {World} world
 	 */
 	onPlayerJoinWorld(player, world) {
+		super.onPlayerJoinWorld(player, world);
+
 		world.hadPlayers = true;
 
 		if (player.router.isExternal) {

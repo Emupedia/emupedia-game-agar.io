@@ -319,716 +319,820 @@ function getString(args, handle, index, argName) {
 	return value;
 }
 
+const serverHelp = {
+	name: "help",
+	args: "",
+	desc: "display all registered commands and their relevant information",
+	/**
+	 * @param {ServerHandle} context
+	 */
+	exec: (handle, context, args) => {
+		const list = handle.commands.list;
+		const keys = Object.keys(list).sort();
+
+		handle.logger.print(table({
+			columns: [
+				{ text: "NAME", headPad: " ", emptyPad: " ", rowPad: " ", separated: false },
+				{ text: "ARGUMENTS", headPad: " ", emptyPad: " ", rowPad: " ", separated: false },
+				{ text: "DESCRIPTION", headPad: " ", emptyPad: " ", rowPad: " ", separated: true }
+			],
+			rows: keys.map(v => {
+				return [
+					list[v].name,
+					list[v].args,
+					list[v].description
+				]
+			})
+		}, EOL));
+	}
+}
+
+const serverRouters = {
+	name: "routers",
+	args: "[router type]",
+	desc: "display information about routers and their players",
+	/**
+	 * @param {ServerHandle} context
+	 */
+	exec: (handle, context, args) => {
+		const matchingType = args.length >= 1 ? args[0] : null;
+		const routers = handle.listener.routers.filter(v => matchingType === null || v.type == matchingType);
+
+		handle.logger.print(table({
+			columns: [
+				{text: "INDEX", headPad: " ", emptyPad: "/", rowPad: " ", separated: false},
+				{text: "TYPE", headPad: " ", emptyPad: "/", rowPad: " ", separated: false},
+				{text: "SOURCE", headPad: " ", emptyPad: "/", rowPad: " ", separated: true},
+				{text: "ACTIVE", headPad: " ", emptyPad: "/", rowPad: " ", separated: false},
+				{text: "DORMANT", headPad: " ", emptyPad: "/", rowPad: " ", separated: false},
+				{text: "PROTOCOL", headPad: " ", emptyPad: "/", rowPad: " ", separated: false},
+				{text: "PID", headPad: " ", emptyPad: "/", rowPad: " ", separated: false}
+			],
+			rows: routers.map((v, i) => [
+				i.toString(),
+				v.type,
+				v.type === "connection" ? v.remoteAddress : null,
+				v.type === "connection" ? shortPrettyTime(Date.now() - v.connectTime) : null,
+				v.type === "connection" ? shortPrettyTime(Date.now() - v.lastActivityTime) : null,
+				v.protocol ? v.protocol.subtype : null,
+				v.hasPlayer ? v.player.id.toString() : null,
+			])
+		}, EOL));
+	}
+}
+
+const serverPlayers = {
+	name: "players",
+	args: "[world id or \"any\"] [router type]",
+	desc: "display information about players",
+	/**
+	 * @param {ServerHandle} context
+	 */
+	exec: (handle, context, args) => {
+		const worldId = args.length >= 1 ? parseInt(args[0]) || null : null;
+		const routerType = args.length === 2 ? args[1] : null;
+		const players = handle.listener.routers.filter(v => v.hasPlayer && (routerType == null || v.type == routerType)).map(v => v.player).filter(v => worldId == null || (v.hasWorld && v.world.id === worldId));
+		const chat = handle.listener.globalChat;
+
+		const tableData = {
+			columns: [
+				{text: "ID", headPad: " ", emptyPad: "/", rowPad: " ", separated: false},
+				{text: "WORLD", headPad: " ", emptyPad: "/", rowPad: " ", separated: true},
+				{text: "FOLLOWING", headPad: " ", emptyPad: "/", rowPad: " ", separated: false},
+				{text: "STATE", headPad: " ", emptyPad: "/", rowPad: " ", separated: false},
+				{text: "SCORE", headPad: " ", emptyPad: "/", rowPad: " ", separated: false},
+				{text: "NAME", headPad: " ", emptyPad: "/", rowPad: " ", separated: false}
+			],
+			rows: players.map((v) => {
+				let ret = [
+					v.id.toString(),
+					v.hasWorld ? v.world.id.toString() : null,
+				];
+
+				if (v.type === "minion") {
+					ret.push(v.following.player.id.toString());
+				} else if (v.hasWorld && v.state === 1) {
+					ret.push(v.world.largestPlayer.id.toString());
+				} else {
+					ret.push(null);
+				}
+
+				switch (v.state) {
+					case -1:
+						ret.push("idle");
+						break;
+					case 0:
+						ret.push("alive");
+						ret.push(Math.round(v.score).toString());
+						ret.push(v.leaderboardName);
+						break;
+					case 1:
+						ret.push("spec");
+						break;
+					case 2:
+						ret.push("roam");
+						break;
+				}
+				return ret;
+			})
+		}
+
+		const tableString = table(tableData, EOL);
+		const tableArray = tableString.split(EOL);
+
+		handle.logger.print(tableString);
+
+		tableArray.map(message => chat.directMessage(null, context, message));
+
+	}
+}
+
+const serverAddBot = {
+	name: "addbot",
+	args: "<world id> [count=1]",
+	desc: "assign player bots to a world",
+	/**
+	 * @param {ServerHandle} context
+	 */
+	exec: (handle, context, args) => {
+		if (args.length === 1) {
+			args[1] = "1";
+		}
+
+		const world = getWorldByID(args, handle, 0, false);
+		const count = getInt(args, handle, 1, "count");
+
+		if (world === false || count === false) {
+			return;
+		}
+
+		for (let i = 0; i < count; i++) {
+			new PlayerBot(world);
+		}
+
+		handle.logger.print(`added ${count} player bots to world`);
+	}
+}
+
+const serverRemoveBot = {
+	name: "rmbot",
+	args: "<world id> [count=1]",
+	desc: "remove player bots from a world",
+	/**
+	 * @param {ServerHandle} context
+	 */
+	exec: (handle, context, args) => {
+		if (args.length === 1) {
+			args[1] = "1";
+		}
+
+		const world = getWorldByID(args, handle, 0, false);
+		const count = getInt(args, handle, 1, "count");
+
+		if (world === false || count === false) {
+			return;
+		}
+
+		let realCount = 0;
+
+		for (let i = 0, l = world.players.length; i < l && realCount < count; i++) {
+			if (world.players[i].router.type !== "playerbot") {
+				continue;
+			}
+
+			world.players[i].router.close();
+			realCount++;
+			i--;
+			l--;
+		}
+
+		handle.logger.print(`removed ${realCount} player bots from world`);
+	}
+}
+
+const serverStats = {
+	name: "stats",
+	args: "",
+	desc: "display information about the server",
+	/**
+	 * @param {ServerHandle} context
+	 */
+	exec: (handle, context, args) => {
+		const logger = handle.logger;
+		const chat = handle.listener.globalChat;
+		const memory = prettyMemoryData(process.memoryUsage());
+		const external = handle.listener.connections.length;
+		const internal = handle.listener.routers.length - external;
+
+		if (!handle.running) {
+			chat.directMessage(null, context, "not running");
+			return void logger.print("not running");
+		}
+
+		logger.print(`load:    ${handle.averageTickTime.toFixed(4)} ms / ${handle.tickDelay} ms`);
+		logger.print(`memory:  ${memory.heapUsed} / ${memory.heapTotal} / ${memory.rss} / ${memory.external}`);
+		logger.print(`uptime:  ${prettyTime(Math.floor((Date.now() - handle.startTime.getTime()) / 1000))}`);
+		logger.print(`routers: ${external} external, ${internal} internal, ${external + internal} total`)
+		logger.print(`players: ${Object.keys(handle.players).length}`);
+
+		chat.directMessage(null, context, `load:    ${handle.averageTickTime.toFixed(4)} ms / ${handle.tickDelay} ms`);
+		chat.directMessage(null, context, `memory:  ${memory.heapUsed} / ${memory.heapTotal} / ${memory.rss} / ${memory.external}`);
+		chat.directMessage(null, context, `uptime:  ${prettyTime(Math.floor((Date.now() - handle.startTime.getTime()) / 1000))}`);
+		chat.directMessage(null, context, `routers: ${external} external, ${internal} internal, ${external + internal} total`);
+		chat.directMessage(null, context, `players: ${Object.keys(handle.players).length}`);
+
+		for (let id in handle.worlds) {
+			const world = handle.worlds[id], stats = world.stats, cells = [world.cells.length, world.playerCells.length, world.pelletCount, world.virusCount, world.ejectedCells.length, world.mothercellCount], statsF = [stats.external, stats.internal, stats.limit, stats.playing, stats.spectating];
+			logger.print(`world ${id}: ${cells[0]} cells - ${cells[1]}P/${cells[2]}p/${cells[3]}v/${cells[4]}e/${cells[5]}m`);
+			logger.print(`         ${statsF[0]} / ${statsF[1]} / ${statsF[2]} players - ${statsF[3]}p/${statsF[4]}s`);
+			chat.directMessage(null, context, `world ${id}: ${cells[0]} cells - ${cells[1]}P/${cells[2]}p/${cells[3]}v/${cells[4]}e/${cells[5]}m`);
+			chat.directMessage(null, context, `         ${statsF[0]} / ${statsF[1]} / ${statsF[2]} players - ${statsF[3]}p/${statsF[4]}s`);
+		}
+	}
+}
+
+const serverSetting = {
+	name: "setting",
+	args: "<name> [value]",
+	desc: "change/print the value of a setting",
+	/**
+	 * @param {ServerHandle} context
+	 */
+	exec: (handle, context, args) => {
+		if (args.length < 1) {
+			return void handle.logger.print("no setting name provided");
+		}
+
+		const settingName = args[0];
+
+		if (!handle.settings.hasOwnProperty(settingName)) {
+			const settingIdSplit = splitSettingId(settingName);
+			const possible = Object.keys(handle.settings).map(v => {
+				return {name: v, hits: getSplitSettingHits(splitSettingId(v), settingIdSplit)};
+			}).sort((a, b) => b.hits - a.hits).filter((v) => v.hits > 0).filter((v, i, array) => array[0].hits === v.hits).map(v => v.name);
+
+			let printing = "no such setting";
+
+			if (possible.length > 0) {
+				printing += `; did you mean ${possible.slice(0, 3).join(", ")}`
+
+				if (possible.length > 3) {
+					printing += `, ${possible.length - 3} other`;
+				}
+
+				printing += "?"
+			}
+
+			return void handle.logger.print(printing);
+		}
+
+		if (args.length >= 2) {
+			const settingValue = JSON.parse(args.slice(1).join(" "));
+			const newSettings = Object.assign({}, handle.settings);
+			newSettings[settingName] = settingValue;
+			handle.setSettings(newSettings);
+		}
+
+		handle.logger.print(handle.settings[settingName]);
+	}
+}
+
+const serverBan = {
+	name: "ban",
+	args: "<IP address / player id>",
+	desc: "ban specified IP or a connected player",
+	/**
+	 * @param {ServerHandle} context
+	 */
+	exec: (handle, context, args) => {
+		if (args.length < 1) {
+			return void handle.logger.print("");
+		}
+
+		const id = getString(args, handle, 0, "IP address / player id");
+
+		if (id === false) {
+			return;
+		}
+
+		let ip;
+
+		if (!IPvalidate.test(ip = id)) {
+			if (!handle.players.hasOwnProperty(id)) {
+				return void handle.logger.print("no player has this id");
+			}
+
+			const player = handle.players[id];
+
+			if (!player.router.isExternal) {
+				return void handle.logger.print("player is not external");
+			}
+
+			ip = player.router.remoteAddress;
+		}
+
+		handle.settings.listenerForbiddenIPs.push(ip);
+		handle.logger.print(`IP address ${ip} is now forbidden`);
+	}
+}
+
+const serverUnban = {
+	name: "unban",
+	args: "<IP address>",
+	desc: "unban specified IP",
+	/**
+	 * @param {ServerHandle} context
+	 */
+	exec: (handle, context, args) => {
+		if (args.length < 1) {
+			return void handle.logger.print("");
+		}
+
+		const id = getString(args, handle, 0, "IP address");
+
+		if (id === false) {
+			return;
+		}
+
+		if (!IPvalidate.test(ip = id)) {
+			return void handle.logger.print("invalid IP address");
+		}
+
+		const index = handle.settings.listenerForbiddenIPs.indexOf(ip);
+
+		if (index === -1) {
+			return void handle.logger.print("specified IP address is not forbidden");
+		}
+
+		handle.settings.listenerForbiddenIPs.splice(index, 1);
+		handle.logger.print(`IP address ${ip} has been pardoned`);
+	}
+}
+
+const serverEval = {
+	name: "eval",
+	args: "",
+	desc: "evaluate javascript code in a function bound to server handle",
+	/**
+	 * @param {ServerHandle} context
+	 */
+	exec: (handle, context, args) => {
+		const result = (function () {
+			try {
+				return eval(args.join(" "));
+			} catch (e) {
+				return !e ? e : (e.stack || e);
+			}
+		}).bind(handle)();
+
+		handle.logger.print(inspect(result, true, 1, false));
+	}
+}
+
+const serverTest = {
+	name: "test",
+	args: "",
+	desc: "test command",
+	/**
+	 * @param {ServerHandle} context
+	 */
+	exec: (handle, context, args) => handle.logger.print("success successful")
+}
+
+const serverCrash = {
+	name: "crash",
+	args: "",
+	desc: "manually force an error throw",
+	/**
+	 * @param {ServerHandle} context
+	 */
+	exec: (handle, context, args) => {
+		throw new Error("manual crash");
+	}
+}
+
+const serverRestart = {
+	name: "restart",
+	args: "",
+	desc: "stop then immediately start the handle",
+	/**
+	 * @param {ServerHandle} context
+	 */
+	exec: (handle, context, args) => {
+		if (!handle.stop()) {
+			return void handle.logger.print("handle not started");
+		}
+
+		handle.start();
+	}
+}
+
+const serverPause = {
+	name: "pause",
+	args: "",
+	desc: "toggle handle pause",
+	/**
+	 * @param {ServerHandle} context
+	 */
+	exec: (handle, context, args) => {
+		if (!handle.running) {
+			return void handle.logger.print("handle not started");
+		}
+
+		if (handle.ticker.running) {
+			handle.ticker.stop();
+		} else {
+			handle.ticker.start();
+		}
+	}
+}
+
+const playerSetMass = {
+	name: "mass",
+	args: "<id> <mass>",
+	desc: "set cell mass to all of a player's cells",
+	/**
+	 * @param {ServerHandle} context
+	 */
+	exec: (handle, context, args) => {
+		const player = getPlayerByID(args, handle, 0, true);
+		const mass = getFloat(args, handle, 1, "mass");
+
+		if (player === false || mass === false) {
+			return;
+		}
+
+		const l = player.ownedCells.length;
+
+		for (let i = 0; i < l; i++) {
+			player.ownedCells[i].mass = mass;
+		}
+
+		handle.logger.print(`player now has ${mass * l} mass`);
+	}
+}
+
+const playerMergeCells = {
+	name: "merge",
+	args: "<id>",
+	desc: "instantly merge a player",
+	/**
+	 * @param {ServerHandle} context
+	 */
+	exec: (handle, context, args) => {
+		const player = getPlayerByID(args, handle, 0, true);
+
+		if (player === false) {
+			return;
+		}
+
+		const l = player.ownedCells.length;
+
+		let sqSize = 0;
+
+		for (let i = 0; i < l; i++) {
+			sqSize += player.ownedCells[i].squareSize;
+		}
+
+		player.ownedCells[0].squareSize = sqSize;
+		player.ownedCells[0].x = player.viewArea.x;
+		player.ownedCells[0].y = player.viewArea.y;
+
+		for (let i = 1; i < l; i++) {
+			player.world.removeCell(player.ownedCells[1]);
+		}
+
+		handle.logger.print(`merged player from ${l} cells and ${Math.round(sqSize / 100)} mass`);
+	}
+}
+
+const playerHelp = {
+	name: "help",
+	args: "",
+	desc: "display all registered commands and their relevant information",
+	/**
+	 * @param {Connection} context
+	 */
+	exec: (handle, context, args) => {
+		const list = handle.chatCommands.list;
+		handle.listener.globalChat.directMessage(null, context, "available commands:");
+
+		for (let name in list) {
+			handle.listener.globalChat.directMessage(null, context, `${name}${list[name].args.length > 0 ? " " : ""}${list[name].args} - ${list[name].description}`);
+		}
+	}
+}
+
+const playerId = {
+	name: "id",
+	args: "",
+	desc: "get your id",
+	/**
+	 * @param {Connection} context
+	 */
+	exec: (handle, context, args) => {
+		handle.listener.globalChat.directMessage(null, context, context.hasPlayer ? `your ID is ${context.player.id}` : `you don't have a player associated with yourself`);
+	}
+}
+
+const playerWorldId = {
+	name: "world",
+	args: "",
+	desc: "get your world's id",
+	/**
+	 * @param {Connection} context
+	 */
+	exec: (handle, context, args) => {
+		const chat = handle.listener.globalChat;
+
+		if (!context.hasPlayer) {
+			return void chat.directMessage(null, context, "you don't have a player associated with yourself");
+		}
+
+		if (!context.player.hasWorld) {
+			return void chat.directMessage(null, context, "you're not in a world");
+		}
+
+		chat.directMessage(null, context, `your world ID is ${context.player.world.id}`);
+	}
+}
+
+const playerJoinWorld = {
+	name: "join",
+	args: "<id>",
+	desc: "try to join a world",
+	/**
+	 * @param {Connection} context
+	 */
+	exec: (handle, context, args) => {
+		const chat = handle.listener.globalChat;
+
+		if (args.length === 0) {
+			return void chat.directMessage(null, context, "missing world id argument");
+		}
+
+		const id = parseInt(args[0]);
+
+		if (isNaN(id)) {
+			return void chat.directMessage(null, context, "invalid world id number format");
+		}
+
+		if (!context.hasPlayer) {
+			return void chat.directMessage(null, context, "you don't have a player instance associated with yourself");
+		}
+
+		if (context.player.hasWorld) {
+			if (!context.hasPlayer) {
+				return void chat.directMessage(null, context, "you don't have a player associated with yourself");
+			}
+
+			if (!context.player.hasWorld) {
+				return void chat.directMessage(null, context, "you're not in a world");
+			}
+
+			context.player.world.removePlayer(context.player);
+		}
+
+		if (!handle.worlds.hasOwnProperty(id)) {
+			return void chat.directMessage(null, context, "this world doesn't exist");
+		}
+
+		if (!handle.gamemode.canJoinWorld(handle.worlds[id])) {
+			return void chat.directMessage(null, context, "you can't join this world");
+		}
+
+		handle.worlds[id].addPlayer(context.player);
+	}
+}
+
+const playerLeaveWorld = {
+	name: "leave",
+	args: "",
+	desc: "leave your world",
+	/**
+	 * @param {Connection} context
+	 */
+	exec: (handle, context, args) => {
+		const chat = handle.listener.globalChat;
+
+		if (!context.hasPlayer) {
+			return void chat.directMessage(null, context, "you don't have a player associated with yourself");
+		}
+
+		if (!context.player.hasWorld) {
+			return void chat.directMessage(null, context, "you're not in a world");
+		}
+
+		context.player.world.removePlayer(context.player);
+	}
+}
+
+const playerKill = {
+	name: "kill",
+	args: "<id>",
+	desc: "instantly kill a player",
+	/**
+	 * @param {ServerHandle} context
+	 */
+	exec: (handle, context, args) => {
+		const player = getPlayerByID(args, handle, 0, true);
+
+		if (player === false) {
+			return;
+		}
+
+		for (let i = 0, l = player.ownedCells.length; i < l; i++) {
+			player.world.removeCell(player.ownedCells[0]);
+		}
+
+		handle.logger.print("player killed");
+	}
+}
+
+const playerSuicide = {
+	name: "kill",
+	args: "<id>",
+	desc: "instantly commit suicide",
+	/**
+	 * @param {ServerHandle} context
+	 */
+	exec: (handle, context, args) => {
+		const player = context.player;
+
+		if (player === false) {
+			return;
+		}
+
+		for (let i = 0, l = player.ownedCells.length; i < l; i++) {
+			player.world.removeCell(player.ownedCells[0]);
+		}
+
+		handle.listener.globalChat.directMessage(null, context, context.hasPlayer ? `you killed yourself` : `you don't have a player associated with yourself`);
+	}
+}
+
+const playerKillAll = {
+	name: "killall",
+	args: "<world id>",
+	desc: "instantly kill all players in a world",
+	/**
+	 * @param {ServerHandle} context
+	 */
+	exec: (handle, context, args) => {
+		const world = getWorldByID(args, handle, 0, false);
+
+		if (world === false) {
+			return;
+		}
+
+		const players = world.players;
+
+		for (let i = 0; i < players.length; i++) {
+			const player = players[i];
+
+			if (player.state !== 0) {
+				continue;
+			}
+
+			for (let j = 0, l = player.ownedCells.length; j < l; j++) {
+				player.world.removeCell(player.ownedCells[0]);
+			}
+		}
+
+		handle.logger.print(`${players.length} player${players.length === 1 ? "" : "s"} killed`);
+	}
+}
+
+const playerExplode = {
+	name: "explode",
+	args: "<id>",
+	desc: "instantly explode a player's first cell",
+	/**
+	 * @param {ServerHandle} context
+	 */
+	exec: (handle, context, args) => {
+		const player = getPlayerByID(args, handle, 0, true);
+
+		if (player === false) {
+			return;
+		}
+
+		player.world.popPlayerCell(player.ownedCells[0]);
+		handle.logger.print("player exploded");
+	}
+}
+
+const playerAddMinion = {
+	name: "addminion",
+	args: "<id> [count]",
+	desc: "assign minions to a player",
+	/**
+	 * @param {ServerHandle} context
+	 */
+	exec: (handle, context, args) => {
+		if (args.length === 1) {
+			args[1] = "1";
+		}
+
+		const player = getPlayerByID(args, handle, 0, false);
+		const count = getInt(args, handle, 1, "count");
+
+		if (player === false || count === false) {
+			return;
+		}
+
+		if (!player.router.isExternal) {
+			return void handle.logger.print("player is not external");
+		}
+
+		if (!player.hasWorld) {
+			return void handle.logger.print("player is not in a world");
+		}
+
+		for (let i = 0; i < count; i++) {
+			new Minion(player.router);
+		}
+
+		handle.logger.print(`added ${count} minions to player`);
+	}
+}
+
+const playerRemoveMinion = {
+	name: "rmminion",
+	args: "<id> [count]",
+	desc: "remove assigned minions from a player",
+	/**
+	 * @param {ServerHandle} context
+	 */
+	exec: (handle, context, args) => {
+		if (args.length === 1) {
+			args[1] = "1";
+		}
+
+		const player = getPlayerByID(args, handle, 0, false);
+		const count = getInt(args, handle, 1, "count");
+
+		if (player === false || count === false) {
+			return;
+		}
+
+		if (!player.router.isExternal) {
+			return void handle.logger.print("player is not external");
+		}
+
+		if (!player.hasWorld) {
+			return void handle.logger.print("player is not in a world");
+		}
+
+		let realCount = 0;
+
+		for (let i = 0; i < count && player.router.minions.length > 0; i++) {
+			player.router.minions[0].close();
+			realCount++;
+		}
+
+		handle.logger.print(`removed ${realCount} minions from player`);
+	}
+}
+
 /**
  * @param {CommandList} commands
  * @param {CommandList} chatCommands
  */
 module.exports = (commands, chatCommands) => {
 	commands.register(
-		genCommand({
-			name: "help",
-			args: "",
-			desc: "display all registered commands and their relevant information",
-			/**
-			 * @param {ServerHandle} context
-			 */
-			exec: (handle, context, args) => {
-				const list = handle.commands.list;
-				const keys = Object.keys(list).sort();
-
-				handle.logger.print(table({
-					columns: [
-						{ text: "NAME", headPad: " ", emptyPad: " ", rowPad: " ", separated: false },
-						{ text: "ARGUMENTS", headPad: " ", emptyPad: " ", rowPad: " ", separated: false },
-						{ text: "DESCRIPTION", headPad: " ", emptyPad: " ", rowPad: " ", separated: true }
-					],
-					rows: keys.map(v => {
-						return [
-							list[v].name,
-							list[v].args,
-							list[v].description
-						]
-					})
-				}, EOL));
-			}
-		}),
-		genCommand({
-			name: "routers",
-			args: "[router type]",
-			desc: "display information about routers and their players",
-			/**
-			 * @param {ServerHandle} context
-			 */
-			exec: (handle, context, args) => {
-				const matchingType = args.length >= 1 ? args[0] : null;
-				const routers = handle.listener.routers.filter(v => matchingType === null || v.type == matchingType);
-
-				handle.logger.print(table({
-					columns: [
-						{text: "INDEX", headPad: " ", emptyPad: "/", rowPad: " ", separated: false},
-						{text: "TYPE", headPad: " ", emptyPad: "/", rowPad: " ", separated: false},
-						{text: "SOURCE", headPad: " ", emptyPad: "/", rowPad: " ", separated: true},
-						{text: "ACTIVE", headPad: " ", emptyPad: "/", rowPad: " ", separated: false},
-						{text: "DORMANT", headPad: " ", emptyPad: "/", rowPad: " ", separated: false},
-						{text: "PROTOCOL", headPad: " ", emptyPad: "/", rowPad: " ", separated: false},
-						{text: "PID", headPad: " ", emptyPad: "/", rowPad: " ", separated: false}
-					],
-					rows: routers.map((v, i) => [
-						i.toString(),
-						v.type,
-						v.type === "connection" ? v.remoteAddress : null,
-						v.type === "connection" ? shortPrettyTime(Date.now() - v.connectTime) : null,
-						v.type === "connection" ? shortPrettyTime(Date.now() - v.lastActivityTime) : null,
-						v.protocol ? v.protocol.subtype : null,
-						v.hasPlayer ? v.player.id.toString() : null,
-					])
-				}, EOL));
-			}
-		}),
-		genCommand({
-			name: "players",
-			args: "[world id or \"any\"] [router type]",
-			desc: "display information about players",
-			/**
-			 * @param {ServerHandle} context
-			 */
-			exec: (handle, context, args) => {
-				const worldId = args.length >= 1 ? parseInt(args[0]) || null : null;
-				const routerType = args.length === 2 ? args[1] : null;
-				const players = handle.listener.routers.filter(v => v.hasPlayer && (routerType == null || v.type == routerType)).map(v => v.player).filter(v => worldId == null || (v.hasWorld && v.world.id === worldId));
-
-				handle.logger.print(table({
-					columns: [
-						{text: "ID", headPad: " ", emptyPad: "/", rowPad: " ", separated: false},
-						{text: "WORLD", headPad: " ", emptyPad: "/", rowPad: " ", separated: true},
-						{text: "FOLLOWING", headPad: " ", emptyPad: "/", rowPad: " ", separated: false},
-						{text: "STATE", headPad: " ", emptyPad: "/", rowPad: " ", separated: false},
-						{text: "SCORE", headPad: " ", emptyPad: "/", rowPad: " ", separated: false},
-						{text: "NAME", headPad: " ", emptyPad: "/", rowPad: " ", separated: false}
-					],
-					rows: players.map((v) => {
-						let ret = [
-							v.id.toString(),
-							v.hasWorld ? v.world.id.toString() : null,
-						];
-
-						if (v.type === "minion") {
-							ret.push(v.following.player.id.toString());
-						} else if (v.hasWorld && v.state === 1) {
-							ret.push(v.world.largestPlayer.id.toString());
-						} else {
-							ret.push(null);
-						}
-
-						switch (v.state) {
-							case -1:
-								ret.push("idle");
-								break;
-							case 0:
-								ret.push("alive");
-								ret.push(Math.round(v.score).toString());
-								ret.push(v.leaderboardName);
-								break;
-							case 1:
-								ret.push("spec");
-								break;
-							case 2:
-								ret.push("roam");
-								break;
-						}
-						return ret;
-					})
-				}, EOL));
-			}
-		}),
-		genCommand({
-			name: "stats",
-			args: "",
-			desc: "display critical information about the server",
-			/**
-			 * @param {ServerHandle} context
-			 */
-			exec: (handle, context, args) => {
-				const logger = handle.logger;
-				const memory = prettyMemoryData(process.memoryUsage());
-				const external = handle.listener.connections.length;
-				const internal = handle.listener.routers.length - external;
-
-				if (!handle.running) {
-					return void logger.print("not running");
-				}
-
-				logger.print(`load:    ${handle.averageTickTime.toFixed(4)} ms / ${handle.tickDelay} ms`);
-				logger.print(`memory:  ${memory.heapUsed} / ${memory.heapTotal} / ${memory.rss} / ${memory.external}`);
-				logger.print(`uptime:  ${prettyTime(Math.floor((Date.now() - handle.startTime.getTime()) / 1000))}`);
-				logger.print(`routers: ${external} external, ${internal} internal, ${external + internal} total`)
-				logger.print(`players: ${Object.keys(handle.players).length}`);
-
-				for (let id in handle.worlds) {
-					const world = handle.worlds[id], stats = world.stats, cells = [world.cells.length, world.playerCells.length, world.pelletCount, world.virusCount, world.ejectedCells.length, world.mothercellCount], statsF = [stats.external, stats.internal, stats.limit, stats.playing, stats.spectating];
-					logger.print(`world ${id}: ${cells[0]} cells - ${cells[1]}P/${cells[2]}p/${cells[3]}v/${cells[4]}e/${cells[5]}m`);
-					logger.print(`         ${statsF[0]} / ${statsF[1]} / ${statsF[2]} players - ${statsF[3]}p/${statsF[4]}s`);
-				}
-			}
-		}),
-		genCommand({
-			name: "setting",
-			args: "<name> [value]",
-			desc: "change/print the value of a setting",
-			/**
-			 * @param {ServerHandle} context
-			 */
-			exec: (handle, context, args) => {
-				if (args.length < 1) {
-					return void handle.logger.print("no setting name provided");
-				}
-
-				const settingName = args[0];
-
-				if (!handle.settings.hasOwnProperty(settingName)) {
-					const settingIdSplit = splitSettingId(settingName);
-					const possible = Object.keys(handle.settings).map(v => {
-						return {name: v, hits: getSplitSettingHits(splitSettingId(v), settingIdSplit)};
-					}).sort((a, b) => b.hits - a.hits).filter((v) => v.hits > 0).filter((v, i, array) => array[0].hits === v.hits).map(v => v.name);
-
-					let printing = "no such setting";
-
-					if (possible.length > 0) {
-						printing += `; did you mean ${possible.slice(0, 3).join(", ")}`
-
-						if (possible.length > 3) {
-							printing += `, ${possible.length - 3} other`;
-						}
-
-						printing += "?"
-					}
-
-					return void handle.logger.print(printing);
-				}
-
-				if (args.length >= 2) {
-					const settingValue = JSON.parse(args.slice(1).join(" "));
-					const newSettings = Object.assign({}, handle.settings);
-					newSettings[settingName] = settingValue;
-					handle.setSettings(newSettings);
-				}
-
-				handle.logger.print(handle.settings[settingName]);
-			}
-		}),
-		genCommand({
-			name: "eval",
-			args: "",
-			desc: "evaluate javascript code in a function bound to server handle",
-			/**
-			 * @param {ServerHandle} context
-			 */
-			exec: (handle, context, args) => {
-				const result = (function () {
-					try {
-						return eval(args.join(" "));
-					} catch (e) {
-						return !e ? e : (e.stack || e);
-					}
-				}).bind(handle)();
-
-				handle.logger.print(inspect(result, true, 1, false));
-			}
-		}),
-		genCommand({
-			name: "test",
-			args: "",
-			desc: "test command",
-			/**
-			 * @param {ServerHandle} context
-			 */
-			exec: (handle, context, args) => handle.logger.print("success successful")
-		}),
-		genCommand({
-			name: "crash",
-			args: "",
-			desc: "manually force an error throw",
-			/**
-			 * @param {ServerHandle} context
-			 */
-			exec: (handle, context, args) => {
-				throw new Error("manual crash");
-			}
-		}),
-		genCommand({
-			name: "restart",
-			args: "",
-			desc: "stop then immediately start the handle",
-			/**
-			 * @param {ServerHandle} context
-			 */
-			exec: (handle, context, args) => {
-				if (!handle.stop()) {
-					return void handle.logger.print("handle not started");
-				}
-
-				handle.start();
-			}
-		}),
-		genCommand({
-			name: "pause",
-			args: "",
-			desc: "toggle handle pause",
-			/**
-			 * @param {ServerHandle} context
-			 */
-			exec: (handle, context, args) => {
-				if (!handle.running) {
-					return void handle.logger.print("handle not started");
-				}
-
-				if (handle.ticker.running) {
-					handle.ticker.stop();
-				} else {
-					handle.ticker.start();
-				}
-			}
-		}),
-		genCommand({
-			name: "mass",
-			args: "<id> <mass>",
-			desc: "set cell mass to all of a player's cells",
-			/**
-			 * @param {ServerHandle} context
-			 */
-			exec: (handle, context, args) => {
-				const player = getPlayerByID(args, handle, 0, true);
-				const mass = getFloat(args, handle, 1, "mass");
-
-				if (player === false || mass === false) {
-					return;
-				}
-
-				const l = player.ownedCells.length;
-
-				for (let i = 0; i < l; i++) {
-					player.ownedCells[i].mass = mass;
-				}
-
-				handle.logger.print(`player now has ${mass * l} mass`);
-			}
-		}),
-		genCommand({
-			name: "merge",
-			args: "<id>",
-			desc: "instantly merge a player",
-			/**
-			 * @param {ServerHandle} context
-			 */
-			exec: (handle, context, args) => {
-				const player = getPlayerByID(args, handle, 0, true);
-
-				if (player === false) {
-					return;
-				}
-
-				const l = player.ownedCells.length;
-
-				let sqSize = 0;
-
-				for (let i = 0; i < l; i++) {
-					sqSize += player.ownedCells[i].squareSize;
-				}
-
-				player.ownedCells[0].squareSize = sqSize;
-				player.ownedCells[0].x = player.viewArea.x;
-				player.ownedCells[0].y = player.viewArea.y;
-
-				for (let i = 1; i < l; i++) {
-					player.world.removeCell(player.ownedCells[1]);
-				}
-
-				handle.logger.print(`merged player from ${l} cells and ${Math.round(sqSize / 100)} mass`);
-			}
-		}),
-		genCommand({
-			name: "kill",
-			args: "<id>",
-			desc: "instantly kill a player",
-			/**
-			 * @param {ServerHandle} context
-			 */
-			exec: (handle, context, args) => {
-				const player = getPlayerByID(args, handle, 0, true);
-
-				if (player === false) {
-					return;
-				}
-
-				for (let i = 0, l = player.ownedCells.length; i < l; i++) {
-					player.world.removeCell(player.ownedCells[0]);
-				}
-
-				handle.logger.print("player killed");
-			}
-		}),
-		genCommand({
-			name: "explode",
-			args: "<id>",
-			desc: "instantly explode a player's first cell",
-			/**
-			 * @param {ServerHandle} context
-			 */
-			exec: (handle, context, args) => {
-				const player = getPlayerByID(args, handle, 0, true);
-
-				if (player === false) {
-					return;
-				}
-
-				player.world.popPlayerCell(player.ownedCells[0]);
-				handle.logger.print("player exploded");
-			}
-		}),
-		genCommand({
-			name: "addminion",
-			args: "<id> [count]",
-			desc: "assign minions to a player",
-			/**
-			 * @param {ServerHandle} context
-			 */
-			exec: (handle, context, args) => {
-				if (args.length === 1) {
-					args[1] = "1";
-				}
-
-				const player = getPlayerByID(args, handle, 0, false);
-				const count = getInt(args, handle, 1, "count");
-
-				if (player === false || count === false) {
-					return;
-				}
-
-				if (!player.router.isExternal) {
-					return void handle.logger.print("player is not external");
-				}
-
-				if (!player.hasWorld) {
-					return void handle.logger.print("player is not in a world");
-				}
-
-				for (let i = 0; i < count; i++) {
-					new Minion(player.router);
-				}
-
-				handle.logger.print(`added ${count} minions to player`);
-			}
-		}),
-		genCommand({
-			name: "rmminion",
-			args: "<id> [count]",
-			desc: "remove assigned minions from a player",
-			/**
-			 * @param {ServerHandle} context
-			 */
-			exec: (handle, context, args) => {
-				if (args.length === 1) {
-					args[1] = "1";
-				}
-
-				const player = getPlayerByID(args, handle, 0, false);
-				const count = getInt(args, handle, 1, "count");
-
-				if (player === false || count === false) {
-					return;
-				}
-
-				if (!player.router.isExternal) {
-					return void handle.logger.print("player is not external");
-				}
-
-				if (!player.hasWorld) {
-					return void handle.logger.print("player is not in a world");
-				}
-
-				let realCount = 0;
-
-				for (let i = 0; i < count && player.router.minions.length > 0; i++) {
-					player.router.minions[0].close();
-					realCount++;
-				}
-
-				handle.logger.print(`removed ${realCount} minions from player`);
-			}
-		}),
-		genCommand({
-			name: "killall",
-			args: "<world id>",
-			desc: "instantly kill all players in a world",
-			/**
-			 * @param {ServerHandle} context
-			 */
-			exec: (handle, context, args) => {
-				const world = getWorldByID(args, handle, 0, false);
-
-				if (world === false) {
-					return;
-				}
-
-				const players = world.players;
-
-				for (let i = 0; i < players.length; i++) {
-					const player = players[i];
-
-					if (player.state !== 0) {
-						continue;
-					}
-
-					for (let j = 0, l = player.ownedCells.length; j < l; j++) {
-						player.world.removeCell(player.ownedCells[0]);
-					}
-				}
-
-				handle.logger.print(`${players.length} player${players.length === 1 ? "" : "s"} killed`);
-			}
-		}),
-		genCommand({
-			name: "addbot",
-			args: "<world id> [count=1]",
-			desc: "assign player bots to a world",
-			/**
-			 * @param {ServerHandle} context
-			 */
-			exec: (handle, context, args) => {
-				if (args.length === 1) {
-					args[1] = "1";
-				}
-
-				const world = getWorldByID(args, handle, 0, false);
-				const count = getInt(args, handle, 1, "count");
-
-				if (world === false || count === false) {
-					return;
-				}
-
-				for (let i = 0; i < count; i++) {
-					new PlayerBot(world);
-				}
-
-				handle.logger.print(`added ${count} player bots to world`);
-			}
-		}),
-		genCommand({
-			name: "rmbot",
-			args: "<world id> [count=1]",
-			desc: "remove player bots from a world",
-			/**
-			 * @param {ServerHandle} context
-			 */
-			exec: (handle, context, args) => {
-				if (args.length === 1) {
-					args[1] = "1";
-				}
-
-				const world = getWorldByID(args, handle, 0, false);
-				const count = getInt(args, handle, 1, "count");
-
-				if (world === false || count === false) {
-					return;
-				}
-
-				let realCount = 0;
-
-				for (let i = 0, l = world.players.length; i < l && realCount < count; i++) {
-					if (world.players[i].router.type !== "playerbot") {
-						continue;
-					}
-
-					world.players[i].router.close();
-					realCount++;
-					i--;
-					l--;
-				}
-
-				handle.logger.print(`removed ${realCount} player bots from world`);
-			}
-		}),
-		genCommand({
-			name: "forbid",
-			args: "<IP address / player id>",
-			desc: "forbid (ban) specified IP or a connected player",
-			/**
-			 * @param {ServerHandle} context
-			 */
-			exec: (handle, context, args) => {
-				if (args.length < 1) {
-					return void handle.logger.print("");
-				}
-
-				const id = getString(args, handle, 0, "IP address / player id");
-
-				if (id === false) {
-					return;
-				}
-
-				let ip;
-
-				if (!IPvalidate.test(ip = id)) {
-					if (!handle.players.hasOwnProperty(id)) {
-						return void handle.logger.print("no player has this id");
-					}
-
-					const player = handle.players[id];
-
-					if (!player.router.isExternal) {
-						return void handle.logger.print("player is not external");
-					}
-
-					ip = player.router.remoteAddress;
-				}
-
-				handle.settings.listenerForbiddenIPs.push(ip);
-				handle.logger.print(`IP address ${ip} is now forbidden`);
-			}
-		}),
-		genCommand({
-			name: "pardon",
-			args: "<IP address>",
-			desc: "pardon (unban) specified IP",
-			/**
-			 * @param {ServerHandle} context
-			 */
-			exec: (handle, context, args) => {
-				if (args.length < 1) {
-					return void handle.logger.print("");
-				}
-
-				const id = getString(args, handle, 0, "IP address");
-
-				if (id === false) {
-					return;
-				}
-
-				if (!IPvalidate.test(ip = id)) {
-					return void handle.logger.print("invalid IP address");
-				}
-
-				const index = handle.settings.listenerForbiddenIPs.indexOf(ip);
-
-				if (index === -1) {
-					return void handle.logger.print("specified IP address is not forbidden");
-				}
-
-				handle.settings.listenerForbiddenIPs.splice(index, 1);
-				handle.logger.print(`IP address ${ip} has been pardoned`);
-			}
-		})
+		genCommand(serverHelp),
+		genCommand(serverRouters),
+		genCommand(serverPlayers),
+		genCommand(serverStats),
+		genCommand(serverSetting),
+		genCommand(serverEval),
+		genCommand(serverTest),
+		genCommand(serverCrash),
+		genCommand(serverRestart),
+		genCommand(serverPause),
+		genCommand(playerSetMass),
+		genCommand(playerMergeCells),
+		genCommand(playerKill),
+		genCommand(playerExplode),
+		genCommand(playerAddMinion),
+		genCommand(playerRemoveMinion),
+		genCommand(playerKillAll),
+		genCommand(serverAddBot),
+		genCommand(serverRemoveBot),
+		genCommand(serverBan),
+		genCommand(serverUnban)
 	);
+
+
 	chatCommands.register(
-		genCommand({
-			name: "help",
-			args: "",
-			desc: "display all registered commands and their relevant information",
-			/**
-			 * @param {Connection} context
-			 */
-			exec: (handle, context, args) => {
-				const list = handle.chatCommands.list;
-				handle.listener.globalChat.directMessage(null, context, "available commands:");
-
-				for (let name in list) {
-					handle.listener.globalChat.directMessage(null, context, `${name}${list[name].args.length > 0 ? " " : ""}${list[name].args} - ${list[name].description}`);
-				}
-			}
-		}),
-		genCommand({
-			name: "id",
-			args: "",
-			desc: "get your id",
-			/**
-			 * @param {Connection} context
-			 */
-			exec: (handle, context, args) => {
-				handle.listener.globalChat.directMessage(null, context, context.hasPlayer ? `your ID is ${context.player.id}` : "you don't have a player associated with yourself");
-			}
-		}),
-		genCommand({
-			name: "worldid",
-			args: "",
-			desc: "get your world's id",
-			/**
-			 * @param {Connection} context
-			 */
-			exec: (handle, context, args) => {
-				const chat = handle.listener.globalChat;
-
-				if (!context.hasPlayer) {
-					return void chat.directMessage(null, context, "you don't have a player associated with yourself");
-				}
-
-				if (!context.player.hasWorld) {
-					return void chat.directMessage(null, context, "you're not in a world");
-				}
-
-				chat.directMessage(null, context, `your world ID is ${context.player.world.id}`);
-			}
-		}),
-		genCommand({
-			name: "leaveworld",
-			args: "",
-			desc: "leave your world",
-			/**
-			 * @param {Connection} context
-			 */
-			exec: (handle, context, args) => {
-				const chat = handle.listener.globalChat;
-				return void chat.directMessage(null, context, "disabled for now");
-
-				if (!context.hasPlayer) {
-					return void chat.directMessage(null, context, "you don't have a player associated with yourself");
-				}
-
-				if (!context.player.hasWorld) {
-					return void chat.directMessage(null, context, "you're not in a world");
-				}
-
-				context.player.world.removePlayer(context.player);
-			}
-		}),
-		genCommand({
-			name: "joinworld",
-			args: "<id>",
-			desc: "try to join a world",
-			/**
-			 * @param {Connection} context
-			 */
-			exec: (handle, context, args) => {
-				const chat = handle.listener.globalChat;
-				return void chat.directMessage(null, context, "disabled for now");
-
-				if (args.length === 0) {
-					return void chat.directMessage(null, context, "missing world id argument");
-				}
-
-				const id = parseInt(args[0]);
-
-				if (isNaN(id)) {
-					return void chat.directMessage(null, context, "invalid world id number format");
-				}
-
-				if (!context.hasPlayer) {
-					return void chat.directMessage(null, context, "you don't have a player instance associated with yourself");
-				}
-
-				if (context.player.hasWorld) {
-					return void chat.directMessage(null, context, "you're already in a world");
-				}
-
-				if (!handle.worlds.hasOwnProperty(id)) {
-					return void chat.directMessage(null, context, "this world doesn't exist");
-				}
-
-				if (!handle.gamemode.canJoinWorld(handle.worlds[id])) {
-					return void chat.directMessage(null, context, "you can't join this world");
-				}
-
-				handle.worlds[id].addPlayer(context.player);
-			}
-		})
+		genCommand(playerHelp),
+		genCommand(playerId),
+		genCommand(playerWorldId),
+		genCommand(playerJoinWorld),
+		genCommand(playerLeaveWorld),
+		genCommand(playerSuicide),
+		genCommand(serverStats),
+		genCommand(serverPlayers)
 	);
 };

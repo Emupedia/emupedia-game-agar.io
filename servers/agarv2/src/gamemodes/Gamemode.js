@@ -40,7 +40,13 @@ class Gamemode {
 	}
 
 	/** @param {Player} player @param {World} world @virtual */
-	onPlayerJoinWorld(player, world) {}
+	onPlayerJoinWorld(player, world) {
+		if (world.settings.chatEnabled && world.settings.serverJoinMessages.length > 0) {
+			world.settings.serverJoinMessages.map(message => {
+				this.handle.listener.globalChat.directMessage(null, player.router, message);
+			})
+		}
+	}
 
 	/** @param {Player} player @param {World} world @virtual */
 	onPlayerLeaveWorld(player, world) {}
@@ -108,7 +114,7 @@ class Gamemode {
 
 	/** @param {PlayerCell} cell @virtual */
 	getDecayMult(cell) {
-		if (cell.size > cell.world.settings.playerMaxSize) {
+		if (cell.mass > cell.world.settings.playerMaxSize) {
 			return cell.world.settings.playerDecayMultOversize;
 		}
 

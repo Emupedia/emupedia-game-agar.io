@@ -49,6 +49,7 @@ class Teams extends Gamemode {
 	 * @param {World} world
 	 */
 	onNewWorld(world) {
+		super.onNewWorld(world);
 		world.teams = {};
 
 		for (let i = 0; i < teamCount; i++) {
@@ -61,6 +62,8 @@ class Teams extends Gamemode {
 	 * @param {World} world
 	 */
 	onPlayerJoinWorld(player, world) {
+		super.onPlayerJoinWorld(player, world);
+
 		if (!player.router.separateInTeams) {
 			return;
 		}
