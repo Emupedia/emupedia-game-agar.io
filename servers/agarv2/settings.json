@@ -29,6 +29,7 @@
 	"worldPlayerBotSkins": [],
 	"worldMinionsPerPlayer": 0,
 	"worldMaxPlayers": 200,
+	"worldEnforceMinCount": false,
 	"worldMinCount": 1,
 	"worldMaxCount": 1,
 	"matchmakerNeedsQueuing": false,
