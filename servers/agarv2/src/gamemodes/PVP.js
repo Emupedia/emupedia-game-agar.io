@@ -28,7 +28,7 @@ class PVP extends FFA {
 
 			player.updateState(1);
 
-			return void this.handle.listener.globalChat.directMessage(null, player.router, "You cannot spawn in this world you can only specatate because there are already 2 players doing PVP");
+			return void this.handle.listener.globalChat.directMessage(null, player.router, "You cannot spawn in this world you can only spectate because there are already 2 players doing PVP");
 		}
 
 		const size = player.router.type === "minion" ? this.handle.settings.minionSpawnSize : this.handle.settings.playerSpawnSize;
