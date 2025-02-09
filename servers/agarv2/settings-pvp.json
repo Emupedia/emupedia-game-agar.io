@@ -71,7 +71,7 @@
 	"playerSpawnSize": 1000,
 	"playerMinSize": 32,
 	"playerMaxSize": 3000,
-	"playerMaxTotalMass": 80000,
+	"playerMaxTotalMass": 20000,
 	"playerMinSplitSize": 60,
 	"playerMinEjectSize": 60,
 	"playerSplitCap": 255,
