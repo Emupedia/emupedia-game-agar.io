@@ -898,6 +898,10 @@ const playerJoinWorld = {
 		}
 
 		if (!handle.gamemode.canJoinWorld(handle.worlds[id])) {
+			if (handle.gamemode.name === 'PVP') {
+				return void chat.directMessage(null, context, "you can't join this world, there are already 2 players doing PVP in this world");
+			}
+
 			return void chat.directMessage(null, context, "you can't join this world");
 		}
 
