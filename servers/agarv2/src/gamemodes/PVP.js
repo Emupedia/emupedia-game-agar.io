@@ -1,4 +1,5 @@
 const FFA = require("./FFA");
+const Misc = require('../primitives/Misc')
 
 class PVP extends FFA {
 	static get name() {
@@ -10,47 +11,25 @@ class PVP extends FFA {
 	}
 
 	/**
-	 * @param {World} world
-	 */
-	onNewWorld(world) {}
-
-	/**
-	 * @param {World} world
-	 */
-	canJoinWorld(world) {
-		return world.players.length <= world.settings.worldMaxPlayers;
-	}
-
-	/**
-	 * @param {Player} player
-	 * @param {World} world
-	 */
-	onPlayerJoinWorld(player, world) {
-		super.onPlayerJoinWorld(player, world);
-
-		if (player.router.isExternal) {
-			player.life = 0;
-			player.updateState(1);
-		}
-	}
-
-	/** @param {Player} player @param {World} world @virtual */
-	onPlayerLeaveWorld(player, world) {
-		player.life = 0;
-	}
-
-	/**
 	 * @param {Player} player
 	 * @param {string} name
 	 */
 	onPlayerSpawnRequest(player, name) {
-		if (player.router.isExternal && player.life++ > 0) {
-			player.updateState(1);
-
-			return void this.handle.listener.globalChat.directMessage(null, player.router, "You cannot spawn anymore in this world, try joining a new world.");
+		if (player.state === 0 || !player.hasWorld) {
+			return;
 		}
 
-		super.onPlayerSpawnRequest(player, name);
+		if (player.world.players.filter(player => player.state === 0).length >= 2) {
+			return void this.handle.listener.globalChat.directMessage(null, player.router, "You cannot spawn in this world you can only specatate because there are already 2 players doing PVP");
+		}
+
+		const size = player.router.type === "minion" ? this.handle.settings.minionSpawnSize : this.handle.settings.playerSpawnSize;
+		const spawnInfo = player.world.getPlayerSpawn(size);
+		const color = spawnInfo.color || Misc.randomColor();
+		player.cellName = player.chatName = player.leaderboardName = name;
+		player.cellSkin = skin;
+		player.chatColor = player.cellColor = color;
+		player.world.spawnPlayer(player, spawnInfo.pos, size, name, null);
 	}
 }
 
