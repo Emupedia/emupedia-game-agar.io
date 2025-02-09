@@ -14,12 +14,20 @@ class PVP extends FFA {
 	 * @param {Player} player
 	 * @param {string} name
 	 */
-	onPlayerSpawnRequest(player, name) {
+	onPlayerSpawnRequest(player, name, skin) {
 		if (player.state === 0 || !player.hasWorld) {
 			return;
 		}
 
-		if (player.world.players.filter(player => player.state === 0).length >= 2) {
+		player.world.compileStatistics()
+
+		if (player.world.stats.playing > 1) {
+			for (let i = 0, l = player.ownedCells.length; i < l; i++) {
+				player.world.removeCell(player.ownedCells[0]);
+			}
+
+			player.updateState(1);
+
 			return void this.handle.listener.globalChat.directMessage(null, player.router, "You cannot spawn in this world you can only specatate because there are already 2 players doing PVP");
 		}
 
