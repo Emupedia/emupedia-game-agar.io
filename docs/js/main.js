@@ -1102,6 +1102,57 @@
 		ctx.fillStyle = showDarkTheme ? "#111111" : "#F2FBFF";
 		ctx.fillRect(0, 0, canvasWidth, canvasHeight);
 
+		if (showBackgroundSectors) {
+			ctx.save();
+			ctx.strokeStyle = showDarkTheme ? "#666666" : "#dddddd";
+			ctx.fillStyle = showDarkTheme ? "#666666" : "#dddddd";
+			ctx.lineWidth = 100;
+
+			// Calculate sector size based on actual map dimensions
+			const sectorCount = 5;
+			const sectorWidth = (rightPos - leftPos) / sectorCount;
+			const sectorHeight = (bottomPos - topPos) / sectorCount;
+
+			// Transform to game world coordinates
+			ctx.scale(viewZoom, viewZoom);
+			ctx.translate(-nodeX + canvasWidth / (2 * viewZoom), -nodeY + canvasHeight / (2 * viewZoom));
+
+			// Draw sector grid
+			for (let x = 0; x <= sectorCount; x++) {
+				const xPos = leftPos + x * sectorWidth;
+				ctx.beginPath();
+				ctx.moveTo(xPos, topPos);
+				ctx.lineTo(xPos, bottomPos);
+				ctx.stroke();
+			}
+
+			for (let y = 0; y <= sectorCount; y++) {
+				const yPos = topPos + y * sectorHeight;
+				ctx.beginPath();
+				ctx.moveTo(leftPos, yPos);
+				ctx.lineTo(rightPos, yPos);
+				ctx.stroke();
+			}
+
+			// Draw sector labels
+			ctx.font = "bold " + Math.max(sectorWidth / 3, 100) + "px Ubuntu";
+			ctx.textAlign = "center";
+			ctx.textBaseline = "middle";
+
+			for (let y = 0; y < sectorCount; y++) {
+				for (let x = 0; x < sectorCount; x++) {
+					const letter = String.fromCharCode(65 + x); // A-E
+					const number = y + 1; // 1-5
+					const label = letter + number;
+					const centerX = leftPos + (x + 0.5) * sectorWidth;
+					const centerY = topPos + (y + 0.5) * sectorHeight;
+					ctx.fillText(label, centerX, centerY);
+				}
+			}
+
+			ctx.restore();
+		}
+
 		if (!hideGrid) {
 			ctx.save();
 			ctx.strokeStyle = showDarkTheme ? "#AAAAAA" : "#000000";
@@ -1327,7 +1378,8 @@
 	fullscreenOffIcon = new Image,
 	splitIcon = new Image,
 	ejectIcon = new Image,
-	noRanking = false;
+	noRanking = false,
+	showBackgroundSectors = true;
 	fullscreenIcon.src = 'img/fullscreen.png';
 	fullscreenOffIcon.src = 'img/fullscreen_off.png';
 	splitIcon.src = 'img/split.png';
@@ -1389,6 +1441,9 @@
 	};
 	wHandle.setMinimap = function (arg) {
 		showMinimap = arg;
+	};
+	wHandle.setBackgroundSectors = function (arg) {
+		showBackgroundSectors = arg;
 	};
 	wHandle.connect = wsConnect;
 
@@ -1879,9 +1934,56 @@
 		var mapSizeY = bottomPos - topPos;
 		var miniScale = minimapSize / Math.max(mapSizeX, mapSizeY);
 
+		ctx.strokeStyle = "rgba(255, 255, 255, 0.2)";
+		ctx.lineWidth = 1;
+		ctx.font = "bold 14px Arial";
+		ctx.fillStyle = "rgba(255, 255, 255, 0.7)";
+		ctx.textAlign = "center";
+		ctx.textBaseline = "middle";
+
+		var sectorWidth = minimapSize / 5;
+		var sectorHeight = minimapSize / 5;
+
+		var currentSectorX = Math.floor((nodeX - leftPos) / (mapSizeX / 5));
+		var currentSectorY = Math.floor((nodeY - topPos) / (mapSizeY / 5));
+		var currentSectorLetter = String.fromCharCode(65 + currentSectorX);
+		var currentSectorNumber = currentSectorY + 1;
+
+		for (var i = 0; i <= 5; i++) {
+			var x = minimapX + (i * sectorWidth);
+			ctx.beginPath();
+			ctx.moveTo(x, minimapY);
+			ctx.lineTo(x, minimapY + minimapSize);
+			ctx.stroke();
+
+			var y = minimapY + (i * sectorHeight);
+			ctx.beginPath();
+			ctx.moveTo(minimapX, y);
+			ctx.lineTo(minimapX + minimapSize, y);
+			ctx.stroke();
+		}
+
+		for (var row = 0; row < 5; row++) {
+			for (var col = 0; col < 5; col++) {
+				var sectorLetter = String.fromCharCode(65 + col);
+				var sectorNumber = row + 1;
+				var centerX = minimapX + (col * sectorWidth) + sectorWidth/2;
+				var centerY = minimapY + (row * sectorHeight) + sectorHeight/2;
+				ctx.fillText(sectorLetter + sectorNumber, centerX, centerY);
+			}
+		}
+
+		ctx.textAlign = "left";
+		ctx.textBaseline = "alphabetic";
+
+		var sectorX = minimapX + (currentSectorX * sectorWidth);
+		var sectorY = minimapY + (currentSectorY * sectorHeight);
+		ctx.fillStyle = "rgba(255, 255, 102, 0.2)"; // Semi-transparent yellow color
+		ctx.fillRect(sectorX, sectorY, sectorWidth, sectorHeight);
+
 		ctx.strokeStyle = "rgba(255, 255, 255, 0.4)";
 		ctx.lineWidth = 1;
-		var gridSize = 5000;
+		var gridSize = mapSizeX / 5; // Make grid size match sector size
 
 		var startX = Math.floor(leftPos / gridSize) * gridSize;
 		var startY = Math.floor(topPos / gridSize) * gridSize;
@@ -1937,10 +2039,26 @@
 		var viewH = (canvasHeight / viewZoom) * miniScale;
 		ctx.strokeRect(viewX - viewW/2, viewY - viewH/2, viewW, viewH);
 
-		ctx.globalAlpha = 1;
+		ctx.font = "bold 14px Arial";
+		ctx.textAlign = "center";
+		ctx.textBaseline = "middle";
+		var coordText = "X: " + ~~nodeX + ", Y: " + ~~nodeY + " [" + currentSectorLetter + currentSectorNumber + "]";
+
+		var textWidth = ctx.measureText(coordText).width;
+		var padding = 5;
+		var textHeight = 18;
+		var textY = minimapY - 15;
+
+		ctx.fillStyle = "rgba(0, 0, 0, 0.4)";
+		ctx.fillRect(
+			minimapX + minimapSize/2 - textWidth/2 - padding,
+			textY - textHeight/2 - padding,
+			textWidth + padding * 2,
+			textHeight + padding * 2
+		);
+
 		ctx.fillStyle = "#FFFFFF";
-		ctx.font = "16px Arial";
-		ctx.fillText("X: " + ~~nodeX + ", Y: " + ~~nodeY, minimapX + 5, minimapY + minimapSize - 5);
+		ctx.fillText(coordText, minimapX + minimapSize/2, textY);
 
 		ctx.restore();
 	}
