@@ -1023,11 +1023,16 @@
 			ctx.stroke();
 			ctx.restore()
 		}
+
 		ctx.restore();
+
 		lbCanvas && lbCanvas.width && ctx.drawImage(lbCanvas, canvasWidth - lbCanvas.width - 10, 10); // draw Leader Board
 		if (!hideChat) {
 			if ((chatCanvas != null) && (chatCanvas.width > 0)) ctx.drawImage(chatCanvas, 0, canvasHeight - chatCanvas.height - 50); // draw Chat Board
 		}
+
+		drawMinimap();
+
 		userScore = Math.max(userScore, calcUserScore());
 		if (0 != userScore) {
 			if (null == scoreText) {
@@ -1297,6 +1302,7 @@
 	},
 	showDarkTheme = false,
 	showMass = false,
+	showMinimap = true,
 	connectUrl = "",
 	isNewProto = false,
 	defaultPort = 0,
@@ -1380,6 +1386,9 @@
 	};
 	wHandle.setAcid = function (arg) {
 		if (clientData.acid != 0 && clientData.acid != 3) xa = arg
+	};
+	wHandle.setMinimap = function (arg) {
+		showMinimap = arg;
 	};
 	wHandle.connect = wsConnect;
 
@@ -1848,4 +1857,91 @@
 	};
 
 	wHandle.onload = gameLoop;
+
+	function drawMinimap() {
+		if (!showMinimap) return;
+
+		var minimapSize = Math.min(200, canvasWidth * 0.2);
+		var minimapPadding = 10;
+		var minimapX = canvasWidth - minimapSize - minimapPadding;
+		var minimapY = canvasHeight - minimapSize - minimapPadding;
+
+		ctx.save();
+
+		ctx.fillStyle = "rgba(100, 100, 100, 0.5)";
+		ctx.fillRect(minimapX, minimapY, minimapSize, minimapSize);
+
+		ctx.strokeStyle = "rgba(255, 255, 255, 0.4)";
+		ctx.lineWidth = 2;
+		ctx.strokeRect(minimapX, minimapY, minimapSize, minimapSize);
+
+		var mapSizeX = rightPos - leftPos;
+		var mapSizeY = bottomPos - topPos;
+		var miniScale = minimapSize / Math.max(mapSizeX, mapSizeY);
+
+		ctx.strokeStyle = "rgba(255, 255, 255, 0.4)";
+		ctx.lineWidth = 1;
+		var gridSize = 5000;
+
+		var startX = Math.floor(leftPos / gridSize) * gridSize;
+		var startY = Math.floor(topPos / gridSize) * gridSize;
+
+		for (var x = startX; x <= rightPos; x += gridSize) {
+			var miniX = minimapX + (x - leftPos) * miniScale;
+			if (miniX >= minimapX && miniX <= minimapX + minimapSize) {
+				ctx.beginPath();
+				ctx.moveTo(miniX, minimapY);
+				ctx.lineTo(miniX, minimapY + minimapSize);
+				ctx.stroke();
+			}
+		}
+
+		for (var y = startY; y <= bottomPos; y += gridSize) {
+			var miniY = minimapY + (y - topPos) * miniScale;
+			if (miniY >= minimapY && miniY <= minimapY + minimapSize) {
+				ctx.beginPath();
+				ctx.moveTo(minimapX, miniY);
+				ctx.lineTo(minimapX + minimapSize, miniY);
+				ctx.stroke();
+			}
+		}
+
+		ctx.fillStyle = "#FFFFFF";
+		for (var i = 0; i < playerCells.length; i++) {
+			var cell = playerCells[i];
+			var miniX = minimapX + (cell.x - leftPos) * miniScale;
+			var miniY = minimapY + (cell.y - topPos) * miniScale;
+			var miniSize = Math.max(2, cell.size * miniScale);
+			ctx.beginPath();
+			ctx.arc(miniX, miniY, miniSize, 0, 2 * Math.PI);
+			ctx.fill();
+		}
+
+		ctx.fillStyle = "#FF0000";
+		for (var i = 0; i < nodelist.length; i++) {
+			var cell = nodelist[i];
+			if (cell.isVirus || cell.size < 50 || playerCells.indexOf(cell) !== -1) continue;
+			var miniX = minimapX + (cell.x - leftPos) * miniScale;
+			var miniY = minimapY + (cell.y - topPos) * miniScale;
+			var miniSize = Math.max(2, cell.size * miniScale);
+			ctx.beginPath();
+			ctx.arc(miniX, miniY, miniSize, 0, 2 * Math.PI);
+			ctx.fill();
+		}
+
+		ctx.strokeStyle = "#FFFFFF";
+		ctx.lineWidth = 1;
+		var viewX = minimapX + (nodeX - leftPos) * miniScale;
+		var viewY = minimapY + (nodeY - topPos) * miniScale;
+		var viewW = (canvasWidth / viewZoom) * miniScale;
+		var viewH = (canvasHeight / viewZoom) * miniScale;
+		ctx.strokeRect(viewX - viewW/2, viewY - viewH/2, viewW, viewH);
+
+		ctx.globalAlpha = 1;
+		ctx.fillStyle = "#FFFFFF";
+		ctx.font = "16px Arial";
+		ctx.fillText("X: " + ~~nodeX + ", Y: " + ~~nodeY, minimapX + 5, minimapY + minimapSize - 5);
+
+		ctx.restore();
+	}
 })(window, window.jQuery);
