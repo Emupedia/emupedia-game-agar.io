@@ -2506,24 +2506,30 @@
 				settings.fp = ident !== '' ? ident + '|' + result.visitorId : result.visitorId;
 				storeSettings();
 
-				let ban = false;
+				fetch('../fpBanList.txt').then(resp => resp.text()).then(data => {
+					const fp = data.split(',').filter(name => name.length > 0);
 
-				bannedFP.forEach(val => {
-					if (settings.fp === val) {
-						ban = true;
+					for (const p of fp) bannedFP.add(p);
+
+					let ban = false;
+
+					bannedFP.forEach(val => {
+						if (settings.fp === val) {
+							ban = true;
+						}
+					});
+
+					if (ban) {
+						wsCleanup();
+						hideESCOverlay();
+						byId('chat_textbox').hide();
+						byId('chat_clear').hide();
+						byId('connecting-content').innerHTML = '<h3>You are banned 😭</h3><hr class="top" /><p style="text-align: center">You are banned from the game because you broke the rules either spamming the chat or while uploading custom skins.</p><a class="text-center" style="display: block; color: red;" href="https://discord.gg/emupedia-510149138491506688" target="_blank">Join us on Discord!</a><h1 style="text-align: center;">Your unban code is<br /><br />' + btoa(settings.fp).replace(/(.{10})/g, "$1<br />") + '</h1>';
+						byId('connecting').show(0.5);
 					}
 				});
-
-				if (ban) {
-					wsCleanup();
-					hideESCOverlay();
-					byId('chat_textbox').hide();
-					byId('chat_clear').hide();
-					byId('connecting-content').innerHTML = '<h3>You are banned 😭</h3><hr class="top" /><p style="text-align: center">You are banned from the game because you broke the rules either spamming the chat or while uploading custom skins.</p><a class="text-center" style="display: block; color: red;" href="https://discord.gg/emupedia-510149138491506688" target="_blank">Join us on Discord!</a><h1 style="text-align: center;">Your unban code is<br /><br />' + btoa(settings.fp).replace(/(.{10})/g, "$1<br />") + '</h1>';
-					byId('connecting').show(0.5);
-				}
 			});
-		}, 10000);
+		}, 60000);
 
 		const joystickOptions = { zone: byId('touch'), mode: 'semi', dynamicPage: true, catchDistance: 80, color: settings.darkTheme ? 'white' : 'black' };
 		let joystick = nipplejs.create(joystickOptions);
