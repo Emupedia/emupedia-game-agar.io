@@ -2500,9 +2500,25 @@
 			return hasConstructorAlias(window, window.Array) && hasConstructorAlias(window, window.Promise) && hasConstructorAlias(window, window.Symbol);
 		}
 
+		function detectRandomProperties() {
+			const allProps = Object.getOwnPropertyNames(window);
+			const currentDetected = new Set();
+
+			for (const key of allProps) {
+				try {
+					if (window[key] === key && key.length === 5) {
+						currentDetected.add(key);
+					}
+				} catch (e) {}
+			}
+
+			return currentDetected.size > 0;
+		}
+
 		// noinspection JSUnresolvedReference
 		return [
-			checkCDC()
+			checkCDC(),
+			detectRandomProperties()
 		]
 	}
 
