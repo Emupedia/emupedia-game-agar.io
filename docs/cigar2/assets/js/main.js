@@ -363,7 +363,7 @@
 			this.cellColor = cellColor || Color.fromHex('#ffffff');
 			this.borderColor = borderColor || (cellColor ? cellColor.darker() : Color.fromHex('#ffffff'));
 			this.setSkin(skin, name);
-			this.fp = skin && skin !== '' ? skin.split('|')[4] : null
+			this.fp = skin && skin !== '' ? skin.split('|')[4] : null;
 			this.jagged = flags.jagged;
 			this.ejected = flags.ejected;
 			this.born = syncUpdStamp;
@@ -691,7 +691,7 @@
 					byId('chat_clear').hide();
 					byId('connecting-content').innerHTML = '<h3>Multisession Warning</h3><hr class="top" /><p style="text-align: center">Multiple game instances are not allowed.<br />Close all other game instances and reload.</p>';
 					byId('connecting').show(0.5);
-				}, 1000)
+				}, 1000);
 			}
 		}
 	};
@@ -2450,6 +2450,38 @@
 		}
 	}
 
+	function getBrowserInfo() {
+		const ua = navigator.userAgent;
+		const tokens = ua.trim().split(/\s+/);
+		const candidates = [];
+
+		for (let i = tokens.length - 1; i >= 0; i--) {
+			const token = tokens[i];
+			const match = token.match(/([A-Za-z]+)\/([\d.]+)/);
+
+			if (match) {
+				candidates.push({ name: match[1], version: match[2] });
+			}
+		}
+
+		// Blink based
+		if (candidates[0].name === 'Safari' && candidates[0].version === '537.36') {
+			if (candidates.length > 1) {
+				return { family: candidates[1].name, major: parseInt(candidates[1].version, 10) };
+			}
+		// Webkit based
+		} else if (candidates[0].name === 'Safari' && candidates[0].version !== '537.36') {
+			if (candidates.length > 1 && candidates[1].name === 'Version') {
+				return { family: 'Safari', major: parseInt(candidates[1].version, 10) };
+			}
+		// Gecko based
+		} else if (candidates[0].name === 'Firefox') {
+			return { family: 'Firefox', major: parseInt(candidates[0].version, 10) };
+		}
+
+		return { family: 'unknown', major: null };
+	}
+
 	function checkBots() {
 		function checkCDC() {
 			function hasConstructorAlias(window, constructor) {
@@ -3210,7 +3242,10 @@
 			fetch('skinList.txt').then(resp => resp.text()).then(data => {
 				const skins = data.split(',').filter(name => name.length > 0);
 
-				if (skins.length === 0) return;
+				if (skins.length === 0) {
+					init();
+					return;
+				}
 
 				byId('gallery-btn').style.display = 'inline-block';
 
@@ -3232,42 +3267,74 @@
 					loadSettings();
 
 					FP.then(fp => fp.get()).then(result => {
-						settings.fp = result.visitorId;
+						settings.fp = ident !== '' ? ident + '|' + result.visitorId : result.visitorId;
 						storeSettings();
-					});
 
-					fetch('../fpBanList.txt').then(resp => resp.text()).then(data => {
-						const fp = data.split(',').filter(name => name.length > 0);
+						fetch('../fpBanList.txt').then(resp => resp.text()).then(data => {
+							const fp = data.split(',').filter(name => name.length > 0);
 
-						for (const p of fp) bannedFP.add(p);
+							for (const p of fp) bannedFP.add(p);
 
-						let ban = false;
-						let bot = false;
+							let ban = false;
+							let bot = false;
 
-						loadSettings();
+							loadSettings();
 
-						bannedFP.forEach(val => {
-							if (settings.fp === val) {
-								ban = true;
+							bannedFP.forEach(val => {
+								if (settings.fp === val) {
+									ban = true;
+								}
+							});
+
+							checkBots().forEach(val => {
+								if (val) {
+									bot = true;
+								}
+							});
+
+							const browserInfo = getBrowserInfo();
+
+							switch (browserInfo.family) {
+								case 'Chrome':
+								case 'Firefox':
+									if (browserInfo.major < 128) {
+										setInterval(() => {
+											wsCleanup();
+											hideESCOverlay();
+											byId('chat_textbox').hide();
+											byId('chat_clear').hide();
+											byId('connecting-content').innerHTML = '<h3>Your Browser is very Old</h3><hr class="top" /><p style="text-align: center"><a href="https://www.whatismybrowser.com/" target="_blank">Please click here to update your Browser to a newer version.</a></p>';
+											byId('connecting').show(0.5);
+										}, 1000);
+									}
+									break;
+								case 'Safari':
+									if (browserInfo.major < 17) {
+										setInterval(() => {
+											wsCleanup();
+											hideESCOverlay();
+											byId('chat_textbox').hide();
+											byId('chat_clear').hide();
+											byId('connecting-content').innerHTML = '<h3>Your Browser is very Old</h3><hr class="top" /><p style="text-align: center"><a href="https://www.whatismybrowser.com/" target="_blank">Please click here to update your Browser to a newer version.</a></p>';
+											byId('connecting').show(0.5);
+										}, 1000);
+									}
+									break;
+							}
+
+							if (ban || bot) {
+								setInterval(() => {
+									wsCleanup();
+									hideESCOverlay();
+									byId('chat_textbox').hide();
+									byId('chat_clear').hide();
+									byId('connecting-content').innerHTML = '<h3>You are banned 😭</h3><hr class="top" /><p style="text-align: center">You are banned from the game because you broke the rules either spamming the chat or while uploading custom skins or because you are using bots.</p><a class="text-center" style="display: block; color: red;" href="https://discord.gg/emupedia-510149138491506688" target="_blank">Join us on Discord!</a><h1 style="text-align: center;">Your unban code is<br /><br />' + btoa(settings.fp).replace(/(.{10})/g, "$1<br />") + '</h1>';
+									byId('connecting').show(0.5);
+								}, 1000);
+							} else {
+								init();
 							}
 						});
-
-						checkBots().forEach(val => {
-							if (val) {
-								bot = true;
-							}
-						});
-
-						if (ban || bot) {
-							wsCleanup();
-							hideESCOverlay();
-							byId('chat_textbox').hide();
-							byId('chat_clear').hide();
-							byId('connecting-content').innerHTML = '<h3>You are banned 😭</h3><hr class="top" /><p style="text-align: center">You are banned from the game because you broke the rules either spamming the chat or while uploading custom skins or because you are using bots.</p><a class="text-center" style="display: block; color: red;" href="https://discord.gg/emupedia-510149138491506688" target="_blank">Join us on Discord!</a><h1 style="text-align: center;">Your unban code is<br /><br />' + btoa(settings.fp).replace(/(.{10})/g, "$1<br />") + '</h1>';
-							byId('connecting').show(0.5);
-						} else {
-							init();
-						}
 					});
 				});
 			});

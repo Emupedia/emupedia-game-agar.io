@@ -474,6 +474,10 @@
 		return document.getElementById(id);
 	}
 
+	function byClass(clss, parent) {
+		return (parent || document).getElementsByClassName(clss);
+	}
+
 	const LOAD_START = Date.now();
 
 	Array.prototype.remove = function (a) {
@@ -535,6 +539,7 @@
 		0x19: new Uint8Array([0x19]),
 		0xFE: new Uint8Array([0xFE])
 	};
+	const FP = FingerprintJS.load();
 	const LOCATION = ~window.location.hostname.indexOf('emupedia.net') ? 'emupedia.net' : (~window.location.hostname.indexOf('emupedia.org') ? 'emupedia.org' : (~window.location.hostname.indexOf('emupedia.games') ? 'emupedia.games' : (~window.location.hostname.indexOf('emuos.net') ? 'emuos.net' : (~window.location.hostname.indexOf('emuos.org') ? 'emuos.org' : (~window.location.hostname.indexOf('emuos.games') ? 'emuos.games' : 'emupedia.net')))));
 	const SERVERS = ['agar2' + '.' + LOCATION + '/ws3/'];
 	const GEO = {'eu': SERVERS[0], 'eu-ffa': SERVERS[0], 'us': SERVERS[0], 'eu-pvp': SERVERS[0]};
@@ -965,6 +970,7 @@
 
 	const knownSkins = new Map();
 	const loadedSkins = new Map();
+	const bannedFP = new Set();
 	const camera = {
 		x: 0,
 		y: 0,
@@ -985,6 +991,7 @@
 	let syncUpdStamp = Date.now();
 	let syncAppStamp = Date.now();
 
+	let ident = '';
 	let mainCanvas = null;
 	let mainCtx = null;
 	let soundsVolume;
@@ -1001,6 +1008,7 @@
 	let feedMacroIntervalID;
 	let splitMacroIntervalID;
 	let quadtree;
+	let interval;
 
 	const settings = {
 		server: 'eu',
@@ -1009,6 +1017,7 @@
 		skin: '',
 		skinnames: [],
 		gamemode: '',
+		fp: '',
 		showSkins: true,
 		showNames: true,
 		darkTheme: false,
@@ -2104,6 +2113,38 @@
 		}
 	}
 
+	function getBrowserInfo() {
+		const ua = navigator.userAgent;
+		const tokens = ua.trim().split(/\s+/);
+		const candidates = [];
+
+		for (let i = tokens.length - 1; i >= 0; i--) {
+			const token = tokens[i];
+			const match = token.match(/([A-Za-z]+)\/([\d.]+)/);
+
+			if (match) {
+				candidates.push({ name: match[1], version: match[2] });
+			}
+		}
+
+		// Blink based
+		if (candidates[0].name === 'Safari' && candidates[0].version === '537.36') {
+			if (candidates.length > 1) {
+				return { family: candidates[1].name, major: parseInt(candidates[1].version, 10) };
+			}
+		// Webkit based
+		} else if (candidates[0].name === 'Safari' && candidates[0].version !== '537.36') {
+			if (candidates.length > 1 && candidates[1].name === 'Version') {
+				return { family: 'Safari', major: parseInt(candidates[1].version, 10) };
+			}
+		// Gecko based
+		} else if (candidates[0].name === 'Firefox') {
+			return { family: 'Firefox', major: parseInt(candidates[0].version, 10) };
+		}
+
+		return { family: 'unknown', major: null };
+	}
+
 	function init() {
 		mainCanvas = document.getElementById('canvas');
 		mainCtx = mainCanvas.getContext('2d');
@@ -2114,6 +2155,37 @@
 		mainCanvas.focus();
 
 		loadSettings();
+
+		clearInterval(interval);
+		interval = setInterval(() => {
+			FP.then(fp => fp.get()).then(result => {
+				settings.fp = ident !== '' ? ident + '|' + result.visitorId : result.visitorId;
+				storeSettings();
+
+				fetch('../fpBanList.txt').then(resp => resp.text()).then(data => {
+					const fp = data.split(',').filter(name => name.length > 0);
+
+					for (const p of fp) bannedFP.add(p);
+
+					let ban = false;
+
+					bannedFP.forEach(val => {
+						if (settings.fp === val) {
+							ban = true;
+						}
+					});
+
+					if (ban) {
+						wsCleanup();
+						hideESCOverlay();
+						byId('chat_textbox').hide();
+						byId('chat_clear').hide();
+						byId('connecting-content').innerHTML = '<h3>You are banned 😭</h3><hr class="top" /><p style="text-align: center">You are banned from the game because you broke the rules.</p><a class="text-center" style="display: block; color: red;" href="https://discord.gg/emupedia-510149138491506688" target="_blank">Join us on Discord!</a><h1 style="text-align: center;">Your unban code is<br /><br />' + btoa(settings.fp).replace(/(.{10})/g, "$1<br />") + '</h1>';
+						byId('connecting').show(0.5);
+					}
+				});
+			});
+		}, 60000);
 
 		const joystickOptions = { zone: byId('touch'), mode: 'semi', dynamicPage: true, catchDistance: 80, color: settings.darkTheme ? 'white' : 'black' };
 		let joystick = nipplejs.create(joystickOptions);
@@ -2594,6 +2666,7 @@
 
 		window.onkeydown = keydown;
 		window.onkeyup = keyup;
+
 		window.onblur = () => {
 			clearInterval(feedMacroIntervalID);
 			clearInterval(splitMacroIntervalID);
@@ -2730,7 +2803,73 @@
 					if (knownSkins.get(i) !== stamp) knownSkins.delete(i);
 				}
 
-				init();
+				loadSettings();
+
+				FP.then(fp => fp.get()).then(result => {
+					settings.fp = ident !== '' ? ident + '|' + result.visitorId : result.visitorId;
+					storeSettings();
+
+					fetch('../fpBanList.txt').then(resp => resp.text()).then(data => {
+						const fp = data.split(',').filter(name => name.length > 0);
+
+						for (const p of fp) bannedFP.add(p);
+
+						let ban = false;
+
+						loadSettings();
+
+						bannedFP.forEach(val => {
+							if (settings.fp === val) {
+								ban = true;
+							}
+						});
+
+						const browserInfo = getBrowserInfo();
+
+						switch (browserInfo.family) {
+							case 'Chrome':
+							case 'Firefox':
+								if (browserInfo.major < 128) {
+									setInterval(() => {
+										wsCleanup();
+										hideESCOverlay();
+										byId('chat_textbox').hide();
+										byId('chat_clear').hide();
+										byId('connecting-content').innerHTML = '<h3>Your Browser is very Old</h3><hr class="top" /><p style="text-align: center"><a href="https://www.whatismybrowser.com/" target="_blank">Please click here to update your Browser to a newer version.</a></p>';
+										byId('connecting').show(0.5);
+									}, 1000);
+								}
+								break;
+							case 'Safari':
+								if (browserInfo.major < 17) {
+									setInterval(() => {
+										wsCleanup();
+										hideESCOverlay();
+										byId('chat_textbox').hide();
+										byId('chat_clear').hide();
+										byId('connecting-content').innerHTML = '<h3>Your Browser is very Old</h3><hr class="top" /><p style="text-align: center"><a href="https://www.whatismybrowser.com/" target="_blank">Please click here to update your Browser to a newer version.</a></p>';
+										byId('connecting').show(0.5);
+									}, 1000);
+								}
+								break;
+						}
+
+						if (ban) {
+							setInterval(() => {
+								wsCleanup();
+								hideESCOverlay();
+								byId('chat_textbox').hide();
+								byId('chat_clear').hide();
+								byId('connecting-content').innerHTML = '<h3>You are banned 😭</h3><hr class="top" /><p style="text-align: center">You are banned from the game because you broke the rules.</p><a class="text-center" style="display: block; color: red;" href="https://discord.gg/emupedia-510149138491506688" target="_blank">Join us on Discord!</a><h1 style="text-align: center;">Your unban code is<br /><br />' + btoa(settings.fp).replace(/(.{10})/g, "$1<br />") + '</h1>';
+								byId('connecting').show(0.5);
+							}, 1000);
+						} else {
+							init();
+						}
+					});
+				});
+
+
 			});
 		} catch (error) {
 			console.error(error);

@@ -1,5 +1,4 @@
 {
-	"id": "/",
 	"name": "Agar.io v2.0",
 	"short_name": "Agar.io v2.0",
 	"dir": "auto",
@@ -10,7 +9,7 @@
 	"orientation": "landscape-primary",
 	"theme_color": "#162dad",
 	"background_color": "#0a0a0a",
-	"start_url": "/",
+	"start_url": "/emupedia-game-agar.io/cigar2/",
 	"icons": [{
 		"src": "assets/img/favicon.png",
 		"sizes": "32x32",
