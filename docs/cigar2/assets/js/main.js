@@ -2506,7 +2506,7 @@
 
 			for (const key of allProps) {
 				try {
-					if (window[key] === key && key.length === 5) {
+					if (window[key] === key) {
 						currentDetected.add(key);
 					}
 				} catch (e) {}
