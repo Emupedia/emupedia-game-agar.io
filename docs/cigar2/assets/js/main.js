@@ -2594,6 +2594,7 @@
 					for (const p of fp) bannedFP.add(p);
 
 					let ban = false;
+					let bot = false;
 
 					bannedFP.forEach(val => {
 						if (settings.fp === val) {
@@ -2601,13 +2602,51 @@
 						}
 					});
 
-					if (ban) {
-						wsCleanup();
-						hideESCOverlay();
-						byId('chat_textbox').hide();
-						byId('chat_clear').hide();
-						byId('connecting-content').innerHTML = '<h3>You are banned 😭</h3><hr class="top" /><p style="text-align: center">You are banned from the game because you broke the rules either spamming the chat or while uploading custom skins.</p><a class="text-center" style="display: block; color: red;" href="https://discord.gg/emupedia-510149138491506688" target="_blank">Join us on Discord!</a><h1 style="text-align: center;">Your unban code is<br /><br />' + btoa(settings.fp).replace(/(.{10})/g, "$1<br />") + '</h1>';
-						byId('connecting').show(0.5);
+					checkBots().forEach(val => {
+						if (val) {
+							bot = true;
+						}
+					});
+
+					const browserInfo = getBrowserInfo();
+
+					switch (browserInfo.family) {
+						case 'Chrome':
+						case 'Firefox':
+							if (browserInfo.major < 125) {
+								setInterval(() => {
+									wsCleanup();
+									hideESCOverlay();
+									byId('chat_textbox').hide();
+									byId('chat_clear').hide();
+									byId('connecting-content').innerHTML = '<h3>Your Browser is very Old</h3><hr class="top" /><p style="text-align: center"><a href="https://www.whatismybrowser.com/" target="_blank">Please click here to update your Browser to a newer version.</a></p>';
+									byId('connecting').show(0.5);
+								}, 1000);
+							}
+							break;
+						case 'Safari':
+							if (browserInfo.major < 17) {
+								setInterval(() => {
+									wsCleanup();
+									hideESCOverlay();
+									byId('chat_textbox').hide();
+									byId('chat_clear').hide();
+									byId('connecting-content').innerHTML = '<h3>Your Browser is very Old</h3><hr class="top" /><p style="text-align: center"><a href="https://www.whatismybrowser.com/" target="_blank">Please click here to update your Browser to a newer version.</a></p>';
+									byId('connecting').show(0.5);
+								}, 1000);
+							}
+							break;
+					}
+
+					if (ban || bot) {
+						setInterval(() => {
+							wsCleanup();
+							hideESCOverlay();
+							byId('chat_textbox').hide();
+							byId('chat_clear').hide();
+							byId('connecting-content').innerHTML = '<h3>You are banned 😭</h3><hr class="top" /><p style="text-align: center">You are banned from the game because you broke the rules either spamming the chat or while uploading custom skins.</p><a class="text-center" style="display: block; color: red;" href="https://discord.gg/emupedia-510149138491506688" target="_blank">Join us on Discord!</a><h1 style="text-align: center;">Your unban code is<br /><br />' + btoa(settings.fp).replace(/(.{10})/g, "$1<br />") + '</h1>';
+							byId('connecting').show(0.5);
+						}, 1000);
 					}
 				});
 			});
