@@ -2515,10 +2515,44 @@
 			return currentDetected.size > 0;
 		}
 
+		function isCanvasPrototypeTampered() {
+			let iframe = document.createElement('iframe');
+			iframe.style.display = 'none';
+			document.body.appendChild(iframe);
+
+			let nativeCanvasProto = iframe.contentWindow.HTMLCanvasElement.prototype;
+			let nativeCtxProto = iframe.contentWindow.CanvasRenderingContext2D.prototype;
+
+			let currentCanvasProto = HTMLCanvasElement.prototype;
+			let currentCtxProto = CanvasRenderingContext2D.prototype;
+
+			const canvasMethods = ['toDataURL', 'toBlob'];
+			const ctxMethods = ['getImageData'];
+			let tampered = false;
+
+			canvasMethods.forEach(method => {
+				if (typeof currentCanvasProto[method] !== 'function' || currentCanvasProto[method].toString() !== nativeCanvasProto[method].toString()) {
+					tampered = true;
+					console.warn(`Method ${method} on HTMLCanvasElement.prototype appears to have been modified.`);
+				}
+			});
+
+			ctxMethods.forEach(method => {
+				if (typeof currentCtxProto[method] !== 'function' || currentCtxProto[method].toString() !== nativeCtxProto[method].toString()) {
+					tampered = true;
+					console.warn(`Method ${method} on CanvasRenderingContext2D.prototype appears to have been modified.`);
+				}
+			});
+
+			document.body.removeChild(iframe);
+			return tampered;
+		}
+
 		// noinspection JSUnresolvedReference
 		return [
 			checkCDC(),
-			detectRandomProperties()
+			detectRandomProperties(),
+			isCanvasPrototypeTampered()
 		]
 	}
 
