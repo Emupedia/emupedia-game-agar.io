@@ -3313,7 +3313,7 @@
 							switch (browserInfo.family) {
 								case 'Chrome':
 								case 'Firefox':
-									if (browserInfo.major < 128) {
+									if (browserInfo.major < 125) {
 										setInterval(() => {
 											wsCleanup();
 											hideESCOverlay();
