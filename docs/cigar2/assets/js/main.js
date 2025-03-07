@@ -1,4 +1,4 @@
-// noinspection DuplicatedCode
+// noinspection DuplicatedCode,JSUnresolvedReference,JSIgnoredPromiseFromCall
 
 (function() {
 	'use strict';
@@ -193,7 +193,7 @@
 
 	class Logger {
 		static get verbosity() {
-			return 2;
+			return 4;
 		}
 		static error() {
 			if (Logger.verbosity > 0) console.error.apply(null, arguments);
@@ -335,7 +335,7 @@
 	}*/
 
 	class Cell {
-		static parseName(name, limit = true) { // static method
+		static parseName(name, limit = true) {
 			if (typeof name !== 'undefined' && name !== null && name !== '')
 				return name.trim().replace(/[<>|]/g, '').substring(0, 16);
 
@@ -454,7 +454,7 @@
 			for (let i = 0; i < this.points.length; ++i) {
 				const curP = this.points[i];
 				const prevRl = this.points[(i - 1 + this.points.length) % this.points.length].rl;
-				const nextRl = this.points[(i + 1) % this.points.length].rl; // here
+				const nextRl = this.points[(i + 1) % this.points.length].rl;
 				let curRl = curP.rl;
 
 				let affected = quadtree.some({ x: curP.x - 5, y: curP.y - 5, w: 10, h: 10 }, item => item.parent !== this && sqDist(item, curP) <= 25);
@@ -565,7 +565,7 @@
 			const skinImage = loadedSkins.get(this.skin);
 			if (settings.showSkins && this.skin && skinImage && skinImage.complete && skinImage.width && skinImage.height) {
 				if (settings.fillSkin) ctx.fill();
-				ctx.save(); // for the clip
+				ctx.save();
 				ctx.clip();
 				ctx.drawImage(skinImage, this.x - this.s, this.y - this.s, this.s * 2, this.s * 2);
 				ctx.restore();
@@ -676,7 +676,7 @@
 	const FP = FingerprintJS.load();
 	const LOCATION = ~window.location.hostname.indexOf('emupedia.net') ? 'emupedia.net' : (~window.location.hostname.indexOf('emupedia.org') ? 'emupedia.org' : (~window.location.hostname.indexOf('emupedia.games') ? 'emupedia.games' : (~window.location.hostname.indexOf('emuos.net') ? 'emuos.net' : (~window.location.hostname.indexOf('emuos.org') ? 'emuos.org' : (~window.location.hostname.indexOf('emuos.games') ? 'emuos.games' : 'emupedia.net')))));
 	const SERVERS = ['agar' + '.' + LOCATION + '/ws2/', 'agar2' + '.' + LOCATION + '/ws2/'];
-	const GEO = {'eu': SERVERS[0], 'eu-ffa': SERVERS[0], 'us': SERVERS[1], 'eu-pvp': SERVERS[1]};
+	const GEO = {'eu-ffa': SERVERS[0], 'eu': SERVERS[0], 'us': SERVERS[1], 'eu-pvp': SERVERS[1]};
 	const TC = new BroadcastChannel('agar2');
 
 	TC.onmessage = event => {
@@ -1153,6 +1153,7 @@
 		isDraggingScroll:false,
 		scrollOffset: 0,
 		scrollDragOffset: 0,
+		iconWidth: 20,
 		messages: [],
 		waitUntil: 0,
 		canvas: document.createElement('canvas'),
@@ -1218,7 +1219,7 @@
 	let interval;
 
 	const settings = {
-		server: 'eu',
+		server: 'eu-ffa',
 		nick: '',
 		nicknames: [],
 		skin: '',
@@ -1232,6 +1233,7 @@
 		showMass: false,
 		showIdenticon: false,
 		_showChat: true,
+		mutedPlayers: [],
 		get showChat() {
 			return this._showChat;
 		},
@@ -1362,7 +1364,13 @@
 			if (elm) {
 				if (Object.hasOwnProperty.call(obj, prop)) settings[prop] = obj[prop];
 				initSetting(prop, elm);
-			} else Logger.info(`setting ${prop} not loaded because there is no element for it.`);
+			} else {
+				if (prop === 'mutedPlayers') {
+					settings[prop] = obj[prop]
+				} else {
+					Logger.info(`setting ${prop} not loaded because there is no element for it.`);
+				}
+			}
 		}
 	}
 
@@ -1416,6 +1424,67 @@
 		drawChat();
 	}
 
+	function mutePlayer(username) {
+		if (!username || username.trim() === '') return;
+
+		username = username.trim();
+
+		if (settings.mutedPlayers.includes(username)) return;
+
+		settings.mutedPlayers.push(username);
+		storeSettings();
+		updateMutedPlayersList();
+		drawChat();
+	}
+
+	function unmutePlayer(username) {
+		if (!username || username.trim() === '') return;
+
+		username = username.trim();
+
+		const index = settings.mutedPlayers.indexOf(username);
+
+		if (index !== -1) {
+			settings.mutedPlayers.splice(index, 1);
+			storeSettings();
+			updateMutedPlayersList();
+			drawChat();
+		}
+	}
+
+	function updateMutedPlayersList() {
+		const mutedList = byId('muted-users-list');
+		if (!mutedList) return;
+
+		mutedList.innerHTML = '';
+
+		if (settings.mutedPlayers.length === 0) {
+			mutedList.innerHTML = '<p class="text-muted">No muted users</p>';
+			return;
+		}
+
+		settings.mutedPlayers.forEach(username => {
+			const item = document.createElement('div');
+			item.className = 'muted-user-item';
+			item.style.display = 'flex';
+			item.style.justifyContent = 'space-between';
+			item.style.alignItems = 'center';
+			item.style.marginBottom = '5px';
+
+			const name = document.createElement('span');
+			name.textContent = username;
+
+			const unmuteBtn = document.createElement('button');
+			unmuteBtn.className = 'btn btn-xs btn-danger';
+			unmuteBtn.textContent = 'Unmute';
+			unmuteBtn.onclick = () => unmutePlayer(username);
+
+			item.appendChild(name);
+			item.appendChild(unmuteBtn);
+			mutedList.appendChild(item);
+		});
+	}
+
 	function updateChatScrollFromMouse(mouseY) {
 		const canvas = chat.canvas;
 		const ctx = canvas.getContext('2d');
@@ -1467,7 +1536,7 @@
 		const font = '18px Ubuntu';
 		const baseLineHeight = computeLineHeight(ctx, font);
 		const lineHeight = baseLineHeight + chat.lineHeightSpacing;
-		const textLeftMargin = chat.scrollbarWidth + chat.leftTextSpacing;
+		const textLeftMargin = chat.scrollbarWidth + chat.leftTextSpacing + chat.iconWidth;
 		const effectiveViewportHeight = chat.viewportHeight - (chat.lineTopSpacing * lineHeight);
 		const visibleCount = Math.floor(effectiveViewportHeight / lineHeight);
 
@@ -1479,14 +1548,25 @@
 		const endIndex = chat.messages.length - chat.scrollOffset;
 		const visibleMessages = chat.messages.slice(startIndex, endIndex);
 
+		chat.muteIconAreas = [];
+
 		const lines = [];
 
 		for (let i = 0; i < visibleMessages.length; i++) {
+			const message = visibleMessages[i];
+			const isMuted = settings.mutedPlayers.includes(message.name);
+
 			lines.push([{
-				text: visibleMessages[i].name,
-				color: visibleMessages[i].color
+				text: message.server || message.admin || message.mod ? '' : (!isMuted ? '🔇' : '🔊'),
+				color: Color.fromHex('#ffffff'),
+				isMuteIcon: true,
+				username: message.name,
+				fontSize: '22px Ubuntu'
 			} , {
-				text: ` ${visibleMessages[i].message}`,
+				text: message.name,
+				color: message.color
+			} , {
+				text: isMuted ? ' [muted]' : ` ${message.message}`,
 				color: Color.fromHex(settings.darkTheme ? '#ffffff' : '#000000')
 			}]);
 		}
@@ -1500,7 +1580,7 @@
 			let parts = lines[i];
 
 			for (let j = 0; j < parts.length; j++) {
-				ctx.font = font;
+				ctx.font = parts[j].fontSize || font;
 				parts[j].width = ctx.measureText(parts[j].text).width;
 				lineWidth += parts[j].width;
 			}
@@ -1528,16 +1608,27 @@
 
 		ctx.textBaseline = 'bottom';
 
+		chat.muteIconAreas = [];
+
 		for (let i = 0; i < lines.length; i++) {
 			let x = textLeftMargin;
-
 			const y = effectiveViewportHeight - (i * lineHeight);
 			const parts = lines[lines.length - 1 - i];
 
 			for (let j = 0; j < parts.length; j++) {
-				ctx.font = font;
+				ctx.font = parts[j].fontSize || font;
 				ctx.fillStyle = settings.showColor ? parts[j].color.toHex() : '#ffffff';
 				ctx.fillText(parts[j].text, x, y);
+
+				if (parts[j].isMuteIcon) {
+					chat.muteIconAreas.push({
+						x: x,
+						y: y - baseLineHeight,
+						width: parts[j].width,
+						height: baseLineHeight,
+						username: parts[j].username
+					});
+				}
 				x += parts[j].width;
 			}
 		}
@@ -1720,7 +1811,7 @@
 		mainCtx.save();
 		mainCtx.resetTransform();
 		const targetSize = 200;
-		const borderAR = border.width / border.height; // aspect ratio
+		const borderAR = border.width / border.height;
 		const width = targetSize * borderAR * camera.viewportScale;
 		const height = targetSize / borderAR * camera.viewportScale;
 		const beginX = mainCanvas.width - width;
@@ -1771,7 +1862,7 @@
 			for (const id of cells.mine) {
 				const cell = cells.byId.get(id);
 				if (!cell) continue;
-				mainCtx.fillStyle = cell.cellColor.toHex(); // repeat assignment of same color is OK
+				mainCtx.fillStyle = cell.cellColor.toHex();
 				const x = beginX + (cell.x + halfWidth) * xScale;
 				const y = beginY + (cell.y + halfHeight) * yScale;
 				const r = Math.max(cell.s, 200) * (xScale + yScale) / 2;
@@ -1784,7 +1875,6 @@
 		}
 		mainCtx.fill();
 
-		// draw name above user's pos if they have a cell on the screen
 		const cell = cells.byId.get(cells.mine.find(id => cells.byId.has(id)));
 
 		if (cell) {
@@ -2220,8 +2310,8 @@
 				const canvases = cache.canvases;
 				const correctionScale = drawSize / cache.size;
 
-				// calculate width
 				let width = 0;
+
 				for (let i = 0; i < value.length; i++) {
 					width += canvases[value[i]].width - 2 * cache.lineWidth;
 				}
@@ -2282,7 +2372,7 @@
 		if (event.ctrlKey === true) {
 			pressed['ctrl'] = true;
 
-			if (event.which == '61' || event.which == '107' || event.which == '173' || event.which == '109' || event.which == '187' || event.which == '189') {
+			if (event.which === 61 || event.which === 107 || event.which === 173 || event.which === 109 || event.which === 187 || event.which === 189) {
 				event.preventDefault();
 			}
 		}
@@ -2581,6 +2671,7 @@
 		mainCanvas.focus();
 
 		loadSettings();
+		updateMutedPlayersList();
 
 		clearInterval(interval);
 		interval = setInterval(() => {
@@ -3293,6 +3384,41 @@
 			}
 		});
 
+		mainCanvas.addEventListener('click', event => {
+			if (typeof event['isTrusted'] !== 'boolean' || event['isTrusted'] === false) return;
+
+			if (!chat.visible || !settings.showChat) return;
+
+			const rect = mainCanvas.getBoundingClientRect();
+			const mouseX = event.clientX - rect.left;
+			const mouseY = event.clientY - rect.top;
+			const scaledMouseX = mouseX / camera.viewportScale;
+			const scaledMouseY = mouseY / camera.viewportScale;
+			const chatX = 10 / camera.viewportScale;
+			const chatY = (mainCanvas.height - 55) / camera.viewportScale - chat.canvas.height;
+
+			if (!chat.muteIconAreas) return;
+
+			for (let i = 0; i < chat.muteIconAreas.length; i++) {
+				const area = chat.muteIconAreas[i];
+				const areaX = chatX + area.x;
+				const areaY = chatY + area.y;
+
+				if (scaledMouseX >= areaX && scaledMouseX <= areaX + area.width && scaledMouseY >= areaY && scaledMouseY <= areaY + area.height) {
+					const username = area.username;
+
+					if (settings.mutedPlayers.includes(username)) {
+						unmutePlayer(username);
+					} else {
+						mutePlayer(username);
+					}
+
+					event.preventDefault();
+					return;
+				}
+			}
+		});
+
 		setInterval(() => sendMouseMove((mouseX - mainCanvas.width / 2) / camera.scale + camera.x, (mouseY - mainCanvas.height / 2) / camera.scale + camera.y), 40);
 
 		window.onresize = () => {
@@ -3310,6 +3436,25 @@
 
 		drawGame();
 		Logger.info(`Init done in ${Date.now() - LOAD_START}ms`);
+
+		const mutePlayerBtn = byId('mute-user-btn');
+		const mutePlayerInput = byId('mute-user-input');
+
+		if (mutePlayerBtn && mutePlayerInput) {
+			mutePlayerBtn.addEventListener('click', () => {
+				const username = mutePlayerInput.value;
+				mutePlayer(username);
+				mutePlayerInput.value = '';
+			});
+
+			mutePlayerInput.addEventListener('keydown', (event) => {
+				if (event.key === 'Enter') {
+					const username = mutePlayerInput.value;
+					mutePlayer(username);
+					mutePlayerInput.value = '';
+				}
+			});
+		}
 	}
 
 	function start() {

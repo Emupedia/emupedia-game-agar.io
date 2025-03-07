@@ -39,7 +39,6 @@
 		<link href="https://fonts.googleapis.com/css?family=Ubuntu:700" rel="stylesheet" type="text/css" />
 		<link href="assets/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="assets/css/index.css?v=26" rel="stylesheet" />
-		<link href="assets/css/gallery.css" rel="stylesheet" />
 	</head>
 
 	<body>
@@ -116,6 +115,15 @@
 					</div>
 
 					<div id="settings" class="checkbox" style="display: none;">
+						<div style="margin: 6px;">
+							<h4>Muted Players</h4>
+							<div id="muted-users-list" style="max-height: 100px; overflow-y: auto; margin-bottom: 10px;"></div>
+							<div style="display: flex;">
+								<input id="mute-user-input" type="text" placeholder="Enter username to mute" style="flex: 1; margin-right: 5px; color: #000;" />
+								<button id="mute-user-btn" class="btn btn-danger btn-sm">Mute</button>
+							</div>
+						</div>
+						<hr />
 						<div style="margin: 6px;">
 							<label><input id="toggleFullscreen" type="checkbox" />Toggle Fullscreen</label>
 							<label><input id="darkTheme" type="checkbox" />Dark Theme</label>
@@ -206,7 +214,11 @@
 						<h2 class="title">News</h2>
 						<hr class="top" />
 						<div class="text">
-							<b>03/02/2025</b>
+							<b>07/03/2025</b>
+							<ul>
+								<li>Added <b>Player Chat Muting</b> you can now mute specific players from chat by pressing the icon next to their message or using the mute list in <b>Settings</b></li>
+							</ul>
+							<hr /><b>03/02/2025</b>
 							<ul>
 								<li>Added <b>Chat Scroll</b>, you can scroll now either by with dragging scrollbar with the <kbd>Mouse</kbd> or using <kbd>↑ Arrow Up</kbd> and <kbd>↓ Arrow Down</kbd> keys</li>
 							</ul>
@@ -339,6 +351,6 @@
 		<script src="assets/js/fp.umd.min.js"></script>
 		<script src="assets/js/nipplejs.js"></script>
 		<script src="assets/js/quadtree.js"></script>
-		<script src="assets/js/main.min.js?v=140"></script>
+		<script src="assets/js/main.js?v=140"></script>
 	</body>
 </html>
