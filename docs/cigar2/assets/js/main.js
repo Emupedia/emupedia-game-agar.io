@@ -1368,7 +1368,7 @@
 				initSetting(prop, elm);
 			} else {
 				if (prop === 'mutedPlayers') {
-					if (Array.isArray(obj[prop])) {
+					if (typeof obj[prop] === 'undefined' && Array.isArray(obj[prop])) {
 						settings[prop] = obj[prop]
 					} else {
 						settings[prop] = []
