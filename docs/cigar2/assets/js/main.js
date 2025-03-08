@@ -193,7 +193,7 @@
 
 	class Logger {
 		static get verbosity() {
-			return 4;
+			return 0;
 		}
 		static error() {
 			if (Logger.verbosity > 0) console.error.apply(null, arguments);
@@ -1028,7 +1028,7 @@
 
 				let name = Cell.parseName(rawName) || EMPTY_NAME;
 
-				if (flags.server && name !== 'SERVER') name = `[SERVER] ${name}`;
+				if (flags.server && name !== 'SERVER') name = `[SERVER] `;
 				if (flags.admin) name = `[ADMIN] ${name}`;
 				if (flags.mod) name = `[MOD] ${name}`;
 
@@ -1043,6 +1043,7 @@
 					server: flags.server,
 					admin: flags.admin,
 					mod: flags.mod,
+					me: false
 				});
 
 				if (settings.showChat) drawChat();
@@ -1087,12 +1088,13 @@
 
 		chat.messages.push({
 			color: settings.nameColor !== '#ffffff' ? Color.fromHex(settings.nameColor) : Color.fromHex('#33ff33'),
-			name: Cell.parseName(settings.nick) || EMPTY_NAME,
+			name: '[YOU]',
 			message: text,
 			time: Date.now(),
 			server: false,
 			admin: false,
-			mod: false
+			mod: false,
+			me: true
 		});
 
 		if (settings.showChat) drawChat();
@@ -1147,13 +1149,13 @@
 	const chat = Object.create({
 		viewportHeight: window.innerHeight,
 		scrollbarWidth: 8,
-		lineHeightSpacing: 8,
+		lineHeightSpacing: 10,
 		lineTopSpacing: 20,
 		leftTextSpacing: 4,
 		isDraggingScroll:false,
 		scrollOffset: 0,
 		scrollDragOffset: 0,
-		iconWidth: 20,
+		iconHeight: 20,
 		messages: [],
 		waitUntil: 0,
 		canvas: document.createElement('canvas'),
@@ -1536,7 +1538,7 @@
 		const font = '18px Ubuntu';
 		const baseLineHeight = computeLineHeight(ctx, font);
 		const lineHeight = baseLineHeight + chat.lineHeightSpacing;
-		const textLeftMargin = chat.scrollbarWidth + chat.leftTextSpacing + chat.iconWidth;
+		const textLeftMargin = chat.scrollbarWidth + chat.leftTextSpacing;
 		const effectiveViewportHeight = chat.viewportHeight - (chat.lineTopSpacing * lineHeight);
 		const visibleCount = Math.floor(effectiveViewportHeight / lineHeight);
 
@@ -1557,11 +1559,11 @@
 			const isMuted = settings.mutedPlayers.includes(message.name);
 
 			lines.push([{
-				text: message.server || message.admin || message.mod ? '' : (!isMuted ? '🔇' : '🔊'),
+				text: message.server || message.admin || message.mod || message.me ? '' : (!isMuted ? '🔇' : '🔊'),
 				color: Color.fromHex('#ffffff'),
-				isMuteIcon: true,
 				username: message.name,
-				fontSize: '22px Ubuntu'
+				fontSize: '22px Ubuntu',
+				hasMuteIcon: true,
 			} , {
 				text: message.name,
 				color: message.color
@@ -1620,15 +1622,16 @@
 				ctx.fillStyle = settings.showColor ? parts[j].color.toHex() : '#ffffff';
 				ctx.fillText(parts[j].text, x, y);
 
-				if (parts[j].isMuteIcon) {
+				if (parts[j].hasMuteIcon) {
 					chat.muteIconAreas.push({
 						x: x,
-						y: y - baseLineHeight,
+						y: y - chat.iconHeight,
 						width: parts[j].width,
-						height: baseLineHeight,
+						height: chat.iconHeight,
 						username: parts[j].username
 					});
 				}
+
 				x += parts[j].width;
 			}
 		}
@@ -3300,8 +3303,8 @@
 		/*chatBox.onpaste = () => {
 			chat.messages.push({
 				color: Color.fromHex('#3f3fc0'),
-				name: "[SERVER] Server",
-				message: "[AntiSpam] Your cannot paste messages, write them yourself.",
+				name: '[SERVER] ',
+				message: '[AntiSpam] Your cannot paste messages, write them yourself.',
 				time: Date.now(),
 				server: true,
 				admin: false,
@@ -3325,6 +3328,7 @@
 			const chatMouseY = event.clientY - rect.top;
 			const scaledMouseX = chatMouseX / camera.viewportScale;
 			const scaledMouseY = chatMouseY / camera.viewportScale;
+
 			const chatX = 10 / camera.viewportScale;
 			const chatY = (mainCanvas.height - 55) / camera.viewportScale - chat.canvas.height;
 			const chatWidth = chat.canvas.width;
@@ -3345,6 +3349,22 @@
 			} else {
 				mainCanvas.style.cursor = 'default';
 			}
+
+			let found = false;
+
+			for (let i = 0; i < chat.muteIconAreas.length; i++) {
+				const area = chat.muteIconAreas[i];
+				const areaX = chatX + area.x;
+				const areaY = chatY + area.y;
+
+				if (scaledMouseX >= areaX && scaledMouseX <= areaX + area.width &&
+					scaledMouseY >= areaY && scaledMouseY <= areaY + area.height) {
+					found = true;
+					break;
+				}
+			}
+
+			mainCanvas.style.cursor = found ? 'pointer' : 'default';
 		});
 
 		mainCanvas.addEventListener('mousedown', event => {
@@ -3387,7 +3407,9 @@
 		mainCanvas.addEventListener('click', event => {
 			if (typeof event['isTrusted'] !== 'boolean' || event['isTrusted'] === false) return;
 
-			if (!chat.visible || !settings.showChat) return;
+			if (!chat.visible || !settings.showChat || !chat.muteIconAreas) return;
+
+			event.preventDefault();
 
 			const rect = mainCanvas.getBoundingClientRect();
 			const mouseX = event.clientX - rect.left;
@@ -3396,8 +3418,6 @@
 			const scaledMouseY = mouseY / camera.viewportScale;
 			const chatX = 10 / camera.viewportScale;
 			const chatY = (mainCanvas.height - 55) / camera.viewportScale - chat.canvas.height;
-
-			if (!chat.muteIconAreas) return;
 
 			for (let i = 0; i < chat.muteIconAreas.length; i++) {
 				const area = chat.muteIconAreas[i];
@@ -3413,7 +3433,6 @@
 						mutePlayer(username);
 					}
 
-					event.preventDefault();
 					return;
 				}
 			}
