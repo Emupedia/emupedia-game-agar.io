@@ -1465,7 +1465,7 @@
 		mutedList.innerHTML = '';
 
 		if (settings.mutedPlayers.length === 0) {
-			mutedList.innerHTML = '<p class="text-muted">No muted users</p>';
+			mutedList.innerHTML = '<p class="text-muted">No Muted Players</p>';
 			return;
 		}
 
