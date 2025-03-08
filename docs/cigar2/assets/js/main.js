@@ -1368,7 +1368,11 @@
 				initSetting(prop, elm);
 			} else {
 				if (prop === 'mutedPlayers') {
-					settings[prop] = obj[prop]
+					if (Array.isArray(obj[prop])) {
+						settings[prop] = obj[prop]
+					} else {
+						settings[prop] = []
+					}
 				} else {
 					Logger.info(`setting ${prop} not loaded because there is no element for it.`);
 				}
@@ -1460,33 +1464,31 @@
 
 		mutedList.innerHTML = '';
 
-		if (settings.mutedPlayers) {
-			if (settings.mutedPlayers.length === 0) {
-				mutedList.innerHTML = '<p class="text-muted">No muted users</p>';
-				return;
-			}
-
-			settings.mutedPlayers.forEach(username => {
-				const item = document.createElement('div');
-				item.className = 'muted-user-item';
-				item.style.display = 'flex';
-				item.style.justifyContent = 'space-between';
-				item.style.alignItems = 'center';
-				item.style.marginBottom = '5px';
-
-				const name = document.createElement('span');
-				name.textContent = username;
-
-				const unmuteBtn = document.createElement('button');
-				unmuteBtn.className = 'btn btn-xs btn-danger';
-				unmuteBtn.textContent = 'Unmute';
-				unmuteBtn.onclick = () => unmutePlayer(username);
-
-				item.appendChild(name);
-				item.appendChild(unmuteBtn);
-				mutedList.appendChild(item);
-			});
+		if (settings.mutedPlayers.length === 0) {
+			mutedList.innerHTML = '<p class="text-muted">No muted users</p>';
+			return;
 		}
+
+		settings.mutedPlayers.forEach(username => {
+			const item = document.createElement('div');
+			item.className = 'muted-user-item';
+			item.style.display = 'flex';
+			item.style.justifyContent = 'space-between';
+			item.style.alignItems = 'center';
+			item.style.marginBottom = '5px';
+
+			const name = document.createElement('span');
+			name.textContent = username;
+
+			const unmuteBtn = document.createElement('button');
+			unmuteBtn.className = 'btn btn-xs btn-danger';
+			unmuteBtn.textContent = 'Unmute';
+			unmuteBtn.onclick = () => unmutePlayer(username);
+
+			item.appendChild(name);
+			item.appendChild(unmuteBtn);
+			mutedList.appendChild(item);
+		});
 	}
 
 	function updateChatScrollFromMouse(mouseY) {
