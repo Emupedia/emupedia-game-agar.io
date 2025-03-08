@@ -15,6 +15,7 @@ const DefaultProtocols = [
 
 const DefaultGamemodes = [
 	require("./src/gamemodes/FFA"),
+	require("./src/gamemodes/PVP"),
 	require("./src/gamemodes/Teams"),
 	require("./src/gamemodes/LastManStanding")
 ];
