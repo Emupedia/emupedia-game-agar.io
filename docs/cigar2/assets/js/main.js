@@ -337,7 +337,7 @@
 	class Cell {
 		static parseName(name, limit = true) {
 			if (typeof name !== 'undefined' && name !== null && name !== '')
-				return name.trim().replace(/[<>|﷽⸺⸻ဪ௵𒐧𒐧𒐧𒐧𒐧꧁꧂༽╲⎝⧹⎠╱⧸⎨⎬▀▄𒅃𒄊𒈜𒌧𒉮𒁎𒄡𒅌𒈓𒈙𒊎꧅]/g, '').substring(0, 16);
+				return name.trim().replace(/[<>|﷽⸺⸻ဪ௵꧁꧂꧅༽╲⎝⧹⎠╱⧸⎨⎬▀▄𒐧𒐧𒐧𒐧𒐧𒅃𒄊𒈜𒌧𒉮𒁎𒄡𒅌𒈓𒈙𒊎𒀰]/g, '').substring(0, 16);
 			return name;
 		}
 		constructor(id, x, y, s, name, nameColor, cellColor, borderColor, skin, flags) {
