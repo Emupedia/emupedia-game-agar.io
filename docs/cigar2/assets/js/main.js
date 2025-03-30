@@ -337,7 +337,7 @@
 	class Cell {
 		static parseName(name, limit = true) {
 			if (typeof name !== 'undefined' && name !== null && name !== '')
-				return name.trim().replace(/[<>|]/g, '').substring(0, 16);
+				return name.trim().replace(/[<>|﷽]/g, '').substring(0, 16);
 
 			return name;
 		}
