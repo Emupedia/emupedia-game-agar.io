@@ -14,18 +14,31 @@ onmessage = e => {
 		// noinspection JSUnresolvedReference
 		tf.enableProdMode();
 
+		let v2 = false
+		let v3 = false
+
 		// noinspection JSUnresolvedReference
-		nsfwjs.load('../models/inception_v3/model.json', { size: 299 }).then(model => {
-			// noinspection JSUnresolvedReference
-			model.classify(img, 1).then(predictions => {
-				if (predictions[0] && predictions[0].className) {
-					if (predictions[0].className === 'Neutral' || predictions[0].className === 'Drawing') {
-						postMessage(true);
-					} else {
-						postMessage(false);
-					}
-				}
-			});
-		});
+		const model_v3 = await nsfwjs.load('../models/inception_v3/model.json', { size: 299 });
+		// noinspection JSUnresolvedReference
+		const prodictions_v3 = await model_v3.classify(img, 1);
+
+		if (prodictions_v3[0] && prodictions_v3[0].className) {
+			v3 = prodictions_v3[0].className === 'Neutral' || prodictions_v3[0].className === 'Drawing';
+		}
+
+		// noinspection JSUnresolvedReference
+		const model_v2 = await nsfwjs.load('../models/mobilenet_v2/model.json', { type: 'graph' });
+		// noinspection JSUnresolvedReference
+		const prodictions_v2 = await model_v2.classify(img, 1);
+
+		if (prodictions_v2[0] && prodictions_v2[0].className) {
+			v2 = prodictions_v2[0].className === 'Neutral' || prodictions_v2[0].className === 'Drawing';
+		}
+
+		if (v2 === true && v3 === true) {
+			postMessage(true);
+		} else {
+			postMessage(false);
+		}
 	});
 }

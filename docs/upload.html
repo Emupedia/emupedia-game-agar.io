@@ -288,9 +288,37 @@
 								model.classify(img, 1).then(predictions => {
 									if (predictions[0] && predictions[0].className) {
 										if (predictions[0].className === 'Neutral' || predictions[0].className === 'Drawing') {
-											if (typeof cb === 'function') {
-												cb(image.split(',')[1]);
-											}
+											// noinspection JSUnresolvedReference
+											nsfwjs.load('nsfwjs/models/mobilenet_v2/model.json', { type: 'graph' }).then(model => {
+												// noinspection JSUnresolvedReference
+												model.classify(img, 1).then(predictions => {
+													if (predictions[0] && predictions[0].className) {
+														if (predictions[0].className === 'Neutral' || predictions[0].className === 'Drawing') {
+															if (typeof cb === 'function') {
+																cb(image.split(',')[1]);
+															}
+														} else {
+															document.body.classList.remove('loading');
+															byId('error-message').innerHTML = 'Image probably contains NSFW content and was not uploaded';
+															byId('error').show();
+															byId('captcha').innerHTML = '';
+															byId('captcha').hide();
+															byId('phrase').value = '';
+															byClass('upload-btn-wrapper')[0].hide();
+															Array.from(byClass('upload-checkbox')).map(item => {
+																item.disabled = false;
+																item.checked = false;
+															});
+															setTimeout(() => {
+																alert('Image probably contains NSFW content and was not uploaded');
+																try {
+																	window.top.closeUpload();
+																} catch(e) {}
+															}, 100);
+														}
+													}
+												});
+											});
 										} else {
 											document.body.classList.remove('loading');
 											byId('error-message').innerHTML = 'Image probably contains NSFW content and was not uploaded';
@@ -481,7 +509,7 @@
 							setTimeout(() => { alert('Failed to upload file [1][4]'); }, 100);
 						}
 					},
-					error: () => {
+					error: (jqXHR, textStatus, errorThrown) => {
 						document.body.classList.remove('loading');
 						byId('error-message').innerHTML = 'Failed to upload file [1][5]';
 						byId('error').show();
