@@ -475,14 +475,19 @@
 								if (typeof result['image']['url'] !== 'undefined') {
 									if (result.image.url !== null && result.image.url !== '') {
 										try {
-											window.top.changeSkin(null, result.image.url);
+											if (window && window.parent && typeof window.parent.changeSkin === 'function') {
+												window.parent.changeSkin(null, result.image.url);
+											}
 										} catch(e) {
 											console.error(e);
 											const settings = loadSettings();
 											settings.skin = result.image.url;
 											settings.skinnames.push(result.image.url);
 											storeSettings(settings);
-											window.location = '/emupedia-game-agar.io/cigar2/';
+
+											if (window && window.parent) {
+												window.parent.location = `${location.protocol}//${location.hostname}${location.port ? `:${location.port}` : ''}/emupedia-game-agar.io/cigar2/`;
+											}
 										}
 									} else {
 										document.body.classList.remove('loading');
@@ -509,11 +514,15 @@
 							setTimeout(() => { alert('Failed to upload file [1][4]'); }, 100);
 						}
 					},
-					error: (jqXHR, textStatus, errorThrown) => {
+					error: jqXHR => {
+						let message = 'Failed to upload file [1][5]';
+						if (jqXHR.status === 413) {
+							message = 'File size too big, must be 10MB max, use https://tinypng.com to make it smaller [1][6]';
+						}
 						document.body.classList.remove('loading');
-						byId('error-message').innerHTML = 'Failed to upload file [1][5]';
+						byId('error-message').innerHTML = message;
 						byId('error').show();
-						setTimeout(() => { alert('Failed to upload file [1][5]'); }, 100);
+						setTimeout(() => { alert(message); }, 100);
 					},
 					complete: () => {
 						document.body.classList.remove('loading');
@@ -523,12 +532,12 @@
 						byId('captcha').hide();
 						byId('phrase').value = '';
 						byClass('upload-btn-wrapper')[0].hide();
-						Array.from(byClass('upload-checkbox')).map(item => {
-							item.disabled = false;
-							item.checked = false;
-						});
+						Array.from(byClass('upload-checkbox')).map(item => { item.disabled = false; item.checked = false; });
+
 						try {
-							window.top.closeUpload();
+							if (window && window.parent && typeof window.parent.closeUpload === 'function') {
+								window.parent.closeUpload();
+							}
 						} catch(e) {}
 					}
 				});
