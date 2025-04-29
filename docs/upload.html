@@ -214,7 +214,7 @@
 			// noinspection JSUnresolvedReference
 			tf.enableProdMode();
 
-			Element.prototype.hide = () => {
+			Element.prototype.hide = function () {
 				// noinspection JSUnresolvedReference
 				this.style.display = 'none';
 				// noinspection JSUnresolvedReference
@@ -224,7 +224,7 @@
 				}
 			}
 
-			Element.prototype.show = seconds => {
+			Element.prototype.show = function(seconds) {
 				// noinspection JSUnresolvedReference
 				this.style.display = '';
 				if (!seconds) return;
