@@ -249,39 +249,91 @@
 			function checkNSFW(image, cb) {
 				// noinspection JSUnresolvedReference
 				if (typeof tf !== 'undefined' && typeof nsfwjs !== 'undefined') {
-					const img = new Image();
-					img.crossOrigin = 'anonymous';
-					img.src = image;
-					img.onload = () => {
-						// noinspection JSUnresolvedReference
-						nsfwjs.load('nsfwjs/models/inception_v3/model.json', { size: 299 }).then(model => {
+					if (window.Worker && typeof OffscreenCanvas !== 'undefined') {
+						const worker = new Worker('nsfwjs/browser/nsfw-worker.js');
+						worker.onmessage = e => {
+							if (e.data === true) {
+								if (typeof cb === 'function') {
+									cb(image.split(',')[1]);
+								}
+							} else {
+								document.body.classList.remove('loading');
+								byId('error-message').innerHTML = 'Image probably contains NSFW content and was not uploaded';
+								byId('error').show();
+								byId('captcha').innerHTML = '';
+								byId('captcha').hide();
+								byId('phrase').value = '';
+								byClass('upload-btn-wrapper')[0].hide();
+								Array.from(byClass('upload-checkbox')).map(item => {
+									item.disabled = false;
+									item.checked = false;
+								});
+								setTimeout(() => {
+									alert('Image probably contains NSFW content and was not uploaded');
+									try {
+										if (window && window.parent) {
+											if (typeof window.parent.closeUpload === 'function') {
+												window.parent.closeUpload();
+											} else {
+												window.parent.location = `${location.protocol}//${location.hostname}${location.port ? `:${location.port}` : ''}/emupedia-game-agar.io/cigar2/`;
+											}
+										}
+									} catch(e) {}
+								}, 100);
+							}
+						}
+
+						setTimeout(() => {
+							worker.postMessage(image);
+						}, 3000)
+					} else {
+						const img = new Image();
+						img.crossOrigin = 'anonymous';
+						img.src = image;
+						img.onload = () => {
 							// noinspection JSUnresolvedReference
-							model.classify(img, 1).then(predictions => {
-								if (predictions[0] && predictions[0].className) {
-									if (predictions[0].className === 'Neutral' || predictions[0].className === 'Drawing') {
-										// noinspection JSUnresolvedReference
-										nsfwjs.load('nsfwjs/models/mobilenet_v2/model.json', { type: 'graph' }).then(model => {
+							nsfwjs.load('nsfwjs/models/inception_v3/model.json', { size: 299 }).then(model => {
+								// noinspection JSUnresolvedReference
+								model.classify(img, 1).then(predictions => {
+									if (predictions[0] && predictions[0].className) {
+										if (predictions[0].className === 'Neutral' || predictions[0].className === 'Drawing') {
 											// noinspection JSUnresolvedReference
-											model.classify(img, 1).then(predictions => {
-												if (predictions[0] && predictions[0].className) {
-													if (predictions[0].className === 'Neutral' || predictions[0].className === 'Drawing') {
-														if (typeof cb === 'function') {
-															cb(image.split(',')[1]);
+											nsfwjs.load('nsfwjs/models/mobilenet_v2/model.json', { type: 'graph' }).then(model => {
+												// noinspection JSUnresolvedReference
+												model.classify(img, 1).then(predictions => {
+													if (predictions[0] && predictions[0].className) {
+														if (predictions[0].className === 'Neutral' || predictions[0].className === 'Drawing') {
+															if (typeof cb === 'function') {
+																cb(image.split(',')[1]);
+															}
+														} else {
+															document.body.classList.remove('loading');
+															byId('error-message').innerHTML = 'Image probably contains NSFW content and was not uploaded';
+															byId('error').show();
+															byId('captcha').innerHTML = '';
+															byId('captcha').hide();
+															byId('phrase').value = '';
+															byClass('upload-btn-wrapper')[0].hide();
+															Array.from(byClass('upload-checkbox')).map(item => {
+																item.disabled = false;
+																item.checked = false;
+															});
+															setTimeout(() => {
+																alert('Image probably contains NSFW content and was not uploaded');
+																try {
+																	if (window && window.parent) {
+																		if (typeof window.parent.closeUpload === 'function') {
+																			window.parent.closeUpload();
+																		} else {
+																			window.parent.location = `${location.protocol}//${location.hostname}${location.port ? `:${location.port}` : ''}/emupedia-game-agar.io/cigar2/`;
+																		}
+																	}
+																} catch(e) {}
+															}, 100);
 														}
 													} else {
-														document.body.classList.remove('loading');
-														byId('error-message').innerHTML = 'Image probably contains NSFW content and was not uploaded';
-														byId('error').show();
-														byId('captcha').innerHTML = '';
-														byId('captcha').hide();
-														byId('phrase').value = '';
-														byClass('upload-btn-wrapper')[0].hide();
-														Array.from(byClass('upload-checkbox')).map(item => {
-															item.disabled = false;
-															item.checked = false;
-														});
 														setTimeout(() => {
-															alert('Image probably contains NSFW content and was not uploaded');
+															alert('Cannot check image for NSFW content, please try again later');
 															try {
 																if (window && window.parent) {
 																	if (typeof window.parent.closeUpload === 'function') {
@@ -293,23 +345,36 @@
 															} catch(e) {}
 														}, 100);
 													}
-												}
+												});
 											});
-										});
+										} else {
+											document.body.classList.remove('loading');
+											byId('error-message').innerHTML = 'Image probably contains NSFW content and was not uploaded';
+											byId('error').show();
+											byId('captcha').innerHTML = '';
+											byId('captcha').hide();
+											byId('phrase').value = '';
+											byClass('upload-btn-wrapper')[0].hide();
+											Array.from(byClass('upload-checkbox')).map(item => {
+												item.disabled = false;
+												item.checked = false;
+											});
+											setTimeout(() => {
+												alert('Image probably contains NSFW content and was not uploaded');
+												try {
+													if (window && window.parent) {
+														if (typeof window.parent.closeUpload === 'function') {
+															window.parent.closeUpload();
+														} else {
+															window.parent.location = `${location.protocol}//${location.hostname}${location.port ? `:${location.port}` : ''}/emupedia-game-agar.io/cigar2/`;
+														}
+													}
+												} catch(e) {}
+											}, 100);
+										}
 									} else {
-										document.body.classList.remove('loading');
-										byId('error-message').innerHTML = 'Image probably contains NSFW content and was not uploaded';
-										byId('error').show();
-										byId('captcha').innerHTML = '';
-										byId('captcha').hide();
-										byId('phrase').value = '';
-										byClass('upload-btn-wrapper')[0].hide();
-										Array.from(byClass('upload-checkbox')).map(item => {
-											item.disabled = false;
-											item.checked = false;
-										});
 										setTimeout(() => {
-											alert('Image probably contains NSFW content and was not uploaded');
+											alert('Cannot check image for NSFW content, please try again later');
 											try {
 												if (window && window.parent) {
 													if (typeof window.parent.closeUpload === 'function') {
@@ -321,10 +386,11 @@
 											} catch(e) {}
 										}, 100);
 									}
-								}
+								});
 							});
-						});
-					};
+						};
+					}
+
 				} else {
 					setTimeout(() => {
 						alert('Cannot check image for NSFW content, please try again later');
