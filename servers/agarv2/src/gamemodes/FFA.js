@@ -28,7 +28,7 @@ class FFA extends Gamemode {
 	}
 
 	static get name() {
-		return "FFA";
+		return 'FFA';
 	}
 
 	/**
@@ -41,7 +41,7 @@ class FFA extends Gamemode {
 			return;
 		}
 
-		const size = player.router.type === "minion" ? this.handle.settings.minionSpawnSize : this.handle.settings.playerSpawnSize;
+		const size = player.router.type === 'minion' ? this.handle.settings.minionSpawnSize : this.handle.settings.playerSpawnSize;
 		const spawnInfo = player.world.getPlayerSpawn(size);
 		const color = spawnInfo.color || Misc.randomColor();
 		player.cellName = player.chatName = player.leaderboardName = name;
@@ -54,7 +54,7 @@ class FFA extends Gamemode {
 	 * @param {World} world
 	 */
 	compileLeaderboard(world) {
-		world.leaderboard = world.players.slice(0).filter((v) => !isNaN(v.score)).sort((a, b) => b.score - a.score);
+		world.leaderboard = world.players.slice(0).filter(v => !isNaN(v.score)).sort((a, b) => b.score - a.score);
 	}
 
 	/**
@@ -79,7 +79,7 @@ class FFA extends Gamemode {
 		const leaderboard = player.world.leaderboard;
 		const data = leaderboard.map((v, i) => getLeaderboardData(v, player, i));
 		const selfData = isNaN(player.score) ? null : data[leaderboard.indexOf(player)];
-		connection.protocol.onLeaderboardUpdate("ffa", data.slice(0, 10), selfData);
+		connection.protocol.onLeaderboardUpdate('ffa', data.slice(0, 10), selfData);
 	}
 }
 
