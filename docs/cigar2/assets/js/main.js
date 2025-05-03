@@ -1033,18 +1033,7 @@
 
 				const wait = Math.max(3000, 1000 + message.length * 150);
 				chat.waitUntil = syncUpdStamp - chat.waitUntil > 1000 ? syncUpdStamp + wait : chat.waitUntil + wait;
-
-				chat.messages.push({
-					color,
-					name,
-					message,
-					time: syncUpdStamp,
-					server: flags.server,
-					admin: flags.admin,
-					mod: flags.mod,
-					me: false
-				});
-
+				chat.messages.push({ color, name, message, time: syncUpdStamp, server: flags.server, admin: flags.admin, mod: flags.mod, me: false });
 				if (settings.showChat) drawChat();
 				break;
 			}
@@ -1085,17 +1074,7 @@
 		const wait = Math.max(3000, 1000 + text.length * 150);
 		chat.waitUntil = syncUpdStamp - chat.waitUntil > 1000 ? syncUpdStamp + wait : chat.waitUntil + wait;
 
-		chat.messages.push({
-			color: settings.nameColor !== '#ffffff' ? Color.fromHex(settings.nameColor) : Color.fromHex('#33ff33'),
-			name: '[YOU]',
-			message: text,
-			time: Date.now(),
-			server: false,
-			admin: false,
-			mod: false,
-			me: true
-		});
-
+		chat.messages.push({ color: settings.nameColor !== '#ffffff' ? Color.fromHex(settings.nameColor) : Color.fromHex('#33ff33'), name: '[YOU]', message: text, time: Date.now(), server: false, admin: false, mod: false, me: true });
 		if (settings.showChat) drawChat();
 
 		const writer = new Writer();
@@ -1367,10 +1346,10 @@
 				initSetting(prop, elm);
 			} else {
 				if (prop === 'mutedPlayers') {
-					if (typeof obj[prop] === 'undefined' && Array.isArray(obj[prop])) {
-						settings[prop] = obj[prop]
+					if (Object.hasOwnProperty.call(obj, prop) && Array.isArray(obj[prop])) {
+						settings[prop] = obj[prop];
 					} else {
-						settings[prop] = []
+						settings[prop] = [];
 					}
 				} else {
 					Logger.info(`setting ${prop} not loaded because there is no element for it.`);
@@ -1439,6 +1418,7 @@
 		settings.mutedPlayers.push(username);
 		storeSettings();
 		updateMutedPlayersList();
+		chat.messages.push({ color: Color.fromHex('#3f3fc0'), name: '[SYSTEM]', message: `Player "${username}" has been muted. You can unmute them in the Settings menu.`, time: Date.now(), server: true, admin: false, mod: false, me: false });
 		drawChat();
 	}
 
@@ -1453,6 +1433,7 @@
 			settings.mutedPlayers.splice(index, 1);
 			storeSettings();
 			updateMutedPlayersList();
+			chat.messages.push({ color: Color.fromHex('#3f3fc0'), name: '[SYSTEM]', message: `Player "${username}" has been unmuted.`, time: Date.now(), server: true, admin: false, mod: false, me: false });
 			drawChat();
 		}
 	}
@@ -1561,19 +1542,21 @@
 			const message = visibleMessages[i];
 			const isMuted = settings.mutedPlayers.includes(message.name);
 
-			lines.push([{
-				text: message.server || message.admin || message.mod || message.me ? '' : (!isMuted ? '🔇' : '🔊'),
-				color: Color.fromHex('#ffffff'),
-				username: message.name,
-				fontSize: '22px Ubuntu',
-				hasMuteIcon: true,
-			} , {
-				text: message.name,
-				color: message.color
-			} , {
-				text: isMuted ? ' [muted]' : ` ${message.message}`,
-				color: Color.fromHex(settings.darkTheme ? '#ffffff' : '#000000')
-			}]);
+			if (!isMuted) {
+				lines.push([{
+					text: message.server || message.admin || message.mod || message.me ? '' : '🔇',
+					color: Color.fromHex('#ffffff'),
+					username: message.name,
+					fontSize: '22px Ubuntu',
+					hasMuteIcon: true,
+				} , {
+					text: message.name,
+					color: message.color
+				} , {
+					text: ` ${message.message}`,
+					color: Color.fromHex(settings.darkTheme ? '#ffffff' : '#000000')
+				}]);
+			}
 		}
 
 		window.lines = lines;
@@ -3304,16 +3287,8 @@
 		};
 
 		/*chatBox.onpaste = () => {
-			chat.messages.push({
-				color: Color.fromHex('#3f3fc0'),
-				name: '[SERVER] ',
-				message: '[AntiSpam] Your cannot paste messages, write them yourself.',
-				time: Date.now(),
-				server: true,
-				admin: false,
-				mod: false
-			});
-			drawChat();
+			chat.messages.push({ color: Color.fromHex('#3f3fc0'), name: '[SERVER] ', message: '[AntiSpam] Your cannot paste messages, write them yourself.', time: Date.now(), server: true, admin: false, mod: false });
+		 	if (settings.showChat) drawChat();
 
 			return false;
 		}*/
