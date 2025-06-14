@@ -409,7 +409,7 @@
 
 			function checkCaptcha(data) {
 				$.ajax({
-					url: 'https://ws.emupedia.net/captcha/',
+					url: 'https://agar2.emupedia.net/captcha/',
 					type: 'POST',
 					headers: {
 						Accept: 'application/json'
@@ -420,6 +420,7 @@
 					},
 					error: () => {
 						alert('Could not validate Captcha, please try again later');
+
 						try {
 							if (window && window.parent) {
 								if (typeof window.parent.closeUpload === 'function') {
@@ -514,7 +515,7 @@
 
 			function uploadImage(image) {
 				$.ajax({
-					url: 'https://ws.emupedia.net/skin/?key=6d207e02198a847aa98d0a2a901485a5',
+					url: 'https://agar2.emupedia.net/skin-upload/?key=6d207e02198a847aa98d0a2a901485a5',
 					type: 'POST',
 					headers: {
 						Accept: 'application/json'
