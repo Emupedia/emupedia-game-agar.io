@@ -14,6 +14,7 @@ const value = Object.seal({
 	serverGamemode: "FFA",
 
 	chatEnabled: true,
+	chatSpectatorEnabled: true,
 	/** @type {string[]} */
 	chatFilteredPhrases: [],
 	chatCooldown: 1000,

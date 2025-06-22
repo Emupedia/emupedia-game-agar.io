@@ -189,7 +189,7 @@ PacketHandler.prototype.handleMessage = function(message) {
           }
           if (this.gameServer.config.specChatAllowed != 1) {
             if (this.socket.playerTracker.cells.length < 1) {
-              this.gameServer.pm(this.socket.playerTracker.pID, "Please play to chat!");
+              this.gameServer.pm(this.socket.playerTracker.pID, "Spectator chat is disabled, you must play in order to chat.");
               return;
             }
 

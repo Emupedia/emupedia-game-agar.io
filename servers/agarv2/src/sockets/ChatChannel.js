@@ -1,7 +1,8 @@
 const serverSource = {
-	name: 'Server',
 	isServer: true,
-	color: 0x3F3FC0
+	name: 'Server',
+	color: 0x3F3FC0,
+	state: -1
 }
 
 /** @param {Connection} connection */
@@ -9,7 +10,8 @@ function getSourceFromConnection(connection) {
 	return {
 		isServer: false,
 		name: connection.player.chatName,
-		color: connection.player.chatColor
+		color: connection.player.chatColor,
+		state: connection.player.state
 	}
 }
 
@@ -84,6 +86,10 @@ class ChatChannel {
 		}
 
 		const sourceInfo = source == null ? serverSource : getSourceFromConnection(source)
+
+		if (!this.settings.chatSpectatorEnabled && (sourceInfo.state === -1 || sourceInfo.state === 1)) {
+			return source.protocol.onChatMessage(serverSource, 'Spectator chat is disabled, you must play in order to chat.')
+		}
 
 		for (let i = 0, l = this.connections.length; i < l; i++) {
 			const conn = this.connections[i]
