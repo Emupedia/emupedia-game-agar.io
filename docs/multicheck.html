@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Agar Multi Check</title>
+	</head>
+	<body>
+		<script>
+			let hasActiveInstance = false;
+
+			window.addEventListener('message', e => {
+				const allowedOrigins = [
+					'https://emupedia.org',
+					'https://emupedia.games',
+					'https://emuos.net',
+					'https://emuos.org',
+					'https://emuos.games'
+				];
+
+				if (!allowedOrigins.includes(e.origin)) return;
+
+				if (e.data === 'agar2' && hasActiveInstance) {
+					// noinspection JSCheckFunctionSignatures
+					e.source.postMessage('mc', e.origin);
+				}
+
+				if (e.data === 'active') {
+					hasActiveInstance = true;
+				}
+			});
+		</script>
+	</body>
+</html>
