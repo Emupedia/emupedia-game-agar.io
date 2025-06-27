@@ -582,14 +582,12 @@
 
 			const mass = (~~(this.s * this.s / 100)).toString();
 
-			console.log(this.fp2)
-
-			if (settings.showIdenticon && this.fp && mass > 100) {
+			if (settings.showIdenticon && (this.fp2 || this.fp) && mass > 100) {
 				let y = this.y;
 
 				y += 2 * Math.max(this.s / 4.5, this.nameSize / 1.5);
 
-				drawText(ctx, 'fp', this.x, y, this.nameSize * 4, this.drawNameSize * 2, this.fp, settings.showColor ? this.borderColor.toHex() : '#e5e5e5');
+				drawText(ctx, 'fp', this.x, y, this.nameSize * 4, this.drawNameSize * 2, this.fp2 || this.fp, settings.showColor ? this.borderColor.toHex() : '#e5e5e5');
 			}
 
 			if (this.name && settings.showNames) {
