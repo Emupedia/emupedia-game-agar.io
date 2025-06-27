@@ -31,7 +31,7 @@ class LegacyProtocol extends Protocol {
 			return false;
 		}
 
-		if (reader.readUInt8() !== 254) {
+		if (reader.readUInt8() !== 0xfe) {
 			return false;
 		}
 
@@ -69,7 +69,7 @@ class LegacyProtocol extends Protocol {
 		const messageId = reader.readUInt8();
 
 		if (!this.gotKey) {
-			if (messageId !== 255) {
+			if (messageId !== 0xff) {
 				return;
 			}
 
@@ -89,25 +89,25 @@ class LegacyProtocol extends Protocol {
 		}
 
 		switch (messageId) {
-			case 1:
+			case 0x05:
 				const spawningName = this.filterName(readZTString(reader, this.protocol))
 				this.connection.spawningName = spawningName ? spawningName : this.connection.spawningName
 				this.logger.inform(`[${this.connection.remoteAddress}][${this.connection.verifyScore}][${this.connection.player.id ? this.connection.player.id : 0}][${this.connection.player.cellSkin ? this.connection.player.cellSkin.split('|').slice(-2) : ''}][${this.connection.player.cellSkin ? this.connection.player.cellSkin.split('|').slice(-1) : ''}] Player '${this.connection.player.chatName}' has spawned into the game`);
 				break;
-			case 0:
+			case 0x01:
 				this.connection.requestingSpectate = true;
 				break;
-			case 15:
+			case 0x0f:
 				switch (reader.length) {
-					case 13:
+					case 0x0d:
 						this.connection.mouseX = reader.readInt32();
 						this.connection.mouseY = reader.readInt32();
 						break;
-					case 9:
+					case 0x09:
 						this.connection.mouseX = reader.readInt16();
 						this.connection.mouseY = reader.readInt16();
 						break;
-					case 21:
+					case 0x15:
 						this.connection.mouseX = ~~reader.readFloat64();
 						this.connection.mouseY = ~~reader.readFloat64();
 						break;
@@ -115,7 +115,7 @@ class LegacyProtocol extends Protocol {
 						return void this.fail(1003, "Unexpected message format");
 				}
 				break;
-			case 17:
+			case 0x11:
 				if (this.connection.controllingMinions) {
 					for (let i = 0, l = this.connection.minions.length; i < l; i++) {
 						this.connection.minions[i].splitAttempts++;
@@ -124,13 +124,13 @@ class LegacyProtocol extends Protocol {
 					this.connection.splitAttempts++;
 				}
 				break;
-			case 18:
+			case 0x12:
 				this.connection.isPressingQ = true;
 				break;
-			case 19:
+			case 0x13:
 				this.connection.isPressingQ = this.hasProcessedQ = false;
 				break;
-			case 21:
+			case 0x15:
 				if (this.connection.controllingMinions) {
 					for (let i = 0, l = this.connection.minions.length; i < l; i++) {
 						this.connection.minions[i].ejectAttempts++;
@@ -139,7 +139,7 @@ class LegacyProtocol extends Protocol {
 					this.connection.ejectAttempts++;
 				}
 				break;
-			case 22:
+			case 0x16:
 				if (!this.gotKey || !this.settings.minionEnableERTPControls) {
 					break;
 				}
@@ -148,7 +148,7 @@ class LegacyProtocol extends Protocol {
 					this.connection.minions[i].splitAttempts++;
 				}
 				break;
-			case 23:
+			case 0x17:
 				if (!this.gotKey || !this.settings.minionEnableERTPControls) {
 					break;
 				}
@@ -157,14 +157,14 @@ class LegacyProtocol extends Protocol {
 					this.connection.minions[i].ejectAttempts++;
 				}
 				break;
-			case 24:
+			case 0x18:
 				if (!this.gotKey || !this.settings.minionEnableERTPControls) {
 					break;
 				}
 
 				this.connection.minionsFrozen = !this.connection.minionsFrozen;
 				break;
-			case 99:
+			case 0x62:
 				if (reader.length < 2) {
 					return void this.fail(1003, "Bad message format");
 				}
@@ -181,12 +181,12 @@ class LegacyProtocol extends Protocol {
 				this.connection.onChatMessage(message);
 				this.logger.inform(`[${this.connection.remoteAddress}][${this.connection.verifyScore}][${this.connection.player.id ? this.connection.player.id : 0}][${this.connection.player.cellSkin ? this.connection.player.cellSkin.split('|').slice(-2) : ''}][${this.connection.player.cellSkin ? this.connection.player.cellSkin.split('|').slice(-1) : ''}][${this.connection.player.cellSkin ? this.connection.player.cellSkin.split('|')[0] : ''}] <${this.connection.player.chatName}>: '${message}'`);
 				break;
-			case 254:
+			case 0xfe:
 				if (this.connection.hasPlayer && this.connection.player.hasWorld) {
 					this.onStatsRequest();
 				}
 				break;
-			case 255:
+			case 0xff:
 				return void this.fail(1003, "Unexpected message");
 			default:
 				return void this.fail(1003, "Unknown message type");
@@ -199,7 +199,7 @@ class LegacyProtocol extends Protocol {
 	 */
 	onChatMessage(source, message) {
 		const writer = new Writer();
-		writer.writeUInt8(99);
+		writer.writeUInt8(0x62);
 		writer.writeUInt8(source.isServer * 128);
 		writer.writeColor(source.color);
 		writeZTString(writer, source.name, this.protocol);
@@ -209,7 +209,7 @@ class LegacyProtocol extends Protocol {
 
 	onStatsRequest() {
 		const writer = new Writer();
-		writer.writeUInt8(254);
+		writer.writeUInt8(0xfe);
 		const stats = this.connection.player.world.stats;
 
 		const legacy = {
@@ -231,7 +231,7 @@ class LegacyProtocol extends Protocol {
 	 */
 	onNewOwnedCell(cell) {
 		const writer = new Writer();
-		writer.writeUInt8(32);
+		writer.writeUInt8(0x20);
 		writer.writeUInt32(cell.id);
 		this.send(writer.finalize());
 	}
@@ -242,7 +242,7 @@ class LegacyProtocol extends Protocol {
 	 */
 	onNewWorldBounds(range, includeServerInfo) {
 		const writer = new Writer();
-		writer.writeUInt8(64);
+		writer.writeUInt8(0x40);
 		writer.writeFloat64(range.x - range.w);
 		writer.writeFloat64(range.y - range.h);
 		writer.writeFloat64(range.x + range.w);
@@ -258,7 +258,7 @@ class LegacyProtocol extends Protocol {
 
 	onWorldReset() {
 		const writer = new Writer();
-		writer.writeUInt8(18);
+		writer.writeUInt8(0x12);
 		this.send(writer.finalize());
 
 		if (this.lastLeaderboardType !== null) {
@@ -296,7 +296,7 @@ class LegacyProtocol extends Protocol {
 	 */
 	onSpectatePosition(viewArea) {
 		const writer = new Writer();
-		writer.writeUInt8(17);
+		writer.writeUInt8(0x11);
 		writer.writeFloat32(viewArea.x);
 		writer.writeFloat32(viewArea.y);
 		writer.writeFloat32(viewArea.s);
@@ -313,7 +313,7 @@ class LegacyProtocol extends Protocol {
 	onVisibleCellUpdate(add, upd, eat, del) {
 		const source = this.connection.player;
 		const writer = new Writer();
-		writer.writeUInt8(16);
+		writer.writeUInt8(0x10);
 		let i, l, cell;
 
 		l = eat.length;
@@ -382,7 +382,7 @@ const pieLeaderboard = {
  * @param {number} protocol
  */
 function pieLeaderboard4(writer, data, protocol) {
-	writer.writeUInt8(50);
+	writer.writeUInt8(0x32);
 	writer.writeUInt32(data.length);
 
 	for (let i = 0, l = data.length; i < l; i++) {
@@ -397,7 +397,7 @@ function pieLeaderboard4(writer, data, protocol) {
  * @param {number} protocol
  */
 function pieLeaderboard21(writer, data, protocol) {
-	writer.writeUInt8(50);
+	writer.writeUInt8(0x32);
 	writer.writeUInt32(data.length);
 
 	for (let i = 0, l = data.length; i < l; i++) {
@@ -438,7 +438,7 @@ const ffaLeaderboard = {
  * @param {number} protocol
  */
 function ffaLeaderboard4(writer, data, selfData, protocol) {
-	writer.writeUInt8(49);
+	writer.writeUInt8(0x31);
 	writer.writeUInt32(data.length);
 
 	for (let i = 0, l = data.length; i < l; i++) {
@@ -461,7 +461,7 @@ function ffaLeaderboard4(writer, data, selfData, protocol) {
  * @param {number} protocol
  */
 function ffaLeaderboard11(writer, data, selfData, protocol) {
-	writer.writeUInt8(protocol >= 14 ? 53 : 51);
+	writer.writeUInt8(protocol >= 14 ? 0x35 : 0x33);
 
 	for (let i = 0, l = data.length; i < l; i++) {
 		const item = data[i];
@@ -506,7 +506,7 @@ const textBoard = {
  * @param {number} protocol
  */
 function textBoard4(writer, data, protocol) {
-	writer.writeUInt8(48);
+	writer.writeUInt8(0x30);
 	writer.writeUInt32(data.length);
 
 	for (let i = 0, l = data.length; i < l; i++) {
@@ -520,7 +520,7 @@ function textBoard4(writer, data, protocol) {
  * @param {number} protocol
  */
 function textBoard14(writer, data, protocol) {
-	writer.writeUInt8(53);
+	writer.writeUInt8(0x35);
 
 	for (let i = 0, l = data.length; i < l; i++) {
 		writer.writeUInt8(2);
