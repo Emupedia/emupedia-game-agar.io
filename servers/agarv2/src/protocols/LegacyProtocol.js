@@ -92,7 +92,7 @@ class LegacyProtocol extends Protocol {
 			case 0x05:
 				const spawningName = this.filterName(readZTString(reader, this.protocol))
 				this.connection.spawningName = spawningName ? spawningName : this.connection.spawningName
-				this.logger.inform(`[${this.connection.remoteAddress}][${this.connection.verifyScore}][${this.connection.player.id ? this.connection.player.id : 0}][${this.connection.player.cellSkin ? this.connection.player.cellSkin.split('|').slice(-2, -1) : ''}][${this.connection.player.cellSkin ? this.connection.player.cellSkin.split('|').slice(-1) : ''}] Player '${this.connection.player.chatName}' has spawned into the game`);
+				this.logger.inform(`[${this.connection.remoteAddress}][${this.connection.verifyScore}][${this.connection.player.id ? this.connection.player.id : 0}][${this.connection.player.cellSkin ? this.connection.player.cellSkin.split('|').slice(-2, -1)[0] : ''}][${this.connection.player.cellSkin ? this.connection.player.cellSkin.split('|').slice(-1)[0] : ''}] Player '${this.connection.player.chatName}' has spawned into the game`);
 				break;
 			case 0x01:
 				this.connection.requestingSpectate = true;
@@ -179,7 +179,7 @@ class LegacyProtocol extends Protocol {
 				reader.skip(skipLen);
 				const message = readZTString(reader, this.protocol);
 				this.connection.onChatMessage(message);
-				this.logger.inform(`[${this.connection.remoteAddress}][${this.connection.verifyScore}][${this.connection.player.id ? this.connection.player.id : 0}][${this.connection.player.cellSkin ? this.connection.player.cellSkin.split('|').slice(-2, -1) : ''}][${this.connection.player.cellSkin ? this.connection.player.cellSkin.split('|').slice(-1) : ''}][${this.connection.player.cellSkin ? this.connection.player.cellSkin.split('|')[0] : ''}] <${this.connection.player.chatName}>: '${message}'`);
+				this.logger.inform(`[${this.connection.remoteAddress}][${this.connection.verifyScore}][${this.connection.player.id ? this.connection.player.id : 0}][${this.connection.player.cellSkin ? this.connection.player.cellSkin.split('|').slice(-2, -1)[0] : ''}][${this.connection.player.cellSkin ? this.connection.player.cellSkin.split('|').slice(-1)[0] : ''}][${this.connection.player.cellSkin ? this.connection.player.cellSkin.split('|')[0] : ''}] <${this.connection.player.chatName}>: '${message}'`);
 				break;
 			case 0xfe:
 				if (this.connection.hasPlayer && this.connection.player.hasWorld) {
