@@ -1350,10 +1350,6 @@
 		const text = localStorage.getItem('settings');
 		const obj = text ? JSON.parse(text) : settings;
 
-		if (typeof obj['fp2'] !== 'undefined') {
-			settings['fp2'] = obj['fp2'];
-		}
-
 		for (const prop in settings) {
 			const elm = byId(prop.charAt(0) === '_' ? prop.slice(1) : prop);
 
@@ -1375,6 +1371,13 @@
 	}
 
 	function storeSettings() {
+		const text = localStorage.getItem('settings');
+		const obj = text ? JSON.parse(text) : settings;
+
+		if (typeof obj['fp2'] !== 'undefined' && obj['fp2'] !== '') {
+			settings['fp2'] = obj['fp2'];
+		}
+
 		localStorage.setItem('settings', JSON.stringify(settings));
 	}
 
