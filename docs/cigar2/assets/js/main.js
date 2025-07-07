@@ -362,7 +362,6 @@
 			this.cellColor = cellColor || Color.fromHex('#ffffff');
 			this.borderColor = borderColor || (cellColor ? cellColor.darker() : Color.fromHex('#ffffff'));
 			this.setSkin(skin, name);
-			this.fp = skin && skin !== '' ? skin.split('|')[4] : null;
 			this.fp2 = skin && skin !== '' ? skin.split('|')[5] : null;
 			this.jagged = flags.jagged;
 			this.ejected = flags.ejected;
@@ -504,22 +503,24 @@
 			skin.crossOrigin = 'Anonymous';
 
 			if (this.skin.startsWith('https://iili.io/') && !this.skin.endsWith('.gif')) {
-				fetch(`https://agar2.emupedia.net/${textToNumber(this.skin)}?nick=${name}&fp=${value.split('|')[4]}&fp2=${value.split('|')[5]}`).then(res => res.arrayBuffer()).then(buffer  => {
+				fetch(`https://agar2.emupedia.net/${textToNumber(this.skin)}?nick=${name}&fp2=${value.split('|')[5]}`).then(res => res.arrayBuffer()).then(buffer  => {
 					const data = binToText(new Uint8Array(buffer), CH);
 					const blob = new Blob([data], { type: getMimeType(this.skin) });
-					const blobUrl = URL.createObjectURL(blob);
 
-					skin.onerror = () => {
-						skin.onerror = null;
-						skin.src = './assets/img/transparent.png';
-					};
+					blobToBase64(blob).then(data => {
+						skin.onerror = () => {
+							skin.onerror = null;
+							skin.src = './assets/img/transparent.png';
+						};
 
-					skin.onload = () => {
-						URL.revokeObjectURL(blobUrl);
-					};
+						skin.onload = () => {
+							skin.remove();
+						};
 
-					img.src = blobUrl;
-				}).catch(() => {
+						skin.src = `data:image/png;base64,${data}`;
+					});
+				}).catch(error => {
+					console.error(error);
 					skin.onerror = null;
 					skin.src = './assets/img/transparent.png';
 				});
@@ -528,6 +529,11 @@
 					skin.onerror = null;
 					skin.src = './assets/img/transparent.png';
 				};
+
+				skin.onload = () => {
+					skin.remove();
+				};
+
 				skin.src = `${SKIN_URL}${this.skin}.png`;
 			}
 
@@ -597,12 +603,12 @@
 
 			const mass = (~~(this.s * this.s / 100)).toString();
 
-			if (settings.showIdenticon && (this.fp2 || this.fp) && mass > 100) {
+			if (settings.showIdenticon && this.fp2 && mass > 100) {
 				let y = this.y;
 
 				y += 2 * Math.max(this.s / 4.5, this.nameSize / 1.5);
 
-				drawText(ctx, 'fp', this.x, y, this.nameSize * 4, this.drawNameSize * 2, this.fp2 || this.fp, settings.showColor ? this.borderColor.toHex() : '#e5e5e5');
+				drawText(ctx, 'fp', this.x, y, this.nameSize * 4, this.drawNameSize * 2, this.fp2, settings.showColor ? this.borderColor.toHex() : '#e5e5e5');
 			}
 
 			if (this.name && settings.showNames) {
@@ -688,11 +694,9 @@
 		0x19: new Uint8Array([0x19]),
 		0xFE: new Uint8Array([0xFE])
 	};
-	const FP = FingerprintJS.load();
-	// const FP = new Promise(resolve => resolve({ get: () => new Promise(resolve2 => resolve2('test')) }));
 	const LOCATION = ~window.location.hostname.indexOf('emupedia.net') ? 'emupedia.net' : (~window.location.hostname.indexOf('emupedia.org') ? 'emupedia.org' : (~window.location.hostname.indexOf('emupedia.games') ? 'emupedia.games' : (~window.location.hostname.indexOf('emuos.net') ? 'emuos.net' : (~window.location.hostname.indexOf('emuos.org') ? 'emuos.org' : (~window.location.hostname.indexOf('emuos.games') ? 'emuos.games' : 'emupedia.net')))));
 	const SERVERS = ['agar' + '.' + LOCATION + '/ws2/', 'agar2' + '.' + LOCATION + '/ws2/'];
-	const GEO = {'eu-ffa': SERVERS[0], 'eu': SERVERS[0], 'us': SERVERS[1], 'eu-pvp': SERVERS[1]};
+	const GEO = { 'eu-ffa': SERVERS[0], 'eu': SERVERS[0], 'us': SERVERS[1], 'eu-pvp': SERVERS[1] };
 	const CH = new TextEncoder().encode('agar2');
 	const TC = new BroadcastChannel('agar2');
 	const MC = document.getElementById('multicheck');
@@ -1182,7 +1186,6 @@
 	const loadedSkins = new Map();
 	const bannedSkins = new Set();
 	const bannedFP = new Set();
-	const bannedFP2 = new Set();
 	const camera = {
 		x: 0,
 		y: 0,
@@ -1203,7 +1206,6 @@
 	let syncUpdStamp = Date.now();
 	let syncAppStamp = Date.now();
 
-	let ident = '';
 	let mainCanvas = null;
 	let mainCtx = null;
 	let soundsVolume;
@@ -1232,7 +1234,6 @@
 		skin: '',
 		skinnames: [],
 		gamemode: '',
-		fp: '',
 		fp2: '',
 		showSkins: true,
 		showNames: true,
@@ -2025,26 +2026,49 @@
 		const image = new Image();
 		image.crossOrigin = 'Anonymous';
 
-		fetch(`https://agar2.emupedia.net/${textToNumber(url)}`).then(res => res.arrayBuffer()).then(buffer  => {
-			const decrypted = xorDecrypt(new Uint8Array(buffer), CH);
-			console.log(CH)
-			console.log(decrypted)
-			const blob = new Blob([decrypted], { type: getMimeType(url) });
-			const blobUrl = URL.createObjectURL(blob);
-
-			image.onload = function() {
+		if (url === './assets/img/transparent.png') {
+			image.onload = () =>  {
 				canvas.width = image.width;
 				canvas.height = image.height;
 
 				const ctx = canvas.getContext('2d');
 				ctx.drawImage(image, 0, 0);
-				URL.revokeObjectURL(blobUrl);
+				image.remove();
 			};
 
-			image.src = blobUrl;
-		}).catch(() => {
-			image.src = './assets/img/transparent.png';
-		});
+			image.src = url;
+		} else {
+			fetch(`https://agar2.emupedia.net/${textToNumber(url)}`).then(res => res.arrayBuffer()).then(buffer  => {
+				const decrypted = binToText(new Uint8Array(buffer), CH);
+				const blob = new Blob([decrypted], { type: getMimeType(url) });
+
+				blobToBase64(blob).then(data => {
+					image.onload = () => {
+						canvas.width = image.width;
+						canvas.height = image.height;
+
+						const ctx = canvas.getContext('2d');
+						ctx.drawImage(image, 0, 0);
+						image.remove();
+					};
+
+					image.src = `data:image/png;base64,${data}`;
+				});
+			}).catch(error => {
+				console.error(error);
+
+				image.onload = () =>  {
+					canvas.width = image.width;
+					canvas.height = image.height;
+
+					const ctx = canvas.getContext('2d');
+					ctx.drawImage(image, 0, 0);
+					image.remove();
+				};
+
+				image.src = './assets/img/transparent.png';
+			});
+		}
 	}
 
 	function cellSort(a, b) {
@@ -2728,86 +2752,66 @@
 
 		clearInterval(interval);
 		interval = setInterval(() => {
-			FP.then(fp => fp.get()).then(result => {
-				console.log(result)
-				settings.fp = ident !== '' ? ident + '|' + result.visitorId : result.visitorId;
-				// console.log('checkFPBanList()');
-				storeSettings();
+			fetch('../fp2BanList.txt').then(resp => resp.text()).then(data => {
+				const fp2 = data.split(',').filter(name => name.length > 0);
 
-				fetch('../fpBanList.txt').then(resp => resp.text()).then(data => {
-					const fp = data.split(',').filter(name => name.length > 0);
+				for (const p of fp2) bannedFP.add(p);
 
-					for (const p of fp) bannedFP.add(p);
+				let ban = false;
+				let bot = false;
 
-					fetch('../fp2BanList.txt').then(resp => resp.text()).then(data2 => {
-						const fp2 = data2.split(',').filter(name => name.length > 0);
+				bannedFP.forEach(val => {
+					if (settings.fp2 === val) {
+						ban = true;
+					}
+				});
 
-						for (const p of fp2) bannedFP2.add(p);
+				checkBots().forEach(val => {
+					if (val) {
+						bot = true;
+					}
+				});
 
-						let ban = false;
-						let ban2 = false;
-						let bot = false;
+				const browserInfo = getBrowserInfo();
 
-						bannedFP.forEach(val => {
-							if (settings.fp === val) {
-								ban = true;
-							}
-						});
-
-						bannedFP2.forEach(val => {
-							if (settings.fp2 === val) {
-								ban2 = true;
-							}
-						});
-
-						checkBots().forEach(val => {
-							if (val) {
-								bot = true;
-							}
-						});
-
-						const browserInfo = getBrowserInfo();
-
-						switch (browserInfo.family) {
-							case 'Chrome':
-							case 'Firefox':
-								if (browserInfo.major < 125) {
-									setInterval(() => {
-										wsCleanup();
-										hideESCOverlay();
-										byId('chat_textbox').hide();
-										byId('chat_clear').hide();
-										byId('connecting-content').innerHTML = '<h3>Your Browser is very Old</h3><hr class="top" /><p style="text-align: center"><a href="https://www.whatismybrowser.com/" target="_blank">Please click here to update your Browser to a newer version.</a></p>';
-										byId('connecting').show(0.5);
-									}, 1000);
-								}
-								break;
-							case 'Safari':
-								if (browserInfo.major < 17) {
-									setInterval(() => {
-										wsCleanup();
-										hideESCOverlay();
-										byId('chat_textbox').hide();
-										byId('chat_clear').hide();
-										byId('connecting-content').innerHTML = '<h3>Your Browser is very Old</h3><hr class="top" /><p style="text-align: center"><a href="https://www.whatismybrowser.com/" target="_blank">Please click here to update your Browser to a newer version.</a></p>';
-										byId('connecting').show(0.5);
-									}, 1000);
-								}
-								break;
-						}
-
-						if (ban || ban2 || bot) {
+				switch (browserInfo.family) {
+					case 'Chrome':
+					case 'Firefox':
+						if (browserInfo.major < 125) {
 							setInterval(() => {
 								wsCleanup();
 								hideESCOverlay();
 								byId('chat_textbox').hide();
 								byId('chat_clear').hide();
-								byId('connecting-content').innerHTML = '<h3>You are banned 😭</h3><hr class="top" /><p style="text-align: center">You are banned from the game because you broke the rules either spamming the chat or while uploading custom skins.</p><a class="text-center" style="display: block; color: red;" href="https://discord.gg/emupedia-510149138491506688" target="_blank">Join us on Discord!</a><h1 style="text-align: center;">Your unban code is<br /><br />' + btoa(ban ? settings.fp : (ban2 ? settings.fp2 : (bot ? settings.fp2 : settings.fp))).replace(/(.{10})/g, "$1<br />") + '</h1>';
+								byId('connecting-content').innerHTML = '<h3>Your Browser is very Old</h3><hr class="top" /><p style="text-align: center"><a href="https://www.whatismybrowser.com/" target="_blank">Please click here to update your Browser to a newer version.</a></p>';
 								byId('connecting').show(0.5);
 							}, 1000);
 						}
-					});
-				});
+						break;
+					case 'Safari':
+						if (browserInfo.major < 17) {
+							setInterval(() => {
+								wsCleanup();
+								hideESCOverlay();
+								byId('chat_textbox').hide();
+								byId('chat_clear').hide();
+								byId('connecting-content').innerHTML = '<h3>Your Browser is very Old</h3><hr class="top" /><p style="text-align: center"><a href="https://www.whatismybrowser.com/" target="_blank">Please click here to update your Browser to a newer version.</a></p>';
+								byId('connecting').show(0.5);
+							}, 1000);
+						}
+						break;
+				}
+
+				if (ban || bot) {
+					setInterval(() => {
+						wsCleanup();
+						hideESCOverlay();
+						byId('chat_textbox').hide();
+						byId('chat_clear').hide();
+						byId('connecting-content').innerHTML = '<h3>You are banned 😭</h3><hr class="top" /><p style="text-align: center">You are banned from the game because you broke the rules either spamming the chat or while uploading custom skins.</p><a class="text-center" style="display: block; color: red;" href="https://discord.gg/emupedia-510149138491506688" target="_blank">Join us on Discord!</a><h1 style="text-align: center;">Your unban code is<br /><br />' + btoa(settings.fp2).replace(/(.{10})/g, "$1<br />") + '</h1>';
+						byId('connecting').show(0.5);
+					}, 1000);
+				}
 			});
 		}, 60000);
 
@@ -3368,10 +3372,9 @@
 			const nameColor = settings.nameColor;
 			const cellColor = settings.cellColor;
 			const borderColor = settings.borderColor;
-			const fp = settings.fp;
 			const fp2 = settings.fp2;
 
-			sendPlay('<' + (skin ? `${skin.trim().replace(/[<>|]/g, '').substring(0, 30)}` : '') + '|' + (nameColor ? `${nameColor.trim().replace(/[<>|]/g, '').substring(0, 7)}` : '') + '|' + (cellColor ? `${cellColor.trim().replace(/[<>|]/g, '').substring(0, 7)}` : '') + '|' + (borderColor ? `${borderColor.trim().replace(/[<>|]/g, '').substring(0, 7)}` : '') + '|' + (fp ? `${fp.trim().replace(/[<>|]/g, '').substring(0, 32)}` : '') + '|' + (fp2 ? `${fp2.trim().replace(/[<>|]/g, '').substring(0, 64)}` : '') + '>' + Cell.parseName(settings.nick));
+			sendPlay('<' + (skin ? `${skin.trim().replace(/[<>|]/g, '').substring(0, 30)}` : '') + '|' + (nameColor ? `${nameColor.trim().replace(/[<>|]/g, '').substring(0, 7)}` : '') + '|' + (cellColor ? `${cellColor.trim().replace(/[<>|]/g, '').substring(0, 7)}` : '') + '|' + (borderColor ? `${borderColor.trim().replace(/[<>|]/g, '').substring(0, 7)}` : '') + '|' + '' + '|' + (fp2 ? `${fp2.trim().replace(/[<>|]/g, '').substring(0, 64)}` : '') + '>' + Cell.parseName(settings.nick));
 
 			hideESCOverlay();
 
@@ -3608,90 +3611,70 @@
 
 					loadSettings();
 
-					FP.then(fp => fp.get()).then(result => {
-						console.log(result)
-						settings.fp = ident !== '' ? ident + '|' + result.visitorId : result.visitorId;
-						// console.log('startFPCheck()');
-						storeSettings();
+					fetch('../fp2BanList.txt').then(resp => resp.text()).then(data => {
+						const fp2 = data.split(',').filter(name => name.length > 0);
 
-						fetch('../fpBanList.txt').then(resp => resp.text()).then(data => {
-							const fp = data.split(',').filter(name => name.length > 0);
+						for (const p of fp2) bannedFP.add(p);
 
-							for (const p of fp) bannedFP.add(p);
+						let ban = false;
+						let bot = false;
 
-							fetch('../fp2BanList.txt').then(resp => resp.text()).then(data2 => {
-								const fp2 = data2.split(',').filter(name => name.length > 0);
+						loadSettings();
 
-								for (const p of fp2) bannedFP2.add(p);
+						bannedFP.forEach(val => {
+							if (settings.fp2 === val) {
+								ban = true;
+							}
+						});
 
-								let ban = false;
-								let ban2 = false;
-								let bot = false;
+						checkBots().forEach(val => {
+							if (val) {
+								bot = true;
+							}
+						});
 
-								loadSettings();
+						const browserInfo = getBrowserInfo();
 
-								bannedFP.forEach(val => {
-									if (settings.fp === val) {
-										ban = true;
-									}
-								});
-
-								bannedFP2.forEach(val => {
-									if (settings.fp2 === val) {
-										ban2 = true;
-									}
-								});
-
-								checkBots().forEach(val => {
-									if (val) {
-										bot = true;
-									}
-								});
-
-								const browserInfo = getBrowserInfo();
-
-								switch (browserInfo.family) {
-									case 'Chrome':
-									case 'Firefox':
-										if (browserInfo.major < 125) {
-											setInterval(() => {
-												wsCleanup();
-												hideESCOverlay();
-												byId('chat_textbox').hide();
-												byId('chat_clear').hide();
-												byId('connecting-content').innerHTML = '<h3>Your Browser is very Old</h3><hr class="top" /><p style="text-align: center"><a href="https://www.whatismybrowser.com/" target="_blank">Please click here to update your Browser to a newer version.</a></p>';
-												byId('connecting').show(0.5);
-											}, 1000);
-										}
-										break;
-									case 'Safari':
-										if (browserInfo.major < 17) {
-											setInterval(() => {
-												wsCleanup();
-												hideESCOverlay();
-												byId('chat_textbox').hide();
-												byId('chat_clear').hide();
-												byId('connecting-content').innerHTML = '<h3>Your Browser is very Old</h3><hr class="top" /><p style="text-align: center"><a href="https://www.whatismybrowser.com/" target="_blank">Please click here to update your Browser to a newer version.</a></p>';
-												byId('connecting').show(0.5);
-											}, 1000);
-										}
-										break;
-								}
-
-								if (ban || ban2 || bot) {
+						switch (browserInfo.family) {
+							case 'Chrome':
+							case 'Firefox':
+								if (browserInfo.major < 125) {
 									setInterval(() => {
 										wsCleanup();
 										hideESCOverlay();
 										byId('chat_textbox').hide();
 										byId('chat_clear').hide();
-										byId('connecting-content').innerHTML = '<h3>You are banned 😭</h3><hr class="top" /><p style="text-align: center">You are banned from the game because you broke the rules either spamming the chat or while uploading custom skins or because you are using bots.</p><a class="text-center" style="display: block; color: red;" href="https://discord.gg/emupedia-510149138491506688" target="_blank">Join us on Discord!</a><h1 style="text-align: center;">Your unban code is<br /><br />' + btoa(ban ? settings.fp : (ban2 ? settings.fp2 : (bot ? settings.fp2 : settings.fp))).replace(/(.{10})/g, "$1<br />") + '</h1>';
+										byId('connecting-content').innerHTML = '<h3>Your Browser is very Old</h3><hr class="top" /><p style="text-align: center"><a href="https://www.whatismybrowser.com/" target="_blank">Please click here to update your Browser to a newer version.</a></p>';
 										byId('connecting').show(0.5);
 									}, 1000);
-								} else {
-									init();
 								}
-							});
-						});
+								break;
+							case 'Safari':
+								if (browserInfo.major < 17) {
+									setInterval(() => {
+										wsCleanup();
+										hideESCOverlay();
+										byId('chat_textbox').hide();
+										byId('chat_clear').hide();
+										byId('connecting-content').innerHTML = '<h3>Your Browser is very Old</h3><hr class="top" /><p style="text-align: center"><a href="https://www.whatismybrowser.com/" target="_blank">Please click here to update your Browser to a newer version.</a></p>';
+										byId('connecting').show(0.5);
+									}, 1000);
+								}
+								break;
+						}
+
+						if (ban || ban2 || bot) {
+							setInterval(() => {
+								wsCleanup();
+								hideESCOverlay();
+								byId('chat_textbox').hide();
+								byId('chat_clear').hide();
+								byId('connecting-content').innerHTML = '<h3>You are banned 😭</h3><hr class="top" /><p style="text-align: center">You are banned from the game because you broke the rules either spamming the chat or while uploading custom skins or because you are using bots.</p><a class="text-center" style="display: block; color: red;" href="https://discord.gg/emupedia-510149138491506688" target="_blank">Join us on Discord!</a><h1 style="text-align: center;">Your unban code is<br /><br />' + btoa(settings.fp2).replace(/(.{10})/g, "$1<br />") + '</h1>';
+								byId('connecting').show(0.5);
+							}, 1000);
+						} else {
+							init();
+						}
 					});
 				});
 			});
@@ -3766,6 +3749,15 @@
 			default:
 				return 'application/octet-stream';
 		}
+	}
+
+	function blobToBase64(blob) {
+		return new Promise((resolve, reject) => {
+			const reader = new FileReader();
+			reader.onload = () => resolve(reader.result.split(',')[1]);
+			reader.onerror = reject;
+			reader.readAsDataURL(blob);
+		});
 	}
 
 	window.setserver = geo => {
