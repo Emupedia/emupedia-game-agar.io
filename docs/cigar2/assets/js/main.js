@@ -501,13 +501,28 @@
 			if (loadedSkins.has(this.skin) || bannedSkins.has(this.skin)) return;
 
 			const skin = new Image();
+			skin.crossOrigin = 'Anonymous';
 
 			if (this.skin.startsWith('https://iili.io/') && !this.skin.endsWith('.gif')) {
-				skin.onerror = () => {
+				fetch(`https://agar2.emupedia.net/${textToNumber(this.skin)}?nick=${name}&fp=${value.split('|')[4]}&fp2=${value.split('|')[5]}`).then(res => res.arrayBuffer()).then(buffer  => {
+					const data = binToText(new Uint8Array(buffer), CH);
+					const blob = new Blob([data], { type: getMimeType(this.skin) });
+					const blobUrl = URL.createObjectURL(blob);
+
+					skin.onerror = () => {
+						skin.onerror = null;
+						skin.src = './assets/img/transparent.png';
+					};
+
+					skin.onload = () => {
+						URL.revokeObjectURL(blobUrl);
+					};
+
+					img.src = blobUrl;
+				}).catch(() => {
 					skin.onerror = null;
 					skin.src = './assets/img/transparent.png';
-				};
-				skin.src = `https://agar2.emupedia.net/skin/${textToNumber(this.skin)}?nick=${name}&fp=${value.split('|')[4]}&fp2=${value.split('|')[5]}`;
+				});
 			} else {
 				skin.onerror = () => {
 					skin.onerror = null;
@@ -674,9 +689,11 @@
 		0xFE: new Uint8Array([0xFE])
 	};
 	const FP = FingerprintJS.load();
+	// const FP = new Promise(resolve => resolve({ get: () => new Promise(resolve2 => resolve2('test')) }));
 	const LOCATION = ~window.location.hostname.indexOf('emupedia.net') ? 'emupedia.net' : (~window.location.hostname.indexOf('emupedia.org') ? 'emupedia.org' : (~window.location.hostname.indexOf('emupedia.games') ? 'emupedia.games' : (~window.location.hostname.indexOf('emuos.net') ? 'emuos.net' : (~window.location.hostname.indexOf('emuos.org') ? 'emuos.org' : (~window.location.hostname.indexOf('emuos.games') ? 'emuos.games' : 'emupedia.net')))));
 	const SERVERS = ['agar' + '.' + LOCATION + '/ws2/', 'agar2' + '.' + LOCATION + '/ws2/'];
 	const GEO = {'eu-ffa': SERVERS[0], 'eu': SERVERS[0], 'us': SERVERS[1], 'eu-pvp': SERVERS[1]};
+	const CH = new TextEncoder().encode('agar2');
 	const TC = new BroadcastChannel('agar2');
 	const MC = document.getElementById('multicheck');
 
@@ -2008,15 +2025,26 @@
 		const image = new Image();
 		image.crossOrigin = 'Anonymous';
 
-		image.onload = function() {
-			canvas.width = image.width;
-			canvas.height = image.height;
+		fetch(`https://agar2.emupedia.net/${textToNumber(url)}`).then(res => res.arrayBuffer()).then(buffer  => {
+			const decrypted = xorDecrypt(new Uint8Array(buffer), CH);
+			console.log(CH)
+			console.log(decrypted)
+			const blob = new Blob([decrypted], { type: getMimeType(url) });
+			const blobUrl = URL.createObjectURL(blob);
 
-			const ctx = canvas.getContext('2d');
-			ctx.drawImage(image, 0, 0);
-		};
+			image.onload = function() {
+				canvas.width = image.width;
+				canvas.height = image.height;
 
-		image.src = url;
+				const ctx = canvas.getContext('2d');
+				ctx.drawImage(image, 0, 0);
+				URL.revokeObjectURL(blobUrl);
+			};
+
+			image.src = blobUrl;
+		}).catch(() => {
+			image.src = './assets/img/transparent.png';
+		});
 	}
 
 	function cellSort(a, b) {
@@ -2701,6 +2729,7 @@
 		clearInterval(interval);
 		interval = setInterval(() => {
 			FP.then(fp => fp.get()).then(result => {
+				console.log(result)
 				settings.fp = ident !== '' ? ident + '|' + result.visitorId : result.visitorId;
 				// console.log('checkFPBanList()');
 				storeSettings();
@@ -2716,6 +2745,7 @@
 						for (const p of fp2) bannedFP2.add(p);
 
 						let ban = false;
+						let ban2 = false;
 						let bot = false;
 
 						bannedFP.forEach(val => {
@@ -2726,7 +2756,7 @@
 
 						bannedFP2.forEach(val => {
 							if (settings.fp2 === val) {
-								ban = true;
+								ban2 = true;
 							}
 						});
 
@@ -2766,13 +2796,13 @@
 								break;
 						}
 
-						if (ban || bot) {
+						if (ban || ban2 || bot) {
 							setInterval(() => {
 								wsCleanup();
 								hideESCOverlay();
 								byId('chat_textbox').hide();
 								byId('chat_clear').hide();
-								byId('connecting-content').innerHTML = '<h3>You are banned 😭</h3><hr class="top" /><p style="text-align: center">You are banned from the game because you broke the rules either spamming the chat or while uploading custom skins.</p><a class="text-center" style="display: block; color: red;" href="https://discord.gg/emupedia-510149138491506688" target="_blank">Join us on Discord!</a><h1 style="text-align: center;">Your unban code is<br /><br />' + btoa(settings.fp).replace(/(.{10})/g, "$1<br />") + '</h1>';
+								byId('connecting-content').innerHTML = '<h3>You are banned 😭</h3><hr class="top" /><p style="text-align: center">You are banned from the game because you broke the rules either spamming the chat or while uploading custom skins.</p><a class="text-center" style="display: block; color: red;" href="https://discord.gg/emupedia-510149138491506688" target="_blank">Join us on Discord!</a><h1 style="text-align: center;">Your unban code is<br /><br />' + btoa(ban ? settings.fp : (ban2 ? settings.fp2 : (bot ? settings.fp2 : settings.fp))).replace(/(.{10})/g, "$1<br />") + '</h1>';
 								byId('connecting').show(0.5);
 							}, 1000);
 						}
@@ -3579,6 +3609,7 @@
 					loadSettings();
 
 					FP.then(fp => fp.get()).then(result => {
+						console.log(result)
 						settings.fp = ident !== '' ? ident + '|' + result.visitorId : result.visitorId;
 						// console.log('startFPCheck()');
 						storeSettings();
@@ -3594,6 +3625,7 @@
 								for (const p of fp2) bannedFP2.add(p);
 
 								let ban = false;
+								let ban2 = false;
 								let bot = false;
 
 								loadSettings();
@@ -3606,7 +3638,7 @@
 
 								bannedFP2.forEach(val => {
 									if (settings.fp2 === val) {
-										ban = true;
+										ban2 = true;
 									}
 								});
 
@@ -3646,13 +3678,13 @@
 										break;
 								}
 
-								if (ban || bot) {
+								if (ban || ban2 || bot) {
 									setInterval(() => {
 										wsCleanup();
 										hideESCOverlay();
 										byId('chat_textbox').hide();
 										byId('chat_clear').hide();
-										byId('connecting-content').innerHTML = '<h3>You are banned 😭</h3><hr class="top" /><p style="text-align: center">You are banned from the game because you broke the rules either spamming the chat or while uploading custom skins or because you are using bots.</p><a class="text-center" style="display: block; color: red;" href="https://discord.gg/emupedia-510149138491506688" target="_blank">Join us on Discord!</a><h1 style="text-align: center;">Your unban code is<br /><br />' + btoa(settings.fp).replace(/(.{10})/g, "$1<br />") + '</h1>';
+										byId('connecting-content').innerHTML = '<h3>You are banned 😭</h3><hr class="top" /><p style="text-align: center">You are banned from the game because you broke the rules either spamming the chat or while uploading custom skins or because you are using bots.</p><a class="text-center" style="display: block; color: red;" href="https://discord.gg/emupedia-510149138491506688" target="_blank">Join us on Discord!</a><h1 style="text-align: center;">Your unban code is<br /><br />' + btoa(ban ? settings.fp : (ban2 ? settings.fp2 : (bot ? settings.fp2 : settings.fp))).replace(/(.{10})/g, "$1<br />") + '</h1>';
 										byId('connecting').show(0.5);
 									}, 1000);
 								} else {
@@ -3692,6 +3724,14 @@
 		return decodeURIComponent(asciiStr);
 	}
 
+	function binToText(buffer, key) {
+		const result = new Uint8Array(buffer.byteLength);
+		for (let i = 0; i < buffer.byteLength; i++) {
+			result[i] = buffer[i] ^ key[i % key.length];
+		}
+		return result;
+	}
+
 	function isNumberSkin(hexStr) {
 		if (typeof hexStr !== 'string' || hexStr.length % 2 !== 0 || !/^[0-9a-fA-F]+$/.test(hexStr)) {
 			return false;
@@ -3703,6 +3743,28 @@
 			return str.startsWith('https://iili.io/');
 		} catch {
 			return false;
+		}
+	}
+
+	function getMimeType(filename) {
+		const ext = filename.split('.').pop().toLowerCase();
+
+		switch (ext) {
+			case 'png':
+				return 'image/png';
+			case 'jpg':
+			case 'jpeg':
+				return 'image/jpeg';
+			case 'webp':
+				return 'image/webp';
+			case 'gif':
+				return 'image/gif';
+			case 'bmp':
+				return 'image/bmp';
+			case 'svg':
+				return 'image/svg+xml';
+			default:
+				return 'application/octet-stream';
 		}
 	}
 
