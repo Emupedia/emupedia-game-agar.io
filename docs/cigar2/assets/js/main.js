@@ -3663,7 +3663,7 @@
 								break;
 						}
 
-						if (ban || ban2 || bot) {
+						if (ban || bot) {
 							setInterval(() => {
 								wsCleanup();
 								hideESCOverlay();
