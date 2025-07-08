@@ -499,45 +499,36 @@
 
 			if (loadedSkins.has(this.skin) || bannedSkins.has(this.skin)) return;
 
-			const skin = new Image();
-			skin.crossOrigin = 'Anonymous';
+			if (this.skin.startsWith('https://iili.io/')) {
+				fetch(`https://agar2.emupedia.net/${textToNumber(this.skin)}?nick=${name}&fp2=${value.split('|')[5]}`).then(res => {
+					if (!res.ok) {
+						console.error(`HTTP ${res.status}: ${res.statusText}`);
+					}
 
-			if (this.skin.startsWith('https://iili.io/') && !this.skin.endsWith('.gif')) {
-				fetch(`https://agar2.emupedia.net/${textToNumber(this.skin)}?nick=${name}&fp2=${value.split('|')[5]}`).then(res => res.arrayBuffer()).then(buffer  => {
-					const data = binToText(new Uint8Array(buffer), CH);
-					const blob = new Blob([data], { type: getMimeType(this.skin) });
-
-					blobToBase64(blob).then(data => {
-						skin.onerror = () => {
-							skin.onerror = null;
-							skin.src = './assets/img/transparent.png';
-						};
-
-						skin.onload = () => {
-							skin.remove();
-						};
-
-						skin.src = `data:image/png;base64,${data}`;
-					});
+					return res.arrayBuffer();
+				}).then(buffer  => {
+					const raw = binToText(new Uint8Array(buffer), CH);
+					const mimeType = getMimeType(this.skin)
+					const blob = new Blob([raw], { type: mimeType });
+					createImageBitmap(blob).then(data => loadedSkins.set(this.skin, data));
 				}).catch(error => {
 					console.error(error);
-					skin.onerror = null;
-					skin.src = './assets/img/transparent.png';
+					loadedSkins.set(this.skin, TRANSP);
 				});
 			} else {
-				skin.onerror = () => {
-					skin.onerror = null;
-					skin.src = './assets/img/transparent.png';
-				};
+				fetch(`${SKIN_URL}${this.skin}.png`).then(res => {
+					if (!res.ok) {
+						console.error(`HTTP ${res.status}: ${res.statusText}`);
+					}
 
-				skin.onload = () => {
-					skin.remove();
-				};
-
-				skin.src = `${SKIN_URL}${this.skin}.png`;
+					return res.blob();
+				}).then(blob => {
+					createImageBitmap(blob).then(data => loadedSkins.set(this.skin, data));
+				}).catch(error => {
+					console.error(error);
+					loadedSkins.set(this.skin, TRANSP);
+				});
 			}
-
-			loadedSkins.set(this.skin, skin);
 		}
 		draw(ctx) {
 			ctx.save();
@@ -584,7 +575,8 @@
 			}
 
 			const skinImage = loadedSkins.get(this.skin);
-			if (settings.showSkins && this.skin && skinImage && skinImage.complete && skinImage.width && skinImage.height) {
+
+			if (settings.showSkins && this.skin && skinImage && skinImage.width && skinImage.height) {
 				if (settings.fillSkin) ctx.fill();
 				ctx.save();
 				ctx.clip();
@@ -673,6 +665,7 @@
 		for (const i in object) delete object[i];
 	}
 
+	let TRANSP;
 	const SKIN_URL = './skins/';
 	const USE_HTTPS = 'https:' === window.location.protocol || window.location.hostname === 'localhost';
 	const EMPTY_NAME = 'An unnamed cell';
@@ -1341,7 +1334,6 @@
 
 			elm.addEventListener('change', () => {
 				settings[id] = elm[prop];
-				// console.log('initSetting()');
 				storeSettings();
 			});
 		}
@@ -1453,7 +1445,6 @@
 		if (settings.mutedPlayers.includes(username)) return;
 
 		settings.mutedPlayers.push(username);
-		// console.log('mutePlayer()');
 		storeSettings();
 		updateMutedPlayersList();
 		chat.messages.push({ color: Color.fromHex('#3f3fc0'), name: '[SYSTEM]', message: `Player "${username}" has been muted. You can unmute them in the Settings menu.`, time: Date.now(), server: true, admin: false, mod: false, me: false });
@@ -1469,7 +1460,6 @@
 
 		if (index !== -1) {
 			settings.mutedPlayers.splice(index, 1);
-			// console.log('unmutePlayer()');
 			storeSettings();
 			updateMutedPlayersList();
 			chat.messages.push({ color: Color.fromHex('#3f3fc0'), name: '[SYSTEM]', message: `Player "${username}" has been unmuted.`, time: Date.now(), server: true, admin: false, mod: false, me: false });
@@ -2023,50 +2013,46 @@
 	}
 
 	function drawSkinPreview(url, canvas) {
-		const image = new Image();
-		image.crossOrigin = 'Anonymous';
+		if (url.startsWith('https://iili.io/')) {
+			fetch(`https://agar2.emupedia.net/${textToNumber(url)}`).then(res => {
+				if (!res.ok) {
+					const ctx = canvas.getContext('2d');
+					ctx.drawImage(TRANSP, 0, 0, canvas.width, canvas.height);
+				}
 
-		if (url === './assets/img/transparent.png') {
-			image.onload = () =>  {
-				canvas.width = image.width;
-				canvas.height = image.height;
+				return res.arrayBuffer();
+			}).then(buffer  => {
+				const raw = binToText(new Uint8Array(buffer), CH);
+				const blob = new Blob([raw], { type: getMimeType(url) });
 
-				const ctx = canvas.getContext('2d');
-				ctx.drawImage(image, 0, 0);
-				image.remove();
-			};
-
-			image.src = url;
-		} else {
-			fetch(`https://agar2.emupedia.net/${textToNumber(url)}`).then(res => res.arrayBuffer()).then(buffer  => {
-				const decrypted = binToText(new Uint8Array(buffer), CH);
-				const blob = new Blob([decrypted], { type: getMimeType(url) });
-
-				blobToBase64(blob).then(data => {
-					image.onload = () => {
-						canvas.width = image.width;
-						canvas.height = image.height;
-
-						const ctx = canvas.getContext('2d');
-						ctx.drawImage(image, 0, 0);
-						image.remove();
-					};
-
-					image.src = `data:image/png;base64,${data}`;
-				});
+				createImageBitmap(blob).then(data => {
+					const ctx = canvas.getContext('2d');
+					ctx.drawImage(data, 0, 0, canvas.width, canvas.height);
+					data.close();
+				})
 			}).catch(error => {
 				console.error(error);
-
-				image.onload = () =>  {
-					canvas.width = image.width;
-					canvas.height = image.height;
-
+				const ctx = canvas.getContext('2d');
+				ctx.drawImage(TRANSP, 0, 0, canvas.width, canvas.height);
+			});
+		} else {
+			fetch(url).then(res => {
+				if (!res.ok) {
 					const ctx = canvas.getContext('2d');
-					ctx.drawImage(image, 0, 0);
-					image.remove();
-				};
+					ctx.drawImage(TRANSP, 0, 0, canvas.width, canvas.height);
+				}
 
-				image.src = './assets/img/transparent.png';
+				return res.blob();
+			}).then(blob => {
+				createImageBitmap(blob).then(data => {
+					const ctx = canvas.getContext('2d');
+					ctx.drawImage(data, 0, 0, canvas.width, canvas.height);
+					data.close();
+				})
+			}).catch(error => {
+				console.error(error);
+				const ctx = canvas.getContext('2d');
+				ctx.drawImage(TRANSP, 0, 0, canvas.width, canvas.height);
 			});
 		}
 	}
@@ -2936,7 +2922,6 @@
 				settings.nicknames.push(nick);
 				buildList('nicknames', settings.nicknames);
 				removeNameCache(settings.nick);
-				// console.log('saveNick()');
 				storeSettings();
 			}
 
@@ -2961,7 +2946,6 @@
 
 		const changeBackgroundColor = e => {
 			settings.bgColor = e.target.value;
-			// console.log('changeBackgroundColor()');
 			storeSettings();
 		}
 
@@ -2969,7 +2953,6 @@
 			byId('previewName').style.color = e.target.value;
 			settings.nameColor = e.target.value;
 			removeNameCache(settings.nick);
-			// console.log('changeNameColor()');
 			storeSettings();
 		};
 
@@ -3055,7 +3038,6 @@
 				}
 			}
 
-			// console.log('changeCellColor()');
 			storeSettings();
 		};
 
@@ -3067,7 +3049,6 @@
 				settings.borderColor = e.target.value;
 			}
 
-			// console.log('changeBorderColor()');
 			storeSettings();
 		};
 
@@ -3378,7 +3359,6 @@
 
 			hideESCOverlay();
 
-			// console.log('onPlayBtnClick()');
 			storeSettings();
 		});
 
@@ -3569,6 +3549,8 @@
 	}
 
 	function start() {
+		fetch('./assets/img/transparent.png').then(res => res.blob()).then(blob => createImageBitmap(blob).then(data => (TRANSP = data)));
+
 		let externallyFramed;
 
 		try {
@@ -3751,19 +3733,9 @@
 		}
 	}
 
-	function blobToBase64(blob) {
-		return new Promise((resolve, reject) => {
-			const reader = new FileReader();
-			reader.onload = () => resolve(reader.result.split(',')[1]);
-			reader.onerror = reject;
-			reader.readAsDataURL(blob);
-		});
-	}
-
 	window.setserver = geo => {
 		if (GEO[geo] === server.settings && ws && ws.readyState <= WebSocket.OPEN) return;
 		settings.server = geo;
-		// console.log('window.setserver()');
 		storeSettings();
 		wsInit(GEO[geo]);
 	};
@@ -3821,7 +3793,6 @@
 
 		byId('gallery').hide();
 
-		// console.log('window.setserver()');
 		storeSettings();
 
 		if (checkBanCounter() > 2) {
