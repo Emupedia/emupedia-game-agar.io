@@ -2705,11 +2705,13 @@
 	function multiCheck() {
 		hasResponded = false;
 
-		MC.contentWindow.postMessage('agar2', 'https://emupedia.net');
+		const iframeOrigin = new URL(MC.src).origin;
+
+		MC.contentWindow.postMessage('agar2', iframeOrigin);
 
 		setTimeout(() => {
 			if (!hasResponded) {
-				MC.contentWindow.postMessage('active', 'https://emupedia.net');
+				MC.contentWindow.postMessage('active', iframeOrigin);
 			}
 		}, 1000);
 	}
@@ -3227,29 +3229,25 @@
 
 		window.addEventListener('beforeunload', storeSettings);
 
-		const isMultiCheckEnabled = new URLSearchParams(location.search).has('multicheck');
+		window.addEventListener('message', event => {
+			if (event.origin !== 'https://emupedia.net') return;
 
-		if (isMultiCheckEnabled) {
-			window.addEventListener('message', event => {
-				if (event.origin !== 'https://emupedia.net') return;
+			if (event.data === 'mc') {
+				hasResponded = true;
+				setInterval(() => {
+					wsCleanup();
+					hideESCOverlay();
+					byId('chat_textbox').hide();
+					byId('chat_clear').hide();
+					byId('connecting-content').innerHTML = '<h3>Multisession Warning</h3><hr class="top" /><p style="text-align: center">Multiple game instances are not allowed.<br />Close all other game instances and reload.</p>';
+					byId('connecting').show(0.5);
+				}, 1000);
+			}
+		});
 
-				if (event.data === 'mc') {
-					hasResponded = true;
-					setInterval(() => {
-						wsCleanup();
-						hideESCOverlay();
-						byId('chat_textbox').hide();
-						byId('chat_clear').hide();
-						byId('connecting-content').innerHTML = '<h3>Multisession Warning</h3><hr class="top" /><p style="text-align: center">Multiple game instances are not allowed.<br />Close all other game instances and reload.</p>';
-						byId('connecting').show(0.5);
-					}, 1000);
-				}
-			});
+		MC.addEventListener('load', () => setInterval(multiCheck, 5000));
 
-			MC.onload = () => {
-				setInterval(multiCheck, 5000);
-			};
-		}
+		MC.src = '../multicheck.html';
 
 		document.addEventListener('wheel', handleScroll, { passive: false });
 
