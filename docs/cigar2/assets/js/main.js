@@ -6689,7 +6689,7 @@
 		localStorage.setItem('settings', JSON.stringify(settings));
 	}
 
-	setInterval(async () => await getFP(), 15000);
+	await getFP();
 })();
 
 (function() {
