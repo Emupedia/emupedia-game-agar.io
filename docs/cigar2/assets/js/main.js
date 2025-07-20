@@ -5,172 +5,124 @@
 
 	// @ts-expect-error
 	const IS_WORKER_SCOPE = !self.document && self.WorkerGlobalScope;
+
 	// Detect Browser
 	function getEngine() {
 		const x = [].constructor;
+
 		try {
 			(-1).toFixed(-1);
-		}
-		catch (err) {
+		} catch (err) {
 			return err.message.length + (x + '').split(x.name).join('').length;
 		}
 	}
+
 	const ENGINE_IDENTIFIER = getEngine();
+	// noinspection EqualityComparisonWithCoercionJS
 	const IS_BLINK = ENGINE_IDENTIFIER == 80;
+	// noinspection EqualityComparisonWithCoercionJS
 	const IS_GECKO = ENGINE_IDENTIFIER == 58;
+	// noinspection EqualityComparisonWithCoercionJS
 	const IS_WEBKIT = ENGINE_IDENTIFIER == 77;
-	const JS_ENGINE = ({
-		80: 'V8',
-		58: 'SpiderMonkey',
-		77: 'JavaScriptCore',
-	})[ENGINE_IDENTIFIER] || null;
+	const JS_ENGINE = ({ 80: 'V8', 58: 'SpiderMonkey', 77: 'JavaScriptCore' })[ENGINE_IDENTIFIER] || null;
 	const LIKE_BRAVE = IS_BLINK && 'flat' in Array.prototype /* Chrome 69 */ && !('ReportingObserver' in self /* Brave */);
+
 	function braveBrowser() {
-		const brave = ('brave' in navigator &&
-			// @ts-ignore
-			Object.getPrototypeOf(navigator.brave).constructor.name == 'Brave' &&
-			// @ts-ignore
-			navigator.brave.isBrave.toString() == 'function isBrave() { [native code] }');
-		return brave;
+		// @ts-ignore
+		// noinspection EqualityComparisonWithCoercionJS
+		return ('brave' in navigator && Object.getPrototypeOf(navigator.brave).constructor.name == 'Brave' && navigator.brave.isBrave.toString() == 'function isBrave() { [native code] }');
 	}
+
 	function getBraveMode() {
-		const mode = {
-			unknown: false,
-			allow: false,
-			standard: false,
-			strict: false,
-		};
+		const mode = { unknown: false, allow: false, standard: false, strict: false };
+
 		try {
 			// strict mode adds float frequency data AnalyserNode
 			const strictMode = () => {
 				try {
-					window.OfflineAudioContext = (
-						// @ts-ignore
-						OfflineAudioContext || webkitOfflineAudioContext);
-				}
-				catch (err) { }
+					// @ts-ignore
+					window.OfflineAudioContext = (OfflineAudioContext || webkitOfflineAudioContext);
+				} catch (err) { }
+
 				if (!window.OfflineAudioContext) {
 					return false;
 				}
+
 				const context = new OfflineAudioContext(1, 1, 44100);
 				const analyser = context.createAnalyser();
 				const data = new Float32Array(analyser.frequencyBinCount);
 				analyser.getFloatFrequencyData(data);
 				const strict = new Set(data).size > 1; // native only has -Infinity
+
 				return strict;
 			};
+
 			if (strictMode()) {
 				mode.strict = true;
+
 				return mode;
 			}
+
 			// standard and strict mode do not have chrome plugins
 			const chromePlugins = /(Chrom(e|ium)|Microsoft Edge) PDF (Plugin|Viewer)/;
 			const pluginsList = [...navigator.plugins];
-			const hasChromePlugins = pluginsList
-				.filter((plugin) => chromePlugins.test(plugin.name)).length == 2;
+			// noinspection EqualityComparisonWithCoercionJS
+			const hasChromePlugins = pluginsList.filter((plugin) => chromePlugins.test(plugin.name)).length == 2;
+
 			if (pluginsList.length && !hasChromePlugins) {
 				mode.standard = true;
+
 				return mode;
 			}
+
 			mode.allow = true;
+
 			return mode;
-		}
-		catch (e) {
+		} catch (e) {
 			mode.unknown = true;
+
 			return mode;
 		}
 	}
+
+	let gpuParameterCache = undefined;
+
 	const getBraveUnprotectedParameters = (parameters) => {
-		const blocked = new Set([
-			'FRAGMENT_SHADER.HIGH_FLOAT.precision',
-			'FRAGMENT_SHADER.HIGH_FLOAT.rangeMax',
-			'FRAGMENT_SHADER.HIGH_FLOAT.rangeMin',
-			'FRAGMENT_SHADER.HIGH_INT.precision',
-			'FRAGMENT_SHADER.HIGH_INT.rangeMax',
-			'FRAGMENT_SHADER.HIGH_INT.rangeMin',
-			'FRAGMENT_SHADER.LOW_FLOAT.precision',
-			'FRAGMENT_SHADER.LOW_FLOAT.rangeMax',
-			'FRAGMENT_SHADER.LOW_FLOAT.rangeMin',
-			'FRAGMENT_SHADER.MEDIUM_FLOAT.precision',
-			'FRAGMENT_SHADER.MEDIUM_FLOAT.rangeMax',
-			'FRAGMENT_SHADER.MEDIUM_FLOAT.rangeMin',
-			'MAX_COMBINED_FRAGMENT_UNIFORM_COMPONENTS',
-			'MAX_COMBINED_UNIFORM_BLOCKS',
-			'MAX_COMBINED_VERTEX_UNIFORM_COMPONENTS',
-			'MAX_DRAW_BUFFERS_WEBGL',
-			'MAX_FRAGMENT_INPUT_COMPONENTS',
-			'MAX_FRAGMENT_UNIFORM_BLOCKS',
-			'MAX_FRAGMENT_UNIFORM_COMPONENTS',
-			'MAX_TEXTURE_MAX_ANISOTROPY_EXT',
-			'MAX_TRANSFORM_FEEDBACK_INTERLEAVED_COMPONENTS',
-			'MAX_UNIFORM_BUFFER_BINDINGS',
-			'MAX_VARYING_COMPONENTS',
-			'MAX_VERTEX_OUTPUT_COMPONENTS',
-			'MAX_VERTEX_UNIFORM_BLOCKS',
-			'MAX_VERTEX_UNIFORM_COMPONENTS',
-			'SHADING_LANGUAGE_VERSION',
-			'UNMASKED_RENDERER_WEBGL',
-			'UNMASKED_VENDOR_WEBGL',
-			'VERSION',
-			'VERTEX_SHADER.HIGH_FLOAT.precision',
-			'VERTEX_SHADER.HIGH_FLOAT.rangeMax',
-			'VERTEX_SHADER.HIGH_FLOAT.rangeMin',
-			'VERTEX_SHADER.HIGH_INT.precision',
-			'VERTEX_SHADER.HIGH_INT.rangeMax',
-			'VERTEX_SHADER.HIGH_INT.rangeMin',
-			'VERTEX_SHADER.LOW_FLOAT.precision',
-			'VERTEX_SHADER.LOW_FLOAT.rangeMax',
-			'VERTEX_SHADER.LOW_FLOAT.rangeMin',
-			'VERTEX_SHADER.MEDIUM_FLOAT.precision',
-			'VERTEX_SHADER.MEDIUM_FLOAT.rangeMax',
-			'VERTEX_SHADER.MEDIUM_FLOAT.rangeMin',
-		]);
+		const blocked = new Set(['FRAGMENT_SHADER.HIGH_FLOAT.precision', 'FRAGMENT_SHADER.HIGH_FLOAT.rangeMax', 'FRAGMENT_SHADER.HIGH_FLOAT.rangeMin', 'FRAGMENT_SHADER.HIGH_INT.precision', 'FRAGMENT_SHADER.HIGH_INT.rangeMax', 'FRAGMENT_SHADER.HIGH_INT.rangeMin', 'FRAGMENT_SHADER.LOW_FLOAT.precision', 'FRAGMENT_SHADER.LOW_FLOAT.rangeMax', 'FRAGMENT_SHADER.LOW_FLOAT.rangeMin', 'FRAGMENT_SHADER.MEDIUM_FLOAT.precision', 'FRAGMENT_SHADER.MEDIUM_FLOAT.rangeMax', 'FRAGMENT_SHADER.MEDIUM_FLOAT.rangeMin', 'MAX_COMBINED_FRAGMENT_UNIFORM_COMPONENTS', 'MAX_COMBINED_UNIFORM_BLOCKS', 'MAX_COMBINED_VERTEX_UNIFORM_COMPONENTS', 'MAX_DRAW_BUFFERS_WEBGL', 'MAX_FRAGMENT_INPUT_COMPONENTS', 'MAX_FRAGMENT_UNIFORM_BLOCKS', 'MAX_FRAGMENT_UNIFORM_COMPONENTS','MAX_TEXTURE_MAX_ANISOTROPY_EXT', 'MAX_TRANSFORM_FEEDBACK_INTERLEAVED_COMPONENTS', 'MAX_UNIFORM_BUFFER_BINDINGS', 'MAX_VARYING_COMPONENTS', 'MAX_VERTEX_OUTPUT_COMPONENTS', 'MAX_VERTEX_UNIFORM_BLOCKS', 'MAX_VERTEX_UNIFORM_COMPONENTS', 'SHADING_LANGUAGE_VERSION', 'UNMASKED_RENDERER_WEBGL', 'UNMASKED_VENDOR_WEBGL', 'VERSION', 'VERTEX_SHADER.HIGH_FLOAT.precision', 'VERTEX_SHADER.HIGH_FLOAT.rangeMax', 'VERTEX_SHADER.HIGH_FLOAT.rangeMin', 'VERTEX_SHADER.HIGH_INT.precision', 'VERTEX_SHADER.HIGH_INT.rangeMax', 'VERTEX_SHADER.HIGH_INT.rangeMin', 'VERTEX_SHADER.LOW_FLOAT.precision', 'VERTEX_SHADER.LOW_FLOAT.rangeMax', 'VERTEX_SHADER.LOW_FLOAT.rangeMin', 'VERTEX_SHADER.MEDIUM_FLOAT.precision', 'VERTEX_SHADER.MEDIUM_FLOAT.rangeMax', 'VERTEX_SHADER.MEDIUM_FLOAT.rangeMin' ]);
+
 		const safeParameters = Object.keys(parameters).reduce((acc, curr) => {
 			if (blocked.has(curr)) {
 				return acc;
 			}
+
 			acc[curr] = parameters[curr];
+
 			return acc;
 		}, {});
+
 		return safeParameters;
 	};
+
 	// system
 	const getOS = (userAgent) => {
-		const os = (
-			// order is important
-			/windows phone/ig.test(userAgent) ? 'Windows Phone' :
-				/win(dows|16|32|64|95|98|nt)|wow64/ig.test(userAgent) ? 'Windows' :
-					/android/ig.test(userAgent) ? 'Android' :
-						/cros/ig.test(userAgent) ? 'Chrome OS' :
-							/linux/ig.test(userAgent) ? 'Linux' :
-								/ipad/ig.test(userAgent) ? 'iPad' :
-									/iphone/ig.test(userAgent) ? 'iPhone' :
-										/ipod/ig.test(userAgent) ? 'iPod' :
-											/ios/ig.test(userAgent) ? 'iOS' :
-												/mac/ig.test(userAgent) ? 'Mac' :
-													'Other');
-		return os;
+		return (/windows phone/ig.test(userAgent) ? 'Windows Phone' : /win(dows|16|32|64|95|98|nt)|wow64/ig.test(userAgent) ? 'Windows' : /android/ig.test(userAgent) ? 'Android' : /cros/ig.test(userAgent) ? 'Chrome OS' : /linux/ig.test(userAgent) ? 'Linux' : /ipad/ig.test(userAgent) ? 'iPad' : /iphone/ig.test(userAgent) ? 'iPhone' : /ipod/ig.test(userAgent) ? 'iPod' : /ios/ig.test(userAgent) ? 'iOS' : /mac/ig.test(userAgent) ? 'Mac' : 'Other');
 	};
+
 	function getReportedPlatform(userAgent, platform) {
 		// user agent os lie
-		const userAgentOS = (
-			// order is important
-			/win(dows|16|32|64|95|98|nt)|wow64/ig.test(userAgent) ? "Windows" /* PlatformClassifier.WINDOWS */ :
-				/android|linux|cros/ig.test(userAgent) ? "Linux" /* PlatformClassifier.LINUX */ :
-					/(i(os|p(ad|hone|od)))|mac/ig.test(userAgent) ? "Apple" /* PlatformClassifier.APPLE */ :
-						"Other" /* PlatformClassifier.OTHER */);
+		const userAgentOS = (/win(dows|16|32|64|95|98|nt)|wow64/ig.test(userAgent) ? "Windows" /* PlatformClassifier.WINDOWS */ : /android|linux|cros/ig.test(userAgent) ? "Linux" /* PlatformClassifier.LINUX */ : /(i(os|p(ad|hone|od)))|mac/ig.test(userAgent) ? "Apple" /* PlatformClassifier.APPLE */ : "Other" /* PlatformClassifier.OTHER */);
+
 		if (!platform)
 			return [userAgentOS];
-		const platformOS = (
-			// order is important
-			/win/ig.test(platform) ? "Windows" /* PlatformClassifier.WINDOWS */ :
-				/android|arm|linux/ig.test(platform) ? "Linux" /* PlatformClassifier.LINUX */ :
-					/(i(os|p(ad|hone|od)))|mac/ig.test(platform) ? "Apple" /* PlatformClassifier.APPLE */ :
-						"Other" /* PlatformClassifier.OTHER */);
+
+		const platformOS = (/win/ig.test(platform) ? "Windows" /* PlatformClassifier.WINDOWS */ : /android|arm|linux/ig.test(platform) ? "Linux" /* PlatformClassifier.LINUX */ : /(i(os|p(ad|hone|od)))|mac/ig.test(platform) ? "Apple" /* PlatformClassifier.APPLE */ : "Other" /* PlatformClassifier.OTHER */);
+
 		return [userAgentOS, platformOS];
 	}
+
 	const { userAgent: navUserAgent, platform: navPlatform } = self.navigator || {};
 	const [USER_AGENT_OS, PLATFORM_OS] = getReportedPlatform(navUserAgent, navPlatform);
+
 	const decryptUserAgent = ({ ua, os, isBrave }) => {
 		const apple = /ipad|iphone|ipod|ios|mac/ig.test(os);
 		const isOpera = /OPR\//g.test(ua);
@@ -182,45 +134,40 @@
 		const edgios = edge && /edgios/i.test(edge[1]);
 		const chromium = ua.match(/(crios|chrome)\/(\d+)./i);
 		const firefox = ua.match(/(fxios|firefox)\/(\d+)./i);
-		const likeSafari = (/AppleWebKit/g.test(ua) &&
-			/Safari/g.test(ua));
-		const safari = (likeSafari &&
-			!firefox &&
-			!chromium &&
-			!edge &&
-			ua.match(/(version)\/(\d+)\.(\d|\.)+\s(mobile|safari)/i));
+		const likeSafari = (/AppleWebKit/g.test(ua) && /Safari/g.test(ua));
+		const safari = (likeSafari && !firefox && !chromium && !edge && ua.match(/(version)\/(\d+)\.(\d|\.)+\s(mobile|safari)/i));
+
 		if (chromium) {
 			const browser = chromium[1];
 			const version = chromium[2];
-			const like = (isOpera ? ' Opera' :
-				isVivaldi ? ' Vivaldi' :
-					isDuckDuckGo ? ' DuckDuckGo' :
-						isYandex ? ' Yandex' :
-							edge ? ' Edge' :
-								isBrave ? ' Brave' : '');
+			const like = (isOpera ? ' Opera' : isVivaldi ? ' Vivaldi' : isDuckDuckGo ? ' DuckDuckGo' : isYandex ? ' Yandex' : edge ? ' Edge' : isBrave ? ' Brave' : '');
+
 			return `${browser} ${version}${like}`;
-		}
-		else if (edgios) {
+		} else if (edgios) {
 			const browser = edge[1];
 			const version = edge[2];
+
 			return `${browser} ${version}`;
-		}
-		else if (firefox) {
+		} else if (firefox) {
 			const browser = paleMoon ? paleMoon[1] : firefox[1];
 			const version = paleMoon ? paleMoon[2] : firefox[2];
+
 			return `${browser} ${version}`;
-		}
-		else if (apple && safari) {
+		} else if (apple && safari) {
 			const browser = 'Safari';
 			const version = safari[2];
+
 			return `${browser} ${version}`;
 		}
+
 		return 'unknown';
 	};
+
 	const getUserAgentPlatform = ({ userAgent, excludeBuild = true }) => {
 		if (!userAgent) {
 			return 'unknown';
 		}
+
 		// patterns
 		const nonPlatformParenthesis = /\((khtml|unlike|vizio|like gec|internal dummy|org\.eclipse|openssl|ipv6|via translate|safari|cardamon).+|xt\d+\)/ig;
 		const parenthesis = /\((.+)\)/;
@@ -241,103 +188,59 @@
 		const appleRelease = /(ppc |intel |)(mac|mac |)os (x |x|)(\d{2}(_|\.)\d{1,2}|\d{2,})/i;
 		const otherOS = /((symbianos|nokia|blackberry|morphos|mac).+)|\/linux|freebsd|symbos|series \d+|win\d+|unix|hp-ux|bsdi|bsd|x86_64/i;
 		const isDevice = (list, device) => list.filter((x) => device.test(x)).length;
+
 		userAgent = userAgent.trim().replace(/\s{2,}/, ' ').replace(nonPlatformParenthesis, '');
+
 		if (parenthesis.test(userAgent)) {
 			const platformSection = userAgent.match(parenthesis)[0];
 			const identifiers = platformSection.slice(1, -1).replace(/,/g, ';').split(';').map((x) => x.trim());
+
 			if (isDevice(identifiers, android)) {
-				return identifiers
-					// @ts-ignore
-					.map((x) => androidRelease.test(x) ? androidRelease.exec(x)[0].replace('-', ' ') : x)
-					.filter((x) => !(androidNoise.test(x)))
-					.join(' ')
-					.replace((excludeBuild ? androidBuild : ''), '')
-					.trim().replace(/\s{2,}/, ' ');
-			}
-			else if (isDevice(identifiers, windows)) {
-				return identifiers
-					.filter((x) => !(windowsNoise.test(x)))
-					.join(' ')
-					.replace(/\sNT (\d+\.\d+)/, (match, version) => {
-						return (version == '10.0' ? ' 10' :
-							version == '6.3' ? ' 8.1' :
-								version == '6.2' ? ' 8' :
-									version == '6.1' ? ' 7' :
-										version == '6.0' ? ' Vista' :
-											version == '5.2' ? ' XP Pro' :
-												version == '5.1' ? ' XP' :
-													version == '5.0' ? ' 2000' :
-														version == '4.0' ? match :
-															' ' + version);
-					})
-					.replace(windows64bitCPU, '(64-bit)')
-					.trim().replace(/\s{2,}/, ' ');
-			}
-			else if (isDevice(identifiers, cros)) {
-				return identifiers
-					.filter((x) => !(crosNoise.test(x)))
-					.join(' ')
-					.replace((excludeBuild ? crosBuild : ''), '')
-					.trim().replace(/\s{2,}/, ' ');
-			}
-			else if (isDevice(identifiers, linux)) {
-				return identifiers
-					.filter((x) => !(linuxNoise.test(x)))
-					.join(' ')
-					.trim().replace(/\s{2,}/, ' ');
-			}
-			else if (isDevice(identifiers, apple)) {
-				return identifiers
-					.map((x) => {
-						if (appleRelease.test(x)) {
-							// @ts-ignore
-							const release = appleRelease.exec(x)[0];
-							const versionMap = {
-								'10_7': 'Lion',
-								'10_8': 'Mountain Lion',
-								'10_9': 'Mavericks',
-								'10_10': 'Yosemite',
-								'10_11': 'El Capitan',
-								'10_12': 'Sierra',
-								'10_13': 'High Sierra',
-								'10_14': 'Mojave',
-								'10_15': 'Catalina',
-								'11': 'Big Sur',
-								'12': 'Monterey',
-								'13': 'Ventura',
-							};
-							const version = ((/(\d{2}(_|\.)\d{1,2}|\d{2,})/.exec(release) || [])[0] ||
-								'').replace(/\./g, '_');
-							const isOSX = /^10/.test(version);
-							const id = isOSX ? version : (/^\d{2,}/.exec(version) || [])[0];
-							const codeName = versionMap[id];
-							return codeName ? `macOS ${codeName}` : release;
-						}
-						return x;
-					})
-					.filter((x) => !(appleNoise.test(x)))
-					.join(' ')
-					.replace(/\slike mac.+/ig, '')
-					.trim().replace(/\s{2,}/, ' ');
-			}
-			else {
+				// @ts-ignore
+				return identifiers.map((x) => androidRelease.test(x) ? androidRelease.exec(x)[0].replace('-', ' ') : x).filter((x) => !(androidNoise.test(x))).join(' ').replace((excludeBuild ? androidBuild : ''), '').trim().replace(/\s{2,}/, ' ');
+			} else if (isDevice(identifiers, windows)) {
+				return identifiers.filter((x) => !(windowsNoise.test(x))).join(' ').replace(/\sNT (\d+\.\d+)/, (match, version) => (version == '10.0' ? ' 10' : version == '6.3' ? ' 8.1' : version == '6.2' ? ' 8' : version == '6.1' ? ' 7' : version == '6.0' ? ' Vista' : version == '5.2' ? ' XP Pro' : version == '5.1' ? ' XP' : version == '5.0' ? ' 2000' : version == '4.0' ? match : ' ' + version)).replace(windows64bitCPU, '(64-bit)').trim().replace(/\s{2,}/, ' ');
+			} else if (isDevice(identifiers, cros)) {
+				return identifiers.filter((x) => !(crosNoise.test(x))).join(' ').replace((excludeBuild ? crosBuild : ''), '').trim().replace(/\s{2,}/, ' ');
+			} else if (isDevice(identifiers, linux)) {
+				return identifiers.filter((x) => !(linuxNoise.test(x))).join(' ').trim().replace(/\s{2,}/, ' ');
+			} else if (isDevice(identifiers, apple)) {
+				return identifiers.map((x) => {
+					if (appleRelease.test(x)) {
+						// @ts-ignore
+						const release = appleRelease.exec(x)[0];
+						const versionMap = { '10_7': 'Lion', '10_8': 'Mountain Lion', '10_9': 'Mavericks', '10_10': 'Yosemite', '10_11': 'El Capitan', '10_12': 'Sierra', '10_13': 'High Sierra', '10_14': 'Mojave', '10_15': 'Catalina', '11': 'Big Sur', '12': 'Monterey', '13': 'Ventura' };
+						const version = ((/(\d{2}(_|\.)\d{1,2}|\d{2,})/.exec(release) || [])[0] || '').replace(/\./g, '_');
+						const isOSX = /^10/.test(version);
+						const id = isOSX ? version : (/^\d{2,}/.exec(version) || [])[0];
+						const codeName = versionMap[id];
+
+						return codeName ? `macOS ${codeName}` : release;
+					}
+
+					return x;
+				}).filter((x) => !(appleNoise.test(x))).join(' ').replace(/\slike mac.+/ig, '').trim().replace(/\s{2,}/, ' ');
+			} else {
 				const other = identifiers.filter((x) => otherOS.test(x));
+
 				if (other.length) {
 					return other.join(' ').trim().replace(/\s{2,}/, ' ');
 				}
+
 				return identifiers.join(' ');
 			}
-		}
-		else {
+		} else {
 			return 'unknown';
 		}
 	};
+
 	// attempt restore from User-Agent Reduction
 	const isUAPostReduction = (userAgent) => {
 		const matcher = /Mozilla\/5\.0 \((Macintosh; Intel Mac OS X 10_15_7|Windows NT 10\.0; Win64; x64|(X11; (CrOS|Linux) x86_64)|(Linux; Android 10(; K|)))\) AppleWebKit\/537\.36 \(KHTML, like Gecko\) Chrome\/\d+\.0\.0\.0( Mobile|) Safari\/537\.36/;
 		const unifiedPlatform = (matcher.exec(userAgent) || [])[1];
 		return IS_BLINK && !!unifiedPlatform;
 	};
+
 	const createPerformanceLogger = () => {
 		const log = {};
 		let total = 0;
@@ -349,18 +252,16 @@
 				const color = passed ? '#4cca9f' : 'lightcoral'
 				const result = passed ? 'passed' : 'failed'
 				const symbol = passed ? '✔' : '-'
-				/*return console.log(
-				 `%c${symbol}${
-				 time ? ` (${timeString})` : ''
-				 } ${test} ${result}`, `color:${color}`,
-				 )*/
+				return console.log(`%c${symbol}${time ? ` (${timeString})` : ''} ${test} ${result}`, `color:${color}`)
 			},
 			getLog: () => log,
 			getTotal: () => total,
 		};
 	};
+
 	const performanceLogger = createPerformanceLogger();
 	const { logTestResult } = performanceLogger;
+
 	const createTimer = () => {
 		let start = 0;
 		const log = [];
@@ -378,12 +279,15 @@
 			},
 		};
 	};
+
 	const queueEvent = (timer, delay = 0) => {
 		timer.stop();
 		return new Promise((resolve) => setTimeout(() => resolve(timer.start()), delay))
 			.catch((e) => { });
 	};
+
 	const queueTask = () => new Promise((resolve) => setTimeout(() => resolve(null)));
+
 	const EMOJIS = [
 		[128512], [9786], [129333, 8205, 9794, 65039], [9832], [9784], [9895], [8265], [8505], [127987, 65039, 8205, 9895, 65039], [129394], [9785], [9760], [129489, 8205, 129456], [129487, 8205, 9794, 65039], [9975], [129489, 8205, 129309, 8205, 129489], [9752], [9968], [9961], [9972], [9992], [9201], [9928], [9730], [9969], [9731], [9732], [9976], [9823], [9937], [9000], [9993], [9999],
 		[128105, 8205, 10084, 65039, 8205, 128139, 8205, 128104],
@@ -396,6 +300,7 @@
 		// other
 		[10002], [9986], [9935], [9874], [9876], [9881], [9939], [9879], [9904], [9905], [9888], [9762], [9763], [11014], [8599], [10145], [11013], [9883], [10017], [10013], [9766], [9654], [9197], [9199], [9167], [9792], [9794], [10006], [12336], [9877], [9884], [10004], [10035], [10055], [9724], [9642], [10083], [10084], [9996], [9757], [9997], [10052], [9878], [8618], [9775], [9770], [9774], [9745], [10036], [127344], [127359],
 	].map((emojiCode) => String.fromCodePoint(...emojiCode));
+
 	const CSS_FONT_FAMILY = `
 	'Segoe Fluent Icons',
 	'Ink Free',
@@ -447,6 +352,7 @@
 	'Noto Color Emoji',
 	sans-serif !important
 `;
+
 	function getGpuBrand(gpu) {
 		if (!gpu)
 			return null;
@@ -454,8 +360,10 @@
 		const brand = (/radeon/i.test(gpu) ? 'AMD' : /geforce/i.test(gpu) ? 'NVIDIA' : (gpuBrandMatcher.exec(gpu)?.[0] || 'other').toLocaleUpperCase());
 		return brand;
 	}
+
 	// collect fingerprints for analysis
 	const Analysis = {};
+
 	// use if needed to stable fingerprint
 	const LowerEntropy = {
 		AUDIO: false,
@@ -463,7 +371,7 @@
 		FONTS: false,
 		SCREEN: false,
 		TIME_ZONE: false,
-		WEBGL: false,
+		WEBGL: false
 	};
 
 	// template views
@@ -473,6 +381,7 @@
 		oldEl.parentNode?.replaceChild(newEl, oldEl);
 		return typeof fn === 'function' ? fn() : true;
 	}
+
 	function html(templateStr, ...expressionSet) {
 		const template = document.createElement('template');
 		template.innerHTML = templateStr.map((s, i) => `${s}${expressionSet[i] || ''}`).join('');
@@ -481,120 +390,125 @@
 
 	const createErrorsCaptured = () => {
 		const errors = [];
+
 		return {
 			getErrors: () => errors,
 			captureError: (error, customMessage = '') => {
-				const type = {
-					Error: true,
-					EvalError: true,
-					InternalError: true,
-					RangeError: true,
-					ReferenceError: true,
-					SyntaxError: true,
-					TypeError: true,
-					URIError: true,
-					InvalidStateError: true,
-					SecurityError: true,
-				};
+				const type = { Error: true, EvalError: true, InternalError: true, RangeError: true, ReferenceError: true, SyntaxError: true, TypeError: true, URIError: true, InvalidStateError: true, SecurityError: true};
 				const hasInnerSpace = (s) => /.+(\s).+/g.test(s); // ignore AOPR noise
 				console.error(error); // log error to educate
 				const { name, message } = error;
-				const trustedMessage = (!hasInnerSpace(message) ? undefined :
-					!customMessage ? message :
-						`${message} [${customMessage}]`);
+				const trustedMessage = (!hasInnerSpace(message) ? undefined : !customMessage ? message : `${message} [${customMessage}]`);
 				const trustedName = type[name] ? name : undefined;
 				errors.push({ trustedName, trustedMessage });
+
 				return undefined;
 			},
 		};
 	};
+
 	const errorsCaptured = createErrorsCaptured();
+
 	const { captureError } = errorsCaptured;
+
 	const attempt = (fn, customMessage = '') => {
 		try {
 			return fn();
-		}
-		catch (error) {
+		} catch (error) {
 			if (customMessage) {
 				return captureError(error, customMessage);
 			}
+
 			return captureError(error);
 		}
 	};
+
 	const caniuse = (fn, objChainList = [], args = [], method = false) => {
 		let api;
+
 		try {
 			api = fn();
-		}
-		catch (error) {
+		} catch (error) {
 			return undefined;
 		}
+
 		let i;
+
 		const len = objChainList.length;
+
 		let chain = api;
+
 		try {
 			for (i = 0; i < len; i++) {
 				const obj = objChainList[i];
 				chain = chain[obj];
 			}
-		}
-		catch (error) {
+		} catch (error) {
 			return undefined;
 		}
-		return (method && args.length ? chain.apply(api, args) :
-			method && !args.length ? chain.apply(api) :
-				chain);
+
+		return (method && args.length ? chain.apply(api, args) : method && !args.length ? chain.apply(api) : chain);
 	};
+
 	// Log performance time
 	const timer = (logStart) => {
 		logStart && console.log(logStart);
 		let start = 0;
+
 		try {
 			start = performance.now();
-		}
-		catch (error) {
+		} catch (error) {
 			captureError(error);
 		}
+
 		return (logEnd) => {
 			let end = 0;
+
 			try {
 				end = performance.now() - start;
 				logEnd && console.log(`${logEnd}: ${end / 1000} seconds`);
+
 				return end;
-			}
-			catch (error) {
+			} catch (error) {
 				captureError(error);
+
 				return 0;
 			}
 		};
 	};
+
 	const getCapturedErrors = () => ({ data: errorsCaptured.getErrors() });
 
 	/* eslint-disable new-cap */
 	// warm up while we detect lies
-	try {
-		speechSynthesis.getVoices();
-	}
-	catch (err) { }
+	try { speechSynthesis.getVoices(); } catch (err) { }
+
 	// Collect lies detected
 	function createLieRecords() {
 		const records = {};
+
 		return {
 			getRecords: () => records,
 			documentLie: (name, lie) => {
 				const isArray = lie instanceof Array;
+
 				if (records[name]) {
 					if (isArray) {
 						return (records[name] = [...records[name], ...lie]);
 					}
+
 					return records[name].push(lie);
 				}
+
 				return isArray ? (records[name] = lie) : (records[name] = [lie]);
-			},
+			}
 		};
 	}
-	const lieRecords = createLieRecords();
+
+	let lieRecords = createLieRecords();
+
 	const { documentLie } = lieRecords;
+
 	const GHOST = `
 	height: 100vh;
 	width: 100vw;
@@ -602,41 +516,55 @@
 	left:-10000px;
 	visibility: hidden;
 `;
+
 	function getRandomValues() {
-		return (String.fromCharCode(Math.random() * 26 + 97) +
-			Math.random().toString(36).slice(-7));
+		return (String.fromCharCode(Math.random() * 26 + 97) + Math.random().toString(36).slice(-7));
 	}
+
 	function getBehemothIframe(win) {
 		try {
 			if (!IS_BLINK)
 				return win;
+
 			const div = win.document.createElement('div');
+
 			div.setAttribute('id', getRandomValues());
 			div.setAttribute('style', GHOST);
 			div.innerHTML = `<div><iframe></iframe></div>`;
 			win.document.body.appendChild(div);
+
 			const iframe = [...[...div.childNodes][0].childNodes][0];
+
 			if (!iframe)
 				return null;
+
 			const { contentWindow } = iframe || {};
+
 			if (!contentWindow)
 				return null;
+
 			const div2 = contentWindow.document.createElement('div');
+
 			div2.innerHTML = `<div><iframe></iframe></div>`;
 			contentWindow.document.body.appendChild(div2);
+
 			const iframe2 = [...[...div2.childNodes][0].childNodes][0];
+
 			return iframe2.contentWindow;
-		}
-		catch (error) {
+		} catch (error) {
 			captureError(error, 'client blocked behemoth iframe');
+
 			return win;
 		}
 	}
+
 	const RAND = getRandomValues();
 	const HAS_REFLECT = 'Reflect' in self;
+
 	function isTypeError(err) {
 		return err.constructor.name == 'TypeError';
 	}
+
 	function failsTypeError({ spawnErr, withStack, final }) {
 		try {
 			spawnErr();
@@ -651,6 +579,7 @@
 			final && final();
 		}
 	}
+
 	function failsWithError(fn) {
 		try {
 			fn();
@@ -660,6 +589,7 @@
 			return true;
 		}
 	}
+
 	function hasKnownToString(name) {
 		return {
 			[`function ${name}() { [native code] }`]: true,
@@ -670,39 +600,38 @@
 			[`function () {${'\n'}	[native code]${'\n'}}`]: true,
 		};
 	}
+
 	function hasValidStack(err, reg, i = 1) {
 		if (i === 0)
 			return reg.test(err.message);
 		return reg.test(err.stack.split('\n')[i]);
 	}
+
 	const AT_FUNCTION = /at Function\.toString /;
 	const AT_OBJECT = /at Object\.toString/;
 	const FUNCTION_INSTANCE = /at (Function\.)?\[Symbol.hasInstance\]/; // useful if < Chrome 102
 	const PROXY_INSTANCE = /at (Proxy\.)?\[Symbol.hasInstance\]/; // useful if < Chrome 102
 	const STRICT_MODE = /strict mode/;
+
 	function queryLies({ scope, apiFunction, proto, obj, lieProps, }) {
 		if (typeof apiFunction != 'function') {
-			return {
-				lied: 0,
-				lieTypes: [],
-			};
+			return { lied: 0, lieTypes: [] };
 		}
+
 		const name = apiFunction.name.replace(/get\s/, '');
 		const objName = obj?.name;
 		const nativeProto = Object.getPrototypeOf(apiFunction);
+
 		let lies = {
 			// custom lie string names
-			['failed illegal error']: !!obj && failsTypeError({
-				spawnErr: () => obj.prototype[name],
-			}),
-			['failed undefined properties']: (!!obj && /^(screen|navigator)$/i.test(objName) && !!(Object.getOwnPropertyDescriptor(self[objName.toLowerCase()], name) || (HAS_REFLECT &&
-				Reflect.getOwnPropertyDescriptor(self[objName.toLowerCase()], name)))),
+			['failed illegal error']: !!obj && failsTypeError({ spawnErr: () => obj.prototype[name] }),
+			['failed undefined properties']: (!!obj && /^(screen|navigator)$/i.test(objName) && !!(Object.getOwnPropertyDescriptor(self[objName.toLowerCase()], name) || (HAS_REFLECT && Reflect.getOwnPropertyDescriptor(self[objName.toLowerCase()], name)))),
 			['failed call interface error']: failsTypeError({
 				spawnErr: () => {
 					// @ts-expect-error
 					new apiFunction();
 					apiFunction.call(proto);
-				},
+				}
 			}),
 			['failed apply interface error']: failsTypeError({
 				spawnErr: () => {
@@ -724,41 +653,28 @@
 			}),
 			['failed null conversion error']: failsTypeError({
 				spawnErr: () => Object.setPrototypeOf(apiFunction, null).toString(),
-				final: () => Object.setPrototypeOf(apiFunction, nativeProto),
+				final: () => Object.setPrototypeOf(apiFunction, nativeProto)
 			}),
-			['failed toString']: (!hasKnownToString(name)[scope.Function.prototype.toString.call(apiFunction)] ||
-				!hasKnownToString('toString')[scope.Function.prototype.toString.call(apiFunction.toString)]),
-			['failed "prototype" in function']: 'prototype' in apiFunction,
-			['failed descriptor']: !!(Object.getOwnPropertyDescriptor(apiFunction, 'arguments') ||
-				Reflect.getOwnPropertyDescriptor(apiFunction, 'arguments') ||
-				Object.getOwnPropertyDescriptor(apiFunction, 'caller') ||
-				Reflect.getOwnPropertyDescriptor(apiFunction, 'caller') ||
-				Object.getOwnPropertyDescriptor(apiFunction, 'prototype') ||
-				Reflect.getOwnPropertyDescriptor(apiFunction, 'prototype') ||
-				Object.getOwnPropertyDescriptor(apiFunction, 'toString') ||
-				Reflect.getOwnPropertyDescriptor(apiFunction, 'toString')),
-			['failed own property']: !!(apiFunction.hasOwnProperty('arguments') ||
-				apiFunction.hasOwnProperty('caller') ||
-				apiFunction.hasOwnProperty('prototype') ||
-				apiFunction.hasOwnProperty('toString')),
+			['failed toString']: (!hasKnownToString(name)[scope.Function.prototype.toString.call(apiFunction)] || !hasKnownToString('toString')[scope.Function.prototype.toString.call(apiFunction.toString)]),
+			['failed "prototype" in function']: 'prototype' in apiFunction, ['failed descriptor']: !!(Object.getOwnPropertyDescriptor(apiFunction, 'arguments') || Reflect.getOwnPropertyDescriptor(apiFunction, 'arguments') || Object.getOwnPropertyDescriptor(apiFunction, 'caller') || Reflect.getOwnPropertyDescriptor(apiFunction, 'caller') || Object.getOwnPropertyDescriptor(apiFunction, 'prototype') || Reflect.getOwnPropertyDescriptor(apiFunction, 'prototype') || Object.getOwnPropertyDescriptor(apiFunction, 'toString') || Reflect.getOwnPropertyDescriptor(apiFunction, 'toString')),
+			['failed own property']: !!(apiFunction.hasOwnProperty('arguments') || apiFunction.hasOwnProperty('caller') || apiFunction.hasOwnProperty('prototype') || apiFunction.hasOwnProperty('toString')),
 			['failed descriptor keys']: (Object.keys(Object.getOwnPropertyDescriptors(apiFunction)).sort().toString() != 'length,name'),
 			['failed own property names']: (Object.getOwnPropertyNames(apiFunction).sort().toString() != 'length,name'),
 			['failed own keys names']: HAS_REFLECT && (Reflect.ownKeys(apiFunction).sort().toString() != 'length,name'),
 			// Proxy Detection
 			['failed object toString error']: (failsTypeError({
-					spawnErr: () => Object.create(apiFunction).toString(),
-					withStack: (err) => IS_BLINK && !hasValidStack(err, AT_FUNCTION),
-				}) ||
-				failsTypeError({
-					spawnErr: () => Object.create(new Proxy(apiFunction, {})).toString(),
-					withStack: (err) => IS_BLINK && !hasValidStack(err, AT_OBJECT),
-				})),
+				spawnErr: () => Object.create(apiFunction).toString(),
+				withStack: (err) => IS_BLINK && !hasValidStack(err, AT_FUNCTION)
+			}) || failsTypeError({
+				spawnErr: () => Object.create(new Proxy(apiFunction, {})).toString(),
+				withStack: (err) => IS_BLINK && !hasValidStack(err, AT_OBJECT)
+			})),
 			['failed at incompatible proxy error']: failsTypeError({
 				spawnErr: () => {
 					apiFunction.arguments;
 					apiFunction.caller;
 				},
-				withStack: (err) => IS_GECKO && !hasValidStack(err, STRICT_MODE, 0),
+				withStack: (err) => IS_GECKO && !hasValidStack(err, STRICT_MODE, 0)
 			}),
 			['failed at toString incompatible proxy error']: failsTypeError({
 				spawnErr: () => {
@@ -767,23 +683,24 @@
 					// noinspection JSAnnotator
 					apiFunction.toString.caller;
 				},
-				withStack: (err) => IS_GECKO && !hasValidStack(err, STRICT_MODE, 0),
+				withStack: (err) => IS_GECKO && !hasValidStack(err, STRICT_MODE, 0)
 			}),
 			['failed at too much recursion error']: failsTypeError({
 				spawnErr: () => {
 					Object.setPrototypeOf(apiFunction, Object.create(apiFunction)).toString();
 				},
-				final: () => Object.setPrototypeOf(apiFunction, nativeProto),
-			}),
+				final: () => Object.setPrototypeOf(apiFunction, nativeProto)
+			})
 		};
+
 		// conditionally increase difficulty
-		const detectProxies = (name == 'toString' ||
-			!!lieProps['Function.toString'] ||
-			!!lieProps['Permissions.query']);
+		const detectProxies = (name == 'toString' || !!lieProps['Function.toString'] || !!lieProps['Permissions.query']);
+
 		if (detectProxies) {
 			const proxy1 = new Proxy(apiFunction, {});
 			const proxy2 = new Proxy(apiFunction, {});
 			const proxy3 = new Proxy(apiFunction, {});
+
 			lies = {
 				...lies,
 				// Advanced Proxy Detection
@@ -793,13 +710,13 @@
 						apiFunction.__proto__ = proxy;
 						apiFunction++;
 					},
-					final: () => Object.setPrototypeOf(apiFunction, nativeProto),
+					final: () => Object.setPrototypeOf(apiFunction, nativeProto)
 				}),
 				['failed at chain cycle error']: !failsTypeError({
 					spawnErr: () => {
 						Object.setPrototypeOf(proxy1, Object.create(proxy1)).toString();
 					},
-					final: () => Object.setPrototypeOf(proxy1, nativeProto),
+					final: () => Object.setPrototypeOf(proxy1, nativeProto)
 				}),
 				['failed at chain cycle __proto__ error']: !failsTypeError({
 					spawnErr: () => {
@@ -808,7 +725,7 @@
 						// noinspection JSConstantReassignment
 						proxy2++;
 					},
-					final: () => Object.setPrototypeOf(proxy2, nativeProto),
+					final: () => Object.setPrototypeOf(proxy2, nativeProto)
 				}),
 				['failed at reflect set proto']: HAS_REFLECT && failsTypeError({
 					spawnErr: () => {
@@ -816,131 +733,130 @@
 						RAND in apiFunction;
 						throw new TypeError();
 					},
-					final: () => Object.setPrototypeOf(apiFunction, nativeProto),
+					final: () => Object.setPrototypeOf(apiFunction, nativeProto)
 				}),
 				['failed at reflect set proto proxy']: HAS_REFLECT && !failsTypeError({
 					spawnErr: () => {
 						Reflect.setPrototypeOf(proxy3, Object.create(proxy3));
 						RAND in proxy3;
 					},
-					final: () => Object.setPrototypeOf(proxy3, nativeProto),
+					final: () => Object.setPrototypeOf(proxy3, nativeProto)
 				}),
 				['failed at instanceof check error']: IS_BLINK && (failsTypeError({
-						spawnErr: () => {
-							apiFunction instanceof apiFunction;
-						},
-						withStack: (err) => !hasValidStack(err, FUNCTION_INSTANCE),
-					}) ||
-					failsTypeError({
-						spawnErr: () => {
-							const proxy = new Proxy(apiFunction, {});
-							proxy instanceof proxy;
-						},
-						withStack: (err) => !hasValidStack(err, PROXY_INSTANCE),
-					})),
+					spawnErr: () => {
+						apiFunction instanceof apiFunction;
+					},
+					withStack: (err) => !hasValidStack(err, FUNCTION_INSTANCE)
+				}) || failsTypeError({
+					spawnErr: () => {
+						const proxy = new Proxy(apiFunction, {});
+						proxy instanceof proxy;
+					},
+					withStack: (err) => !hasValidStack(err, PROXY_INSTANCE)
+				})),
 				['failed at define properties']: IS_BLINK && HAS_REFLECT && failsWithError(() => {
 					Object.defineProperty(apiFunction, '', { configurable: true }).toString();
 					Reflect.deleteProperty(apiFunction, '');
-				}),
+				})
 			};
 		}
+
 		const lieTypes = Object.keys(lies).filter((key) => !!lies[key]);
-		return {
-			lied: lieTypes.length,
-			lieTypes,
-		};
+
+		return { lied: lieTypes.length, lieTypes };
 	}
+
 	function createLieDetector(scope) {
 		const isSupported = (obj) => typeof obj != 'undefined' && !!obj;
 		const props = {}; // lie list and detail
 		const propsSearched = []; // list of properties searched
+
 		return {
 			getProps: () => props,
 			getPropsSearched: () => propsSearched,
 			searchLies: (fn, config) => {
 				const { target, ignore } = config || {};
 				let obj;
+
 				// check if api is blocked or not supported
 				try {
 					obj = fn();
+
 					if (!isSupported(obj)) {
 						return;
 					}
-				}
-				catch (error) {
+				} catch (error) {
 					return;
 				}
+
 				const interfaceObject = !!obj.prototype ? obj.prototype : obj;
-				[...new Set([
-					...Object.getOwnPropertyNames(interfaceObject),
-					...Object.keys(interfaceObject), // backup
-				])].sort().forEach((name) => {
-					const skip = (name == 'constructor' ||
-						(target && !new Set(target).has(name)) ||
-						(ignore && new Set(ignore).has(name)));
+
+				[...new Set([...Object.getOwnPropertyNames(interfaceObject), ...Object.keys(interfaceObject)])].sort().forEach((name) => {
+					const skip = (name == 'constructor' || (target && !new Set(target).has(name)) || (ignore && new Set(ignore).has(name)));
+
 					if (skip)
 						return;
+
 					const objectNameString = /\s(.+)\]/;
-					const apiName = `${obj.name ? obj.name :
-						objectNameString.test(obj) ? objectNameString.exec(obj)?.[1] :
-							undefined}.${name}`;
+
+					const apiName = `${obj.name ? obj.name : objectNameString.test(obj) ? objectNameString.exec(obj)?.[1] : undefined}.${name}`;
+
 					propsSearched.push(apiName);
+
 					try {
 						const proto = obj.prototype ? obj.prototype : obj;
 						let res; // response from getLies
 						// search if function
+
 						try {
 							const apiFunction = proto[name]; // may trigger TypeError
+
 							if (typeof apiFunction == 'function') {
-								res = queryLies({
-									scope,
-									apiFunction: proto[name],
-									proto,
-									obj: null,
-									lieProps: props,
-								});
+								res = queryLies({ scope, apiFunction: proto[name], proto, obj: null, lieProps: props });
+
 								if (res.lied) {
 									documentLie(apiName, res.lieTypes);
+
 									return (props[apiName] = res.lieTypes);
 								}
+
 								return;
 							}
+
 							// since there is no TypeError and the typeof is not a function,
 							// handle invalid values and ignore name, length, and constants
-							if (name != 'name' &&
-								name != 'length' &&
-								name[0] !== name[0].toUpperCase()) {
+							if (name != 'name' && name != 'length' && name[0] !== name[0].toUpperCase()) {
 								const lie = ['failed descriptor.value undefined'];
 								documentLie(apiName, lie);
+
 								return (props[apiName] = lie);
 							}
-						}
-						catch (error) { }
+						} catch (error) { }
+
 						// else search getter function
 						// @ts-ignore
 						const getterFunction = Object.getOwnPropertyDescriptor(proto, name).get;
-						res = queryLies({
-							scope,
-							apiFunction: getterFunction,
-							proto,
-							obj,
-							lieProps: props,
-						}); // send the obj for special tests
+
+						res = queryLies({ scope, apiFunction: getterFunction, proto, obj, lieProps: props }); // send the obj for special tests
+
 						if (res.lied) {
 							documentLie(apiName, res.lieTypes);
+
 							return (props[apiName] = res.lieTypes);
 						}
+
 						return;
-					}
-					catch (error) {
+					} catch (error) {
 						const lie = `failed prototype test execution`;
 						documentLie(apiName, lie);
+
 						return (props[apiName] = [lie]);
 					}
 				});
-			},
+			}
 		};
 	}
+
 	function getPhantomIframe() {
 		if (IS_WORKER_SCOPE)
 			return { iframeWindow: self };
@@ -955,508 +871,259 @@
 			document.body.appendChild(frag);
 			const iframeWindow = self[numberOfIframes];
 			const phantomWindow = getBehemothIframe(iframeWindow);
+
 			return { iframeWindow: phantomWindow || self, div };
-		}
-		catch (error) {
+		} catch (error) {
 			captureError(error, 'client blocked phantom iframe');
+
 			return { iframeWindow: self };
 		}
 	}
+
 	const { iframeWindow: PHANTOM_DARKNESS, div: PARENT_PHANTOM } = getPhantomIframe() || {};
+
 	function getPrototypeLies(scope) {
 		const lieDetector = createLieDetector(scope);
-		const { searchLies, } = lieDetector;
+
+		const { searchLies } = lieDetector;
 		// search lies: remove target to search all properties
 		// test Function.toString first to determine the depth of the search
-		searchLies(() => Function, {
-			target: [
-				'toString',
-			],
-			ignore: [
-				'caller',
-				'arguments',
-			],
-		});
+
+		searchLies(() => Function, { target: ['toString'], ignore: ['caller', 'arguments'] });
 		// other APIs
 		searchLies(() => AnalyserNode);
-		searchLies(() => AudioBuffer, {
-			target: [
-				'copyFromChannel',
-				'getChannelData',
-			],
-		});
-		searchLies(() => BiquadFilterNode, {
-			target: [
-				'getFrequencyResponse',
-			],
-		});
-		searchLies(() => CanvasRenderingContext2D, {
-			target: [
-				'getImageData',
-				'getLineDash',
-				'isPointInPath',
-				'isPointInStroke',
-				'measureText',
-				'quadraticCurveTo',
-				'fillText',
-				'strokeText',
-				'font',
-			],
-		});
-		searchLies(() => CSSStyleDeclaration, {
-			target: [
-				'setProperty',
-			],
-		});
+		searchLies(() => AudioBuffer, { target: ['copyFromChannel', 'getChannelData'] });
+		searchLies(() => BiquadFilterNode, { target: ['getFrequencyResponse'] });
+		searchLies(() => CanvasRenderingContext2D, { target: ['getImageData', 'getLineDash', 'isPointInPath', 'isPointInStroke', 'measureText', 'quadraticCurveTo', 'fillText', 'strokeText', 'font'] });
+		searchLies(() => CSSStyleDeclaration, { target: ['setProperty'] });
 		// @ts-expect-error
-		searchLies(() => CSS2Properties, {
-			target: [
-				'setProperty',
-			],
-		});
-		searchLies(() => Date, {
-			target: [
-				'getDate',
-				'getDay',
-				'getFullYear',
-				'getHours',
-				'getMinutes',
-				'getMonth',
-				'getTime',
-				'getTimezoneOffset',
-				'setDate',
-				'setFullYear',
-				'setHours',
-				'setMilliseconds',
-				'setMonth',
-				'setSeconds',
-				'setTime',
-				'toDateString',
-				'toJSON',
-				'toLocaleDateString',
-				'toLocaleString',
-				'toLocaleTimeString',
-				'toString',
-				'toTimeString',
-				'valueOf',
-			],
-		});
+		searchLies(() => CSS2Properties, { target: ['setProperty'] });
+		searchLies(() => Date, { target: ['getDate', 'getDay', 'getFullYear', 'getHours', 'getMinutes', 'getMonth', 'getTime', 'getTimezoneOffset', 'setDate', 'setFullYear', 'setHours', 'setMilliseconds', 'setMonth', 'setSeconds', 'setTime', 'toDateString', 'toJSON', 'toLocaleDateString', 'toLocaleString', 'toLocaleTimeString', 'toString', 'toTimeString', 'valueOf'] });
 		// @ts-expect-error if not supported
-		searchLies(() => GPU, {
-			target: [
-				'requestAdapter',
-			],
-		});
+		searchLies(() => GPU, { target: ['requestAdapter'] });
 		// @ts-expect-error if not supported
-		searchLies(() => GPUAdapter, {
-			target: [
-				'requestAdapterInfo',
-			],
-		});
-		searchLies(() => Intl.DateTimeFormat, {
-			target: [
-				'format',
-				'formatRange',
-				'formatToParts',
-				'resolvedOptions',
-			],
-		});
-		searchLies(() => Document, {
-			target: [
-				'createElement',
-				'createElementNS',
-				'getElementById',
-				'getElementsByClassName',
-				'getElementsByName',
-				'getElementsByTagName',
-				'getElementsByTagNameNS',
-				'referrer',
-				'write',
-				'writeln',
-			],
-			ignore: [
-				// Gecko
-				'onreadystatechange',
-				'onmouseenter',
-				'onmouseleave',
-			],
-		});
+		searchLies(() => GPUAdapter, { target: ['requestAdapterInfo'] });
+		searchLies(() => Intl.DateTimeFormat, { target: ['format', 'formatRange', 'formatToParts', 'resolvedOptions'] });
+		searchLies(() => Document, { target: ['createElement', 'createElementNS', 'getElementById', 'getElementsByClassName', 'getElementsByName', 'getElementsByTagName', 'getElementsByTagNameNS', 'referrer', 'write', 'writeln'], ignore: ['onreadystatechange', 'onmouseenter', 'onmouseleave'] });
 		searchLies(() => DOMRect);
 		searchLies(() => DOMRectReadOnly);
-		searchLies(() => Element, {
-			target: [
-				'append',
-				'appendChild',
-				'getBoundingClientRect',
-				'getClientRects',
-				'insertAdjacentElement',
-				'insertAdjacentHTML',
-				'insertAdjacentText',
-				'insertBefore',
-				'prepend',
-				'replaceChild',
-				'replaceWith',
-				'setAttribute',
-			],
-		});
-		searchLies(() => FontFace, {
-			target: [
-				'family',
-				'load',
-				'status',
-			],
-		});
+		searchLies(() => Element, { target: ['append', 'appendChild', 'getBoundingClientRect', 'getClientRects', 'insertAdjacentElement', 'insertAdjacentHTML', 'insertAdjacentText', 'insertBefore', 'prepend', 'replaceChild', 'replaceWith', 'setAttribute'] });
+		searchLies(() => FontFace, { target: ['family', 'load', 'status'] });
 		searchLies(() => HTMLCanvasElement);
-		searchLies(() => HTMLElement, {
-			target: [
-				'clientHeight',
-				'clientWidth',
-				'offsetHeight',
-				'offsetWidth',
-				'scrollHeight',
-				'scrollWidth',
-			],
-			ignore: [
-				// Gecko
-				'onmouseenter',
-				'onmouseleave',
-			],
-		});
-		searchLies(() => HTMLIFrameElement, {
-			target: [
-				'contentDocument',
-				'contentWindow',
-			],
-		});
-		searchLies(() => IntersectionObserverEntry, {
-			target: [
-				'boundingClientRect',
-				'intersectionRect',
-				'rootBounds',
-			],
-		});
-		searchLies(() => Math, {
-			target: [
-				'acos',
-				'acosh',
-				'asinh',
-				'atan',
-				'atan2',
-				'atanh',
-				'cbrt',
-				'cos',
-				'cosh',
-				'exp',
-				'expm1',
-				'log',
-				'log10',
-				'log1p',
-				'sin',
-				'sinh',
-				'sqrt',
-				'tan',
-				'tanh',
-			],
-		});
-		searchLies(() => MediaDevices, {
-			target: [
-				'enumerateDevices',
-				'getDisplayMedia',
-				'getUserMedia',
-			],
-		});
-		searchLies(() => Navigator, {
-			target: [
-				'appCodeName',
-				'appName',
-				'appVersion',
-				'buildID',
-				'connection',
-				'deviceMemory',
-				'getBattery',
-				'getGamepads',
-				'getVRDisplays',
-				'hardwareConcurrency',
-				'language',
-				'languages',
-				'maxTouchPoints',
-				'mimeTypes',
-				'oscpu',
-				'platform',
-				'plugins',
-				'product',
-				'productSub',
-				'sendBeacon',
-				'serviceWorker',
-				'storage',
-				'userAgent',
-				'vendor',
-				'vendorSub',
-				'webdriver',
-				'gpu',
-			],
-		});
-		searchLies(() => Node, {
-			target: [
-				'appendChild',
-				'insertBefore',
-				'replaceChild',
-			],
-		});
+		searchLies(() => HTMLElement, { target: ['clientHeight', 'clientWidth', 'offsetHeight', 'offsetWidth', 'scrollHeight', 'scrollWidth'], ignore: ['onmouseenter', 'onmouseleave'] });
+		searchLies(() => HTMLIFrameElement, { target: ['contentDocument', 'contentWindow'] });
+		searchLies(() => IntersectionObserverEntry, { target: ['boundingClientRect', 'intersectionRect', 'rootBounds'] });
+		searchLies(() => Math, { target: ['acos', 'acosh', 'asinh', 'atan', 'atan2', 'atanh', 'cbrt', 'cos', 'cosh', 'exp', 'expm1', 'log', 'log10', 'log1p', 'sin', 'sinh', 'sqrt', 'tan', 'tanh'] });
+		searchLies(() => MediaDevices, { target: ['enumerateDevices', 'getDisplayMedia', 'getUserMedia'] });
+		searchLies(() => Navigator, { target: ['appCodeName', 'appName', 'appVersion', 'buildID', 'connection', 'deviceMemory', 'getBattery', 'getGamepads', 'getVRDisplays', 'hardwareConcurrency', 'language', 'languages', 'maxTouchPoints', 'mimeTypes', 'oscpu', 'platform', 'plugins', 'product', 'productSub', 'sendBeacon', 'serviceWorker', 'storage', 'userAgent', 'vendor', 'vendorSub', 'webdriver', 'gpu'] });
+		searchLies(() => Node, { target: ['appendChild', 'insertBefore', 'replaceChild'] });
 		// @ts-expect-error
-		searchLies(() => OffscreenCanvas, {
-			target: [
-				'convertToBlob',
-				'getContext',
-			],
-		});
+		searchLies(() => OffscreenCanvas, { target: ['convertToBlob', 'getContext'] });
 		// @ts-expect-error
-		searchLies(() => OffscreenCanvasRenderingContext2D, {
-			target: [
-				'getImageData',
-				'getLineDash',
-				'isPointInPath',
-				'isPointInStroke',
-				'measureText',
-				'quadraticCurveTo',
-				'font',
-			],
-		});
-		searchLies(() => Permissions, {
-			target: [
-				'query',
-			],
-		});
-		searchLies(() => Range, {
-			target: [
-				'getBoundingClientRect',
-				'getClientRects',
-			],
-		});
+		searchLies(() => OffscreenCanvasRenderingContext2D, { target: ['getImageData', 'getLineDash', 'isPointInPath', 'isPointInStroke', 'measureText', 'quadraticCurveTo', 'font'] });
+		searchLies(() => Permissions, { target: ['query'] });
+		searchLies(() => Range, { target: ['getBoundingClientRect', 'getClientRects'] });
 		// @ts-expect-error
-		searchLies(() => Intl.RelativeTimeFormat, {
-			target: [
-				'resolvedOptions',
-			],
-		});
+		searchLies(() => Intl.RelativeTimeFormat, { target: ['resolvedOptions'] });
 		searchLies(() => Screen);
-		searchLies(() => speechSynthesis, {
-			target: [
-				'getVoices',
-			],
-		});
-		searchLies(() => String, {
-			target: [
-				'fromCodePoint',
-			],
-		});
-		searchLies(() => StorageManager, {
-			target: [
-				'estimate',
-			],
-		});
+		searchLies(() => speechSynthesis, { target: ['getVoices'] });
+		searchLies(() => String, { target: ['fromCodePoint'] });
+		searchLies(() => StorageManager, { target: ['estimate'] });
 		searchLies(() => SVGRect);
-		searchLies(() => SVGRectElement, {
-			target: [
-				'getBBox',
-			],
-		});
-		searchLies(() => SVGTextContentElement, {
-			target: [
-				'getExtentOfChar',
-				'getSubStringLength',
-				'getComputedTextLength',
-			],
-		});
+		searchLies(() => SVGRectElement, { target: ['getBBox'] });
+		searchLies(() => SVGTextContentElement, { target: ['getExtentOfChar', 'getSubStringLength', 'getComputedTextLength'] });
 		searchLies(() => TextMetrics);
-		searchLies(() => WebGLRenderingContext, {
-			target: [
-				'bufferData',
-				'getParameter',
-				'readPixels',
-			],
-		});
-		searchLies(() => WebGL2RenderingContext, {
-			target: [
-				'bufferData',
-				'getParameter',
-				'readPixels',
-			],
-		});
-		/* potential targets:
-		 RTCPeerConnection
-		 Plugin
-		 PluginArray
-		 MimeType
-		 MimeTypeArray
-		 Worker
-		 History
-		 */
+		searchLies(() => WebGLRenderingContext, { target: ['bufferData', 'getParameter', 'readPixels'] });
+		searchLies(() => WebGL2RenderingContext, { target: ['bufferData', 'getParameter', 'readPixels'] });
+
+		/* potential targets: RTCPeerConnection Plugin PluginArray MimeType MimeTypeArray Worker History */
+
 		// return lies list and detail
 		const props = lieDetector.getProps();
 		const propsSearched = lieDetector.getPropsSearched();
-		return {
-			lieDetector,
-			lieList: Object.keys(props).sort(),
-			lieDetail: props,
-			lieCount: Object.keys(props).reduce((acc, key) => acc + props[key].length, 0),
-			propsSearched,
-		};
+
+		return { lieDetector, lieList: Object.keys(props).sort(), lieDetail: props, lieCount: Object.keys(props).reduce((acc, key) => acc + props[key].length, 0), propsSearched };
 	}
+
 	// start program
 	const start = performance.now();
 	const { lieDetector, lieList, lieDetail, propsSearched, } = getPrototypeLies(PHANTOM_DARKNESS); // execute and destructure the list and detail
 	// disregard Function.prototype.toString lies when determining if the API can be trusted
 	const getNonFunctionToStringLies = (x) => !x ? x : x.filter((x) => !/object toString|toString incompatible proxy/.test(x)).length;
+
 	let lieProps;
 	let prototypeLies;
+
 	let PROTO_BENCHMARK = 0;
+
 	if (!IS_WORKER_SCOPE) {
 		lieProps = (() => {
 			const props = lieDetector.getProps();
+
 			return Object.keys(props).reduce((acc, key) => {
 				acc[key] = getNonFunctionToStringLies(props[key]);
+
 				return acc;
 			}, {});
 		})();
+
 		prototypeLies = JSON.parse(JSON.stringify(lieDetail));
+
 		const perf = performance.now() - start;
+
 		PROTO_BENCHMARK = +perf.toFixed(2);
 		`${propsSearched.length} API properties analyzed in ${PROTO_BENCHMARK}ms (${lieList.length} corrupted)`;
 		// setTimeout(() => console.log(message), 3000)
 	}
+
 	const getPluginLies = (plugins, mimeTypes) => {
 		const lies = []; // collect lie types
 		const pluginsOwnPropertyNames = Object.getOwnPropertyNames(plugins).filter((name) => isNaN(+name));
-		const mimeTypesOwnPropertyNames = Object.getOwnPropertyNames(mimeTypes).filter((name) => isNaN(+name));
-		// cast to array
+				const mimeTypesOwnPropertyNames = Object.getOwnPropertyNames(mimeTypes).filter((name) => isNaN(+name));
+
+				// cast to array
 		const pluginsList = [...plugins];
 		const mimeTypesList = [...mimeTypes];
+
 		// get initial trusted mimeType names
 		const trustedMimeTypes = new Set(mimeTypesOwnPropertyNames);
+
 		// get initial trusted plugin names
 		const excludeDuplicates = (arr) => [...new Set(arr)];
 		const mimeTypeEnabledPlugins = excludeDuplicates(mimeTypesList.map((mimeType) => mimeType.enabledPlugin));
 		const trustedPluginNames = new Set(pluginsOwnPropertyNames);
 		const mimeTypeEnabledPluginsNames = mimeTypeEnabledPlugins.map((plugin) => plugin && plugin.name);
 		const trustedPluginNamesArray = [...trustedPluginNames];
+
 		trustedPluginNamesArray.forEach((name) => {
 			const validName = new Set(mimeTypeEnabledPluginsNames).has(name);
+
 			if (!validName) {
 				trustedPluginNames.delete(name);
 			}
 		});
+
 		// 3. Expect MimeType object in plugins
 		const invalidPlugins = pluginsList.filter((plugin) => {
 			try {
 				const validMimeType = Object.getPrototypeOf(plugin[0]).constructor.name == 'MimeType';
+
 				if (!validMimeType) {
 					trustedPluginNames.delete(plugin.name);
 				}
+
 				return !validMimeType;
-			}
-			catch (error) {
+			} catch (error) {
 				trustedPluginNames.delete(plugin.name);
 				return true; // sign of tampering
 			}
 		});
+
 		if (invalidPlugins.length) {
 			lies.push('missing mimetype');
 		}
+
 		// 4. Expect valid MimeType(s) in plugin
-		const pluginMimeTypes = pluginsList
-			.map((plugin) => Object.values(plugin)).flat();
+		const pluginMimeTypes = pluginsList.map((plugin) => Object.values(plugin)).flat();
 		const pluginMimeTypesNames = pluginMimeTypes.map((mimetype) => mimetype.type);
+
 		pluginMimeTypesNames.forEach((name) => {
 			const validName = trustedMimeTypes.has(name);
+
 			if (!validName) {
 				trustedMimeTypes.delete(name);
 			}
 		});
+
 		pluginsList.forEach((plugin) => {
 			const pluginMimeTypes = Object.values(plugin).map((mimetype) => mimetype.type);
+
 			return pluginMimeTypes.forEach((mimetype) => {
 				if (!trustedMimeTypes.has(mimetype)) {
 					lies.push('invalid mimetype');
+
 					return trustedPluginNames.delete(plugin.name);
 				}
+
 				return;
 			});
 		});
+
 		return {
 			validPlugins: pluginsList.filter((plugin) => trustedPluginNames.has(plugin.name)),
 			validMimeTypes: mimeTypesList.filter((mimeType) => trustedMimeTypes.has(mimeType.type)),
 			lies: [...new Set(lies)], // remove duplicates
 		};
 	};
+
 	const getLies = () => {
 		const records = lieRecords.getRecords();
+
 		const totalLies = Object.keys(records).reduce((acc, key) => {
 			acc += records[key].length;
+
 			return acc;
 		}, 0);
+
 		return { data: records, totalLies };
 	};
 
 	// Detect proxy behavior
 	const proxyBehavior = (x) => typeof x == 'function' ? true : false;
+
 	const GIBBERS = /[cC]f|[jJ][bcdfghlmprsty]|[qQ][bcdfghjklmnpsty]|[vV][bfhjkmpt]|[xX][dkrz]|[yY]y|[zZ][fr]|[cCxXzZ]j|[bBfFgGjJkKpPvVqQtTwWyYzZ]q|[cCfFgGjJpPqQwW]v|[jJqQvV]w|[bBcCdDfFgGhHjJkKmMpPqQsSvVwWxXzZ]x|[bBfFhHjJkKmMpPqQ]z/g;
+
 	// Detect gibberish
 	const gibberish = (str, { strict = false } = {}) => {
 		if (!str)
 			return [];
+
 		// test letter case sequence
 		const letterCaseSequenceGibbers = [];
-		const tests = [
-			/([A-Z]{3,}[a-z])/g,
-			/([a-z][A-Z]{3,})/g,
-			/([a-z][A-Z]{2,}[a-z])/g,
-			/([a-z][\d]{2,}[a-z])/g,
-			/([A-Z][\d]{2,}[a-z])/g,
-			/([a-z][\d]{2,}[A-Z])/g, // a##...B
-		];
+		// a##...B
+		const tests = [/([A-Z]{3,}[a-z])/g, /([a-z][A-Z]{3,})/g, /([a-z][A-Z]{2,}[a-z])/g, /([a-z][\d]{2,}[a-z])/g, /([A-Z][\d]{2,}[a-z])/g, /([a-z][\d]{2,}[A-Z])/g];
+
 		tests.forEach((regExp) => {
 			const match = str.match(regExp);
+
 			if (match) {
 				return letterCaseSequenceGibbers.push(match.join(', '));
 			}
+
 			return;
 		});
+
 		// test letter sequence
 		const letterSequenceGibbers = [];
 		const clean = str.replace(/\d|\W|_/g, ' ').replace(/\s+/g, ' ').trim().split(' ').join('_');
 		const len = clean.length;
 		const arr = [...clean];
+
 		arr.forEach((char, index) => {
 			const nextIndex = index + 1;
 			const nextChar = arr[nextIndex];
 			const isWordSequence = nextChar !== '_' && char !== '_' && nextIndex !== len;
+
 			if (isWordSequence) {
 				const combo = char + nextChar;
+
 				if (GIBBERS.test(combo))
 					letterSequenceGibbers.push(combo);
 			}
 		});
+
 		const gibbers = [
 			// ignore sequence if less than 3 exist
 			...(!strict && (letterSequenceGibbers.length < 3) ? [] : letterSequenceGibbers),
 			...(!strict && (letterCaseSequenceGibbers.length < 4) ? [] : letterCaseSequenceGibbers),
 		];
-		const allow = [
-			// known gibbers
-			'bz',
-			'cf',
-			'fx',
-			'mx',
-			'vb',
-			'xd',
-			'gx',
-			'PCIe',
-			'vm',
-			'NVIDIAGa',
-		];
+
+		// known gibbers
+		const allow = ['bz', 'cf', 'fx', 'mx', 'vb', 'xd', 'gx', 'PCIe', 'vm', 'NVIDIAGa'];
+
 		return gibbers.filter((x) => !allow.includes(x));
 	};
+
 	// WebGL Renderer helpers
 	function compressWebGLRenderer(x) {
 		if (!x)
@@ -1470,6 +1137,7 @@
 				return `${args[1]}${args[6][0]}${args[6].slice(1).replace(/\d/g, '0')}s`;
 			});
 	}
+
 	const getWebGLRendererParts = (x) => {
 		const knownParts = [
 			'AMD',
@@ -1537,6 +1205,7 @@
 		const parts = [...knownParts].filter((name) => ('' + x).includes(name));
 		return [...new Set(parts)].sort().join(', ');
 	};
+
 	const getWebGLRendererConfidence = (x) => {
 		if (!x) {
 			return;
@@ -1594,6 +1263,7 @@
 			grade,
 		};
 	};
+
 	// Collect trash values
 	const createTrashBin = () => {
 		const bin = [];
@@ -1604,248 +1274,187 @@
 				const value = !proxyLike ? val : 'proxy behavior detected';
 				bin.push({ name, value });
 				return response;
-			},
+			}
 		};
 	};
-	const trashBin = createTrashBin();
+
+	let trashBin = createTrashBin();
+
 	const { sendToTrash } = trashBin;
+
 	const getTrash = () => ({ trashBin: trashBin.getBin() });
 
 	function isFontOSBad(userAgentOS, fonts) {
 		if (!userAgentOS || !fonts || !fonts.length)
 			return false;
+
 		const fontMap = fonts.reduce((acc, x) => {
 			acc[x] = true;
+
 			return acc;
 		}, {});
-		const isLikeWindows = ('Cambria Math' in fontMap ||
-			'Nirmala UI' in fontMap ||
-			'Leelawadee UI' in fontMap ||
-			'HoloLens MDL2 Assets' in fontMap ||
-			'Segoe Fluent Icons' in fontMap);
-		const isLikeApple = ('Helvetica Neue' in fontMap ||
-			'Luminari' in fontMap ||
-			'PingFang HK Light' in fontMap ||
-			'InaiMathi Bold' in fontMap ||
-			'Galvji' in fontMap ||
-			'Chakra Petch' in fontMap);
-		const isLikeLinux = ('Arimo' in fontMap ||
-			'MONO' in fontMap ||
-			'Ubuntu' in fontMap ||
-			'Noto Color Emoji' in fontMap ||
-			'Dancing Script' in fontMap ||
-			'Droid Sans Mono' in fontMap);
+
+		const isLikeWindows = ('Cambria Math' in fontMap || 'Nirmala UI' in fontMap || 'Leelawadee UI' in fontMap || 'HoloLens MDL2 Assets' in fontMap || 'Segoe Fluent Icons' in fontMap);
+		const isLikeApple = ('Helvetica Neue' in fontMap || 'Luminari' in fontMap || 'PingFang HK Light' in fontMap || 'InaiMathi Bold' in fontMap || 'Galvji' in fontMap || 'Chakra Petch' in fontMap);
+		const isLikeLinux = ('Arimo' in fontMap || 'MONO' in fontMap || 'Ubuntu' in fontMap || 'Noto Color Emoji' in fontMap || 'Dancing Script' in fontMap || 'Droid Sans Mono' in fontMap);
+
 		if (isLikeWindows && userAgentOS != "Windows" /* PlatformClassifier.WINDOWS */) {
 			return true;
 		}
+
 		else if (isLikeApple && userAgentOS != "Apple" /* PlatformClassifier.APPLE */) {
 			return true;
 		}
+
 		else if (isLikeLinux && userAgentOS != "Linux" /* PlatformClassifier.LINUX */) {
 			return true;
 		}
+
 		return false;
 	}
+
 	// inspired by Lalit Patel's fontdetect.js
 	// https://www.lalit.org/wordpress/wp-content/uploads/2008/05/fontdetect.js?ver=0.3
+
 	const WindowsFonts = {
 		// https://docs.microsoft.com/en-us/typography/fonts/windows_11_font_list
-		'7': [
-			'Cambria Math',
-			'Lucida Console',
-		],
-		'8': [
-			'Aldhabi',
-			'Gadugi',
-			'Myanmar Text',
-			'Nirmala UI',
-		],
-		'8.1': [
-			'Leelawadee UI',
-			'Javanese Text',
-			'Segoe UI Emoji',
-		],
-		'10': [
-			'HoloLens MDL2 Assets',
-			'Segoe MDL2 Assets',
-			'Bahnschrift',
-			'Ink Free', // 10 (v1803) +-
-		],
-		'11': ['Segoe Fluent Icons'],
+		'7': ['Cambria Math', 'Lucida Console'],
+		'8': ['Aldhabi', 'Gadugi', 'Myanmar Text', 'Nirmala UI'],
+		'8.1': ['Leelawadee UI', 'Javanese Text', 'Segoe UI Emoji'],
+		'10': ['HoloLens MDL2 Assets', 'Segoe MDL2 Assets', 'Bahnschrift', 'Ink Free'],
+		'11': ['Segoe Fluent Icons']
 	};
+
 	const MacOSFonts = {
 		// Mavericks and below
-		'10.9': [
-			'Helvetica Neue',
-			'Geneva', // mac (not iOS)
-		],
+		'10.9': ['Helvetica Neue', 'Geneva'],
 		// Yosemite
-		'10.10': [
-			'Kohinoor Devanagari Medium',
-			'Luminari',
-		],
+		'10.10': ['Kohinoor Devanagari Medium', 'Luminari'],
 		// El Capitan
-		'10.11': [
-			'PingFang HK Light',
-		],
+		'10.11': ['PingFang HK Light'],
 		// Sierra: https://support.apple.com/en-ie/HT206872
-		'10.12': [
-			'American Typewriter Semibold',
-			'Futura Bold',
-			'SignPainter-HouseScript Semibold',
-		],
+		'10.12': ['American Typewriter Semibold', 'Futura Bold', 'SignPainter-HouseScript Semibold'],
 		// High Sierra: https://support.apple.com/en-me/HT207962
 		// Mojave: https://support.apple.com/en-us/HT208968
-		'10.13-10.14': [
-			'InaiMathi Bold',
-		],
+		'10.13-10.14': ['InaiMathi Bold'],
 		// Catalina: https://support.apple.com/en-us/HT210192
 		// Big Sur: https://support.apple.com/en-sg/HT211240
-		'10.15-11': [
-			'Galvji',
-			'MuktaMahee Regular',
-		],
+		'10.15-11': ['Galvji', 'MuktaMahee Regular'],
 		// Monterey: https://support.apple.com/en-us/HT212587
-		'12': [
-			'Noto Sans Gunjala Gondi Regular',
-			'Noto Sans Masaram Gondi Regular',
-			'Noto Serif Yezidi Regular'
-		],
+		'12': ['Noto Sans Gunjala Gondi Regular', 'Noto Sans Masaram Gondi Regular', 'Noto Serif Yezidi Regular'],
 		// Ventura: https://support.apple.com/en-us/HT213266
-		'13': [
-			'Apple SD Gothic Neo ExtraBold',
-			'STIX Two Math Regular',
-			'STIX Two Text Regular',
-			'Noto Sans Canadian Aboriginal Regular',
-		],
+		'13': ['Apple SD Gothic Neo ExtraBold', 'STIX Two Math Regular', 'STIX Two Text Regular', 'Noto Sans Canadian Aboriginal Regular'],
 	};
+
 	const DesktopAppFonts = {
 		// docs.microsoft.com/en-us/typography/font-list/ms-outlook
 		'Microsoft Outlook': ['MS Outlook'],
 		// https://community.adobe.com/t5/postscript-discussions/zwadobef-font/m-p/3730427#M785
 		'Adobe Acrobat': ['ZWAdobeF'],
 		// https://wiki.documentfoundation.org/Fonts
-		'LibreOffice': [
-			'Amiri',
-			'KACSTOffice',
-			'Liberation Mono',
-			'Source Code Pro',
-		],
+		'LibreOffice': ['Amiri', 'KACSTOffice', 'Liberation Mono', 'Source Code Pro'],
 		// https://superuser.com/a/611804
-		'OpenOffice': [
-			'DejaVu Sans',
-			'Gentium Book Basic',
-			'OpenSymbol',
-		],
+		'OpenOffice': ['DejaVu Sans', 'Gentium Book Basic', 'OpenSymbol'],
 	};
+
 	const APPLE_FONTS = Object.keys(MacOSFonts).map((key) => MacOSFonts[key]).flat();
 	const WINDOWS_FONTS = Object.keys(WindowsFonts).map((key) => WindowsFonts[key]).flat();
 	const DESKTOP_APP_FONTS = (Object.keys(DesktopAppFonts).map((key) => DesktopAppFonts[key]).flat());
-	const LINUX_FONTS = [
-		'Arimo',
-		'Chilanka',
-		'Cousine',
-		'Jomolhari',
-		'MONO',
-		'Noto Color Emoji',
-		'Ubuntu', // ubuntu (not TB)
-	];
-	const ANDROID_FONTS = [
-		'Dancing Script',
-		'Droid Sans Mono',
-		'Roboto', // Android, Chrome OS
-	];
-	const FONT_LIST = [
-		...APPLE_FONTS,
-		...WINDOWS_FONTS,
-		...LINUX_FONTS,
-		...ANDROID_FONTS,
-		...DESKTOP_APP_FONTS,
-	].sort();
+	const LINUX_FONTS = ['Arimo', 'Chilanka', 'Cousine', 'Jomolhari', 'MONO', 'Noto Color Emoji', 'Ubuntu'];
+	const ANDROID_FONTS = ['Dancing Script', 'Droid Sans Mono', 'Roboto'];
+	const FONT_LIST = [...APPLE_FONTS, ...WINDOWS_FONTS, ...LINUX_FONTS, ...ANDROID_FONTS, ...DESKTOP_APP_FONTS].sort();
+
 	async function getFonts() {
+		const { iframeWindow: PHANTOM_DARKNESS, div: PARENT_PHANTOM } = getPhantomIframe() || {};
 		const getPixelEmojis = ({ doc, id, emojis }) => {
 			try {
 				patch(doc.getElementById(id), html `
 					<div id="pixel-emoji-container">
-				<style>
-					.pixel-emoji {
-						font-family: ${CSS_FONT_FAMILY};
-						font-size: 200px !important;
-						height: auto;
-						position: absolute !important;
-						transform: scale(1.000999);
-					}
-					</style>
-					${emojis.map((emoji) => {
-					return `<div class="pixel-emoji">${emoji}</div>`;
-				}).join('')}
-				</div>
+						<style>
+							.pixel-emoji {
+								font-family: ${CSS_FONT_FAMILY};
+								font-size: 200px !important;
+								height: auto;
+								position: absolute !important;
+								transform: scale(1.000999);
+							}
+						</style>
+						${emojis.map((emoji) => {
+							return `<div class="pixel-emoji">${emoji}</div>`;
+						}).join('')}
+					</div>
 				`);
+
 				// get emoji set and system
 				const getEmojiDimensions = (style) => {
-					return {
-						width: style.inlineSize,
-						height: style.blockSize,
-					};
+					return { width: style.inlineSize, height: style.blockSize };
 				};
+
 				const pattern = new Set();
 				const emojiElems = [...doc.getElementsByClassName('pixel-emoji')];
+
 				const emojiSet = emojiElems.reduce((emojiSet, el, i) => {
 					const style = getComputedStyle(el);
 					const emoji = emojis[i];
 					const { height, width } = getEmojiDimensions(style);
 					const dimensions = `${width},${height}`;
+
 					if (!pattern.has(dimensions)) {
 						pattern.add(dimensions);
 						emojiSet.add(emoji);
 					}
+
 					return emojiSet;
 				}, new Set());
+
 				const pixelToNumber = (pixels) => +(pixels.replace('px', ''));
+
 				const pixelSizeSystemSum = 0.00001 * [...pattern].map((x) => {
 					return x.split(',').map((x) => pixelToNumber(x)).reduce((acc, x) => acc += (+x || 0), 0);
 				}).reduce((acc, x) => acc += x, 0);
+
 				doc.body.removeChild(doc.getElementById('pixel-emoji-container'));
-				return {
-					emojiSet: [...emojiSet],
-					pixelSizeSystemSum,
-				};
-			}
-			catch (error) {
+
+				return { emojiSet: [...emojiSet], pixelSizeSystemSum };
+			} catch (error) {
 				console.error(error);
-				return {
-					emojiSet: [],
-					pixelSizeSystemSum: 0,
-				};
+
+				return { emojiSet: [], pixelSizeSystemSum: 0 };
 			}
 		};
+
 		const getFontFaceLoadFonts = async (fontList) => {
 			try {
 				let fontsChecked = [];
+
 				if (!document.fonts.check(`0px "${getRandomValues()}"`)) {
 					fontsChecked = fontList.reduce((acc, font) => {
 						const found = document.fonts.check(`0px "${font}"`);
+
 						if (found)
 							acc.push(font);
+
 						return acc;
 					}, []);
 				}
+
 				const fontFaceList = fontList.map((font) => new FontFace(font, `local("${font}")`));
-				const responseCollection = await Promise
-					.allSettled(fontFaceList.map((font) => font.load()));
+				const responseCollection = await Promise.allSettled(fontFaceList.map((font) => font.load()));
 				const fontsLoaded = responseCollection.reduce((acc, font) => {
 					if (font.status == 'fulfilled') {
 						acc.push(font.value.family);
 					}
+
 					return acc;
 				}, []);
+
 				return [...new Set([...fontsChecked, ...fontsLoaded])].sort();
-			}
-			catch (error) {
+			} catch (error) {
 				console.error(error);
 				return [];
 			}
 		};
+
 		const getPlatformVersion = (fonts) => {
 			const getWindows = ({ fonts, fontMap }) => {
 				const fontVersion = {
@@ -1856,7 +1465,9 @@
 					// require complete set of Windows 7 fonts
 					['7']: fontMap['7'].filter((x) => fonts.includes(x)).length == fontMap['7'].length,
 				};
+
 				const hash = ('' + Object.keys(fontVersion).sort().filter((key) => !!fontVersion[key]));
+
 				const hashMap = {
 					'10,11,7,8,8.1': '11',
 					'10,7,8,8.1': '10',
@@ -1870,9 +1481,12 @@
 					'10,7,8.1': '7',
 					'10,11,7,8.1': '7', // missing 8
 				};
+
 				const version = hashMap[hash];
+
 				return version ? `Windows ${version}` : undefined;
 			};
+
 			const getMacOS = ({ fonts, fontMap }) => {
 				const fontVersion = {
 					['13']: fontMap['13'].find((x) => fonts.includes(x)),
@@ -1885,7 +1499,9 @@
 					// require complete set of 10.9 fonts
 					['10.9']: fontMap['10.9'].filter((x) => fonts.includes(x)).length == fontMap['10.9'].length,
 				};
+
 				const hash = ('' + Object.keys(fontVersion).sort().filter((key) => !!fontVersion[key]));
+
 				const hashMap = {
 					'10.10,10.11,10.12,10.13-10.14,10.15-11,10.9,12,13': 'Ventura',
 					'10.10,10.11,10.12,10.13-10.14,10.15-11,10.9,12': 'Monterey',
@@ -1896,151 +1512,131 @@
 					'10.10,10.9': 'Yosemite',
 					'10.9': 'Mavericks', // 10.9
 				};
+
 				const version = hashMap[hash];
+
 				return version ? `macOS ${version}` : undefined;
 			};
-			return (getWindows({ fonts, fontMap: WindowsFonts }) ||
-				getMacOS({ fonts, fontMap: MacOSFonts }));
+
+			return (getWindows({ fonts, fontMap: WindowsFonts }) || getMacOS({ fonts, fontMap: MacOSFonts }));
 		};
+
 		const getDesktopApps = (fonts) => {
 			// @ts-ignore
 			const apps = Object.keys(DesktopAppFonts).reduce((acc, key) => {
 				const appFontSet = DesktopAppFonts[key];
 				const match = appFontSet.filter((x) => fonts.includes(x)).length == appFontSet.length;
+
 				return match ? [...acc, key] : acc;
 			}, []);
+
 			return apps;
 		};
+
 		try {
 			const timer = createTimer();
 			await queueEvent(timer);
-			const doc = (PHANTOM_DARKNESS &&
-			PHANTOM_DARKNESS.document &&
-			PHANTOM_DARKNESS.document.body ? PHANTOM_DARKNESS.document :
-				document);
+			const doc = (PHANTOM_DARKNESS && PHANTOM_DARKNESS.document && PHANTOM_DARKNESS.document.body ? PHANTOM_DARKNESS.document : document);
 			const id = `font-fingerprint`;
 			const div = doc.createElement('div');
+
 			div.setAttribute('id', id);
 			doc.body.appendChild(div);
-			const { emojiSet, pixelSizeSystemSum, } = getPixelEmojis({
-				doc,
-				id,
-				emojis: EMOJIS,
-			}) || {};
+
+			const { emojiSet, pixelSizeSystemSum, } = getPixelEmojis({ doc, id, emojis: EMOJIS,}) || {};
 			const fontList = FONT_LIST;
 			const fontFaceLoadFonts = await getFontFaceLoadFonts(fontList);
 			const platformVersion = getPlatformVersion(fontFaceLoadFonts);
 			const apps = getDesktopApps(fontFaceLoadFonts);
+
 			// detect lies
-			const lied = (lieProps['FontFace.load'] ||
-				lieProps['FontFace.family'] ||
-				lieProps['FontFace.status'] ||
-				lieProps['String.fromCodePoint'] ||
-				lieProps['CSSStyleDeclaration.setProperty'] ||
-				lieProps['CSS2Properties.setProperty']);
+			const lied = (lieProps['FontFace.load'] || lieProps['FontFace.family'] || lieProps['FontFace.status'] || lieProps['String.fromCodePoint'] || lieProps['CSSStyleDeclaration.setProperty'] || lieProps['CSS2Properties.setProperty']);
+
 			if (isFontOSBad(USER_AGENT_OS, fontFaceLoadFonts)) {
-				LowerEntropy.FONTS = true,
-					Analysis.FontOsIsBad = true;
+				LowerEntropy.FONTS = true, Analysis.FontOsIsBad = true;
 				sendToTrash('platform', `${USER_AGENT_OS} system and fonts are uncommon`);
 			}
+
 			logTestResult({ time: timer.stop(), test: 'fonts', passed: true });
-			return {
-				fontFaceLoadFonts,
-				platformVersion,
-				apps,
-				emojiSet,
-				pixelSizeSystemSum,
-				lied,
-			};
-		}
-		catch (error) {
+
+			return { fontFaceLoadFonts, platformVersion, apps, emojiSet, pixelSizeSystemSum, lied };
+		} catch (error) {
 			logTestResult({ test: 'fonts', passed: false });
 			captureError(error);
+
 			return;
 		}
 	}
 
 	let WORKER_TYPE = '';
 	let WORKER_NAME = '';
+
 	async function spawnWorker() {
 		const ask = (fn) => {
 			try {
 				return fn();
-			}
-			catch (e) {
+			} catch (e) {
 				return;
 			}
 		};
+
 		function getWorkerPrototypeLies(scope) {
 			const lieDetector = createLieDetector(scope);
 			const { searchLies, } = lieDetector;
-			searchLies(() => Function, {
-				target: [
-					'toString',
-				],
-				ignore: [
-					'caller',
-					'arguments',
-				],
-			});
+			searchLies(() => Function, { target: ['toString'], ignore: ['caller', 'arguments'] });
 			// @ts-expect-error
-			searchLies(() => WorkerNavigator, {
-				target: [
-					'deviceMemory',
-					'hardwareConcurrency',
-					'language',
-					'languages',
-					'platform',
-					'userAgent',
-				],
-			});
+			searchLies(() => WorkerNavigator, { target: ['deviceMemory', 'hardwareConcurrency', 'language', 'languages', 'platform', 'userAgent'] });
 			// return lies list and detail
 			const props = lieDetector.getProps();
 			const propsSearched = lieDetector.getPropsSearched();
-			return {
-				lieDetector,
-				lieList: Object.keys(props).sort(),
-				lieDetail: props,
-				lieCount: Object.keys(props).reduce((acc, key) => acc + props[key].length, 0),
-				propsSearched,
-			};
+
+			return { lieDetector, lieList: Object.keys(props).sort(), lieDetail: props, lieCount: Object.keys(props).reduce((acc, key) => acc + props[key].length, 0), propsSearched };
 		}
+
 		const getUserAgentData = async (navigator) => {
 			if (!('userAgentData' in navigator)) {
 				return;
 			}
+
 			const data = await navigator.userAgentData.getHighEntropyValues(['platform', 'platformVersion', 'architecture', 'bitness', 'model', 'uaFullVersion']);
+
 			const { brands, mobile } = navigator.userAgentData || {};
-			const compressedBrands = (brands, captureVersion = false) => brands
-				.filter((obj) => !/Not/.test(obj.brand)).map((obj) => `${obj.brand}${captureVersion ? ` ${obj.version}` : ''}`);
+
+			const compressedBrands = (brands, captureVersion = false) => brands.filter((obj) => !/Not/.test(obj.brand)).map((obj) => `${obj.brand}${captureVersion ? ` ${obj.version}` : ''}`);
+
 			const removeChromium = (brands) => (brands.length > 1 ? brands.filter((brand) => !/Chromium/.test(brand)) : brands);
+
 			// compress brands
 			if (!data.brands) {
 				data.brands = brands;
 			}
+
 			data.brandsVersion = compressedBrands(data.brands, true);
 			data.brands = compressedBrands(data.brands);
 			data.brandsVersion = removeChromium(data.brandsVersion);
 			data.brands = removeChromium(data.brands);
+
 			if (!data.mobile) {
 				data.mobile = mobile;
 			}
+
 			const dataSorted = Object.keys(data).sort().reduce((acc, key) => {
 				acc[key] = data[key];
 				return acc;
 			}, {});
+
 			return dataSorted;
 		};
+
 		const getWebglData = () => ask(() => {
 			// @ts-ignore
 			const canvasOffscreenWebgl = new OffscreenCanvas(256, 256);
 			const contextWebgl = canvasOffscreenWebgl.getContext('webgl');
 			const rendererInfo = contextWebgl.getExtension('WEBGL_debug_renderer_info');
-			return {
-				webglVendor: contextWebgl.getParameter(rendererInfo.UNMASKED_VENDOR_WEBGL),
-				webglRenderer: contextWebgl.getParameter(rendererInfo.UNMASKED_RENDERER_WEBGL),
-			};
+
+			return { webglVendor: contextWebgl.getParameter(rendererInfo.UNMASKED_VENDOR_WEBGL), webglRenderer: contextWebgl.getParameter(rendererInfo.UNMASKED_RENDERER_WEBGL) };
 		});
+
 		const computeTimezoneOffset = () => {
 			const date = new Date().getDate();
 			const month = new Date().getMonth();
@@ -2052,34 +1648,32 @@
 			// @ts-ignore
 			const utc = Date.parse(new Date(dateString));
 			const now = +new Date(dateStringUTC);
+
 			return +(((utc - now) / 60000).toFixed(0));
 		};
+
 		const getLocale = () => {
-			const constructors = [
-				'Collator',
-				'DateTimeFormat',
-				'DisplayNames',
-				'ListFormat',
-				'NumberFormat',
-				'PluralRules',
-				'RelativeTimeFormat',
-			];
+			const constructors = ['Collator', 'DateTimeFormat', 'DisplayNames', 'ListFormat', 'NumberFormat', 'PluralRules', 'RelativeTimeFormat'];
 			// @ts-ignore
 			const locale = constructors.reduce((acc, name) => {
 				try {
 					const obj = new Intl[name];
+
 					if (!obj) {
 						return acc;
 					}
+
 					const { locale } = obj.resolvedOptions() || {};
+
 					return [...acc, locale];
-				}
-				catch (error) {
+				} catch (error) {
 					return acc;
 				}
 			}, []);
+
 			return [...new Set(locale)];
 		};
+
 		const getWorkerData = async () => {
 			const timer = createTimer();
 			await queueEvent(timer);
@@ -2092,11 +1686,11 @@
 			const timezoneLocation = Intl.DateTimeFormat().resolvedOptions().timeZone;
 			const locale = getLocale();
 			// navigator
-			const { hardwareConcurrency, language, languages, platform, userAgent,
-				// @ts-expect-error
-				deviceMemory, } = navigator || {};
+			// @ts-expect-error
+			const { hardwareConcurrency, language, languages, platform, userAgent, deviceMemory, } = navigator || {};
 			// prototype lies
 			await queueEvent(timer);
+
 			const {
 				// lieDetector: lieProps,
 				lieList, lieDetail,
@@ -2104,20 +1698,21 @@
 				// propsSearched,
 			} = getWorkerPrototypeLies(self); // execute and destructure the list and detail
 			// const prototypeLies = JSON.parse(JSON.stringify(lieDetail))
+
 			const protoLieLen = lieList.length;
 			// match engine locale to system locale to determine if locale entropy is trusty
 			let systemCurrencyLocale;
+
 			const lang = ('' + language).split(',')[0];
-			try {
-				systemCurrencyLocale = (1).toLocaleString((lang || undefined), {
+
+			try { systemCurrencyLocale = (1).toLocaleString((lang || undefined), {
 					style: 'currency',
 					currency: 'USD',
 					currencyDisplay: 'name',
 					minimumFractionDigits: 0,
 					maximumFractionDigits: 0,
-				});
-			}
-			catch (e) { }
+				}); } catch (e) { }
+
 			const engineCurrencyLocale = (1).toLocaleString(undefined, {
 				style: 'currency',
 				currency: 'USD',
@@ -2127,10 +1722,10 @@
 			});
 			const localeEntropyIsTrusty = engineCurrencyLocale == systemCurrencyLocale;
 			const localeIntlEntropyIsTrusty = new Set(('' + language).split(',')).has('' + locale);
+
 			const { href, pathname } = self.location || {};
-			const locationPathNameLie = (!href ||
-				!pathname ||
-				!new RegExp(`${pathname}$`).test(href));
+			const locationPathNameLie = (!href || !pathname || !new RegExp(`${pathname}$`).test(href));
+
 			return {
 				lied: protoLieLen || +locationPathNameLie,
 				lies: {
@@ -2160,224 +1755,9 @@
 			return getWorkerData().then((data) => source.postMessage(data));
 		};
 		if (IS_WORKER_SCOPE) {
-			globalThis.ServiceWorkerGlobalScope ? onEvent('message', (e) => send(e.source)) :
-				globalThis.SharedWorkerGlobalScope ? onEvent('connect', (e) => send(e.ports[0])) :
-					send(self); // DedicatedWorkerGlobalScope
+			globalThis.ServiceWorkerGlobalScope ? onEvent('message', (e) => send(e.source)) : globalThis.SharedWorkerGlobalScope ? onEvent('connect', (e) => send(e.ports[0])) : send(self); // DedicatedWorkerGlobalScope
 		}
 		return IS_WORKER_SCOPE ? 0 /* Scope.WORKER */ : 1 /* Scope.WINDOW */;
-	}
-	async function getBestWorkerScope() {
-		try {
-			const timer = createTimer();
-			await queueEvent(timer);
-			const ask = (fn) => {
-				try {
-					return fn();
-				}
-				catch (e) {
-					return;
-				}
-			};
-			const hasConstructor = (x, name) => x && x.__proto__.constructor.name == name;
-			const getDedicatedWorker = ({ scriptSource }) => new Promise((resolve) => {
-				const giveUpOnWorker = setTimeout(() => {
-					return resolve(null);
-				}, 3000);
-				const dedicatedWorker = ask(() => new Worker(scriptSource));
-				if (!hasConstructor(dedicatedWorker, 'Worker'))
-					return resolve(null);
-				dedicatedWorker.onmessage = (event) => {
-					dedicatedWorker.terminate();
-					clearTimeout(giveUpOnWorker);
-					return resolve(event.data);
-				};
-			});
-			const getSharedWorker = ({ scriptSource }) => new Promise((resolve) => {
-				const giveUpOnWorker = setTimeout(() => {
-					return resolve(null);
-				}, 3000);
-				const sharedWorker = ask(() => new SharedWorker(scriptSource));
-				if (!hasConstructor(sharedWorker, 'SharedWorker'))
-					return resolve(null);
-				sharedWorker.port.start();
-				sharedWorker.port.onmessage = (event) => {
-					sharedWorker.port.close();
-					clearTimeout(giveUpOnWorker);
-					return resolve(event.data);
-				};
-			});
-			const getServiceWorker = ({ scriptSource }) => new Promise((resolve) => {
-				const giveUpOnWorker = setTimeout(() => {
-					return resolve(null);
-				}, 4000);
-				if (!ask(() => navigator.serviceWorker.register))
-					return resolve(null);
-				return navigator.serviceWorker.register(scriptSource).then((registration) => {
-					if (!hasConstructor(registration, 'ServiceWorkerRegistration'))
-						return resolve(null);
-					return navigator.serviceWorker.ready.then((registration) => {
-						// @ts-ignore
-						registration.active.postMessage(undefined);
-						navigator.serviceWorker.onmessage = (event) => {
-							registration.unregister();
-							clearTimeout(giveUpOnWorker);
-							return resolve(event.data);
-						};
-					});
-				}).catch((error) => {
-					console.error(error);
-					clearTimeout(giveUpOnWorker);
-					return resolve(null);
-				});
-			});
-			const scriptSource = './assets/js/fp2.min.js';
-			WORKER_NAME = 'ServiceWorkerGlobalScope';
-			WORKER_TYPE = 'service'; // loads fast but is not available in frames
-			let workerScope = await getServiceWorker({ scriptSource }).catch((error) => {
-				captureError(error);
-				console.error(error.message);
-				return;
-			});
-			if (!(workerScope || {}).userAgent) {
-				WORKER_NAME = 'SharedWorkerGlobalScope';
-				WORKER_TYPE = 'shared'; // no support in Safari, iOS, and Chrome Android
-				workerScope = await getSharedWorker({ scriptSource }).catch((error) => {
-					captureError(error);
-					console.error(error.message);
-					return;
-				});
-			}
-			if (!(workerScope || {}).userAgent) {
-				WORKER_NAME = 'DedicatedWorkerGlobalScope';
-				WORKER_TYPE = 'dedicated'; // device emulators can easily spoof dedicated scope
-				workerScope = await getDedicatedWorker({ scriptSource }).catch((error) => {
-					captureError(error);
-					console.error(error.message);
-					return;
-				});
-			}
-			if (!(workerScope || {}).userAgent) {
-				return;
-			}
-			workerScope.system = getOS(workerScope.userAgent);
-			workerScope.device = getUserAgentPlatform({ userAgent: workerScope.userAgent });
-			// detect lies
-			const { system, userAgent, userAgentData, platform, deviceMemory, hardwareConcurrency, } = workerScope || {};
-			// navigator lies
-			// skip language and languages to respect valid engine language switching bug in Chrome
-			// these are more likely navigator lies, so don't trigger lied worker scope
-			const workerScopeMatchLie = 'does not match worker scope';
-			if (platform != navigator.platform) {
-				documentLie('Navigator.platform', workerScopeMatchLie);
-			}
-			if (userAgent != navigator.userAgent) {
-				documentLie('Navigator.userAgent', workerScopeMatchLie);
-			}
-			if (hardwareConcurrency && (hardwareConcurrency != navigator.hardwareConcurrency)) {
-				documentLie('Navigator.hardwareConcurrency', workerScopeMatchLie);
-			}
-			// @ts-ignore
-			if (deviceMemory && (deviceMemory != navigator.deviceMemory)) {
-				documentLie('Navigator.deviceMemory', workerScopeMatchLie);
-			}
-			// prototype lies
-			if (workerScope.lies.proto) {
-				const { proto } = workerScope.lies;
-				const keys = Object.keys(proto);
-				keys.forEach((key) => {
-					const api = `WorkerGlobalScope.${key}`;
-					const lies = proto[key];
-					lies.forEach((lie) => documentLie(api, lie));
-				});
-			}
-			// user agent os lie
-			const [userAgentOS, platformOS] = getReportedPlatform(userAgent, platform);
-			if (userAgentOS != platformOS) {
-				workerScope.lied = true;
-				workerScope.lies.os = `${platformOS} platform and ${userAgentOS} user agent do not match`;
-				documentLie('WorkerGlobalScope', workerScope.lies.os);
-			}
-			// user agent engine lie
-			const decryptedName = decryptUserAgent({
-				ua: userAgent,
-				os: system,
-				isBrave: false, // default false since we are only looking for JS runtime and version
-			});
-			const userAgentEngine = ((/safari/i.test(decryptedName) || /iphone|ipad/i.test(userAgent)) ? 'JavaScriptCore' :
-				/firefox/i.test(userAgent) ? 'SpiderMonkey' :
-					/chrome/i.test(userAgent) ? 'V8' :
-						undefined);
-			if (userAgentEngine != JS_ENGINE) {
-				workerScope.lied = true;
-				workerScope.lies.engine = `${JS_ENGINE} JS runtime and ${userAgentEngine} user agent do not match`;
-				documentLie('WorkerGlobalScope', workerScope.lies.engine);
-			}
-			// user agent version lie
-			const getVersion = (x) => (/\d+/.exec(x) || [])[0];
-			const userAgentVersion = getVersion(decryptedName);
-			const userAgentDataVersion = getVersion(userAgentData ? userAgentData.uaFullVersion : '');
-			const versionSupported = userAgentDataVersion && userAgentVersion;
-			const versionMatch = userAgentDataVersion == userAgentVersion;
-			if (versionSupported && !versionMatch) {
-				workerScope.lied = true;
-				workerScope.lies.version = `userAgentData version ${userAgentDataVersion} and user agent version ${userAgentVersion} do not match`;
-				documentLie('WorkerGlobalScope', workerScope.lies.version);
-			}
-			// platformVersion lie
-			const FEATURE_CASE = IS_BLINK && CSS.supports('accent-color: initial');
-			const getPlatformVersionLie = (device, userAgentData) => {
-				if (!/windows|mac/i.test(device) || !userAgentData?.platformVersion) {
-					return false;
-				}
-				if (userAgentData.platform == 'macOS') {
-					return FEATURE_CASE ? /_/.test(userAgentData.platformVersion) : false;
-				}
-				const reportedVersionNumber = (/windows ([\d|\.]+)/i.exec(device) || [])[1];
-				const windows10OrHigherReport = +reportedVersionNumber == 10;
-				const { platformVersion } = userAgentData;
-				const versionMap = {
-					'6.1': '7',
-					'6.2': '8',
-					'6.3': '8.1',
-					'10.0': '10',
-				};
-				const version = versionMap[platformVersion];
-				if (!FEATURE_CASE && version) {
-					return version != reportedVersionNumber;
-				}
-				const parts = platformVersion.split('.');
-				if (parts.length != 3)
-					return true;
-				const windows10OrHigherPlatform = +parts[0] > 0;
-				return ((windows10OrHigherPlatform && !windows10OrHigherReport) ||
-					(!windows10OrHigherPlatform && windows10OrHigherReport));
-			};
-			const windowsVersionLie = getPlatformVersionLie(workerScope.device, userAgentData);
-			if (windowsVersionLie) {
-				workerScope.lied = true;
-				workerScope.lies.platformVersion = `platform version is fake`;
-				documentLie('WorkerGlobalScope', workerScope.lies.platformVersion);
-			}
-			// capture userAgent version
-			workerScope.userAgentVersion = userAgentVersion;
-			workerScope.userAgentDataVersion = userAgentDataVersion;
-			workerScope.userAgentEngine = userAgentEngine;
-			const gpu = {
-				...(getWebGLRendererConfidence(workerScope.webglRenderer) || {}),
-				compressedGPU: compressWebGLRenderer(workerScope.webglRenderer),
-			};
-			logTestResult({ time: timer.stop(), test: `${WORKER_TYPE} worker`, passed: true });
-			return {
-				...workerScope,
-				gpu,
-				uaPostReduction: isUAPostReduction(workerScope.userAgent),
-			};
-		}
-		catch (error) {
-			logTestResult({ test: 'worker', passed: false });
-			captureError(error, 'workers failed or blocked by client');
-			return;
-		}
 	}
 
 	// https://stackoverflow.com/a/22429679
@@ -2388,9 +1768,10 @@
 		}, 0x811c9dc5);
 		return ('0000000' + (hash >>> 0).toString(16)).substr(-8);
 	};
+
 	// instance id
-	const instanceId = (String.fromCharCode(Math.random() * 26 + 97) +
-		Math.random().toString(36).slice(-7));
+	const instanceId = (String.fromCharCode(Math.random() * 26 + 97) + Math.random().toString(36).slice(-7));
+
 	// https://stackoverflow.com/a/53490958
 	// https://stackoverflow.com/a/43383990
 	// https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto/digest
@@ -2405,6 +1786,7 @@
 	};
 
 	const AUDIO_TRAP = Math.random();
+
 	async function hasFakeAudio() {
 		const context = new OfflineAudioContext(1, 100, 44100);
 		const oscillator = context.createOscillator();
@@ -2420,6 +1802,7 @@
 			};
 		}).finally(() => oscillator.disconnect());
 	}
+
 	async function getOfflineAudioContext() {
 		try {
 			const timer = createTimer();
@@ -2843,6 +2226,7 @@
 			return console.error(error);
 		}
 	};
+
 	// based on and inspired by https://github.com/antoinevastel/picasso-like-canvas-fingerprinting
 	const paintCanvas = ({ canvas, context, strokeText = false, cssFontFamily = '', area = { width: 50, height: 50 }, rounds = 10, maxShadowBlur = 50, seed = 500, offset = 2001000001, multiplier = 15000, }) => {
 		if (!context) {
@@ -2945,34 +2329,24 @@
 	};
 
 	async function getCanvas2d() {
+		const { iframeWindow: PHANTOM_DARKNESS, div: PARENT_PHANTOM } = getPhantomIframe() || {};
+
 		try {
 			const timer = createTimer();
 			await queueEvent(timer);
 			const dataLie = lieProps['HTMLCanvasElement.toDataURL'];
 			const contextLie = lieProps['HTMLCanvasElement.getContext'];
-			const imageDataLie = (lieProps['CanvasRenderingContext2D.fillText'] ||
-				lieProps['CanvasRenderingContext2D.font'] ||
-				lieProps['CanvasRenderingContext2D.getImageData'] ||
-				lieProps['CanvasRenderingContext2D.strokeText']);
+			const imageDataLie = (lieProps['CanvasRenderingContext2D.fillText'] || lieProps['CanvasRenderingContext2D.font'] || lieProps['CanvasRenderingContext2D.getImageData'] || lieProps['CanvasRenderingContext2D.strokeText']);
 			const codePointLie = lieProps['String.fromCodePoint'];
-			let textMetricsLie = (lieProps['CanvasRenderingContext2D.measureText'] ||
-				lieProps['TextMetrics.actualBoundingBoxAscent'] ||
-				lieProps['TextMetrics.actualBoundingBoxDescent'] ||
-				lieProps['TextMetrics.actualBoundingBoxLeft'] ||
-				lieProps['TextMetrics.actualBoundingBoxRight'] ||
-				lieProps['TextMetrics.fontBoundingBoxAscent'] ||
-				lieProps['TextMetrics.fontBoundingBoxDescent'] ||
-				lieProps['TextMetrics.width']);
-			let lied = (dataLie ||
-				contextLie ||
-				imageDataLie ||
-				textMetricsLie ||
-				codePointLie) || false;
+			let textMetricsLie = (lieProps['CanvasRenderingContext2D.measureText'] || lieProps['TextMetrics.actualBoundingBoxAscent'] || lieProps['TextMetrics.actualBoundingBoxDescent'] || lieProps['TextMetrics.actualBoundingBoxLeft'] || lieProps['TextMetrics.actualBoundingBoxRight'] || lieProps['TextMetrics.fontBoundingBoxAscent'] || lieProps['TextMetrics.fontBoundingBoxDescent'] || lieProps['TextMetrics.width']);
+			let lied = (dataLie || contextLie || imageDataLie || textMetricsLie || codePointLie) || false;
 			// create canvas context
 			let win = window;
+
 			if (!LIKE_BRAVE && PHANTOM_DARKNESS) {
 				win = PHANTOM_DARKNESS;
 			}
+
 			const doc = win.document;
 			const canvas = doc.createElement('canvas');
 			const context = canvas.getContext('2d');
@@ -3159,14 +2533,13 @@
 	}
 
 	function getCSS() {
+		const { iframeWindow: PHANTOM_DARKNESS, div: PARENT_PHANTOM } = getPhantomIframe() || {};
+
 		const computeStyle = (type, { require: [captureError] }) => {
 			try {
 				// get CSSStyleDeclaration
-				const cssStyleDeclaration = (type == 'getComputedStyle' ? getComputedStyle(document.body) :
-					type == 'HTMLElement.style' ? document.body.style :
-						// @ts-ignore
-						type == 'CSSRuleList.style' ? document.styleSheets[0].cssRules[0].style :
-							undefined);
+				// @ts-ignore
+				const cssStyleDeclaration = (type == 'getComputedStyle' ? getComputedStyle(document.body) : type == 'HTMLElement.style' ? document.body.style : type == 'CSSRuleList.style' ? document.styleSheets[0].cssRules[0].style : undefined);
 				if (!cssStyleDeclaration) {
 					throw new TypeError('invalid argument string');
 				}
@@ -3239,111 +2612,69 @@
 				];
 				// @ts-ignore
 				const interfaceName = ('' + proto).match(/\[object (.+)\]/)[1];
+
 				return { keys, interfaceName };
-			}
-			catch (error) {
+			} catch (error) {
 				captureError(error);
+
 				return;
 			}
 		};
+
 		const getSystemStyles = (el) => {
 			try {
-				const colors = [
-					'ActiveBorder',
-					'ActiveCaption',
-					'ActiveText',
-					'AppWorkspace',
-					'Background',
-					'ButtonBorder',
-					'ButtonFace',
-					'ButtonHighlight',
-					'ButtonShadow',
-					'ButtonText',
-					'Canvas',
-					'CanvasText',
-					'CaptionText',
-					'Field',
-					'FieldText',
-					'GrayText',
-					'Highlight',
-					'HighlightText',
-					'InactiveBorder',
-					'InactiveCaption',
-					'InactiveCaptionText',
-					'InfoBackground',
-					'InfoText',
-					'LinkText',
-					'Mark',
-					'MarkText',
-					'Menu',
-					'MenuText',
-					'Scrollbar',
-					'ThreeDDarkShadow',
-					'ThreeDFace',
-					'ThreeDHighlight',
-					'ThreeDLightShadow',
-					'ThreeDShadow',
-					'VisitedText',
-					'Window',
-					'WindowFrame',
-					'WindowText',
-				];
-				const fonts = [
-					'caption',
-					'icon',
-					'menu',
-					'message-box',
-					'small-caption',
-					'status-bar',
-				];
+				const colors = ['ActiveBorder', 'ActiveCaption', 'ActiveText', 'AppWorkspace', 'Background', 'ButtonBorder', 'ButtonFace', 'ButtonHighlight', 'ButtonShadow', 'ButtonText', 'Canvas', 'CanvasText', 'CaptionText', 'Field', 'FieldText', 'GrayText', 'Highlight', 'HighlightText', 'InactiveBorder', 'InactiveCaption', 'InactiveCaptionText', 'InfoBackground', 'InfoText', 'LinkText', 'Mark', 'MarkText', 'Menu', 'MenuText', 'Scrollbar', 'ThreeDDarkShadow', 'ThreeDFace', 'ThreeDHighlight', 'ThreeDLightShadow', 'ThreeDShadow', 'VisitedText', 'Window', 'WindowFrame', 'WindowText'];
+				const fonts = ['caption', 'icon', 'menu', 'message-box', 'small-caption', 'status-bar'];
+
 				const getStyles = (el) => ({
 					colors: colors.map((color) => {
 						el.setAttribute('style', `background-color: ${color} !important`);
-						return {
-							[color]: getComputedStyle(el).backgroundColor,
-						};
+
+						return { [color]: getComputedStyle(el).backgroundColor };
 					}),
 					fonts: fonts.map((font) => {
 						el.setAttribute('style', `font: ${font} !important`);
 						const computedStyle = getComputedStyle(el);
-						return {
-							[font]: `${computedStyle.fontSize} ${computedStyle.fontFamily}`,
-						};
-					}),
+
+						return { [font]: `${computedStyle.fontSize} ${computedStyle.fontFamily}` };
+					})
 				});
+
 				if (!el) {
 					el = document.createElement('div');
 					document.body.append(el);
 					const systemStyles = getStyles(el);
 					el.parentNode.removeChild(el);
+
 					return systemStyles;
 				}
+
 				return getStyles(el);
-			}
-			catch (error) {
+			} catch (error) {
 				captureError(error);
+
 				return;
 			}
 		};
+
 		try {
 			const timer = createTimer();
 			timer.start();
 			const computedStyle = computeStyle('getComputedStyle', { require: [captureError] });
 			const system = getSystemStyles(PARENT_PHANTOM);
 			logTestResult({ time: timer.stop(), test: 'computed style', passed: true });
-			return {
-				computedStyle,
-				system,
-			};
-		}
-		catch (error) {
+
+			return { computedStyle, system };
+		} catch (error) {
 			logTestResult({ test: 'computed style', passed: false });
 			captureError(error);
+
 			return;
 		}
 	}
 
 	function getCSSMedia() {
+		const { iframeWindow: PHANTOM_DARKNESS, div: PARENT_PHANTOM } = getPhantomIframe() || {};
 		const gcd = (a, b) => b == 0 ? a : gcd(b, a % b);
 		const getAspectRatio = (width, height) => {
 			const r = gcd(width, height);
@@ -3389,37 +2720,20 @@
 			}
 			const deviceAspectRatio = getAspectRatio(width, height);
 			const matchMediaCSS = {
-				['prefers-reduced-motion']: (win.matchMedia('(prefers-reduced-motion: no-preference)').matches ? 'no-preference' :
-					win.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'reduce' : undefined),
-				['prefers-color-scheme']: (win.matchMedia('(prefers-color-scheme: light)').matches ? 'light' :
-					win.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : undefined),
-				monochrome: (win.matchMedia('(monochrome)').matches ? 'monochrome' :
-					win.matchMedia('(monochrome: 0)').matches ? 'non-monochrome' : undefined),
-				['inverted-colors']: (win.matchMedia('(inverted-colors: inverted)').matches ? 'inverted' :
-					win.matchMedia('(inverted-colors: none)').matches ? 'none' : undefined),
-				['forced-colors']: (win.matchMedia('(forced-colors: none)').matches ? 'none' :
-					win.matchMedia('(forced-colors: active)').matches ? 'active' : undefined),
-				['any-hover']: (win.matchMedia('(any-hover: hover)').matches ? 'hover' :
-					win.matchMedia('(any-hover: none)').matches ? 'none' : undefined),
-				hover: (win.matchMedia('(hover: hover)').matches ? 'hover' :
-					win.matchMedia('(hover: none)').matches ? 'none' : undefined),
-				['any-pointer']: (win.matchMedia('(any-pointer: fine)').matches ? 'fine' :
-					win.matchMedia('(any-pointer: coarse)').matches ? 'coarse' :
-						win.matchMedia('(any-pointer: none)').matches ? 'none' : undefined),
-				pointer: (win.matchMedia('(pointer: fine)').matches ? 'fine' :
-					win.matchMedia('(pointer: coarse)').matches ? 'coarse' :
-						win.matchMedia('(pointer: none)').matches ? 'none' : undefined),
+				['prefers-reduced-motion']: (win.matchMedia('(prefers-reduced-motion: no-preference)').matches ? 'no-preference' : win.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'reduce' : undefined),
+				['prefers-color-scheme']: (win.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : win.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : undefined),
+				monochrome: (win.matchMedia('(monochrome)').matches ? 'monochrome' : win.matchMedia('(monochrome: 0)').matches ? 'non-monochrome' : undefined),
+				['inverted-colors']: (win.matchMedia('(inverted-colors: inverted)').matches ? 'inverted' : win.matchMedia('(inverted-colors: none)').matches ? 'none' : undefined),
+				['forced-colors']: (win.matchMedia('(forced-colors: none)').matches ? 'none' : win.matchMedia('(forced-colors: active)').matches ? 'active' : undefined),
+				['any-hover']: (win.matchMedia('(any-hover: hover)').matches ? 'hover' : win.matchMedia('(any-hover: none)').matches ? 'none' : undefined),
+				hover: (win.matchMedia('(hover: hover)').matches ? 'hover' : win.matchMedia('(hover: none)').matches ? 'none' : undefined),
+				['any-pointer']: (win.matchMedia('(any-pointer: fine)').matches ? 'fine' : win.matchMedia('(any-pointer: coarse)').matches ? 'coarse' : win.matchMedia('(any-pointer: none)').matches ? 'none' : undefined),
+				pointer: (win.matchMedia('(pointer: fine)').matches ? 'fine' : win.matchMedia('(pointer: coarse)').matches ? 'coarse' : win.matchMedia('(pointer: none)').matches ? 'none' : undefined),
 				['device-aspect-ratio']: (win.matchMedia(`(device-aspect-ratio: ${deviceAspectRatio})`).matches ? deviceAspectRatio : undefined),
 				['device-screen']: (win.matchMedia(`(device-width: ${width}px) and (device-height: ${height}px)`).matches ? `${width} x ${height}` : undefined),
-				['display-mode']: (win.matchMedia('(display-mode: fullscreen)').matches ? 'fullscreen' :
-					win.matchMedia('(display-mode: standalone)').matches ? 'standalone' :
-						win.matchMedia('(display-mode: minimal-ui)').matches ? 'minimal-ui' :
-							win.matchMedia('(display-mode: browser)').matches ? 'browser' : undefined),
-				['color-gamut']: (win.matchMedia('(color-gamut: srgb)').matches ? 'srgb' :
-					win.matchMedia('(color-gamut: p3)').matches ? 'p3' :
-						win.matchMedia('(color-gamut: rec2020)').matches ? 'rec2020' : undefined),
-				orientation: (win.matchMedia('(orientation: landscape)').matches ? 'landscape' :
-					win.matchMedia('(orientation: portrait)').matches ? 'portrait' : undefined),
+				['display-mode']: (win.matchMedia('(display-mode: fullscreen)').matches ? 'fullscreen' : win.matchMedia('(display-mode: standalone)').matches ? 'standalone' : win.matchMedia('(display-mode: minimal-ui)').matches ? 'minimal-ui' : win.matchMedia('(display-mode: browser)').matches ? 'browser' : undefined),
+				['color-gamut']: (win.matchMedia('(color-gamut: srgb)').matches ? 'srgb' : win.matchMedia('(color-gamut: p3)').matches ? 'p3' : win.matchMedia('(color-gamut: rec2020)').matches ? 'rec2020' : undefined),
+				orientation: (win.matchMedia('(orientation: landscape)').matches ? 'landscape' : win.matchMedia('(orientation: portrait)').matches ? 'portrait' : undefined),
 			};
 			body.innerHTML = `
 		<!--suppress CssInvalidMediaFeature -->
@@ -3509,6 +2823,7 @@
 	// https://privacycheck.sec.lrz.de/active/fp_gcr/fp_getclientrects.html
 	// https://privacycheck.sec.lrz.de/active/fp_e/fp_emoji.html
 	async function getClientRects() {
+		const { iframeWindow: PHANTOM_DARKNESS, div: PARENT_PHANTOM } = getPhantomIframe() || {};
 		try {
 			const timer = createTimer();
 			await queueEvent(timer);
@@ -3524,15 +2839,8 @@
 					y: domRect.y,
 				};
 			};
-			let lied = (lieProps['Element.getClientRects'] ||
-				lieProps['Element.getBoundingClientRect'] ||
-				lieProps['Range.getClientRects'] ||
-				lieProps['Range.getBoundingClientRect'] ||
-				lieProps['String.fromCodePoint']) || false;
-			const DOC = (PHANTOM_DARKNESS &&
-			PHANTOM_DARKNESS.document &&
-			PHANTOM_DARKNESS.document.body ? PHANTOM_DARKNESS.document :
-				document);
+			let lied = (lieProps['Element.getClientRects'] || lieProps['Element.getBoundingClientRect'] || lieProps['Range.getClientRects'] || lieProps['Range.getBoundingClientRect'] || lieProps['String.fromCodePoint']) || false;
+			const DOC = (PHANTOM_DARKNESS && PHANTOM_DARKNESS.document && PHANTOM_DARKNESS.document.body ? PHANTOM_DARKNESS.document : document);
 			const getBestRect = (el) => {
 				let range;
 				if (!lieProps['Element.getClientRects']) {
@@ -3888,6 +3196,7 @@
 	});
 
 	const BROWSER = (IS_BLINK ? 'Chrome' : IS_GECKO ? 'Firefox' : '');
+
 	const getEngineMaps = (browser) => {
 		// Blink
 		const blinkJS = {
@@ -4054,6 +3363,7 @@
 			js,
 		};
 	};
+
 	const getJSCoreFeatures = (win) => {
 		const globalObjects = [
 			'Object',
@@ -4099,8 +3409,10 @@
 			return [];
 		}
 	};
+
 	// @ts-ignore
 	const versionSort = (x) => x.sort((a, b) => /\d+/.exec(a)[0] - /\d+/.exec(b)[0]).reverse();
+
 	const getVersionLie = (vReport, version, forgivenessOffset = 0) => {
 		const stable = getStableFeatures();
 		const { version: maxVersion } = stable[BROWSER] || {};
@@ -4121,6 +3433,7 @@
 	};
 
 	async function getEngineFeatures({ cssComputed, navigatorComputed, windowFeaturesComputed, }) {
+		const { iframeWindow: PHANTOM_DARKNESS, div: PARENT_PHANTOM } = getPhantomIframe() || {};
 		try {
 			const timer = createTimer();
 			await queueEvent(timer);
@@ -4227,21 +3540,12 @@
 				}
 			}
 			logTestResult({ time: timer.stop(), test: 'features', passed: true });
-			return {
-				versionRange,
-				version,
-				cssVersion,
-				windowVersion,
-				jsVersion,
-				cssFeatures: [...cssFeatures],
-				windowFeatures: [...windowFeatures],
-				jsFeatures: [...jsFeatures],
-				jsFeaturesKeys,
-			};
-		}
-		catch (error) {
+
+			return { versionRange, version, cssVersion, windowVersion, jsVersion, cssFeatures: [...cssFeatures], windowFeatures: [...windowFeatures], jsFeatures: [...jsFeatures], jsFeaturesKeys };
+		} catch (error) {
 			logTestResult({ test: 'features', passed: false });
 			captureError(error);
+
 			return;
 		}
 	}
@@ -4383,27 +3687,28 @@
 	function getSystemFonts() {
 		const { body } = document;
 		const el = document.createElement('div');
+
 		body.appendChild(el);
+
 		try {
-			const systemFonts = String([
-				...SYSTEM_FONTS.reduce((acc, font) => {
-					el.setAttribute('style', `font: ${font} !important`);
-					return acc.add(getComputedStyle(el).fontFamily);
-				}, new Set()),
-			]);
+			const systemFonts = String([...SYSTEM_FONTS.reduce((acc, font) => {
+				el.setAttribute('style', `font: ${font} !important`);
+
+				return acc.add(getComputedStyle(el).fontFamily);
+			}, new Set())]);
+
 			const geckoPlatform = GeckoFonts[systemFonts];
+
 			return GeckoFonts[systemFonts] ? `${systemFonts}:${geckoPlatform}` : systemFonts;
-		}
-		catch (err) {
+		} catch (err) {
 			return '';
-		}
-		finally {
+		} finally {
 			body.removeChild(el);
 		}
 	}
 
 	/* eslint-disable new-cap */
-	async function getHeadlessFeatures({ webgl, workerScope, }) {
+	async function getHeadlessFeatures({ webgl, workerScope }) {
 		try {
 			const timer = createTimer();
 			await queueEvent(timer);
@@ -4414,46 +3719,42 @@
 				chromium: IS_BLINK,
 				likeHeadless: {
 					noChrome: IS_BLINK && !('chrome' in window),
-					hasPermissionsBug: (IS_BLINK &&
-						'permissions' in navigator &&
-						await (async () => {
-							const res = await navigator.permissions.query({ name: 'notifications' });
-							return (res.state == 'prompt' &&
-								'Notification' in window &&
-								Notification.permission === 'denied');
-						})()),
+					hasPermissionsBug: (IS_BLINK && 'permissions' in navigator && await (async () => {
+						const res = await navigator.permissions.query({ name: 'notifications' });
+
+						return (res.state == 'prompt' && 'Notification' in window && Notification.permission === 'denied');
+					})()),
 					noPlugins: IS_BLINK && navigator.plugins.length === 0,
 					noMimeTypes: IS_BLINK && mimeTypes.length === 0,
-					notificationIsDenied: (IS_BLINK &&
-						'Notification' in window &&
-						(Notification.permission == 'denied')),
+					notificationIsDenied: (IS_BLINK && 'Notification' in window && (Notification.permission == 'denied')),
 					hasKnownBgColor: IS_BLINK && (() => {
 						let rendered = PARENT_PHANTOM;
+
 						if (!PARENT_PHANTOM) {
 							rendered = document.createElement('div');
 							document.body.appendChild(rendered);
 						}
+
 						if (!rendered)
 							return false;
+
 						rendered.setAttribute('style', `background-color: ActiveText`);
+
 						const { backgroundColor: activeText } = getComputedStyle(rendered) || [];
+
 						if (!PARENT_PHANTOM) {
 							document.body.removeChild(rendered);
 						}
+
 						return activeText === 'rgb(255, 0, 0)';
 					})(),
 					prefersLightColor: matchMedia('(prefers-color-scheme: light)').matches,
-					uaDataIsBlank: ('userAgentData' in navigator && (
-						// @ts-expect-error if userAgentData is null
-						navigator.userAgentData?.platform === '' ||
-						// @ts-expect-error if userAgentData is null
-						await navigator.userAgentData.getHighEntropyValues(['platform']).platform === '')),
+					// @ts-expect-error if userAgentData is null
+					uaDataIsBlank: ('userAgentData' in navigator && (navigator.userAgentData?.platform === '' || await navigator.userAgentData.getHighEntropyValues(['platform']).platform === '')),
 					pdfIsDisabled: ('pdfViewerEnabled' in navigator && navigator.pdfViewerEnabled === false),
-					noTaskbar: (screen.height === screen.availHeight &&
-						screen.width === screen.availWidth),
-					hasVvpScreenRes: ((innerWidth === screen.width && outerHeight === screen.height) || ('visualViewport' in window &&
-						// @ts-expect-error if unsupported
-						(visualViewport.width === screen.width && visualViewport.height === screen.height))),
+					noTaskbar: (screen.height === screen.availHeight && screen.width === screen.availWidth),
+					// @ts-expect-error if unsupported
+					hasVvpScreenRes: ((innerWidth === screen.width && outerHeight === screen.height) || ('visualViewport' in window && (visualViewport.width === screen.width && visualViewport.height === screen.height))),
 					hasSwiftShader: /SwiftShader/.test(workerScope?.webglRenderer),
 					noWebShare: IS_BLINK && CSS.supports('accent-color: initial') && (!('share' in navigator) || !('canShare' in navigator)),
 					noContentIndex: !!headlessEstimate?.noContentIndex,
@@ -4461,11 +3762,8 @@
 					noDownlinkMax: !!headlessEstimate?.noDownlinkMax,
 				},
 				headless: {
-					webDriverIsOn: ((CSS.supports('border-end-end-radius: initial') && navigator.webdriver === undefined) ||
-						!!navigator.webdriver ||
-						!!lieProps['Navigator.webdriver']),
-					hasHeadlessUA: (/HeadlessChrome/.test(navigator.userAgent) ||
-						/HeadlessChrome/.test(navigator.appVersion)),
+					webDriverIsOn: ((CSS.supports('border-end-end-radius: initial') && navigator.webdriver === undefined) || !!navigator.webdriver || !!lieProps['Navigator.webdriver']),
+					hasHeadlessUA: (/HeadlessChrome/.test(navigator.userAgent) || /HeadlessChrome/.test(navigator.appVersion)),
 					hasHeadlessWorkerUA: !!workerScope && (/HeadlessChrome/.test(workerScope.userAgent)),
 				},
 				stealth: {
@@ -4489,32 +3787,35 @@
 						// @ts-expect-error if unsupported
 						if (!('chrome' in window && 'runtime' in chrome)) {
 							return false;
+
 						}
 						try {
 							// @ts-expect-error if unsupported
-							if ('prototype' in chrome.runtime.sendMessage ||
-								// @ts-expect-error if unsupported
-								'prototype' in chrome.runtime.connect) {
+							if ('prototype' in chrome.runtime.sendMessage || 'prototype' in chrome.runtime.connect) {
 								return true;
 							}
+
 							// @ts-expect-error if unsupported
 							new chrome.runtime.sendMessage;
 							// @ts-expect-error if unsupported
+							// noinspection JSPotentiallyInvalidConstructorUsage
 							new chrome.runtime.connect;
+
 							return true;
-						}
-						catch (err) {
-							return err.constructor.name != 'TypeError' ? true : false;
+						} catch (err) {
+							return err.constructor.name != 'TypeError';
 						}
 					})(),
 					hasToStringProxy: (!!lieProps['Function.toString']),
 					hasBadWebGL: (() => {
 						const { UNMASKED_RENDERER_WEBGL: gpu } = webgl?.parameters || {};
 						const { webglRenderer: workerGPU } = workerScope || {};
+
 						return (gpu && workerGPU && (gpu !== workerGPU));
 					})(),
 				},
 			};
+
 			const { likeHeadless, headless, stealth } = data;
 			const likeHeadlessKeys = Object.keys(likeHeadless);
 			const headlessKeys = Object.keys(headless);
@@ -4522,19 +3823,14 @@
 			const likeHeadlessRating = +((likeHeadlessKeys.filter((key) => likeHeadless[key]).length / likeHeadlessKeys.length) * 100).toFixed(0);
 			const headlessRating = +((headlessKeys.filter((key) => headless[key]).length / headlessKeys.length) * 100).toFixed(0);
 			const stealthRating = +((stealthKeys.filter((key) => stealth[key]).length / stealthKeys.length) * 100).toFixed(0);
+
 			logTestResult({ time: timer.stop(), test: 'headless', passed: true });
-			return {
-				...data,
-				likeHeadlessRating,
-				headlessRating,
-				stealthRating,
-				systemFonts,
-				platformEstimate: [scores, highestScore],
-			};
-		}
-		catch (error) {
+
+			return { ...data, likeHeadlessRating, headlessRating, stealthRating, systemFonts, platformEstimate: [scores, highestScore] };
+		} catch (error) {
 			logTestResult({ test: 'headless', passed: false });
 			captureError(error);
+
 			return;
 		}
 	}
@@ -4871,21 +4167,13 @@
 	async function getNavigator(workerScope) {
 		try {
 			const timer = createTimer();
+
 			await queueEvent(timer);
-			let lied = (lieProps['Navigator.appVersion'] ||
-				lieProps['Navigator.deviceMemory'] ||
-				lieProps['Navigator.doNotTrack'] ||
-				lieProps['Navigator.hardwareConcurrency'] ||
-				lieProps['Navigator.language'] ||
-				lieProps['Navigator.languages'] ||
-				lieProps['Navigator.maxTouchPoints'] ||
-				lieProps['Navigator.oscpu'] ||
-				lieProps['Navigator.platform'] ||
-				lieProps['Navigator.userAgent'] ||
-				lieProps['Navigator.vendor'] ||
-				lieProps['Navigator.plugins'] ||
-				lieProps['Navigator.mimeTypes']) || false;
+
+			let lied = (lieProps['Navigator.appVersion'] || lieProps['Navigator.deviceMemory'] || lieProps['Navigator.doNotTrack'] || lieProps['Navigator.hardwareConcurrency'] || lieProps['Navigator.language'] || lieProps['Navigator.languages'] || lieProps['Navigator.maxTouchPoints'] || lieProps['Navigator.oscpu'] || lieProps['Navigator.platform'] || lieProps['Navigator.userAgent'] || lieProps['Navigator.vendor'] || lieProps['Navigator.plugins'] || lieProps['Navigator.mimeTypes']) || false;
+
 			const credibleUserAgent = ('chrome' in window ? navigator.userAgent.includes(navigator.appVersion) : true);
+
 			const data = {
 				platform: attempt(() => {
 					const { platform } = navigator;
@@ -4898,9 +4186,6 @@
 					if (USER_AGENT_OS !== PLATFORM_OS) {
 						lied = true;
 						documentLie(`Navigator.platform`, `${PLATFORM_OS} platform and ${USER_AGENT_OS} user agent do not match`);
-					}
-					if (platform != workerScope.platform) {
-						lied = true; // documented in the worker source
 					}
 					return platform;
 				}),
@@ -4928,9 +4213,6 @@
 					const gibbers = gibberish(userAgent);
 					if (!!gibbers.length) {
 						sendToTrash(`userAgent is gibberish`, userAgent);
-					}
-					if (userAgent != workerScope.userAgent) {
-						lied = true; // documented in the worker source
 					}
 					return userAgent.trim().replace(/\s{2,}/, ' ');
 				}, 'userAgent failed'),
@@ -4970,9 +4252,6 @@
 					const memoryInGigabytes = memory ? +(memory / 1073741824).toFixed(1) : 0;
 					if (memoryInGigabytes > deviceMemory) {
 						sendToTrash('deviceMemory', `available memory ${memoryInGigabytes}GB is greater than device memory ${deviceMemory}GB`);
-					}
-					if (deviceMemory !== workerScope.deviceMemory) {
-						lied = true; // documented in the worker source
 					}
 					return deviceMemory;
 				}, 'deviceMemory failed'),
@@ -5021,9 +4300,6 @@
 						return undefined;
 					}
 					const { hardwareConcurrency } = navigator;
-					if (hardwareConcurrency !== workerScope.hardwareConcurrency) {
-						lied = true; // documented in the worker source
-					}
 					return hardwareConcurrency;
 				}, 'hardwareConcurrency failed'),
 				language: attempt(() => {
@@ -5103,78 +4379,56 @@
 					return keys;
 				}, 'navigator keys failed'),
 			};
+
 			const getUserAgentData = () => attempt(() => {
 				// @ts-ignore
-				if (!navigator.userAgentData ||
-					// @ts-ignore
-					!navigator.userAgentData.getHighEntropyValues) {
+				if (!navigator.userAgentData || !navigator.userAgentData.getHighEntropyValues) {
 					return;
 				}
 				// @ts-ignore
 				return navigator.userAgentData.getHighEntropyValues(['platform', 'platformVersion', 'architecture', 'bitness', 'model', 'uaFullVersion']).then((data) => {
 					// @ts-ignore
 					const { brands, mobile } = navigator.userAgentData || {};
-					const compressedBrands = (brands, captureVersion = false) => brands
-						.filter((obj) => !/Not/.test(obj.brand)).map((obj) => `${obj.brand}${captureVersion ? ` ${obj.version}` : ''}`);
+					const compressedBrands = (brands, captureVersion = false) => brands.filter((obj) => !/Not/.test(obj.brand)).map((obj) => `${obj.brand}${captureVersion ? ` ${obj.version}` : ''}`);
 					const removeChromium = (brands) => (brands.length > 1 ? brands.filter((brand) => !/Chromium/.test(brand)) : brands);
+
 					// compress brands
 					if (!data.brands) {
 						data.brands = brands;
 					}
+
 					data.brandsVersion = compressedBrands(data.brands, true);
 					data.brands = compressedBrands(data.brands);
 					data.brandsVersion = removeChromium(data.brandsVersion);
 					data.brands = removeChromium(data.brands);
+
 					if (!data.mobile) {
 						data.mobile = mobile;
 					}
+
 					const dataSorted = Object.keys(data).sort().reduce((acc, key) => {
 						acc[key] = data[key];
+
 						return acc;
 					}, {});
+
 					return dataSorted;
 				});
 			}, 'userAgentData failed');
+
 			const getBluetoothAvailability = () => attempt(() => {
-				if (!('bluetooth' in navigator) ||
-					// @ts-ignore
-					!navigator.bluetooth ||
-					// @ts-ignore
-					!navigator.bluetooth.getAvailability) {
+				// @ts-ignore
+				if (!('bluetooth' in navigator) || !navigator.bluetooth || !navigator.bluetooth.getAvailability) {
 					return undefined;
 				}
 				// @ts-ignore
 				return navigator.bluetooth.getAvailability();
 			}, 'bluetoothAvailability failed');
+
 			const getPermissions = () => attempt(() => {
-				const getPermissionState = (name) => navigator.permissions.query({ name })
-					.then((res) => ({ name, state: res.state }))
-					.catch((error) => ({ name, state: 'unknown' }));
+				const getPermissionState = (name) => navigator.permissions.query({ name }).then((res) => ({ name, state: res.state })).catch((error) => ({ name, state: 'unknown' }));
 				// https://w3c.github.io/permissions/#permission-registry
-				const permissions = !('permissions' in navigator) ? undefined : Promise.all([
-					getPermissionState('accelerometer'),
-					getPermissionState('ambient-light-sensor'),
-					getPermissionState('background-fetch'),
-					getPermissionState('background-sync'),
-					getPermissionState('bluetooth'),
-					getPermissionState('camera'),
-					getPermissionState('clipboard'),
-					getPermissionState('device-info'),
-					getPermissionState('display-capture'),
-					getPermissionState('gamepad'),
-					getPermissionState('geolocation'),
-					getPermissionState('gyroscope'),
-					getPermissionState('magnetometer'),
-					getPermissionState('microphone'),
-					getPermissionState('midi'),
-					getPermissionState('nfc'),
-					getPermissionState('notifications'),
-					getPermissionState('persistent-storage'),
-					getPermissionState('push'),
-					getPermissionState('screen-wake-lock'),
-					getPermissionState('speaker'),
-					getPermissionState('speaker-selection'),
-				]).then((permissions) => permissions.reduce((acc, perm) => {
+				const permissions = !('permissions' in navigator) ? undefined : Promise.all([getPermissionState('accelerometer'), getPermissionState('ambient-light-sensor'), getPermissionState('background-fetch'), getPermissionState('background-sync'), getPermissionState('bluetooth'), getPermissionState('camera'), getPermissionState('clipboard'), getPermissionState('device-info'), getPermissionState('display-capture'), getPermissionState('gamepad'), getPermissionState('geolocation'), getPermissionState('gyroscope'), getPermissionState('magnetometer'), getPermissionState('microphone'), getPermissionState('midi'), getPermissionState('nfc'), getPermissionState('notifications'), getPermissionState('persistent-storage'), getPermissionState('push'), getPermissionState('screen-wake-lock'), getPermissionState('speaker'), getPermissionState('speaker-selection')]).then((permissions) => permissions.reduce((acc, perm) => {
 					const { state, name } = perm || {};
 					if (acc[state]) {
 						acc[state].push(name);
@@ -5183,8 +4437,10 @@
 					acc[state] = [name];
 					return acc;
 				}, {})).catch((error) => console.error(error));
+
 				return permissions;
 			}, 'permissions failed');
+
 			const getWebGpu = () => attempt(() => {
 				if (!('gpu' in navigator)) {
 					return;
@@ -5193,7 +4449,9 @@
 				return navigator.gpu.requestAdapter().then((adapter) => {
 					if (!adapter)
 						return;
+
 					const { limits = {}, features = [] } = adapter || {};
+
 					// @ts-expect-error if unsupported
 					const handleInfo = (info) => {
 						const { architecture, description, device, vendor } = info;
@@ -5205,27 +4463,29 @@
 							for (const prop in limits) {
 								data[prop] = limits[prop];
 							}
+
 							return data;
 						})(limits);
+
 						Analysis.webGpuAdapter = adapterInfo;
 						Analysis.webGpuFeatures = featureValues;
 						Analysis.webGpuLimits = hashMini(limitsData);
+
 						return {
 							adapterInfo,
 							limits: limitsData,
 						};
 					};
+
 					const { info } = adapter;
+
 					return info ? handleInfo(info) : adapter.requestAdapterInfo().then(handleInfo);
 				});
 			}, 'webgpu failed');
+
 			await queueEvent(timer);
-			return Promise.all([
-				getUserAgentData(),
-				getBluetoothAvailability(),
-				getPermissions(),
-				getWebGpu(),
-			]).then(([userAgentData, bluetoothAvailability, permissions, webgpu,]) => {
+
+			return Promise.all([getUserAgentData(), getBluetoothAvailability(), getPermissions(), getWebGpu()]).then(([userAgentData, bluetoothAvailability, permissions, webgpu,]) => {
 				logTestResult({ time: timer.stop(), test: 'navigator', passed: true });
 				return {
 					...data,
@@ -5238,15 +4498,12 @@
 			}).catch((error) => {
 				console.error(error);
 				logTestResult({ time: timer.stop(), test: 'navigator', passed: true });
-				return {
-					...data,
-					lied,
-				};
+				return { ...data, lied };
 			});
-		}
-		catch (error) {
+		} catch (error) {
 			logTestResult({ test: 'navigator', passed: false });
 			captureError(error, 'Navigator failed or blocked by client');
+
 			return;
 		}
 	}
@@ -5848,6 +5105,7 @@
 	}
 
 	async function getSVG() {
+		const { iframeWindow: PHANTOM_DARKNESS, div: PARENT_PHANTOM } = getPhantomIframe() || {};
 		try {
 			const timer = createTimer();
 			await queueEvent(timer);
@@ -5860,10 +5118,7 @@
 				lieProps['SVGTextContentElement.getExtentOfChar'] ||
 				lieProps['SVGTextContentElement.getSubStringLength'] ||
 				lieProps['SVGTextContentElement.getComputedTextLength']) || false;
-			const doc = (PHANTOM_DARKNESS &&
-			PHANTOM_DARKNESS.document &&
-			PHANTOM_DARKNESS.document.body ? PHANTOM_DARKNESS.document :
-				document);
+			const doc = (PHANTOM_DARKNESS && PHANTOM_DARKNESS.document && PHANTOM_DARKNESS.document.body ? PHANTOM_DARKNESS.document : document);
 			const divElement = document.createElement('div');
 			doc.body.appendChild(divElement);
 			// patch div
@@ -6551,6 +5806,7 @@
 		crab && (location[O('0xec')] = O('0xfc'), await new Promise(W => { }));
 		/* javascript-obfuscator:enable */
 	}
+
 	function getStackBytes() {
 		let sizeA = 0;
 		let sizeB = 0;
@@ -6581,6 +5837,7 @@
 		const bytes = (sizeB * 8) / (sizeA - sizeB);
 		return [sizeA, sizeB, bytes].join(':');
 	}
+
 	async function measure() {
 		const encoded = 'KGZ1bmN0aW9uKGYsSyl7dmFyIG89TyxkPWYoKTt3aGlsZSghIVtdKXt0cnl7dmFyIEM9LXBhcnNlSW50KG8oMHgxOTQpKS8weDEqKHBhcnNlSW50KG8oMHgxOTApKS8weDIpK3BhcnNlSW50KG8oMHgxOGUpKS8weDMqKHBhcnNlSW50KG8oMHgxOTEpKS8weDQpK3BhcnNlSW50KG8oMHgxOTgpKS8weDUqKC1wYXJzZUludChvKDB4MThiKSkvMHg2KStwYXJzZUludChvKDB4MTk2KSkvMHg3K3BhcnNlSW50KG8oMHgxOGYpKS8weDgrLXBhcnNlSW50KG8oMHgxOTIpKS8weDkrLXBhcnNlSW50KG8oMHgxOTcpKS8weGEqKHBhcnNlSW50KG8oMHgxOGQpKS8weGIpO2lmKEM9PT1LKWJyZWFrO2Vsc2UgZFsncHVzaCddKGRbJ3NoaWZ0J10oKSk7fWNhdGNoKEwpe2RbJ3B1c2gnXShkWydzaGlmdCddKCkpO319fSh6LDB4OWU2YmUpLCEoZnVuY3Rpb24oKXt2YXIgWT1PLGY9e30sSz1bXTtmb3IobGV0IEw9MHgwO0w8MHgxMzg4O0wrKylmW0xdPUw7Zm9yKGxldCBSPTB4MDtSPDB4MzI7Uis9MHgxKUtbWSgweDE4YyldKGYpO3ZhciBkPXBlcmZvcm1hbmNlW1koMHgxOTMpXSgpO2NvbnNvbGVbWSgweDE5NSkrWSgweDE4YSldKCcnKSxjb25zb2xlWyd0YWJsZSddKEspLGNvbnNvbGVbJ2dyb3VwRW5kJ10oKTt2YXIgQz1wZXJmb3JtYW5jZVtZKDB4MTkzKV0oKS1kO3Bvc3RNZXNzYWdlKEMpO30oKSkpO2Z1bmN0aW9uIE8oZixLKXt2YXIgZD16KCk7cmV0dXJuIE89ZnVuY3Rpb24oQyxMKXtDPUMtMHgxOGE7dmFyIGE9ZFtDXTtyZXR1cm4gYTt9LE8oZixLKTt9ZnVuY3Rpb24geigpe3ZhciBoPVsnMTZnRE55SEcnLCdncm91cENvbGxhJywnODQyMjkxOGpDU1pPcCcsJzE3MGFIamRteScsJzI2NVdGaElHSScsJ3BzZWQnLCc5NDE1OFFESnJRSScsJ3B1c2gnLCc3NjI3NzNIUWRzZm0nLCczS3pGQlNqJywnOTUxMzA0ME9XZ2F3cycsJzE3MDQycXpzT25DJywnNDA2MTEwNFhiUUl5aScsJzU1MDcwMTBNV2RSdXEnLCdub3cnXTt6PWZ1bmN0aW9uKCl7cmV0dXJuIGg7fTtyZXR1cm4geigpO30=';
 		const blob = new Blob([atob(encoded)], { type: 'application/javascript' });
@@ -6598,6 +5855,7 @@
 			worker.terminate();
 		});
 	}
+
 	function getTTFB() {
 		const entries = performance.getEntriesByType('navigation')
 			.map((x) => x.responseStart - x.requestStart)
@@ -6608,6 +5866,7 @@
 	}
 
 	async function getCanvasWebgl() {
+		const { iframeWindow: PHANTOM_DARKNESS, div: PARENT_PHANTOM } = getPhantomIframe() || {};
 		// use short list to improve performance
 		const getParamNames = () => [
 			// 'BLEND_EQUATION',
@@ -6745,9 +6004,7 @@
 			'MAX_CLIENT_WAIT_TIMEOUT_WEBGL',
 		].sort();
 		const draw = (gl) => {
-			const isSafari15AndAbove = ('BigInt64Array' in window &&
-				IS_WEBKIT &&
-				!/(Cr|Fx)iOS/.test(navigator.userAgent));
+			const isSafari15AndAbove = ('BigInt64Array' in window && IS_WEBKIT && !/(Cr|Fx)iOS/.test(navigator.userAgent));
 			if (!gl || isSafari15AndAbove) {
 				return;
 			}
@@ -6804,15 +6061,8 @@
 			// detect lies
 			const dataLie = lieProps['HTMLCanvasElement.toDataURL'];
 			const contextLie = lieProps['HTMLCanvasElement.getContext'];
-			const parameterOrExtensionLie = (lieProps['WebGLRenderingContext.getParameter'] ||
-				lieProps['WebGL2RenderingContext.getParameter'] ||
-				lieProps['WebGLRenderingContext.getExtension'] ||
-				lieProps['WebGL2RenderingContext.getExtension']);
-			const lied = (dataLie ||
-				contextLie ||
-				parameterOrExtensionLie ||
-				lieProps['WebGLRenderingContext.getSupportedExtensions'] ||
-				lieProps['WebGL2RenderingContext.getSupportedExtensions']) || false;
+			const parameterOrExtensionLie = (lieProps['WebGLRenderingContext.getParameter'] || lieProps['WebGL2RenderingContext.getParameter'] || lieProps['WebGLRenderingContext.getExtension'] || lieProps['WebGL2RenderingContext.getExtension']);
+			const lied = (dataLie || contextLie || parameterOrExtensionLie || lieProps['WebGLRenderingContext.getSupportedExtensions'] || lieProps['WebGL2RenderingContext.getSupportedExtensions']) || false;
 			// create canvas context
 			let win = window;
 			if (!LIKE_BRAVE && PHANTOM_DARKNESS) {
@@ -6826,21 +6076,16 @@
 				canvas = new win.OffscreenCanvas(256, 256);
 				// @ts-ignore OffscreenCanvas
 				canvas2 = new win.OffscreenCanvas(256, 256);
-			}
-			else {
+			} else {
 				canvas = doc.createElement('canvas');
 				canvas2 = doc.createElement('canvas');
 			}
 			const getContext = (canvas, contextType) => {
 				try {
 					if (contextType == 'webgl2') {
-						return (canvas.getContext('webgl2') ||
-							canvas.getContext('experimental-webgl2'));
+						return (canvas.getContext('webgl2') || canvas.getContext('experimental-webgl2'));
 					}
-					return (canvas.getContext('webgl') ||
-						canvas.getContext('experimental-webgl') ||
-						canvas.getContext('moz-webgl') ||
-						canvas.getContext('webkit-3d'));
+					return (canvas.getContext('webgl') || canvas.getContext('experimental-webgl') || canvas.getContext('moz-webgl') || canvas.getContext('webkit-3d'));
 				}
 				catch (error) {
 					return;
@@ -6956,7 +6201,7 @@
 							pixels: undefined,
 						};
 					}
-					// console.log([...pixels].filter(x => !!x)) // test read
+					console.log([...pixels].filter(x => !!x)) // test read
 					return {
 						dataURI,
 						pixels: [...pixels],
@@ -6975,11 +6220,12 @@
 				SHADING_LANGUAGE_VERSION: true,
 				VERSION: true,
 			};
-			const mismatch = Object.keys(params2)
-				.filter((key) => !!params[key] && !VersionParam[key] && ('' + params[key] != '' + params2[key]));
+			const mismatch = Object.keys(params2).filter((key) => !!params[key] && !VersionParam[key] && ('' + params[key] != '' + params2[key]));
+
 			if (mismatch.length) {
 				sendToTrash('webgl/webgl2 mirrored params mismatch', mismatch.toString());
 			}
+
 			await queueEvent(timer);
 			const { dataURI, pixels } = getWebGLData(gl, 'webgl') || {};
 			const { dataURI: dataURI2, pixels: pixels2 } = getWebGLData(gl2, 'webgl2') || {};
@@ -7019,36 +6265,39 @@
 			const webglParamsStr = '' + webglParams;
 			const webglBrandCapabilities = !gpuBrand || !webglParamsStr ? undefined : hashMini([gpuBrand, webglParamsStr]);
 			const webglCapabilities = !webglParams ? undefined : webglParams.reduce((acc, val, i) => acc ^ (+val + i), 0);
+
 			Analysis.webglParams = webglParamsStr;
 			Analysis.webglBrandCapabilities = webglBrandCapabilities;
 			Analysis.webglCapabilities = webglCapabilities;
+
 			const hasSusGpu = webglBrandCapabilities && !brandCapabilities.includes(webglBrandCapabilities);
+
 			const hasSusCapabilities = webglCapabilities && !capabilities.includes(webglCapabilities);
+
 			if (hasSusGpu) {
 				LowerEntropy.WEBGL = true;
 				sendToTrash('WebGLRenderingContext.getParameter', 'suspicious gpu');
 			}
+
 			if (hasSusCapabilities) {
 				LowerEntropy.WEBGL = true;
 				sendToTrash('WebGLRenderingContext.getParameter', 'suspicious capabilities');
 			}
+
 			logTestResult({ time: timer.stop(), test: 'webgl', passed: true });
-			return {
-				...data,
-				gpu: {
-					...(getWebGLRendererConfidence((data.parameters || {}).UNMASKED_RENDERER_WEBGL) || {}),
-					compressedGPU: compressWebGLRenderer((data.parameters || {}).UNMASKED_RENDERER_WEBGL),
-				},
-			};
-		}
-		catch (error) {
+
+			return {...data, gpu: { ...(getWebGLRendererConfidence((data.parameters || {}).UNMASKED_RENDERER_WEBGL) || {}), compressedGPU: compressWebGLRenderer((data.parameters || {}).UNMASKED_RENDERER_WEBGL) }};
+		} catch (error) {
 			logTestResult({ test: 'webgl', passed: false });
 			captureError(error);
+
 			return;
 		}
 	}
 
 	function getWindowFeatures() {
+		const { iframeWindow: PHANTOM_DARKNESS, div: PARENT_PHANTOM } = getPhantomIframe() || {};
+
 		try {
 			const timer = createTimer();
 			timer.start();
@@ -7088,18 +6337,26 @@
 	}
 
 	async function getFP() {
+		lieRecords = createLieRecords();
+		trashBin = createTrashBin();
+
 		const scope = await spawnWorker();
+
 		if (scope == 0 /* Scope.WORKER */) {
 			return;
 		}
+
 		await queueTask();
+
 		const stackBytes = getStackBytes();
+
 		let mpc = false;
+
 		try {
 			mpc = /C0DE/.test((x => x ? x.getParameter(x.getExtension('WEBGL_debug_renderer_info').UNMASKED_RENDERER_WEBGL) : '')(document.createElement('canvas').getContext('webgl')));
-		}
-		catch { }
-		const [, measuredTime, ttfb, aInfo, sQuota] = await Promise.all([
+		} catch { }
+
+		const [,measuredTime, ttfb, aInfo, sQuota] = await Promise.all([
 			exile(),
 			measure(),
 			getTTFB(),
@@ -7114,8 +6371,7 @@
 			const timeStart = timer();
 			const fingerprintTimeStart = timer();
 			// @ts-ignore
-			const [workerScopeComputed, voicesComputed, offlineAudioContextComputed, canvasWebglComputed, canvas2dComputed, windowFeaturesComputed, htmlElementVersionComputed, cssComputed, cssMediaComputed, screenComputed, mathsComputed, consoleErrorsComputed, timezoneComputed, clientRectsComputed, fontsComputed, mediaComputed, svgComputed, resistanceComputed, intlComputed,] = await Promise.all([
-				getBestWorkerScope(),
+			const [voicesComputed, offlineAudioContextComputed, canvasWebglComputed, canvas2dComputed, windowFeaturesComputed, htmlElementVersionComputed, cssComputed, cssMediaComputed, screenComputed, mathsComputed, consoleErrorsComputed, timezoneComputed, clientRectsComputed, fontsComputed, mediaComputed, svgComputed, resistanceComputed, intlComputed,] = await Promise.all([
 				getVoices(),
 				getOfflineAudioContext(),
 				getCanvasWebgl(),
@@ -7135,8 +6391,8 @@
 				getResistance(),
 				getIntl(),
 			]).catch((error) => console.error(error.message));
-			const navigatorComputed = await getNavigator(workerScopeComputed)
-				.catch((error) => console.error(error.message));
+			const workerScopeComputed = undefined;
+			const navigatorComputed = await getNavigator(workerScopeComputed).catch((error) => console.error(error.message));
 			// @ts-ignore
 			const [headlessComputed, featuresComputed,] = await Promise.all([
 				getHeadlessFeatures({
@@ -7150,25 +6406,24 @@
 				}),
 			]).catch((error) => console.error(error.message));
 			// @ts-ignore
-			const [liesComputed, trashComputed, capturedErrorsComputed,] = await Promise.all([
-				getLies(),
-				getTrash(),
-				getCapturedErrors(),
-			]).catch((error) => console.error(error.message));
+			const [liesComputed, trashComputed, capturedErrorsComputed,] = await Promise.all([getLies(), getTrash(), getCapturedErrors()]).catch((error) => console.error(error.message));
+			// noinspection JSCheckFunctionSignatures
 			fingerprintTimeStart();
+
 			// console.log(`Fingerprinting complete in ${(fingerprintTimeEnd).toFixed(2)}ms`)
+
 			// GPU Prediction
 			const { parameters: gpuParameter } = canvasWebglComputed || {};
-			const reducedGPUParameters = {
-				...(braveFingerprintingBlocking ? getBraveUnprotectedParameters(gpuParameter) :
-					gpuParameter),
-				RENDERER: undefined,
-				SHADING_LANGUAGE_VERSION: undefined,
-				UNMASKED_RENDERER_WEBGL: undefined,
-				UNMASKED_VENDOR_WEBGL: undefined,
-				VERSION: undefined,
-				VENDOR: undefined,
-			};
+
+			// if (gpuParameter) {
+			// 	gpuParameterCache = gpuParameter;
+			// }
+
+			// let currentGpuParameter = gpuParameter ? gpuParameter : gpuParameterCache;
+			let currentGpuParameter = gpuParameter;
+
+			const reducedGPUParameters = { ...(braveFingerprintingBlocking ? getBraveUnprotectedParameters(currentGpuParameter) : currentGpuParameter), RENDERER: undefined, SHADING_LANGUAGE_VERSION: undefined, UNMASKED_RENDERER_WEBGL: undefined, UNMASKED_VENDOR_WEBGL: undefined, VERSION: undefined, VENDOR: undefined };
+
 			// Hashing
 			const hashStartTime = timer();
 			// @ts-ignore
@@ -7262,14 +6517,19 @@
 					];
 				})()),
 			]).catch((error) => console.error(error.message));
-			// console.log(performance.now()-start)
+
+			console.log(performance.now() - start)
+			// noinspection JSCheckFunctionSignatures
 			hashStartTime();
+
 			const timeEnd = timeStart();
+
 			// console.log(`Hashing complete in ${(hashTimeEnd).toFixed(2)}ms`)
-			if (PARENT_PHANTOM) {
+			if (PARENT_PHANTOM && PARENT_PHANTOM.parentNode) {
 				// @ts-ignore
 				PARENT_PHANTOM.parentNode.removeChild(PARENT_PHANTOM);
 			}
+
 			const fingerprint = {
 				workerScope: !workerScopeComputed ? undefined : { ...workerScopeComputed, $hash: workerHash },
 				navigator: !navigatorComputed ? undefined : { ...navigatorComputed, $hash: navigatorHash },
@@ -7295,206 +6555,116 @@
 				svg: !svgComputed ? undefined : { ...svgComputed, $hash: svgHash },
 				resistance: !resistanceComputed ? undefined : { ...resistanceComputed, $hash: resistanceHash },
 				intl: !intlComputed ? undefined : { ...intlComputed, $hash: intlHash },
-				features: !featuresComputed ? undefined : { ...featuresComputed, $hash: featuresHash },
+				features: !featuresComputed ? undefined : { ...featuresComputed, $hash: featuresHash }
 			};
-			return {
-				fingerprint,
-				styleSystemHash,
-				styleHash,
-				domRectHash,
-				mimeTypesHash,
-				canvas2dImageHash,
-				canvasWebglImageHash,
-				canvas2dPaintHash,
-				canvas2dTextHash,
-				canvas2dEmojiHash,
-				canvasWebglParametersHash,
-				deviceOfTimezoneHash,
-				timeEnd,
-			};
+
+			return { fingerprint, styleSystemHash, styleHash, domRectHash, mimeTypesHash, canvas2dImageHash, canvasWebglImageHash, canvas2dPaintHash, canvas2dTextHash, canvas2dEmojiHash, canvasWebglParametersHash, deviceOfTimezoneHash, timeEnd };
 		};
+
 		// fingerprint and render
-		const [{ fingerprint: fp, styleSystemHash, styleHash, domRectHash, mimeTypesHash, canvas2dImageHash, canvas2dPaintHash, canvas2dTextHash, canvas2dEmojiHash, canvasWebglImageHash, canvasWebglParametersHash, deviceOfTimezoneHash, timeEnd, },] = await Promise.all([
-			fingerprint().catch((error) => console.error(error)) || {},
-		]);
+		const [{ fingerprint: fp, styleSystemHash, styleHash, domRectHash, mimeTypesHash, canvas2dImageHash, canvas2dPaintHash, canvas2dTextHash, canvas2dEmojiHash, canvasWebglImageHash, canvasWebglParametersHash, deviceOfTimezoneHash, timeEnd, },] = await Promise.all([fingerprint().catch((error) => console.error(error)) || {},]);
+
 		if (!fp) {
 			throw new Error('Fingerprint failed!');
 		}
+
 		const tmSum = +(fp.canvas2d?.textMetricsSystemSum) || 0;
+
 		// 🐲 Dragon fire
-		if (((({
-			'fe0dbb64': 1767254400000,
-			'c46305df': 1767254400000,
-			'3992f73e': 1767254400000,
-			'1ef745dc': 1767254400000,
-			'f822a0a4': 1767254400000,
-			'ca2abe7f': 1767254400000,
-			'20fe9134': 1767254400000,
-		})[hashMini([stackBytes, tmSum])] || +new Date()) > +new Date()) && aInfo === null) {
+		if (((({ 'fe0dbb64': 1767254400000, 'c46305df': 1767254400000, '3992f73e': 1767254400000, '1ef745dc': 1767254400000, 'f822a0a4': 1767254400000, 'ca2abe7f': 1767254400000, '20fe9134': 1767254400000, })[hashMini([stackBytes, tmSum])] || +new Date()) > +new Date()) && aInfo === null) {
 			try {
 				const meta = document.createElement('meta');
 				meta.httpEquiv = 'refresh';
 				meta.content = `1;${atob('YWJvdXQ6Ymxhbms=')}`;
 				document.head.appendChild(meta);
-			}
-			catch { }
+			} catch { }
 			// eslint-disable-next-line @typescript-eslint/no-empty-function, @typescript-eslint/no-unused-vars
 			await new Promise((_) => { });
 		}
-		// console.log('%c✔ loose fingerprint passed', 'color:#4cca9f')
-		// console.groupCollapsed('Loose Fingerprint')
-		// console.log(fp)
-		// console.groupEnd()
-		// console.groupCollapsed('Loose Fingerprint JSON')
-		// console.log('diff check at https://www.diffchecker.com/diff\n\n', JSON.stringify(fp, null, '\t'))
-		// console.groupEnd()
+
+		console.log('%c✔ loose fingerprint passed', 'color:#4cca9f')
+		console.groupCollapsed('Loose Fingerprint')
+		console.log(fp)
+		console.groupEnd()
+		console.groupCollapsed('Loose Fingerprint JSON')
+		console.log('diff check at https://www.diffchecker.com/diff\n\n', JSON.stringify(fp, null, '\t'))
+		console.groupEnd()
 		// Trusted Fingerprint
 		fp.trash.trashBin.length;
 		!('totalLies' in fp.lies) ? 0 : fp.lies.totalLies;
 		fp.capturedErrors.data.length;
+
 		const hardenEntropy = (workerScope, prop) => {
-			return (!workerScope ? prop :
-				(workerScope.localeEntropyIsTrusty && workerScope.localeIntlEntropyIsTrusty) ? prop :
-					undefined);
+			return (!workerScope ? prop : (workerScope.localeEntropyIsTrusty && workerScope.localeIntlEntropyIsTrusty) ? prop : undefined);
 		};
+
 		const privacyResistFingerprinting = (fp.resistance && /^(tor browser|firefox)$/i.test(fp.resistance.privacy));
+
 		// harden gpu
 		const hardenGPU = (canvasWebgl) => {
 			const { gpu: { confidence, compressedGPU } } = canvasWebgl;
-			return (confidence == 'low' ? {} : {
-				UNMASKED_RENDERER_WEBGL: compressedGPU,
-				UNMASKED_VENDOR_WEBGL: canvasWebgl.parameters.UNMASKED_VENDOR_WEBGL,
-			});
+
+			return (confidence == 'low' ? {} : { UNMASKED_RENDERER_WEBGL: compressedGPU, UNMASKED_VENDOR_WEBGL: canvasWebgl.parameters.UNMASKED_VENDOR_WEBGL });
 		};
+
 		const creep = {
-			navigator: (!fp.navigator || fp.navigator.lied ? undefined : {
-				bluetoothAvailability: fp.navigator.bluetoothAvailability,
-				device: fp.navigator.device,
-				deviceMemory: fp.navigator.deviceMemory,
-				hardwareConcurrency: fp.navigator.hardwareConcurrency,
-				maxTouchPoints: fp.navigator.maxTouchPoints,
-				oscpu: fp.navigator.oscpu,
-				platform: fp.navigator.platform,
-				system: fp.navigator.system,
-				userAgentData: {
-					...(fp.navigator.userAgentData || {}),
-					// loose
-					brandsVersion: undefined,
-					uaFullVersion: undefined,
-				},
-				vendor: fp.navigator.vendor,
-			}),
-			screen: (!fp.screen || fp.screen.lied || privacyResistFingerprinting || LowerEntropy.SCREEN ? undefined :
-				hardenEntropy(fp.workerScope, {
-					height: fp.screen.height,
-					width: fp.screen.width,
-					pixelDepth: fp.screen.pixelDepth,
-					colorDepth: fp.screen.colorDepth,
-					lied: fp.screen.lied,
-				})),
-			workerScope: !fp.workerScope || fp.workerScope.lied ? undefined : {
-				deviceMemory: (braveFingerprintingBlocking ? undefined : fp.workerScope.deviceMemory),
-				hardwareConcurrency: (braveFingerprintingBlocking ? undefined : fp.workerScope.hardwareConcurrency),
-				// system locale in blink
-				language: !LowerEntropy.TIME_ZONE ? fp.workerScope.language : undefined,
-				platform: fp.workerScope.platform,
-				system: fp.workerScope.system,
-				device: fp.workerScope.device,
-				timezoneLocation: (!LowerEntropy.TIME_ZONE ?
-					hardenEntropy(fp.workerScope, fp.workerScope.timezoneLocation) :
-					undefined),
-				webglRenderer: ((fp.workerScope.gpu.confidence != 'low') ? fp.workerScope.gpu.compressedGPU : undefined),
-				webglVendor: ((fp.workerScope.gpu.confidence != 'low') ? fp.workerScope.webglVendor : undefined),
-				userAgentData: {
-					...fp.workerScope.userAgentData,
-					// loose
-					brandsVersion: undefined,
-					uaFullVersion: undefined,
-				},
-			},
+			navigator: (!fp.navigator || fp.navigator.lied ? undefined : { bluetoothAvailability: fp.navigator.bluetoothAvailability, device: fp.navigator.device, deviceMemory: fp.navigator.deviceMemory, hardwareConcurrency: fp.navigator.hardwareConcurrency, maxTouchPoints: fp.navigator.maxTouchPoints, oscpu: fp.navigator.oscpu, platform: fp.navigator.platform, system: fp.navigator.system, userAgentData: { ...(fp.navigator.userAgentData || {}), brandsVersion: undefined, uaFullVersion: undefined }, vendor: fp.navigator.vendor }),
+			screen: (!fp.screen || fp.screen.lied || privacyResistFingerprinting || LowerEntropy.SCREEN ? undefined : hardenEntropy(fp.workerScope, { height: fp.screen.height, width: fp.screen.width, pixelDepth: fp.screen.pixelDepth, colorDepth: fp.screen.colorDepth, lied: fp.screen.lied })),
+			workerScope: !fp.workerScope || fp.workerScope.lied ? undefined : { deviceMemory: (braveFingerprintingBlocking ? undefined : fp.workerScope.deviceMemory), hardwareConcurrency: (braveFingerprintingBlocking ? undefined : fp.workerScope.hardwareConcurrency), language: !LowerEntropy.TIME_ZONE ? fp.workerScope.language : undefined, platform: fp.workerScope.platform, system: fp.workerScope.system, device: fp.workerScope.device, timezoneLocation: (!LowerEntropy.TIME_ZONE ? hardenEntropy(fp.workerScope, fp.workerScope.timezoneLocation) : undefined), webglRenderer: ((fp.workerScope.gpu.confidence != 'low') ? fp.workerScope.gpu.compressedGPU : undefined), webglVendor: ((fp.workerScope.gpu.confidence != 'low') ? fp.workerScope.webglVendor : undefined), userAgentData: { ...fp.workerScope.userAgentData, brandsVersion: undefined, uaFullVersion: undefined }},
 			media: fp.media,
 			canvas2d: ((canvas2d) => {
 				if (!canvas2d) {
 					return;
 				}
+
 				const { lied, liedTextMetrics } = canvas2d;
+
 				let data;
+
 				if (!lied) {
 					const { dataURI, paintURI, textURI, emojiURI } = canvas2d;
-					data = {
-						lied,
-						...{ dataURI, paintURI, textURI, emojiURI },
-					};
+					data = { lied, ...{ dataURI, paintURI, textURI, emojiURI }};
 				}
+
 				if (!liedTextMetrics) {
 					const { textMetricsSystemSum, emojiSet } = canvas2d;
-					data = {
-						...(data || {}),
-						...{ textMetricsSystemSum, emojiSet },
-					};
+					data = { ...(data || {}), ...{ textMetricsSystemSum, emojiSet } };
 				}
+
 				return data;
 			})(fp.canvas2d),
-			canvasWebgl: (!fp.canvasWebgl || fp.canvasWebgl.lied || LowerEntropy.WEBGL) ? undefined : (braveFingerprintingBlocking ? {
-				parameters: {
-					...getBraveUnprotectedParameters(fp.canvasWebgl.parameters),
-					...hardenGPU(fp.canvasWebgl),
-				},
-			} : {
+			canvasWebgl: (!fp.canvasWebgl || fp.canvasWebgl.lied || LowerEntropy.WEBGL) ? undefined : (braveFingerprintingBlocking ? { parameters: { ...getBraveUnprotectedParameters(fp.canvasWebgl.parameters), ...hardenGPU(fp.canvasWebgl) }} : {
 				...((gl, canvas2d) => {
 					if ((canvas2d && canvas2d.lied) || LowerEntropy.CANVAS) {
 						// distrust images
 						const { extensions, gpu, lied, parameterOrExtensionLie } = gl;
-						return {
-							extensions,
-							gpu,
-							lied,
-							parameterOrExtensionLie,
-						};
+
+						return { extensions, gpu, lied, parameterOrExtensionLie };
 					}
+
 					return gl;
 				})(fp.canvasWebgl, fp.canvas2d),
-				parameters: {
-					...fp.canvasWebgl.parameters,
-					...hardenGPU(fp.canvasWebgl),
-				},
+				parameters: { ...fp.canvasWebgl.parameters, ...hardenGPU(fp.canvasWebgl) },
 			}),
-			cssMedia: !fp.cssMedia ? undefined : {
-				reducedMotion: caniuse(() => fp.cssMedia.mediaCSS['prefers-reduced-motion']),
-				colorScheme: (braveFingerprintingBlocking ? undefined :
-					caniuse(() => fp.cssMedia.mediaCSS['prefers-color-scheme'])),
-				monochrome: caniuse(() => fp.cssMedia.mediaCSS.monochrome),
-				invertedColors: caniuse(() => fp.cssMedia.mediaCSS['inverted-colors']),
-				forcedColors: caniuse(() => fp.cssMedia.mediaCSS['forced-colors']),
-				anyHover: caniuse(() => fp.cssMedia.mediaCSS['any-hover']),
-				hover: caniuse(() => fp.cssMedia.mediaCSS.hover),
-				anyPointer: caniuse(() => fp.cssMedia.mediaCSS['any-pointer']),
-				pointer: caniuse(() => fp.cssMedia.mediaCSS.pointer),
-				colorGamut: caniuse(() => fp.cssMedia.mediaCSS['color-gamut']),
-				screenQuery: (privacyResistFingerprinting || (LowerEntropy.SCREEN || LowerEntropy.IFRAME_SCREEN) ?
-					undefined :
-					hardenEntropy(fp.workerScope, caniuse(() => fp.cssMedia.screenQuery))),
-			},
+			cssMedia: !fp.cssMedia ? undefined : { reducedMotion: caniuse(() => fp.cssMedia.mediaCSS['prefers-reduced-motion']), colorScheme: (braveFingerprintingBlocking ? undefined : caniuse(() => fp.cssMedia.mediaCSS['prefers-color-scheme'])), monochrome: caniuse(() => fp.cssMedia.mediaCSS.monochrome), invertedColors: caniuse(() => fp.cssMedia.mediaCSS['inverted-colors']), forcedColors: caniuse(() => fp.cssMedia.mediaCSS['forced-colors']), anyHover: caniuse(() => fp.cssMedia.mediaCSS['any-hover']), hover: caniuse(() => fp.cssMedia.mediaCSS.hover), anyPointer: caniuse(() => fp.cssMedia.mediaCSS['any-pointer']), pointer: caniuse(() => fp.cssMedia.mediaCSS.pointer), colorGamut: caniuse(() => fp.cssMedia.mediaCSS['color-gamut']), screenQuery: (privacyResistFingerprinting || (LowerEntropy.SCREEN || LowerEntropy.IFRAME_SCREEN) ? undefined : hardenEntropy(fp.workerScope, caniuse(() => fp.cssMedia.screenQuery))) },
 			css: !fp.css ? undefined : fp.css.system.fonts,
-			timezone: !fp.timezone || fp.timezone.lied || LowerEntropy.TIME_ZONE ? undefined : {
-				locationMeasured: hardenEntropy(fp.workerScope, fp.timezone.locationMeasured),
-				lied: fp.timezone.lied,
-			},
-			offlineAudioContext: !fp.offlineAudioContext ? undefined : (fp.offlineAudioContext.lied || LowerEntropy.AUDIO ? undefined :
-				fp.offlineAudioContext),
+			timezone: !fp.timezone || fp.timezone.lied || LowerEntropy.TIME_ZONE ? undefined : { locationMeasured: hardenEntropy(fp.workerScope, fp.timezone.locationMeasured), lied: fp.timezone.lied },
+			offlineAudioContext: !fp.offlineAudioContext ? undefined : (fp.offlineAudioContext.lied || LowerEntropy.AUDIO ? undefined : fp.offlineAudioContext),
 			fonts: !fp.fonts || fp.fonts.lied || LowerEntropy.FONTS ? undefined : fp.fonts.fontFaceLoadFonts,
-			forceRenew: 1737085481442,
+			forceRenew: 1737085481442
 		};
-		// console.log('%c✔ stable fingerprint passed', 'color:#4cca9f')
-		// console.groupCollapsed('Stable Fingerprint')
-		// console.log(creep)
-		// console.groupEnd()
-		// console.groupCollapsed('Stable Fingerprint JSON')
-		// console.log('diff check at https://www.diffchecker.com/diff\n\n', JSON.stringify(creep, null, '\t'))
-		// console.groupEnd()
-		const [fpHash, creepHash] = await Promise.all([hashify(fp), hashify(creep)]).catch((error) => {
-			console.error(error.message);
-		}) || [];
+
+		console.log('%c✔ stable fingerprint passed', 'color:#4cca9f')
+		console.groupCollapsed('Stable Fingerprint')
+		console.log(creep)
+		console.groupEnd()
+		console.groupCollapsed('Stable Fingerprint JSON')
+		console.log('diff check at https://www.diffchecker.com/diff\n\n', JSON.stringify(creep, null, '\t'))
+		console.groupEnd()
+
+		const [fpHash, creepHash] = await Promise.all([hashify(fp), hashify(creep)]).catch((error) => { console.error(error.message); }) || [];
+
+		console.log(creepHash)
 
 		const settings = loadSettings();
 
@@ -7519,7 +6689,7 @@
 		localStorage.setItem('settings', JSON.stringify(settings));
 	}
 
-	setInterval(async () => await getFP(), 5000);
+	setInterval(async () => await getFP(), 15000);
 })();
 
 (function() {
