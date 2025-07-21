@@ -85,7 +85,22 @@
 		}
 	}
 
-	let gpuParameterCache = undefined;
+	let gpuParameterCache;
+	let canvas2DCache;
+	let canvas3DCache;
+	let cssCache;
+	let cssMediaCache;
+	let fontsCache;
+	let clientRectsCache;
+	let engineFeaturesCache;
+	let windowFeaturesCache;
+	let svgCache;
+
+	let mpc = false;
+
+	try {
+		mpc = /C0DE/.test((x => x ? x.getParameter(x.getExtension('WEBGL_debug_renderer_info').UNMASKED_RENDERER_WEBGL) : '')(document.createElement('canvas').getContext('webgl')));
+	} catch { }
 
 	const getBraveUnprotectedParameters = (parameters) => {
 		const blocked = new Set(['FRAGMENT_SHADER.HIGH_FLOAT.precision', 'FRAGMENT_SHADER.HIGH_FLOAT.rangeMax', 'FRAGMENT_SHADER.HIGH_FLOAT.rangeMin', 'FRAGMENT_SHADER.HIGH_INT.precision', 'FRAGMENT_SHADER.HIGH_INT.rangeMax', 'FRAGMENT_SHADER.HIGH_INT.rangeMin', 'FRAGMENT_SHADER.LOW_FLOAT.precision', 'FRAGMENT_SHADER.LOW_FLOAT.rangeMax', 'FRAGMENT_SHADER.LOW_FLOAT.rangeMin', 'FRAGMENT_SHADER.MEDIUM_FLOAT.precision', 'FRAGMENT_SHADER.MEDIUM_FLOAT.rangeMax', 'FRAGMENT_SHADER.MEDIUM_FLOAT.rangeMin', 'MAX_COMBINED_FRAGMENT_UNIFORM_COMPONENTS', 'MAX_COMBINED_UNIFORM_BLOCKS', 'MAX_COMBINED_VERTEX_UNIFORM_COMPONENTS', 'MAX_DRAW_BUFFERS_WEBGL', 'MAX_FRAGMENT_INPUT_COMPONENTS', 'MAX_FRAGMENT_UNIFORM_BLOCKS', 'MAX_FRAGMENT_UNIFORM_COMPONENTS','MAX_TEXTURE_MAX_ANISOTROPY_EXT', 'MAX_TRANSFORM_FEEDBACK_INTERLEAVED_COMPONENTS', 'MAX_UNIFORM_BUFFER_BINDINGS', 'MAX_VARYING_COMPONENTS', 'MAX_VERTEX_OUTPUT_COMPONENTS', 'MAX_VERTEX_UNIFORM_BLOCKS', 'MAX_VERTEX_UNIFORM_COMPONENTS', 'SHADING_LANGUAGE_VERSION', 'UNMASKED_RENDERER_WEBGL', 'UNMASKED_VENDOR_WEBGL', 'VERSION', 'VERTEX_SHADER.HIGH_FLOAT.precision', 'VERTEX_SHADER.HIGH_FLOAT.rangeMax', 'VERTEX_SHADER.HIGH_FLOAT.rangeMin', 'VERTEX_SHADER.HIGH_INT.precision', 'VERTEX_SHADER.HIGH_INT.rangeMax', 'VERTEX_SHADER.HIGH_INT.rangeMin', 'VERTEX_SHADER.LOW_FLOAT.precision', 'VERTEX_SHADER.LOW_FLOAT.rangeMax', 'VERTEX_SHADER.LOW_FLOAT.rangeMin', 'VERTEX_SHADER.MEDIUM_FLOAT.precision', 'VERTEX_SHADER.MEDIUM_FLOAT.rangeMax', 'VERTEX_SHADER.MEDIUM_FLOAT.rangeMin' ]);
@@ -243,7 +258,9 @@
 
 	const createPerformanceLogger = () => {
 		const log = {};
+
 		let total = 0;
+
 		return {
 			logTestResult: ({ test, passed, time = 0 }) => {
 				total += time;
@@ -252,10 +269,11 @@
 				const color = passed ? '#4cca9f' : 'lightcoral'
 				const result = passed ? 'passed' : 'failed'
 				const symbol = passed ? '✔' : '-'
-				return console.log(`%c${symbol}${time ? ` (${timeString})` : ''} ${test} ${result}`, `color:${color}`)
+
+				//return console.log(`%c${symbol}${time ? ` (${timeString})` : ''} ${test} ${result}`, `color:${color}`)
 			},
 			getLog: () => log,
-			getTotal: () => total,
+			getTotal: () => total
 		};
 	};
 
@@ -264,26 +282,31 @@
 
 	const createTimer = () => {
 		let start = 0;
+
 		const log = [];
+
 		return {
 			stop: () => {
 				if (start) {
 					log.push(performance.now() - start);
+
 					return log.reduce((acc, n) => acc += n, 0);
 				}
+
 				return start;
 			},
 			start: () => {
 				start = performance.now();
+
 				return start;
-			},
+			}
 		};
 	};
 
 	const queueEvent = (timer, delay = 0) => {
 		timer.stop();
-		return new Promise((resolve) => setTimeout(() => resolve(timer.start()), delay))
-			.catch((e) => { });
+
+		return new Promise((resolve) => setTimeout(() => resolve(timer.start()), delay)).catch((e) => { });
 	};
 
 	const queueTask = () => new Promise((resolve) => setTimeout(() => resolve(null)));
@@ -365,26 +388,22 @@
 	const Analysis = {};
 
 	// use if needed to stable fingerprint
-	const LowerEntropy = {
-		AUDIO: false,
-		CANVAS: false,
-		FONTS: false,
-		SCREEN: false,
-		TIME_ZONE: false,
-		WEBGL: false
-	};
+	const LowerEntropy = { AUDIO: false, CANVAS: false, FONTS: false, SCREEN: false, TIME_ZONE: false, WEBGL: false };
 
 	// template views
 	function patch(oldEl, newEl, fn) {
 		if (!oldEl)
 			return null;
+
 		oldEl.parentNode?.replaceChild(newEl, oldEl);
+
 		return typeof fn === 'function' ? fn() : true;
 	}
 
 	function html(templateStr, ...expressionSet) {
 		const template = document.createElement('template');
 		template.innerHTML = templateStr.map((s, i) => `${s}${expressionSet[i] || ''}`).join('');
+
 		return document.importNode(template.content, true);
 	}
 
@@ -403,7 +422,7 @@
 				errors.push({ trustedName, trustedMessage });
 
 				return undefined;
-			},
+			}
 		};
 	};
 
@@ -1128,81 +1147,16 @@
 	function compressWebGLRenderer(x) {
 		if (!x)
 			return;
-		return ('' + x)
-			.replace(/ANGLE \(|\sDirect3D.+|\sD3D.+|\svs_.+\)|\((DRM|POLARIS|LLVM).+|Mesa.+|(ATI|INTEL)-.+|Metal\s-\s.+|NVIDIA\s[\d|\.]+/ig, '')
-			.replace(/(\s(ti|\d{1,2}GB|super)$)/ig, '')
-			.replace(/\s{2,}/g, ' ')
-			.trim()
-			.replace(/((r|g)(t|)(x|s|\d) |Graphics |GeForce |Radeon (HD |Pro |))(\d+)/i, (...args) => {
-				return `${args[1]}${args[6][0]}${args[6].slice(1).replace(/\d/g, '0')}s`;
-			});
+
+		return ('' + x).replace(/ANGLE \(|\sDirect3D.+|\sD3D.+|\svs_.+\)|\((DRM|POLARIS|LLVM).+|Mesa.+|(ATI|INTEL)-.+|Metal\s-\s.+|NVIDIA\s[\d|\.]+/ig, '').replace(/(\s(ti|\d{1,2}GB|super)$)/ig, '').replace(/\s{2,}/g, ' ').trim().replace(/((r|g)(t|)(x|s|\d) |Graphics |GeForce |Radeon (HD |Pro |))(\d+)/i, (...args) => {
+			return `${args[1]}${args[6][0]}${args[6].slice(1).replace(/\d/g, '0')}s`;
+		});
 	}
 
 	const getWebGLRendererParts = (x) => {
-		const knownParts = [
-			'AMD',
-			'ANGLE',
-			'ASUS',
-			'ATI',
-			'ATI Radeon',
-			'ATI Technologies Inc',
-			'Adreno',
-			'Android Emulator',
-			'Apple',
-			'Apple GPU',
-			'Apple M1',
-			'Chipset',
-			'D3D11',
-			'Direct3D',
-			'Express Chipset',
-			'GeForce',
-			'Generation',
-			'Generic Renderer',
-			'Google',
-			'Google SwiftShader',
-			'Graphics',
-			'Graphics Media Accelerator',
-			'HD Graphics Family',
-			'Intel',
-			'Intel(R) HD Graphics',
-			'Intel(R) UHD Graphics',
-			'Iris',
-			'KBL Graphics',
-			'Mali',
-			'Mesa',
-			'Mesa DRI',
-			'Metal',
-			'Microsoft',
-			'Microsoft Basic Render Driver',
-			'Microsoft Corporation',
-			'NVIDIA',
-			'NVIDIA Corporation',
-			'NVIDIAGameReadyD3D',
-			'OpenGL',
-			'OpenGL Engine',
-			'Open Source Technology Center',
-			'Parallels',
-			'Parallels Display Adapter',
-			'PCIe',
-			'Plus Graphics',
-			'PowerVR',
-			'Pro Graphics',
-			'Quadro',
-			'Radeon',
-			'Radeon Pro',
-			'Radeon Pro Vega',
-			'Samsung',
-			'SSE2',
-			'VMware',
-			'VMware SVGA 3D',
-			'Vega',
-			'VirtualBox',
-			'VirtualBox Graphics Adapter',
-			'Vulkan',
-			'Xe Graphics',
-			'llvmpipe',
-		];
+		const knownParts = ['AMD', 'ANGLE', 'ASUS', 'ATI', 'ATI Radeon', 'ATI Technologies Inc', 'Adreno', 'Android Emulator', 'Apple', 'Apple GPU', 'Apple M1', 'Chipset', 'D3D11', 'Direct3D', 'Express Chipset', 'GeForce', 'Generation', 'Generic Renderer', 'Google', 'Google SwiftShader', 'Graphics', 'Graphics Media Accelerator', 'HD Graphics Family', 'Intel', 'Intel(R) HD Graphics', 'Intel(R) UHD Graphics', 'Iris', 'KBL Graphics', 'Mali', 'Mesa', 'Mesa DRI', 'Metal', 'Microsoft', 'Microsoft Basic Render Driver', 'Microsoft Corporation', 'NVIDIA', 'NVIDIA Corporation', 'NVIDIAGameReadyD3D', 'OpenGL', 'OpenGL Engine', 'Open Source Technology Center', 'Parallels', 'Parallels Display Adapter', 'PCIe', 'Plus Graphics', 'PowerVR', 'Pro Graphics', 'Quadro', 'Radeon', 'Radeon Pro', 'Radeon Pro Vega', 'Samsung', 'SSE2', 'VMware', 'VMware SVGA 3D', 'Vega', 'VirtualBox', 'VirtualBox Graphics Adapter', 'Vulkan', 'Xe Graphics', 'llvmpipe'];
 		const parts = [...knownParts].filter((name) => ('' + x).includes(name));
+
 		return [...new Set(parts)].sort().join(', ');
 	};
 
@@ -1210,6 +1164,7 @@
 		if (!x) {
 			return;
 		}
+
 		const parts = getWebGLRendererParts(x);
 		const hasKnownParts = parts.length;
 		const hasBlankSpaceNoise = /\s{2,}|^\s|\s$/.test(x);
@@ -1244,24 +1199,12 @@
 		 */
 		const gibbers = gibberish(x, { strict: true }).join(', ');
 		const valid = (hasKnownParts && !hasBlankSpaceNoise && !hasBrokenAngleStructure);
-		const confidence = (valid && !gibbers.length ? 'high' :
-			valid && gibbers.length ? 'moderate' :
-				'low');
-		const grade = (confidence == 'high' ? 'A' :
-			confidence == 'moderate' ? 'C' :
-				'F');
-		const warnings = new Set([
-			(hasBlankSpaceNoise ? 'found extra spaces' : undefined),
-			(hasBrokenAngleStructure ? 'broken angle structure' : undefined),
-		]);
+		const confidence = (valid && !gibbers.length ? 'high' : valid && gibbers.length ? 'moderate' : 'low');
+		const grade = (confidence == 'high' ? 'A' : confidence == 'moderate' ? 'C' : 'F');
+		const warnings = new Set([(hasBlankSpaceNoise ? 'found extra spaces' : undefined), (hasBrokenAngleStructure ? 'broken angle structure' : undefined)]);
 		warnings.delete(undefined);
-		return {
-			parts,
-			warnings: [...warnings],
-			gibbers,
-			confidence,
-			grade,
-		};
+
+		return { parts, warnings: [...warnings], gibbers, confidence, grade };
 	};
 
 	// Collect trash values
@@ -1366,6 +1309,7 @@
 
 	async function getFonts() {
 		const { iframeWindow: PHANTOM_DARKNESS, div: PARENT_PHANTOM } = getPhantomIframe() || {};
+
 		const getPixelEmojis = ({ doc, id, emojis }) => {
 			try {
 				patch(doc.getElementById(id), html `
@@ -1559,10 +1503,13 @@
 
 			logTestResult({ time: timer.stop(), test: 'fonts', passed: true });
 
+			PARENT_PHANTOM.remove();
+
 			return { fontFaceLoadFonts, platformVersion, apps, emojiSet, pixelSizeSystemSum, lied };
 		} catch (error) {
 			logTestResult({ test: 'fonts', passed: false });
 			captureError(error);
+			PARENT_PHANTOM.remove();
 
 			return;
 		}
@@ -2135,18 +2082,17 @@
 
 	// inspired by https://arkenfox.github.io/TZP/tests/canvasnoise.html
 	let pixelImageRandom = '';
+
 	const getPixelMods = () => {
 		const pattern1 = [];
 		const pattern2 = [];
 		const len = 8; // canvas dimensions
 		const alpha = 255;
 		const visualMultiplier = 5;
+
 		try {
 			// create 2 canvas contexts
-			const options = {
-				willReadFrequently: true,
-				desynchronized: true,
-			};
+			const options = { willReadFrequently: true, desynchronized: true };
 			const canvasDisplay1 = document.createElement('canvas');
 			const canvasDisplay2 = document.createElement('canvas');
 			const canvas1 = document.createElement('canvas');
@@ -2155,9 +2101,11 @@
 			const contextDisplay2 = canvasDisplay2.getContext('2d', options);
 			const context1 = canvas1.getContext('2d', options);
 			const context2 = canvas2.getContext('2d', options);
+
 			if (!contextDisplay1 || !contextDisplay2 || !context1 || !context2) {
 				throw new Error('canvas context blocked');
 			}
+
 			// set the dimensions
 			canvasDisplay1.width = len * visualMultiplier;
 			canvasDisplay1.height = len * visualMultiplier;
@@ -2167,6 +2115,7 @@
 			canvas1.height = len;
 			canvas2.width = len;
 			canvas2.height = len;
+
 			[...Array(len)].forEach((e, x) => [...Array(len)].forEach((e, y) => {
 				const red = ~~(Math.random() * 256);
 				const green = ~~(Math.random() * 256);
@@ -2179,6 +2128,7 @@
 				contextDisplay1.fillRect(x * visualMultiplier, y * visualMultiplier, 1 * visualMultiplier, 1 * visualMultiplier);
 				return pattern1.push(colors); // collect the pixel pattern
 			}));
+
 			[...Array(len)].forEach((e, x) => [...Array(len)].forEach((e, y) => {
 				// get context1 pixel data and mirror to context2
 				const { data: [red, green, blue, alpha], } = context1.getImageData(x, y, 1, 1) || {};
@@ -2197,12 +2147,15 @@
 				contextDisplay2.fillRect(x * visualMultiplier, y * visualMultiplier, 1 * visualMultiplier, 1 * visualMultiplier);
 				return pattern2.push(colors); // collect the pixel pattern
 			}));
+
 			// compare the pattern collections and collect diffs
 			const patternDiffs = [];
 			const rgbaChannels = new Set();
+
 			[...Array(pattern1.length)].forEach((e, i) => {
 				const pixelColor1 = pattern1[i];
 				const pixelColor2 = pattern2[i];
+
 				if (pixelColor1 != pixelColor2) {
 					const rgbaValues1 = pixelColor1.split(',');
 					const rgbaValues2 = pixelColor2.split(',');
@@ -2220,9 +2173,9 @@
 			const pixelImage = canvasDisplay2.toDataURL();
 			const rgba = rgbaChannels.size ? [...rgbaChannels].sort().join(', ') : undefined;
 			const pixels = patternDiffs.length || undefined;
+
 			return { rgba, pixels, pixelImage };
-		}
-		catch (error) {
+		} catch (error) {
 			return console.error(error);
 		}
 	};
@@ -2351,23 +2304,15 @@
 			const canvas = doc.createElement('canvas');
 			const context = canvas.getContext('2d');
 			const canvasCPU = doc.createElement('canvas');
-			const contextCPU = canvasCPU.getContext('2d', {
-				desynchronized: true,
-				willReadFrequently: true,
-			});
+			const contextCPU = canvasCPU.getContext('2d', { desynchronized: true, willReadFrequently: true });
+
 			if (!context) {
 				throw new Error('canvas context blocked');
 			}
+
 			await queueEvent(timer);
 			const imageSizeMax = IS_WEBKIT ? 50 : 75; // webkit is unstable
-			paintCanvas({
-				canvas,
-				context,
-				strokeText: true,
-				cssFontFamily: CSS_FONT_FAMILY,
-				area: { width: imageSizeMax, height: imageSizeMax },
-				rounds: 10,
-			});
+			paintCanvas({ canvas, context, strokeText: true, cssFontFamily: CSS_FONT_FAMILY, area: { width: imageSizeMax, height: imageSizeMax }, rounds: 10 });
 			const dataURI = canvas.toDataURL();
 			await queueEvent(timer);
 			const mods = getPixelMods();
@@ -2375,43 +2320,32 @@
 			await queueEvent(timer);
 			context.font = `10px ${CSS_FONT_FAMILY.replace(/!important/gm, '')}`;
 			const pattern = new Set();
+
 			const emojiSet = EMOJIS.reduce((emojiSet, emoji) => {
 				const { actualBoundingBoxAscent, actualBoundingBoxDescent, actualBoundingBoxLeft, actualBoundingBoxRight, fontBoundingBoxAscent, fontBoundingBoxDescent, width, } = context.measureText(emoji) || {};
-				const dimensions = [
-					actualBoundingBoxAscent,
-					actualBoundingBoxDescent,
-					actualBoundingBoxLeft,
-					actualBoundingBoxRight,
-					fontBoundingBoxAscent,
-					fontBoundingBoxDescent,
-					width,
-				].join(',');
+				const dimensions = [actualBoundingBoxAscent, actualBoundingBoxDescent, actualBoundingBoxLeft, actualBoundingBoxRight, fontBoundingBoxAscent, fontBoundingBoxDescent, width].join(',');
+
 				if (!pattern.has(dimensions)) {
 					pattern.add(dimensions);
 					emojiSet.add(emoji);
 				}
+
 				return emojiSet;
 			}, new Set());
+
 			// textMetrics System Sum
 			const textMetricsSystemSum = 0.00001 * [...pattern].map((x) => {
 				return x.split(',').reduce((acc, x) => acc += (+x || 0), 0);
 			}).reduce((acc, x) => acc += x, 0);
+
 			// Paint
 			const maxSize = 75;
 			await queueEvent(timer);
-			paintCanvas({
-				canvas,
-				context,
-				area: { width: maxSize, height: maxSize },
-			}); // clears image
+			paintCanvas({ canvas, context, area: { width: maxSize, height: maxSize } }); // clears image
 			const paintURI = canvas.toDataURL();
 			// Paint with CPU
 			await queueEvent(timer);
-			paintCanvas({
-				canvas: canvasCPU,
-				context: contextCPU,
-				area: { width: maxSize, height: maxSize },
-			}); // clears image
+			paintCanvas({ canvas: canvasCPU, context: contextCPU, area: { width: maxSize, height: maxSize } }); // clears image
 			const paintCpuURI = canvasCPU.toDataURL();
 			// Text
 			context.restore();
@@ -2431,10 +2365,12 @@
 			const emojiURI = canvas.toDataURL();
 			// lies
 			context.clearRect(0, 0, canvas.width, canvas.height);
+
 			if ((mods && mods.pixels) || !!Math.max(...context.getImageData(0, 0, 8, 8).data)) {
 				lied = true;
 				documentLie(`CanvasRenderingContext2D.getImageData`, `pixel data modified`);
 			}
+
 			// verify low entropy image data
 			canvas.width = 2;
 			canvas.height = 2;
@@ -2446,88 +2382,51 @@
 			context.arc(0, 0, 2, 0, 1, true);
 			context.closePath();
 			context.fill();
+
 			const imageDataLowEntropy = context.getImageData(0, 0, 2, 2).data.join('');
-			const KnownImageData = {
-				BLINK: [
-					'255255255255178178178255246246246255555555255',
-					'255255255255192192192255240240240255484848255',
-					'255255255255177177177255246246246255535353255',
-					'255255255255128128128255191191191255646464255',
-					'255255255255178178178255247247247255565656255',
-					'255255255255174174174255242242242255474747255',
-					'255255255255229229229255127127127255686868255',
-					'255255255255192192192255244244244255535353255',
-				],
-				GECKO: [
-					'255255255255191191191255207207207255646464255',
-					'255255255255192192192255240240240255484848255',
-					'255255255255191191191255239239239255646464255',
-					'255255255255191191191255223223223255606060255',
-					'255255255255171171171255223223223255606060255',
-					'255255255255188188188255245245245255525252255',
-				],
-				WEBKIT: [
-					'255255255255185185185255233233233255474747255',
-					'255255255255185185185255229229229255474747255',
-					'255255255255185185185255218218218255474747255',
-					'255255255255192192192255240240240255484848255',
-					'255255255255178178178255247247247255565656255',
-					'255255255255178178178255247247247255565656255',
-					'255255255255192192192255240240240255484848255',
-					'255255255255186186186255218218218255464646255',
-				],
-			};
+
+			const KnownImageData = { BLINK: ['255255255255178178178255246246246255555555255', '255255255255192192192255240240240255484848255', '255255255255177177177255246246246255535353255', '255255255255128128128255191191191255646464255', '255255255255178178178255247247247255565656255', '255255255255174174174255242242242255474747255', '255255255255229229229255127127127255686868255', '255255255255192192192255244244244255535353255'], GECKO: ['255255255255191191191255207207207255646464255', '255255255255192192192255240240240255484848255', '255255255255191191191255239239239255646464255', '255255255255191191191255223223223255606060255', '255255255255171171171255223223223255606060255', '255255255255188188188255245245245255525252255'], WEBKIT: ['255255255255185185185255233233233255474747255', '255255255255185185185255229229229255474747255', '255255255255185185185255218218218255474747255', '255255255255192192192255240240240255484848255', '255255255255178178178255247247247255565656255', '255255255255178178178255247247247255565656255', '255255255255192192192255240240240255484848255', '255255255255186186186255218218218255464646255'] };
+
 			Analysis.imageDataLowEntropy = imageDataLowEntropy;
+
 			if (IS_BLINK && !KnownImageData.BLINK.includes(imageDataLowEntropy)) {
 				LowerEntropy.CANVAS = true;
-			}
-			else if (IS_GECKO && !KnownImageData.GECKO.includes(imageDataLowEntropy)) {
+			} else if (IS_GECKO && !KnownImageData.GECKO.includes(imageDataLowEntropy)) {
+				LowerEntropy.CANVAS = true;
+			} else if (IS_WEBKIT && !KnownImageData.WEBKIT.includes(imageDataLowEntropy)) {
 				LowerEntropy.CANVAS = true;
 			}
-			else if (IS_WEBKIT && !KnownImageData.WEBKIT.includes(imageDataLowEntropy)) {
-				LowerEntropy.CANVAS = true;
-			}
+
 			if (LowerEntropy.CANVAS) {
 				sendToTrash('CanvasRenderingContext2D.getImageData', 'suspicious pixel data');
 			}
+
 			const getTextMetricsFloatLie = (context) => {
 				const isFloat = (n) => n % 1 !== 0;
-				const { actualBoundingBoxAscent: abba, actualBoundingBoxDescent: abbd, actualBoundingBoxLeft: abbl, actualBoundingBoxRight: abbr, fontBoundingBoxAscent: fbba, fontBoundingBoxDescent: fbbd,
-					// width: w,
-				} = context.measureText('') || {};
-				const lied = [
-					abba,
-					abbd,
-					abbl,
-					abbr,
-					fbba,
-					fbbd,
-				].find((x) => isFloat((x || 0)));
+				const { actualBoundingBoxAscent: abba, actualBoundingBoxDescent: abbd, actualBoundingBoxLeft: abbl, actualBoundingBoxRight: abbr, fontBoundingBoxAscent: fbba, fontBoundingBoxDescent: fbbd, /*width: w,*/} = context.measureText('') || {};
+				const lied = [abba, abbd, abbl, abbr, fbba, fbbd].find((x) => isFloat((x || 0)));
+
 				return lied;
 			};
+
 			await queueEvent(timer);
+
 			if (getTextMetricsFloatLie(context)) {
 				textMetricsLie = true;
 				lied = true;
 				documentLie('CanvasRenderingContext2D.measureText', 'metric noise detected');
 			}
+
 			logTestResult({ time: timer.stop(), test: 'canvas 2d', passed: true });
-			return {
-				dataURI,
-				paintURI,
-				paintCpuURI,
-				textURI,
-				emojiURI,
-				mods,
-				textMetricsSystemSum,
-				liedTextMetrics: textMetricsLie,
-				emojiSet: [...emojiSet],
-				lied,
-			};
-		}
-		catch (error) {
+
+			PARENT_PHANTOM.remove();
+
+			return { dataURI, paintURI, paintCpuURI, textURI, emojiURI, mods, textMetricsSystemSum, liedTextMetrics: textMetricsLie, emojiSet: [...emojiSet], lied };
+		} catch (error) {
 			logTestResult({ test: 'canvas 2d', passed: false });
 			captureError(error);
+			PARENT_PHANTOM.remove();
+
 			return;
 		}
 	}
@@ -2540,37 +2439,44 @@
 				// get CSSStyleDeclaration
 				// @ts-ignore
 				const cssStyleDeclaration = (type == 'getComputedStyle' ? getComputedStyle(document.body) : type == 'HTMLElement.style' ? document.body.style : type == 'CSSRuleList.style' ? document.styleSheets[0].cssRules[0].style : undefined);
+
 				if (!cssStyleDeclaration) {
 					throw new TypeError('invalid argument string');
 				}
+
 				// get properties
 				const proto = Object.getPrototypeOf(cssStyleDeclaration);
 				const prototypeProperties = Object.getOwnPropertyNames(proto);
 				const ownEnumerablePropertyNames = [];
 				const cssVar = /^--.*$/;
+
 				Object.keys(cssStyleDeclaration).forEach((key) => {
 					const numericKey = !isNaN(+key);
 					const value = cssStyleDeclaration[key];
 					const customPropKey = cssVar.test(key);
 					const customPropValue = cssVar.test(value);
+
 					if (numericKey && !customPropValue) {
 						return ownEnumerablePropertyNames.push(value);
-					}
-					else if (!numericKey && !customPropKey) {
+					} else if (!numericKey && !customPropKey) {
 						return ownEnumerablePropertyNames.push(key);
 					}
+
 					return;
 				});
+
 				// get properties in prototype chain (required only in chrome)
 				const propertiesInPrototypeChain = {};
 				const capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1);
 				const uncapitalize = (str) => str.charAt(0).toLowerCase() + str.slice(1);
 				const removeFirstChar = (str) => str.slice(1);
 				const caps = /[A-Z]/g;
+
 				ownEnumerablePropertyNames.forEach((key) => {
 					if (propertiesInPrototypeChain[key]) {
 						return;
 					}
+
 					// determine attribute type
 					const isNamedAttribute = key.indexOf('-') > -1;
 					const isAliasAttribute = caps.test(key);
@@ -2578,38 +2484,33 @@
 					const firstChar = key.charAt(0);
 					const isPrefixedName = isNamedAttribute && firstChar == '-';
 					const isCapitalizedAlias = isAliasAttribute && firstChar == firstChar.toUpperCase();
-					key = (isPrefixedName ? removeFirstChar(key) :
-						isCapitalizedAlias ? uncapitalize(key) :
-							key);
+					key = (isPrefixedName ? removeFirstChar(key) : isCapitalizedAlias ? uncapitalize(key) : key);
 					// find counterpart in CSSStyleDeclaration object or its prototype chain
+
 					if (isNamedAttribute) {
 						const aliasAttribute = key.split('-').map((word, index) => index == 0 ? word : capitalize(word)).join('');
+
 						if (aliasAttribute in cssStyleDeclaration) {
 							propertiesInPrototypeChain[aliasAttribute] = true;
-						}
-						else if (capitalize(aliasAttribute) in cssStyleDeclaration) {
+						} else if (capitalize(aliasAttribute) in cssStyleDeclaration) {
 							propertiesInPrototypeChain[capitalize(aliasAttribute)] = true;
 						}
 					}
 					else if (isAliasAttribute) {
 						const namedAttribute = key.replace(caps, (char) => '-' + char.toLowerCase());
+
 						if (namedAttribute in cssStyleDeclaration) {
 							propertiesInPrototypeChain[namedAttribute] = true;
-						}
-						else if (`-${namedAttribute}` in cssStyleDeclaration) {
+						} else if (`-${namedAttribute}` in cssStyleDeclaration) {
 							propertiesInPrototypeChain[`-${namedAttribute}`] = true;
 						}
 					}
+
 					return;
 				});
+
 				// compile keys
-				const keys = [
-					...new Set([
-						...prototypeProperties,
-						...ownEnumerablePropertyNames,
-						...Object.keys(propertiesInPrototypeChain),
-					]),
-				];
+				const keys = [...new Set([...prototypeProperties, ...ownEnumerablePropertyNames, ...Object.keys(propertiesInPrototypeChain)])];
 				// @ts-ignore
 				const interfaceName = ('' + proto).match(/\[object (.+)\]/)[1];
 
@@ -2664,10 +2565,13 @@
 			const system = getSystemStyles(PARENT_PHANTOM);
 			logTestResult({ time: timer.stop(), test: 'computed style', passed: true });
 
+			PARENT_PHANTOM.remove();
+
 			return { computedStyle, system };
 		} catch (error) {
 			logTestResult({ test: 'computed style', passed: false });
 			captureError(error);
+			PARENT_PHANTOM.remove();
 
 			return;
 		}
@@ -2676,38 +2580,50 @@
 	function getCSSMedia() {
 		const { iframeWindow: PHANTOM_DARKNESS, div: PARENT_PHANTOM } = getPhantomIframe() || {};
 		const gcd = (a, b) => b == 0 ? a : gcd(b, a % b);
+
 		const getAspectRatio = (width, height) => {
 			const r = gcd(width, height);
 			const aspectRatio = `${width / r}/${height / r}`;
+
 			return aspectRatio;
 		};
+
 		const query = ({ body, type, rangeStart, rangeLen }) => {
 			const html = [...Array(rangeLen)].map((slot, i) => {
 				i += rangeStart;
+
 				return `@media(device-${type}:${i}px){body{--device-${type}:${i};}}`;
 			}).join('');
 			body.innerHTML = `<style>${html}</style>`;
 			const style = getComputedStyle(body);
 			return style.getPropertyValue(`--device-${type}`).trim();
 		};
+
 		const getScreenMedia = ({ body, width, height }) => {
 			let widthMatch = query({ body, type: 'width', rangeStart: width, rangeLen: 1 });
 			let heightMatch = query({ body, type: 'height', rangeStart: height, rangeLen: 1 });
+
 			if (widthMatch && heightMatch) {
 				return { width, height };
 			}
+
 			const rangeLen = 1000;
+
 			[...Array(10)].find((slot, i) => {
 				if (!widthMatch) {
 					widthMatch = query({ body, type: 'width', rangeStart: i * rangeLen, rangeLen });
 				}
+
 				if (!heightMatch) {
 					heightMatch = query({ body, type: 'height', rangeStart: i * rangeLen, rangeLen });
 				}
+
 				return widthMatch && heightMatch;
 			});
+
 			return { width: +widthMatch, height: +heightMatch };
 		};
+
 		try {
 			const timer = createTimer();
 			timer.start();
@@ -2715,10 +2631,13 @@
 			const { body } = win.document;
 			const { width, availWidth, height, availHeight } = win.screen;
 			const noTaskbar = !(width - availWidth || height - availHeight);
+
 			if (screen.width !== width || (width > 800 && noTaskbar)) {
 				LowerEntropy.IFRAME_SCREEN = true;
 			}
+
 			const deviceAspectRatio = getAspectRatio(width, height);
+
 			const matchMediaCSS = {
 				['prefers-reduced-motion']: (win.matchMedia('(prefers-reduced-motion: no-preference)').matches ? 'no-preference' : win.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'reduce' : undefined),
 				['prefers-color-scheme']: (win.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : win.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : undefined),
@@ -2735,6 +2654,7 @@
 				['color-gamut']: (win.matchMedia('(color-gamut: srgb)').matches ? 'srgb' : win.matchMedia('(color-gamut: p3)').matches ? 'p3' : win.matchMedia('(color-gamut: rec2020)').matches ? 'rec2020' : undefined),
 				orientation: (win.matchMedia('(orientation: landscape)').matches ? 'landscape' : win.matchMedia('(orientation: portrait)').matches ? 'portrait' : undefined),
 			};
+
 			body.innerHTML = `
 		<!--suppress CssInvalidMediaFeature -->
 <style>
@@ -2771,7 +2691,9 @@
 		@media (orientation: portrait) {body {--orientation: portrait}}
 		</style>
 		`;
+
 			const style = getComputedStyle(body);
+
 			const mediaCSS = {
 				['prefers-reduced-motion']: style.getPropertyValue('--prefers-reduced-motion').trim() || undefined,
 				['prefers-color-scheme']: style.getPropertyValue('--prefers-color-scheme').trim() || undefined,
@@ -2788,14 +2710,18 @@
 				['color-gamut']: style.getPropertyValue('--color-gamut').trim() || undefined,
 				orientation: style.getPropertyValue('--orientation').trim() || undefined,
 			};
+
 			// get screen query
 			const screenQuery = getScreenMedia({ body, width, height });
 			logTestResult({ time: timer.stop(), test: 'css media', passed: true });
+			PARENT_PHANTOM.remove();
+
 			return { mediaCSS, matchMediaCSS, screenQuery };
-		}
-		catch (error) {
+		} catch (error) {
 			logTestResult({ test: 'css media', passed: false });
 			captureError(error);
+			PARENT_PHANTOM.remove();
+
 			return;
 		}
 	}
@@ -2805,16 +2731,20 @@
 			const timer = createTimer();
 			timer.start();
 			const keys = [];
+
 			// eslint-disable-next-line guard-for-in
 			for (const key in document.documentElement) {
 				keys.push(key);
 			}
+
 			logTestResult({ time: timer.stop(), test: 'html element', passed: true });
+
 			return { keys };
 		}
 		catch (error) {
 			logTestResult({ test: 'html element', passed: false });
 			captureError(error);
+
 			return;
 		}
 	}
@@ -2824,6 +2754,7 @@
 	// https://privacycheck.sec.lrz.de/active/fp_e/fp_emoji.html
 	async function getClientRects() {
 		const { iframeWindow: PHANTOM_DARKNESS, div: PARENT_PHANTOM } = getPhantomIframe() || {};
+
 		try {
 			const timer = createTimer();
 			await queueEvent(timer);
@@ -3084,50 +3015,45 @@
 			const knownEl = [...DOC.getElementsByClassName('rect-known')][0];
 			const knownDimensions = toNativeObject(knownEl.getClientRects()[0]);
 			const knownHash = hashMini(knownDimensions);
+
 			if (IS_BLINK) {
-				const Rotate = {
-					'9d9215cc': true,
-					'47ded322': true,
-					'd0eceaa8': true, // 90
-				};
+				const Rotate = { '9d9215cc': true, '47ded322': true, 'd0eceaa8': true };
+
+				if (!Rotate[knownHash]) {
+					documentLie('Element.getClientRects', 'unknown rotate dimensions');
+					lied = true;
+				}
+			} else if (IS_GECKO) {
+				const Rotate = { 'e38453f0': true };
+
 				if (!Rotate[knownHash]) {
 					documentLie('Element.getClientRects', 'unknown rotate dimensions');
 					lied = true;
 				}
 			}
-			else if (IS_GECKO) {
-				const Rotate = {
-					'e38453f0': true, // 100, etc
-				};
-				if (!Rotate[knownHash]) {
-					documentLie('Element.getClientRects', 'unknown rotate dimensions');
-					lied = true;
-				}
-			}
+
 			// detect ghost dimensions
 			const ghostEl = [...DOC.getElementsByClassName('rect-ghost')][0];
 			const ghostDimensions = toNativeObject(ghostEl.getClientRects()[0]);
-			const hasGhostDimensions = Object.keys(ghostDimensions)
-				.some((key) => ghostDimensions[key] !== 0);
+			const hasGhostDimensions = Object.keys(ghostDimensions)	.some((key) => ghostDimensions[key] !== 0);
+
 			if (hasGhostDimensions) {
 				documentLie('Element.getClientRects', 'unknown ghost dimensions');
 				lied = true;
 			}
+
 			DOC.body.removeChild(DOC.getElementById(rectsId));
+
 			logTestResult({ time: timer.stop(), test: 'rects', passed: true });
-			return {
-				elementClientRects,
-				elementBoundingClientRect,
-				rangeClientRects,
-				rangeBoundingClientRect,
-				emojiSet: [...emojiSet],
-				domrectSystemSum,
-				lied,
-			};
-		}
-		catch (error) {
+
+			PARENT_PHANTOM.remove();
+
+			return { elementClientRects, elementBoundingClientRect, rangeClientRects, rangeBoundingClientRect, emojiSet: [...emojiSet], domrectSystemSum, lied };
+		} catch (error) {
 			logTestResult({ test: 'rects', passed: false });
 			captureError(error);
+			PARENT_PHANTOM.remove();
+
 			return;
 		}
 	}
@@ -3136,21 +3062,24 @@
 		const errors = [];
 		let i;
 		const len = errFns.length;
+
 		for (i = 0; i < len; i++) {
 			try {
 				errFns[i]();
-			}
-			catch (err) {
+			} catch (err) {
 				errors.push(err.message);
 			}
 		}
+
 		return errors;
 	}
 
 	function getConsoleErrors() {
 		try {
 			const timer = createTimer();
+
 			timer.start();
+
 			const errorTests = [
 				() => new Function('alert(")')(),
 				() => new Function('const foo;foo.bar')(),
@@ -3162,13 +3091,16 @@
 				() => new Function('var x = new Array(-1)')(),
 				() => new Function('const a=1; const a=2;')(),
 			];
+
 			const errors = getErrors(errorTests);
+
 			logTestResult({ time: timer.stop(), test: 'console errors', passed: true });
+
 			return { errors };
-		}
-		catch (error) {
+		} catch (error) {
 			logTestResult({ test: 'console errors', passed: false });
 			captureError(error);
+
 			return;
 		}
 	}
@@ -3192,7 +3124,7 @@
 			windowKeys: `undefined, globalThis, Array, Boolean, JSON, Date, Math, Number, String, RegExp, Error, InternalError, AggregateError, EvalError, RangeError, ReferenceError, SyntaxError, TypeError, URIError, ArrayBuffer, Int8Array, Uint8Array, Int16Array, Uint16Array, Int32Array, Uint32Array, Float32Array, Float64Array, Uint8ClampedArray, BigInt64Array, BigUint64Array, BigInt, Proxy, WeakMap, Set, DataView, Symbol, Intl, Reflect, WeakSet, Atomics, WebAssembly, FinalizationRegistry, WeakRef, NaN, Infinity, isNaN, isFinite, parseFloat, parseInt, escape, unescape, decodeURI, encodeURI, decodeURIComponent, encodeURIComponent, CryptoKey, FocusEvent, CSSRuleList, MediaStreamTrackAudioSourceNode, SVGGeometryElement, SVGElement, SVGPatternElement, WebSocket, HTMLAllCollection, UIEvent, PageTransitionEvent, AuthenticatorAssertionResponse, ScreenOrientation, MediaCapabilitiesInfo, SVGImageElement, NodeIterator, SVGFEOffsetElement, AnimationPlaybackEvent, MessageChannel, TextDecoderStream, ShadowRoot, SVGAnimatedNumberList, SVGEllipseElement, DOMStringMap, AudioWorkletNode, TextMetrics, SVGPointList, SVGSymbolElement, DocumentType, StorageEvent, SVGAnimatedLength, PerformanceObserver, WebGLSampler, PushSubscription, CustomElementRegistry, SVGUnitTypes, SVGFEMorphologyElement, NodeFilter, File, Geolocation, ProcessingInstruction, AudioScheduledSourceNode, FileReader, IDBObjectStore, SVGStringList, HTMLParagraphElement, IDBDatabase, SVGLinearGradientElement, Animation, HTMLIFrameElement, HTMLTableSectionElement, Worker, TimeRanges, Navigator, InputEvent, GamepadHapticActuator, SVGMatrix, Worklet, SVGFEMergeNodeElement, DOMTokenList, MediaQueryListEvent, HTMLParamElement, MessagePort, SVGLengthList, ResizeObserverSize, TextEncoderStream, PromiseRejectionEvent, SVGTransformList, DOMPoint, SVGTextElement, WebGL2RenderingContext, PluginArray, IDBVersionChangeEvent, FontFaceSetLoadEvent, CSSStyleDeclaration, SVGGraphicsElement, HTMLOListElement, HTMLTextAreaElement, Storage, XPathEvaluator, MouseScrollEvent, HTMLCanvasElement, HTMLBodyElement, HTMLCollection, HTMLHtmlElement, MediaList, HTMLAudioElement, IDBFactory, SVGAnimatedTransformList, MimeType, SVGAnimatedPreserveAspectRatio, HTMLFrameElement, HTMLLegendElement, HTMLMapElement, SVGAnimateMotionElement, HTMLFrameSetElement, CSSGroupingRule, Clipboard, IIRFilterNode, ReadableStreamDefaultController, FileSystemFileHandle, HTMLElement, CSSConditionRule, CSS, SVGFEComponentTransferElement, DOMRectList, AudioWorklet, SourceBuffer, HTMLStyleElement, DocumentTimeline, IDBKeyRange, DOMRequest, PerformanceTiming, GeolocationPosition, SVGTextPositioningElement, OfflineResourceList, IDBOpenDBRequest, SVGFEFuncGElement, MouseEvent, FontFaceSet, OffscreenCanvasRenderingContext2D, OscillatorNode, SpeechSynthesisUtterance, AudioContext, FileSystemEntry, PaintRequest, SVGFEConvolveMatrixElement, ChannelSplitterNode, AudioBufferSourceNode, CaretPosition, AbortSignal, HTMLBRElement, XSLTProcessor, SVGFESpecularLightingElement, mozRTCPeerConnection, XMLSerializer, StorageManager, HTMLImageElement, WebGLQuery, FileSystemHandle, Permissions, BaseAudioContext, MediaStream, History, DOMStringList, StereoPannerNode, ReadableStreamDefaultReader, HTMLDListElement, MutationEvent, SVGComponentTransferFunctionElement, Notification, DynamicsCompressorNode, LockManager, Option, HTMLMeterElement, RTCPeerConnection, CloseEvent, AudioBuffer, ByteLengthQueuingStrategy, SVGFECompositeElement, HTMLTrackElement, ServiceWorkerContainer, MediaStreamTrack, WebGLContextEvent, WritableStreamDefaultController, SVGPathElement, BarProp, PerformanceObserverEntryList, RTCRtpReceiver, StyleSheet, WebGLUniformLocation, HTMLMetaElement, CanvasPattern, OffscreenCanvas, SVGTransform, SVGTextContentElement, PerformanceServerTiming, TrackEvent, XPathExpression, AnimationTimeline, MediaError, HTMLAnchorElement, XMLHttpRequest, SecurityPolicyViolationEvent, CSSMozDocumentRule, CSSImportRule, SVGLength, WaveShaperNode, RTCTrackEvent, RTCRtpSender, CSSAnimation, CSSFontPaletteValuesRule, AnimationEffect, CSSContainerRule, RTCStatsReport, SourceBufferList, HTMLHeadingElement, CanvasCaptureMediaStream, HTMLOptionElement, SVGSVGElement, WebGLActiveInfo, MIDIPort, HTMLUListElement, XPathResult, SVGUseElement, Credential, PublicKeyCredential, DOMQuad, Selection, HTMLDataElement, CSSLayerStatementRule, WebGLShader, Location, MIDIAccess, MediaRecorderErrorEvent, SVGFEGaussianBlurElement, MediaStreamEvent, CSSFontFeatureValuesRule, AbortController, RTCIceCandidate, HTMLLabelElement, PerformanceMeasure, HTMLDirectoryElement, SVGStopElement, PermissionStatus, PerformancePaintTiming, FileSystemFileEntry, SVGMarkerElement, console, SharedWorker, WebGLVertexArrayObject, HTMLOptionsCollection, HTMLTitleElement, TreeWalker, CompositionEvent, IDBCursor, TransformStream, PerformanceNavigation, Blob, SpeechSynthesisErrorEvent, CSSStyleSheet, HTMLUnknownElement, KeyEvent, HTMLOptGroupElement, CanvasGradient, AnalyserNode, Element, AnimationEvent, HTMLFieldSetElement, MediaSession, MutationObserver, SVGAnimateTransformElement, OfflineAudioContext, CacheStorage, MediaKeyStatusMap, GamepadEvent, RTCPeerConnectionIceEvent, AudioParam, AbstractRange, TextEncoder, FileSystemDirectoryHandle, CSSSupportsRule, SVGPreserveAspectRatio, PerformanceEntry, mozRTCSessionDescription, VideoPlaybackQuality, HTMLTableRowElement, HTMLFontElement, MediaKeys, DataTransfer, CSSPageRule, SVGAngle, WebGLFramebuffer, WebGLRenderbuffer, Directory, HTMLAreaElement, MimeTypeArray, NamedNodeMap, CSSKeyframeRule, XMLDocument, HTMLSlotElement, MediaDevices, IDBTransaction, HTMLModElement, MediaKeyError, SVGFEFloodElement, DOMParser, HTMLScriptElement, ReadableStreamBYOBReader, HTMLDataListElement, MediaElementAudioSourceNode, PeriodicWave, DragEvent, SVGStyleElement, SubtleCrypto, TransformStreamDefaultController, MessageEvent, WebGLProgram, SVGSetElement, WebGLShaderPrecisionFormat, ErrorEvent, NodeList, GamepadButton, MediaDeviceInfo, HTMLMediaElement, DeviceMotionEvent, ImageData, Range, PushSubscriptionOptions, OfflineAudioCompletionEvent, DOMPointReadOnly, DocumentFragment, Attr, BroadcastChannel, HTMLLinkElement, DOMMatrixReadOnly, AuthenticatorAttestationResponse, IdleDeadline, ImageBitmapRenderingContext, MediaKeySystemAccess, SVGPoint, SVGFEDropShadowElement, SVGFEDiffuseLightingElement, SVGRadialGradientElement, RTCDataChannelEvent, Headers, FileSystemDirectoryReader, SVGFEDisplacementMapElement, SVGDefsElement, SVGFEDistantLightElement, HTMLFormControlsCollection, WebGLRenderingContext, HTMLTableElement, SVGNumber, SVGAnimatedInteger, VisualViewport, SpeechSynthesisVoice, WheelEvent, SVGAnimatedNumber, GamepadPose, ResizeObserver, TextDecoder, FormDataEvent, FileSystem, IntersectionObserverEntry, SVGPolylineElement, Text, CanvasRenderingContext2D, CSSFontFaceRule, SVGGradientElement, WritableStream, SVGNumberList, SpeechSynthesisEvent, WritableStreamDefaultWriter, SVGFilterElement, URL, SVGRect, SVGFEImageElement, AudioDestinationNode, IDBRequest, MathMLElement, HTMLTimeElement, TextTrackCue, RadioNodeList, SVGTSpanElement, SVGAnimatedLengthList, SVGAnimatedString, HTMLSourceElement, Lock, ProgressEvent, PopupBlockedEvent, ValidityState, WebKitCSSMatrix, AudioListener, HTMLFormElement, PerformanceEventTiming, HTMLProgressElement, Gamepad, MediaKeySession, MediaStreamAudioSourceNode, CSSRule, HTMLPreElement, webkitURL, AuthenticatorResponse, HTMLEmbedElement, HTMLDivElement, MediaStreamAudioDestinationNode, CredentialsContainer, SVGScriptElement, MutationRecord, ConvolverNode, SVGFEPointLightElement, Screen, ClipboardEvent, SVGFETurbulenceElement, SVGFEBlendElement, GeolocationCoordinates, TextTrackList, FontFace, HTMLInputElement, Request, SVGGElement, SVGClipPathElement, TimeEvent, TextTrackCueList, BiquadFilterNode, SVGTitleElement, SVGFETileElement, SVGFEFuncRElement, HTMLButtonElement, Path2D, HTMLTableCellElement, StaticRange, SVGLineElement, CSSCounterStyleRule, HTMLQuoteElement, AudioParamMap, DeviceOrientationEvent, IDBCursorWithValue, MediaKeyMessageEvent, SVGAnimatedEnumeration, MIDIOutput, HTMLHRElement, ImageBitmap, CSSStyleRule, MIDIOutputMap, SVGAElement, ElementInternals, VTTCue, MediaMetadata, PannerNode, SVGForeignObjectElement, SVGSwitchElement, HTMLVideoElement, MediaEncryptedEvent, EventSource, SVGAnimateElement, DOMException, CSSTransition, Image, VTTRegion, CharacterData, SVGFEFuncAElement, SVGDescElement, SubmitEvent, RTCSessionDescription, SVGAnimatedBoolean, StyleSheetList, HTMLTableColElement, HTMLMarqueeElement, CSSKeyframesRule, SVGMetadataElement, MIDIInputMap, PushManager, GainNode, DOMRect, SVGMaskElement, HTMLMenuElement, RTCDTMFToneChangeEvent, IDBIndex, CSSMediaRule, HashChangeEvent, ServiceWorker, SVGFEFuncBElement, BlobEvent, DOMImplementation, GeolocationPositionError, SVGMPathElement, SVGFEColorMatrixElement, KeyboardEvent, HTMLLIElement, RTCCertificate, SpeechSynthesis, ReadableStreamBYOBRequest, DelayNode, XMLHttpRequestEventTarget, PopStateEvent, Cache, ScrollAreaEvent, RTCDtlsTransport, SVGTextPathElement, XMLHttpRequestUpload, HTMLOutputElement, MediaRecorder, PaintRequestList, SVGRectElement, AudioNode, DOMMatrix, MediaSource, FormData, NavigationPreloadManager, HTMLTableCaptionElement, CustomEvent, MediaCapabilities, SVGFEMergeElement, MediaStreamTrackEvent, Audio, CSS2Properties, FileList, SVGAnimatedRect, FileSystemWritableFileStream, ReadableStream, HTMLPictureElement, HTMLSelectElement, AudioProcessingEvent, PerformanceResourceTiming, Plugin, Crypto, CSSLayerBlockRule, ConstantSourceNode, HTMLSpanElement, DataTransferItem, ServiceWorkerRegistration, WebGLTransformFeedback, SVGViewElement, CSSNamespaceRule, URLSearchParams, WebGLBuffer, MediaQueryList, PointerEvent, SVGPolygonElement, KeyframeEffect, RTCDTMFSender, ResizeObserverEntry, SVGCircleElement, SVGAnimationElement, WebGLTexture, DOMRectReadOnly, WebGLSync, IntersectionObserver, MIDIMessageEvent, ReadableByteStreamController, HTMLBaseElement, CountQueuingStrategy, mozRTCIceCandidate, DataTransferItemList, HTMLHeadElement, CDATASection, HTMLDialogElement, HTMLTemplateElement, RTCDataChannel, PerformanceMark, SVGFESpotLightElement, BeforeUnloadEvent, MIDIConnectionEvent, RTCRtpTransceiver, TextTrack, TransitionEvent, HTMLDetailsElement, Comment, HTMLObjectElement, ChannelMergerNode, SVGAnimatedAngle, Response, FileSystemDirectoryEntry, MIDIInput, ScriptProcessorNode, Function, Object, eval, EventTarget, Window, close, stop, focus, blur, open, alert, confirm, prompt, print, postMessage, captureEvents, releaseEvents, getSelection, getComputedStyle, matchMedia, moveTo, moveBy, resizeTo, resizeBy, scroll, scrollTo, scrollBy, getDefaultComputedStyle, scrollByLines, scrollByPages, sizeToContent, updateCommands, find, dump, setResizable, requestIdleCallback, cancelIdleCallback, requestAnimationFrame, cancelAnimationFrame, reportError, btoa, atob, setTimeout, clearTimeout, setInterval, clearInterval, queueMicrotask, createImageBitmap, structuredClone, fetch, self, name, history, customElements, locationbar, menubar, personalbar, scrollbars, statusbar, toolbar, status, closed, event, frames, length, opener, parent, frameElement, navigator, clientInformation, external, applicationCache, screen, innerWidth, innerHeight, scrollX, pageXOffset, scrollY, pageYOffset, screenLeft, screenTop, screenX, screenY, outerWidth, outerHeight, performance, mozInnerScreenX, mozInnerScreenY, devicePixelRatio, scrollMaxX, scrollMaxY, fullScreen, ondevicemotion, ondeviceorientation, ondeviceorientationabsolute, InstallTrigger, visualViewport, crypto, onabort, onblur, onfocus, onauxclick, onbeforeinput, oncanplay, oncanplaythrough, onchange, onclick, onclose, oncontextmenu, oncopy, oncuechange, oncut, ondblclick, ondrag, ondragend, ondragenter, ondragexit, ondragleave, ondragover, ondragstart, ondrop, ondurationchange, onemptied, onended, onformdata, oninput, oninvalid, onkeydown, onkeypress, onkeyup, onload, onloadeddata, onloadedmetadata, onloadstart, onmousedown, onmouseenter, onmouseleave, onmousemove, onmouseout, onmouseover, onmouseup, onwheel, onpaste, onpause, onplay, onplaying, onprogress, onratechange, onreset, onresize, onscroll, onscrollend, onsecuritypolicyviolation, onseeked, onseeking, onselect, onslotchange, onstalled, onsubmit, onsuspend, ontimeupdate, onvolumechange, onwaiting, onselectstart, onselectionchange, ontoggle, onpointercancel, onpointerdown, onpointerup, onpointermove, onpointerout, onpointerover, onpointerenter, onpointerleave, ongotpointercapture, onlostpointercapture, onmozfullscreenchange, onmozfullscreenerror, onanimationcancel, onanimationend, onanimationiteration, onanimationstart, ontransitioncancel, ontransitionend, ontransitionrun, ontransitionstart, onwebkitanimationend, onwebkitanimationiteration, onwebkitanimationstart, onwebkittransitionend, onerror, speechSynthesis, onafterprint, onbeforeprint, onbeforeunload, onhashchange, onlanguagechange, onmessage, onmessageerror, onoffline, ononline, onpagehide, onpageshow, onpopstate, onrejectionhandled, onstorage, onunhandledrejection, onunload, ongamepadconnected, ongamepaddisconnected, localStorage, origin, crossOriginIsolated, isSecureContext, indexedDB, caches, sessionStorage, window, document, location, top, netscape, Node, Document, HTMLDocument, EventCounts, Map, Promise, Event`,
 			cssKeys: `alignContent, align-content, alignItems, align-items, alignSelf, align-self, aspectRatio, aspect-ratio, backfaceVisibility, backface-visibility, borderCollapse, border-collapse, borderImageRepeat, border-image-repeat, boxDecorationBreak, box-decoration-break, boxSizing, box-sizing, breakInside, break-inside, captionSide, caption-side, clear, colorInterpolation, color-interpolation, colorInterpolationFilters, color-interpolation-filters, columnCount, column-count, columnFill, column-fill, columnSpan, column-span, contain, containerType, container-type, direction, display, dominantBaseline, dominant-baseline, emptyCells, empty-cells, flexDirection, flex-direction, flexWrap, flex-wrap, cssFloat, float, fontKerning, font-kerning, fontLanguageOverride, font-language-override, fontOpticalSizing, font-optical-sizing, fontSizeAdjust, font-size-adjust, fontStretch, font-stretch, fontStyle, font-style, fontVariantCaps, font-variant-caps, fontVariantEastAsian, font-variant-east-asian, fontVariantLigatures, font-variant-ligatures, fontVariantNumeric, font-variant-numeric, fontVariantPosition, font-variant-position, fontWeight, font-weight, gridAutoFlow, grid-auto-flow, hyphens, imageOrientation, image-orientation, imageRendering, image-rendering, imeMode, ime-mode, isolation, justifyContent, justify-content, justifyItems, justify-items, justifySelf, justify-self, lineBreak, line-break, listStylePosition, list-style-position, maskType, mask-type, mixBlendMode, mix-blend-mode, MozBoxAlign, -moz-box-align, MozBoxDirection, -moz-box-direction, MozBoxOrient, -moz-box-orient, MozBoxPack, -moz-box-pack, MozFloatEdge, -moz-float-edge, MozOrient, -moz-orient, MozTextSizeAdjust, -moz-text-size-adjust, MozUserFocus, -moz-user-focus, MozUserInput, -moz-user-input, MozUserModify, -moz-user-modify, MozWindowDragging, -moz-window-dragging, objectFit, object-fit, offsetRotate, offset-rotate, outlineStyle, outline-style, overflowAnchor, overflow-anchor, overflowWrap, overflow-wrap, paintOrder, paint-order, pointerEvents, pointer-events, position, printColorAdjust, print-color-adjust, resize, rubyAlign, ruby-align, rubyPosition, ruby-position, scrollBehavior, scroll-behavior, scrollSnapAlign, scroll-snap-align, scrollSnapStop, scroll-snap-stop, scrollSnapType, scroll-snap-type, scrollbarGutter, scrollbar-gutter, scrollbarWidth, scrollbar-width, shapeRendering, shape-rendering, strokeLinecap, stroke-linecap, strokeLinejoin, stroke-linejoin, tableLayout, table-layout, textAlign, text-align, textAlignLast, text-align-last, textAnchor, text-anchor, textCombineUpright, text-combine-upright, textDecorationLine, text-decoration-line, textDecorationSkipInk, text-decoration-skip-ink, textDecorationStyle, text-decoration-style, textEmphasisPosition, text-emphasis-position, textJustify, text-justify, textOrientation, text-orientation, textRendering, text-rendering, textTransform, text-transform, textUnderlinePosition, text-underline-position, touchAction, touch-action, transformBox, transform-box, transformStyle, transform-style, unicodeBidi, unicode-bidi, userSelect, user-select, vectorEffect, vector-effect, visibility, webkitLineClamp, WebkitLineClamp, -webkit-line-clamp, whiteSpace, white-space, wordBreak, word-break, writingMode, writing-mode, zIndex, z-index, appearance, MozForceBrokenImageIcon, -moz-force-broken-image-icon, breakAfter, break-after, breakBefore, break-before, clipRule, clip-rule, fillRule, fill-rule, fillOpacity, fill-opacity, strokeOpacity, stroke-opacity, fontSynthesisSmallCaps, font-synthesis-small-caps, fontSynthesisStyle, font-synthesis-style, fontSynthesisWeight, font-synthesis-weight, MozBoxOrdinalGroup, -moz-box-ordinal-group, order, flexGrow, flex-grow, flexShrink, flex-shrink, MozBoxFlex, -moz-box-flex, strokeMiterlimit, stroke-miterlimit, overflowBlock, overflow-block, overflowInline, overflow-inline, overflowX, overflow-x, overflowY, overflow-y, overscrollBehaviorBlock, overscroll-behavior-block, overscrollBehaviorInline, overscroll-behavior-inline, overscrollBehaviorX, overscroll-behavior-x, overscrollBehaviorY, overscroll-behavior-y, floodOpacity, flood-opacity, opacity, shapeImageThreshold, shape-image-threshold, stopOpacity, stop-opacity, borderBlockEndStyle, border-block-end-style, borderBlockStartStyle, border-block-start-style, borderBottomStyle, border-bottom-style, borderInlineEndStyle, border-inline-end-style, borderInlineStartStyle, border-inline-start-style, borderLeftStyle, border-left-style, borderRightStyle, border-right-style, borderTopStyle, border-top-style, columnRuleStyle, column-rule-style, accentColor, accent-color, animationDelay, animation-delay, animationDirection, animation-direction, animationDuration, animation-duration, animationFillMode, animation-fill-mode, animationIterationCount, animation-iteration-count, animationName, animation-name, animationPlayState, animation-play-state, animationTimingFunction, animation-timing-function, backdropFilter, backdrop-filter, backgroundAttachment, background-attachment, backgroundBlendMode, background-blend-mode, backgroundClip, background-clip, backgroundImage, background-image, backgroundOrigin, background-origin, backgroundPositionX, background-position-x, backgroundPositionY, background-position-y, backgroundRepeat, background-repeat, backgroundSize, background-size, borderImageOutset, border-image-outset, borderImageSlice, border-image-slice, borderImageWidth, border-image-width, borderSpacing, border-spacing, boxShadow, box-shadow, caretColor, caret-color, clip, clipPath, clip-path, color, colorScheme, color-scheme, columnWidth, column-width, containerName, container-name, content, counterIncrement, counter-increment, counterReset, counter-reset, counterSet, counter-set, cursor, d, filter, flexBasis, flex-basis, fontFamily, font-family, fontFeatureSettings, font-feature-settings, fontPalette, font-palette, fontSize, font-size, fontVariantAlternates, font-variant-alternates, fontVariationSettings, font-variation-settings, gridTemplateAreas, grid-template-areas, hyphenateCharacter, hyphenate-character, letterSpacing, letter-spacing, lineHeight, line-height, listStyleType, list-style-type, maskClip, mask-clip, maskComposite, mask-composite, maskImage, mask-image, maskMode, mask-mode, maskOrigin, mask-origin, maskPositionX, mask-position-x, maskPositionY, mask-position-y, maskRepeat, mask-repeat, maskSize, mask-size, offsetPath, offset-path, page, perspective, quotes, rotate, scale, scrollbarColor, scrollbar-color, shapeOutside, shape-outside, strokeDasharray, stroke-dasharray, strokeDashoffset, stroke-dashoffset, strokeWidth, stroke-width, tabSize, tab-size, textDecorationThickness, text-decoration-thickness, textEmphasisStyle, text-emphasis-style, textOverflow, text-overflow, textShadow, text-shadow, transitionDelay, transition-delay, transitionDuration, transition-duration, transitionProperty, transition-property, transitionTimingFunction, transition-timing-function, translate, verticalAlign, vertical-align, willChange, will-change, wordSpacing, word-spacing, objectPosition, object-position, perspectiveOrigin, perspective-origin, offsetAnchor, offset-anchor, fill, stroke, transformOrigin, transform-origin, gridTemplateColumns, grid-template-columns, gridTemplateRows, grid-template-rows, borderImageSource, border-image-source, listStyleImage, list-style-image, gridAutoColumns, grid-auto-columns, gridAutoRows, grid-auto-rows, transform, columnGap, column-gap, rowGap, row-gap, markerEnd, marker-end, markerMid, marker-mid, markerStart, marker-start, containIntrinsicBlockSize, contain-intrinsic-block-size, containIntrinsicHeight, contain-intrinsic-height, containIntrinsicInlineSize, contain-intrinsic-inline-size, containIntrinsicWidth, contain-intrinsic-width, gridColumnEnd, grid-column-end, gridColumnStart, grid-column-start, gridRowEnd, grid-row-end, gridRowStart, grid-row-start, maxBlockSize, max-block-size, maxHeight, max-height, maxInlineSize, max-inline-size, maxWidth, max-width, cx, cy, offsetDistance, offset-distance, textIndent, text-indent, x, y, borderBottomLeftRadius, border-bottom-left-radius, borderBottomRightRadius, border-bottom-right-radius, borderEndEndRadius, border-end-end-radius, borderEndStartRadius, border-end-start-radius, borderStartEndRadius, border-start-end-radius, borderStartStartRadius, border-start-start-radius, borderTopLeftRadius, border-top-left-radius, borderTopRightRadius, border-top-right-radius, blockSize, block-size, height, inlineSize, inline-size, minBlockSize, min-block-size, minHeight, min-height, minInlineSize, min-inline-size, minWidth, min-width, width, paddingBlockEnd, padding-block-end, paddingBlockStart, padding-block-start, paddingBottom, padding-bottom, paddingInlineEnd, padding-inline-end, paddingInlineStart, padding-inline-start, paddingLeft, padding-left, paddingRight, padding-right, paddingTop, padding-top, r, shapeMargin, shape-margin, rx, ry, scrollPaddingBlockEnd, scroll-padding-block-end, scrollPaddingBlockStart, scroll-padding-block-start, scrollPaddingBottom, scroll-padding-bottom, scrollPaddingInlineEnd, scroll-padding-inline-end, scrollPaddingInlineStart, scroll-padding-inline-start, scrollPaddingLeft, scroll-padding-left, scrollPaddingRight, scroll-padding-right, scrollPaddingTop, scroll-padding-top, borderBlockEndWidth, border-block-end-width, borderBlockStartWidth, border-block-start-width, borderBottomWidth, border-bottom-width, borderInlineEndWidth, border-inline-end-width, borderInlineStartWidth, border-inline-start-width, borderLeftWidth, border-left-width, borderRightWidth, border-right-width, borderTopWidth, border-top-width, columnRuleWidth, column-rule-width, outlineWidth, outline-width, webkitTextStrokeWidth, WebkitTextStrokeWidth, -webkit-text-stroke-width, outlineOffset, outline-offset, overflowClipMargin, overflow-clip-margin, scrollMarginBlockEnd, scroll-margin-block-end, scrollMarginBlockStart, scroll-margin-block-start, scrollMarginBottom, scroll-margin-bottom, scrollMarginInlineEnd, scroll-margin-inline-end, scrollMarginInlineStart, scroll-margin-inline-start, scrollMarginLeft, scroll-margin-left, scrollMarginRight, scroll-margin-right, scrollMarginTop, scroll-margin-top, bottom, insetBlockEnd, inset-block-end, insetBlockStart, inset-block-start, insetInlineEnd, inset-inline-end, insetInlineStart, inset-inline-start, left, marginBlockEnd, margin-block-end, marginBlockStart, margin-block-start, marginBottom, margin-bottom, marginInlineEnd, margin-inline-end, marginInlineStart, margin-inline-start, marginLeft, margin-left, marginRight, margin-right, marginTop, margin-top, right, textUnderlineOffset, text-underline-offset, top, backgroundColor, background-color, borderBlockEndColor, border-block-end-color, borderBlockStartColor, border-block-start-color, borderBottomColor, border-bottom-color, borderInlineEndColor, border-inline-end-color, borderInlineStartColor, border-inline-start-color, borderLeftColor, border-left-color, borderRightColor, border-right-color, borderTopColor, border-top-color, columnRuleColor, column-rule-color, floodColor, flood-color, lightingColor, lighting-color, outlineColor, outline-color, stopColor, stop-color, textDecorationColor, text-decoration-color, textEmphasisColor, text-emphasis-color, webkitTextFillColor, WebkitTextFillColor, -webkit-text-fill-color, webkitTextStrokeColor, WebkitTextStrokeColor, -webkit-text-stroke-color, background, backgroundPosition, background-position, borderColor, border-color, borderStyle, border-style, borderWidth, border-width, borderTop, border-top, borderRight, border-right, borderBottom, border-bottom, borderLeft, border-left, borderBlockStart, border-block-start, borderBlockEnd, border-block-end, borderInlineStart, border-inline-start, borderInlineEnd, border-inline-end, border, borderRadius, border-radius, borderImage, border-image, borderBlockWidth, border-block-width, borderBlockStyle, border-block-style, borderBlockColor, border-block-color, borderInlineWidth, border-inline-width, borderInlineStyle, border-inline-style, borderInlineColor, border-inline-color, borderBlock, border-block, borderInline, border-inline, overflow, overscrollBehavior, overscroll-behavior, container, pageBreakBefore, page-break-before, pageBreakAfter, page-break-after, pageBreakInside, page-break-inside, offset, columns, columnRule, column-rule, font, fontVariant, font-variant, fontSynthesis, font-synthesis, marker, textEmphasis, text-emphasis, webkitTextStroke, WebkitTextStroke, -webkit-text-stroke, listStyle, list-style, margin, marginBlock, margin-block, marginInline, margin-inline, scrollMargin, scroll-margin, scrollMarginBlock, scroll-margin-block, scrollMarginInline, scroll-margin-inline, outline, padding, paddingBlock, padding-block, paddingInline, padding-inline, scrollPadding, scroll-padding, scrollPaddingBlock, scroll-padding-block, scrollPaddingInline, scroll-padding-inline, flexFlow, flex-flow, flex, gap, gridRow, grid-row, gridColumn, grid-column, gridArea, grid-area, gridTemplate, grid-template, grid, placeContent, place-content, placeSelf, place-self, placeItems, place-items, inset, insetBlock, inset-block, insetInline, inset-inline, containIntrinsicSize, contain-intrinsic-size, mask, maskPosition, mask-position, textDecoration, text-decoration, transition, animation, all, webkitBackgroundClip, WebkitBackgroundClip, -webkit-background-clip, webkitBackgroundOrigin, WebkitBackgroundOrigin, -webkit-background-origin, webkitBackgroundSize, WebkitBackgroundSize, -webkit-background-size, MozBorderStartColor, -moz-border-start-color, MozBorderStartStyle, -moz-border-start-style, MozBorderStartWidth, -moz-border-start-width, MozBorderEndColor, -moz-border-end-color, MozBorderEndStyle, -moz-border-end-style, MozBorderEndWidth, -moz-border-end-width, webkitBorderTopLeftRadius, WebkitBorderTopLeftRadius, -webkit-border-top-left-radius, webkitBorderTopRightRadius, WebkitBorderTopRightRadius, -webkit-border-top-right-radius, webkitBorderBottomRightRadius, WebkitBorderBottomRightRadius, -webkit-border-bottom-right-radius, webkitBorderBottomLeftRadius, WebkitBorderBottomLeftRadius, -webkit-border-bottom-left-radius, MozTransform, -moz-transform, webkitTransform, WebkitTransform, -webkit-transform, MozPerspective, -moz-perspective, webkitPerspective, WebkitPerspective, -webkit-perspective, MozPerspectiveOrigin, -moz-perspective-origin, webkitPerspectiveOrigin, WebkitPerspectiveOrigin, -webkit-perspective-origin, MozBackfaceVisibility, -moz-backface-visibility, webkitBackfaceVisibility, WebkitBackfaceVisibility, -webkit-backface-visibility, MozTransformStyle, -moz-transform-style, webkitTransformStyle, WebkitTransformStyle, -webkit-transform-style, MozTransformOrigin, -moz-transform-origin, webkitTransformOrigin, WebkitTransformOrigin, -webkit-transform-origin, MozAppearance, -moz-appearance, webkitAppearance, WebkitAppearance, -webkit-appearance, webkitBoxShadow, WebkitBoxShadow, -webkit-box-shadow, webkitFilter, WebkitFilter, -webkit-filter, MozFontFeatureSettings, -moz-font-feature-settings, MozFontLanguageOverride, -moz-font-language-override, colorAdjust, color-adjust, MozHyphens, -moz-hyphens, webkitTextSizeAdjust, WebkitTextSizeAdjust, -webkit-text-size-adjust, wordWrap, word-wrap, MozTabSize, -moz-tab-size, MozMarginStart, -moz-margin-start, MozMarginEnd, -moz-margin-end, MozPaddingStart, -moz-padding-start, MozPaddingEnd, -moz-padding-end, webkitFlexDirection, WebkitFlexDirection, -webkit-flex-direction, webkitFlexWrap, WebkitFlexWrap, -webkit-flex-wrap, webkitJustifyContent, WebkitJustifyContent, -webkit-justify-content, webkitAlignContent, WebkitAlignContent, -webkit-align-content, webkitAlignItems, WebkitAlignItems, -webkit-align-items, webkitFlexGrow, WebkitFlexGrow, -webkit-flex-grow, webkitFlexShrink, WebkitFlexShrink, -webkit-flex-shrink, webkitAlignSelf, WebkitAlignSelf, -webkit-align-self, webkitOrder, WebkitOrder, -webkit-order, webkitFlexBasis, WebkitFlexBasis, -webkit-flex-basis, MozBoxSizing, -moz-box-sizing, webkitBoxSizing, WebkitBoxSizing, -webkit-box-sizing, gridColumnGap, grid-column-gap, gridRowGap, grid-row-gap, webkitClipPath, WebkitClipPath, -webkit-clip-path, webkitMaskRepeat, WebkitMaskRepeat, -webkit-mask-repeat, webkitMaskPositionX, WebkitMaskPositionX, -webkit-mask-position-x, webkitMaskPositionY, WebkitMaskPositionY, -webkit-mask-position-y, webkitMaskClip, WebkitMaskClip, -webkit-mask-clip, webkitMaskOrigin, WebkitMaskOrigin, -webkit-mask-origin, webkitMaskSize, WebkitMaskSize, -webkit-mask-size, webkitMaskComposite, WebkitMaskComposite, -webkit-mask-composite, webkitMaskImage, WebkitMaskImage, -webkit-mask-image, MozUserSelect, -moz-user-select, webkitUserSelect, WebkitUserSelect, -webkit-user-select, MozTransitionDuration, -moz-transition-duration, webkitTransitionDuration, WebkitTransitionDuration, -webkit-transition-duration, MozTransitionTimingFunction, -moz-transition-timing-function, webkitTransitionTimingFunction, WebkitTransitionTimingFunction, -webkit-transition-timing-function, MozTransitionProperty, -moz-transition-property, webkitTransitionProperty, WebkitTransitionProperty, -webkit-transition-property, MozTransitionDelay, -moz-transition-delay, webkitTransitionDelay, WebkitTransitionDelay, -webkit-transition-delay, MozAnimationName, -moz-animation-name, webkitAnimationName, WebkitAnimationName, -webkit-animation-name, MozAnimationDuration, -moz-animation-duration, webkitAnimationDuration, WebkitAnimationDuration, -webkit-animation-duration, MozAnimationTimingFunction, -moz-animation-timing-function, webkitAnimationTimingFunction, WebkitAnimationTimingFunction, -webkit-animation-timing-function, MozAnimationIterationCount, -moz-animation-iteration-count, webkitAnimationIterationCount, WebkitAnimationIterationCount, -webkit-animation-iteration-count, MozAnimationDirection, -moz-animation-direction, webkitAnimationDirection, WebkitAnimationDirection, -webkit-animation-direction, MozAnimationPlayState, -moz-animation-play-state, webkitAnimationPlayState, WebkitAnimationPlayState, -webkit-animation-play-state, MozAnimationFillMode, -moz-animation-fill-mode, webkitAnimationFillMode, WebkitAnimationFillMode, -webkit-animation-fill-mode, MozAnimationDelay, -moz-animation-delay, webkitAnimationDelay, WebkitAnimationDelay, -webkit-animation-delay, webkitBoxAlign, WebkitBoxAlign, -webkit-box-align, webkitBoxDirection, WebkitBoxDirection, -webkit-box-direction, webkitBoxFlex, WebkitBoxFlex, -webkit-box-flex, webkitBoxOrient, WebkitBoxOrient, -webkit-box-orient, webkitBoxPack, WebkitBoxPack, -webkit-box-pack, webkitBoxOrdinalGroup, WebkitBoxOrdinalGroup, -webkit-box-ordinal-group, MozBorderStart, -moz-border-start, MozBorderEnd, -moz-border-end, webkitBorderRadius, WebkitBorderRadius, -webkit-border-radius, MozBorderImage, -moz-border-image, webkitBorderImage, WebkitBorderImage, -webkit-border-image, webkitFlexFlow, WebkitFlexFlow, -webkit-flex-flow, webkitFlex, WebkitFlex, -webkit-flex, gridGap, grid-gap, webkitMask, WebkitMask, -webkit-mask, webkitMaskPosition, WebkitMaskPosition, -webkit-mask-position, MozTransition, -moz-transition, webkitTransition, WebkitTransition, -webkit-transition, MozAnimation, -moz-animation, webkitAnimation, WebkitAnimation, -webkit-animation, constructor`,
 			jsKeys: 'Object.assign, Object.getPrototypeOf, Object.setPrototypeOf, Object.getOwnPropertyDescriptor, Object.getOwnPropertyDescriptors, Object.keys, Object.values, Object.entries, Object.is, Object.defineProperty, Object.defineProperties, Object.create, Object.getOwnPropertyNames, Object.getOwnPropertySymbols, Object.isExtensible, Object.preventExtensions, Object.freeze, Object.isFrozen, Object.seal, Object.isSealed, Object.fromEntries, Object.hasOwn, Object.toString, Object.toLocaleString, Object.valueOf, Object.hasOwnProperty, Object.isPrototypeOf, Object.propertyIsEnumerable, Object.__defineGetter__, Object.__defineSetter__, Object.__lookupGetter__, Object.__lookupSetter__, Object.__proto__, Function.toString, Function.apply, Function.call, Function.bind, Boolean.toString, Boolean.valueOf, Symbol.for, Symbol.keyFor, Symbol.isConcatSpreadable, Symbol.iterator, Symbol.match, Symbol.replace, Symbol.search, Symbol.species, Symbol.hasInstance, Symbol.split, Symbol.toPrimitive, Symbol.toStringTag, Symbol.unscopables, Symbol.asyncIterator, Symbol.matchAll, Symbol.toString, Symbol.valueOf, Symbol.description, Error.toString, Error.message, Error.stack, Number.isFinite, Number.isInteger, Number.isNaN, Number.isSafeInteger, Number.POSITIVE_INFINITY, Number.NEGATIVE_INFINITY, Number.MAX_VALUE, Number.MIN_VALUE, Number.MAX_SAFE_INTEGER, Number.MIN_SAFE_INTEGER, Number.EPSILON, Number.parseInt, Number.parseFloat, Number.NaN, Number.toString, Number.toLocaleString, Number.valueOf, Number.toFixed, Number.toExponential, Number.toPrecision, BigInt.asUintN, BigInt.asIntN, BigInt.valueOf, BigInt.toString, BigInt.toLocaleString, Math.abs, Math.acos, Math.asin, Math.atan, Math.atan2, Math.ceil, Math.clz32, Math.cos, Math.exp, Math.floor, Math.imul, Math.fround, Math.log, Math.max, Math.min, Math.pow, Math.random, Math.round, Math.sin, Math.sqrt, Math.tan, Math.log10, Math.log2, Math.log1p, Math.expm1, Math.cosh, Math.sinh, Math.tanh, Math.acosh, Math.asinh, Math.atanh, Math.hypot, Math.trunc, Math.sign, Math.cbrt, Math.E, Math.LOG2E, Math.LOG10E, Math.LN2, Math.LN10, Math.PI, Math.SQRT2, Math.SQRT1_2, Date.UTC, Date.parse, Date.now, Date.getTime, Date.getTimezoneOffset, Date.getYear, Date.getFullYear, Date.getUTCFullYear, Date.getMonth, Date.getUTCMonth, Date.getDate, Date.getUTCDate, Date.getDay, Date.getUTCDay, Date.getHours, Date.getUTCHours, Date.getMinutes, Date.getUTCMinutes, Date.getSeconds, Date.getUTCSeconds, Date.getMilliseconds, Date.getUTCMilliseconds, Date.setTime, Date.setYear, Date.setFullYear, Date.setUTCFullYear, Date.setMonth, Date.setUTCMonth, Date.setDate, Date.setUTCDate, Date.setHours, Date.setUTCHours, Date.setMinutes, Date.setUTCMinutes, Date.setSeconds, Date.setUTCSeconds, Date.setMilliseconds, Date.setUTCMilliseconds, Date.toUTCString, Date.toLocaleString, Date.toLocaleDateString, Date.toLocaleTimeString, Date.toDateString, Date.toTimeString, Date.toISOString, Date.toJSON, Date.toString, Date.valueOf, Date.toGMTString, String.fromCharCode, String.fromCodePoint, String.raw, String.toString, String.valueOf, String.toLowerCase, String.toUpperCase, String.charAt, String.charCodeAt, String.substring, String.padStart, String.padEnd, String.codePointAt, String.includes, String.indexOf, String.lastIndexOf, String.startsWith, String.endsWith, String.trim, String.trimStart, String.trimEnd, String.toLocaleLowerCase, String.toLocaleUpperCase, String.localeCompare, String.repeat, String.normalize, String.match, String.matchAll, String.search, String.replace, String.replaceAll, String.split, String.substr, String.concat, String.slice, String.at, String.bold, String.italics, String.fixed, String.strike, String.small, String.big, String.blink, String.sup, String.sub, String.anchor, String.link, String.fontcolor, String.fontsize, String.trimLeft, String.trimRight, RegExp.input, RegExp.lastMatch, RegExp.lastParen, RegExp.leftContext, RegExp.rightContext, RegExp.$1, RegExp.$2, RegExp.$3, RegExp.$4, RegExp.$5, RegExp.$6, RegExp.$7, RegExp.$8, RegExp.$9, RegExp.$_, RegExp.$&, RegExp.$+, RegExp.$`, RegExp.$\', RegExp.toString, RegExp.compile, RegExp.exec, RegExp.test, RegExp.flags, RegExp.hasIndices, RegExp.global, RegExp.ignoreCase, RegExp.multiline, RegExp.dotAll, RegExp.source, RegExp.sticky, RegExp.unicode, Array.isArray, Array.from, Array.of, Array.toString, Array.toLocaleString, Array.join, Array.reverse, Array.sort, Array.push, Array.pop, Array.shift, Array.unshift, Array.splice, Array.concat, Array.slice, Array.lastIndexOf, Array.indexOf, Array.forEach, Array.map, Array.filter, Array.reduce, Array.reduceRight, Array.some, Array.every, Array.find, Array.findIndex, Array.copyWithin, Array.fill, Array.entries, Array.keys, Array.values, Array.includes, Array.flatMap, Array.flat, Array.at, Array.findLast, Array.findLastIndex, Map.get, Map.has, Map.set, Map.delete, Map.keys, Map.values, Map.clear, Map.forEach, Map.entries, Map.size, Set.has, Set.add, Set.delete, Set.entries, Set.clear, Set.forEach, Set.values, Set.keys, Set.size, WeakMap.has, WeakMap.get, WeakMap.delete, WeakMap.set, WeakSet.add, WeakSet.delete, WeakSet.has, Atomics.compareExchange, Atomics.load, Atomics.store, Atomics.exchange, Atomics.add, Atomics.sub, Atomics.and, Atomics.or, Atomics.xor, Atomics.isLockFree, Atomics.wait, Atomics.notify, Atomics.wake, JSON.parse, JSON.stringify, Promise.all, Promise.allSettled, Promise.any, Promise.race, Promise.reject, Promise.resolve, Promise.then, Promise.catch, Promise.finally, Reflect.apply, Reflect.construct, Reflect.defineProperty, Reflect.deleteProperty, Reflect.get, Reflect.getOwnPropertyDescriptor, Reflect.getPrototypeOf, Reflect.has, Reflect.isExtensible, Reflect.ownKeys, Reflect.preventExtensions, Reflect.set, Reflect.setPrototypeOf, Proxy.revocable, Intl.getCanonicalLocales, Intl.supportedValuesOf, Intl.Collator, Intl.DateTimeFormat, Intl.DisplayNames, Intl.ListFormat, Intl.Locale, Intl.NumberFormat, Intl.PluralRules, Intl.RelativeTimeFormat, WebAssembly.compile, WebAssembly.instantiate, WebAssembly.validate, WebAssembly.compileStreaming, WebAssembly.instantiateStreaming, WebAssembly.Module, WebAssembly.Instance, WebAssembly.Memory, WebAssembly.Table, WebAssembly.Global, WebAssembly.CompileError, WebAssembly.LinkError, WebAssembly.RuntimeError, WebAssembly.Tag, WebAssembly.Exception, Document.getElementsByTagName, Document.getElementsByTagNameNS, Document.getElementsByClassName, Document.getElementById, Document.createElement, Document.createElementNS, Document.createDocumentFragment, Document.createTextNode, Document.createComment, Document.createProcessingInstruction, Document.importNode, Document.adoptNode, Document.createEvent, Document.createRange, Document.createNodeIterator, Document.createTreeWalker, Document.createCDATASection, Document.createAttribute, Document.createAttributeNS, Document.getElementsByName, Document.open, Document.close, Document.write, Document.writeln, Document.hasFocus, Document.execCommand, Document.queryCommandEnabled, Document.queryCommandIndeterm, Document.queryCommandState, Document.queryCommandSupported, Document.queryCommandValue, Document.releaseCapture, Document.mozSetImageElement, Document.clear, Document.captureEvents, Document.releaseEvents, Document.exitFullscreen, Document.mozCancelFullScreen, Document.exitPointerLock, Document.enableStyleSheetsForSet, Document.caretPositionFromPoint, Document.querySelector, Document.querySelectorAll, Document.getSelection, Document.hasStorageAccess, Document.requestStorageAccess, Document.elementFromPoint, Document.elementsFromPoint, Document.getAnimations, Document.prepend, Document.append, Document.replaceChildren, Document.createExpression, Document.createNSResolver, Document.evaluate, Document.implementation, Document.URL, Document.documentURI, Document.compatMode, Document.characterSet, Document.charset, Document.inputEncoding, Document.contentType, Document.doctype, Document.documentElement, Document.domain, Document.referrer, Document.cookie, Document.lastModified, Document.readyState, Document.title, Document.dir, Document.body, Document.head, Document.images, Document.embeds, Document.plugins, Document.links, Document.forms, Document.scripts, Document.defaultView, Document.designMode, Document.onreadystatechange, Document.onbeforescriptexecute, Document.onafterscriptexecute, Document.currentScript, Document.fgColor, Document.linkColor, Document.vlinkColor, Document.alinkColor, Document.bgColor, Document.anchors, Document.applets, Document.all, Document.fullscreen, Document.mozFullScreen, Document.fullscreenEnabled, Document.mozFullScreenEnabled, Document.onfullscreenchange, Document.onfullscreenerror, Document.onpointerlockchange, Document.onpointerlockerror, Document.hidden, Document.visibilityState, Document.onvisibilitychange, Document.selectedStyleSheetSet, Document.lastStyleSheetSet, Document.preferredStyleSheetSet, Document.styleSheetSets, Document.scrollingElement, Document.timeline, Document.rootElement, Document.activeElement, Document.styleSheets, Document.pointerLockElement, Document.fullscreenElement, Document.mozFullScreenElement, Document.adoptedStyleSheets, Document.fonts, Document.onabort, Document.onblur, Document.onfocus, Document.onauxclick, Document.onbeforeinput, Document.oncanplay, Document.oncanplaythrough, Document.onchange, Document.onclick, Document.onclose, Document.oncontextmenu, Document.oncopy, Document.oncuechange, Document.oncut, Document.ondblclick, Document.ondrag, Document.ondragend, Document.ondragenter, Document.ondragexit, Document.ondragleave, Document.ondragover, Document.ondragstart, Document.ondrop, Document.ondurationchange, Document.onemptied, Document.onended, Document.onformdata, Document.oninput, Document.oninvalid, Document.onkeydown, Document.onkeypress, Document.onkeyup, Document.onload, Document.onloadeddata, Document.onloadedmetadata, Document.onloadstart, Document.onmousedown, Document.onmouseenter, Document.onmouseleave, Document.onmousemove, Document.onmouseout, Document.onmouseover, Document.onmouseup, Document.onwheel, Document.onpaste, Document.onpause, Document.onplay, Document.onplaying, Document.onprogress, Document.onratechange, Document.onreset, Document.onresize, Document.onscroll, Document.onscrollend, Document.onsecuritypolicyviolation, Document.onseeked, Document.onseeking, Document.onselect, Document.onslotchange, Document.onstalled, Document.onsubmit, Document.onsuspend, Document.ontimeupdate, Document.onvolumechange, Document.onwaiting, Document.onselectstart, Document.onselectionchange, Document.ontoggle, Document.onpointercancel, Document.onpointerdown, Document.onpointerup, Document.onpointermove, Document.onpointerout, Document.onpointerover, Document.onpointerenter, Document.onpointerleave, Document.ongotpointercapture, Document.onlostpointercapture, Document.onmozfullscreenchange, Document.onmozfullscreenerror, Document.onanimationcancel, Document.onanimationend, Document.onanimationiteration, Document.onanimationstart, Document.ontransitioncancel, Document.ontransitionend, Document.ontransitionrun, Document.ontransitionstart, Document.onwebkitanimationend, Document.onwebkitanimationiteration, Document.onwebkitanimationstart, Document.onwebkittransitionend, Document.onerror, Document.children, Document.firstElementChild, Document.lastElementChild, Document.childElementCount, Element.getAttributeNames, Element.getAttribute, Element.getAttributeNS, Element.toggleAttribute, Element.setAttribute, Element.setAttributeNS, Element.removeAttribute, Element.removeAttributeNS, Element.hasAttribute, Element.hasAttributeNS, Element.hasAttributes, Element.closest, Element.matches, Element.webkitMatchesSelector, Element.getElementsByTagName, Element.getElementsByTagNameNS, Element.getElementsByClassName, Element.insertAdjacentElement, Element.insertAdjacentText, Element.mozMatchesSelector, Element.setPointerCapture, Element.releasePointerCapture, Element.hasPointerCapture, Element.setCapture, Element.releaseCapture, Element.getAttributeNode, Element.setAttributeNode, Element.removeAttributeNode, Element.getAttributeNodeNS, Element.setAttributeNodeNS, Element.getClientRects, Element.getBoundingClientRect, Element.checkVisibility, Element.scrollIntoView, Element.scroll, Element.scrollTo, Element.scrollBy, Element.insertAdjacentHTML, Element.querySelector, Element.querySelectorAll, Element.attachShadow, Element.requestFullscreen, Element.mozRequestFullScreen, Element.requestPointerLock, Element.animate, Element.getAnimations, Element.before, Element.after, Element.replaceWith, Element.remove, Element.prepend, Element.append, Element.replaceChildren, Element.namespaceURI, Element.prefix, Element.localName, Element.tagName, Element.id, Element.className, Element.classList, Element.part, Element.attributes, Element.scrollTop, Element.scrollLeft, Element.scrollWidth, Element.scrollHeight, Element.clientTop, Element.clientLeft, Element.clientWidth, Element.clientHeight, Element.scrollTopMax, Element.scrollLeftMax, Element.innerHTML, Element.outerHTML, Element.shadowRoot, Element.assignedSlot, Element.slot, Element.onfullscreenchange, Element.onfullscreenerror, Element.previousElementSibling, Element.nextElementSibling, Element.children, Element.firstElementChild, Element.lastElementChild, Element.childElementCount',
-		},
+		}
 	});
 
 	const BROWSER = (IS_BLINK ? 'Chrome' : IS_GECKO ? 'Firefox' : '');
@@ -3225,8 +3157,9 @@
 			'110': ['Array.toReversed', 'Array.toSorted', 'Array.toSpliced', 'Array.with'],
 			'111': ['String.isWellFormed', 'String.toWellFormed', 'Document.startViewTransition'],
 			'112-113': ['RegExp.unicodeSets'],
-			'114-115': ['JSON.rawJSON', 'JSON.isRawJSON'],
+			'114-115': ['JSON.rawJSON', 'JSON.isRawJSON']
 		};
+
 		const blinkCSS = {
 			'76': ['backdrop-filter'],
 			'77-80': ['overscroll-behavior-block', 'overscroll-behavior-inline'],
@@ -3253,8 +3186,9 @@
 			'109': ['hyphenate-limit-chars', 'math-depth', 'math-shift', 'math-style'],
 			'110': ['initial-letter'],
 			'111-113': ['baseline-source', 'font-variant-alternates', 'view-transition-name'],
-			'114-115': ['text-wrap', 'white-space-collapse'],
+			'114-115': ['text-wrap', 'white-space-collapse']
 		};
+
 		const blinkWindow = {
 			'80': ['CompressionStream', 'DecompressionStream', 'FeaturePolicy', 'FragmentDirective', 'PeriodicSyncManager', 'VideoPlaybackQuality'],
 			'81': ['SubmitEvent', 'XRHitTestResult', 'XRHitTestSource', 'XRRay', 'XRTransientInputHitTestResult', 'XRTransientInputHitTestSource'],
@@ -3280,8 +3214,9 @@
 			'109': ['MathMLElement'],
 			'110': ['AudioSinkInfo'],
 			'111-112': ['ViewTransition'],
-			'113-115': ['ViewTransition', '!CanvasFilter'],
+			'113-115': ['ViewTransition', '!CanvasFilter']
 		};
+
 		// Gecko
 		const geckoJS = {
 			'71': ['Promise.allSettled'],
@@ -3301,8 +3236,9 @@
 			'100': ['WebAssembly.Tag', 'WebAssembly.Exception'],
 			'101-103': ['Document.adoptedStyleSheets'],
 			'104-108': ['Array.findLast', 'Array.findLastIndex'],
-			'109-112': ['Document.onscrollend'],
+			'109-112': ['Document.onscrollend']
 		};
+
 		// {"added":[],"removed":[]}	{"added":["Document.onscrollend"],"removed":[]}	{"added":["onscrollend"],"removed":[]}
 		const geckoCSS = {
 			'71': ['-moz-column-span'],
@@ -3322,8 +3258,9 @@
 			'109': ['-webkit-clip-path'],
 			'110': ['container-type', 'container-name', 'page', 'container'],
 			'111': ['font-synthesis-small-caps', 'font-synthesis-style', 'font-synthesis-weight'],
-			'112': ['font-synthesis-small-caps', '!-moz-image-region'],
+			'112': ['font-synthesis-small-caps', '!-moz-image-region']
 		};
+
 		const geckoWindow = {
 			// disregard: 'reportError','onsecuritypolicyviolation','onslotchange'
 			'71': ['MathMLElement', '!SVGZoomAndPan'],
@@ -3350,48 +3287,21 @@
 			'107-109': ['CSSFontPaletteValuesRule'],
 			'110': ['CSSContainerRule'],
 			'111': ['FileSystemFileHandle', 'FileSystemDirectoryHandle'],
-			'112': ['FileSystemFileHandle', '!U2F'],
+			'112': ['FileSystemFileHandle', '!U2F']
 		};
+
 		const IS_BLINK = browser == 'Chrome';
 		const IS_GECKO = browser == 'Firefox';
 		const css = (IS_BLINK ? blinkCSS : IS_GECKO ? geckoCSS : {});
 		const win = (IS_BLINK ? blinkWindow : IS_GECKO ? geckoWindow : {});
 		const js = (IS_BLINK ? blinkJS : IS_GECKO ? geckoJS : {});
-		return {
-			css,
-			win,
-			js,
-		};
+
+		return { css, win, js };
 	};
 
 	const getJSCoreFeatures = (win) => {
-		const globalObjects = [
-			'Object',
-			'Function',
-			'Boolean',
-			'Symbol',
-			'Error',
-			'Number',
-			'BigInt',
-			'Math',
-			'Date',
-			'String',
-			'RegExp',
-			'Array',
-			'Map',
-			'Set',
-			'WeakMap',
-			'WeakSet',
-			'Atomics',
-			'JSON',
-			'Promise',
-			'Reflect',
-			'Proxy',
-			'Intl',
-			'WebAssembly',
-			'Document',
-			'Element',
-		];
+		const globalObjects = ['Object', 'Function', 'Boolean', 'Symbol', 'Error', 'Number', 'BigInt', 'Math', 'Date', 'String', 'RegExp', 'Array', 'Map', 'Set', 'WeakMap', 'WeakSet', 'Atomics', 'JSON', 'Promise', 'Reflect', 'Proxy', 'Intl', 'WebAssembly', 'Document', 'Element'];
+
 		try {
 			// @ts-ignore
 			const features = globalObjects.reduce((acc, name) => {
@@ -3400,12 +3310,14 @@
 				const descriptorProtoKeys = Object.keys(Object.getOwnPropertyDescriptors((win[name] || {}).prototype || {}));
 				const uniques = [...new Set([...descriptorKeys, ...descriptorProtoKeys].filter((key) => !ignore.includes(key)))];
 				const keys = uniques.map((key) => `${name}.${key}`);
+
 				return [...acc, ...keys];
 			}, []);
+
 			return features;
-		}
-		catch (error) {
+		} catch (error) {
 			console.error(error);
+
 			return [];
 		}
 	};
@@ -3417,134 +3329,143 @@
 		const stable = getStableFeatures();
 		const { version: maxVersion } = stable[BROWSER] || {};
 		const validMetrics = vReport && version;
+
 		if (!validMetrics) {
 			return {};
 		}
+
 		const [vStart, vEnd] = version ? version.split('-') : [];
 		const vMax = (vEnd || vStart);
 		const reportIsTooHigh = +vReport > (+vMax + forgivenessOffset);
 		const reportIsTooLow = +vReport < (+vStart - forgivenessOffset);
 		const reportIsOff = (reportIsTooHigh || reportIsTooLow);
-		const versionIsAboveMax = ((+vMax == maxVersion) &&
-			(+vReport > maxVersion));
+		const versionIsAboveMax = ((+vMax == maxVersion) && (+vReport > maxVersion));
 		const liedVersion = !versionIsAboveMax && reportIsOff;
 		const distance = !liedVersion ? 0 : (Math.abs(vReport - (reportIsTooLow ? vStart : vMax)));
+
 		return { liedVersion, distance };
 	};
 
 	async function getEngineFeatures({ cssComputed, navigatorComputed, windowFeaturesComputed, }) {
 		const { iframeWindow: PHANTOM_DARKNESS, div: PARENT_PHANTOM } = getPhantomIframe() || {};
+
 		try {
 			const timer = createTimer();
 			await queueEvent(timer);
 			const win = PHANTOM_DARKNESS ? PHANTOM_DARKNESS : window;
+
 			if (!cssComputed || !windowFeaturesComputed) {
 				logTestResult({ test: 'features', passed: false });
+
 				return;
 			}
+
 			const jsFeaturesKeys = getJSCoreFeatures(win);
 			const { keys: computedStyleKeys } = cssComputed.computedStyle || {};
 			const { keys: windowFeaturesKeys } = windowFeaturesComputed || {};
 			const { userAgentParsed: decryptedName } = navigatorComputed || {};
-			const isNative = (win, x) => (/\[native code\]/.test(win[x] + '') &&
-				'prototype' in win[x] &&
-				win[x].prototype.constructor.name === x);
+			const isNative = (win, x) => (/\[native code\]/.test(win[x] + '') && 'prototype' in win[x] && win[x].prototype.constructor.name === x);
+
 			// @ts-ignore
 			const getFeatures = ({ context, allKeys, engineMap, checkNative = false } = {}) => {
 				const allKeysSet = new Set(allKeys);
 				const features = new Set();
+
 				// @ts-ignore
 				const match = Object.keys(engineMap || {}).reduce((acc, key) => {
 					const version = engineMap[key];
 					const versionLen = version.length;
+
 					const featureLen = version.filter((prop) => {
 						const removedFromVersion = prop.charAt(0) == '!';
+
 						if (removedFromVersion) {
 							const propName = prop.slice(1);
+
 							return !allKeysSet.has(propName) && features.add(prop);
 						}
-						return (allKeysSet.has(prop) &&
-							(checkNative ? isNative(context, prop) : true) &&
-							features.add(prop));
+
+						return (allKeysSet.has(prop) && (checkNative ? isNative(context, prop) : true) && features.add(prop));
 					}).length;
+
 					return versionLen == featureLen ? [...acc, key] : acc;
 				}, []);
+
 				const version = versionSort(match)[0];
-				return {
-					version,
-					features,
-				};
+
+				return { version, features };
 			};
+
 			// engine maps
 			const { css: engineMapCSS, win: engineMapWindow, js: engineMapJS, } = getEngineMaps(BROWSER);
+
 			// css version
-			const { version: cssVersion, features: cssFeatures, } = getFeatures({
-				context: win,
-				allKeys: computedStyleKeys,
-				engineMap: engineMapCSS,
-			});
+			const { version: cssVersion, features: cssFeatures, } = getFeatures({ context: win, allKeys: computedStyleKeys, engineMap: engineMapCSS });
+
 			// window version
-			const { version: windowVersion, features: windowFeatures, } = getFeatures({
-				context: win,
-				allKeys: windowFeaturesKeys,
-				engineMap: engineMapWindow,
-				checkNative: true,
-			});
+			const { version: windowVersion, features: windowFeatures, } = getFeatures({ context: win, allKeys: windowFeaturesKeys, engineMap: engineMapWindow, checkNative: true });
+
 			// js version
-			const { version: jsVersion, features: jsFeatures, } = getFeatures({
-				context: win,
-				allKeys: jsFeaturesKeys,
-				engineMap: engineMapJS,
-			});
+			const { version: jsVersion, features: jsFeatures, } = getFeatures({ context: win, allKeys: jsFeaturesKeys, engineMap: engineMapJS });
+
 			// determine version based on 3 factors
 			const getVersionFromRange = (range, versionCollection) => {
 				const exactVersion = versionCollection.find((version) => version && !/-/.test(version));
+
 				if (exactVersion) {
 					return exactVersion;
 				}
+
 				const len = range.length;
 				const first = range[0];
 				const last = range[len - 1];
-				return (!len ? '' :
-					len == 1 ? first :
-						`${last}-${first}`);
+
+				return (!len ? '' : len == 1 ? first : `${last}-${first}`);
 			};
-			const versionSet = new Set([
-				cssVersion,
-				windowVersion,
-				jsVersion,
-			]);
+
+			const versionSet = new Set([cssVersion, windowVersion, jsVersion]);
+
 			versionSet.delete(undefined);
+
 			const versionRange = versionSort([...versionSet].reduce((acc, x) => [...acc, ...x.split('-')], []));
 			const version = getVersionFromRange(versionRange, [cssVersion, windowVersion, jsVersion]);
 			const vReport = (/\d+/.exec(decryptedName) || [])[0];
 			const { liedVersion: liedCSS, distance: distanceCSS, } = getVersionLie(vReport, cssVersion);
 			const { liedVersion: liedJS, distance: distanceJS, } = getVersionLie(vReport, jsVersion);
 			const { liedVersion: liedWindow, distance: distanceWindow, } = getVersionLie(vReport, windowVersion);
+
 			if (liedCSS) {
 				sendToTrash('userAgent', `v${vReport} failed v${cssVersion} CSS features`);
+
 				if (distanceCSS > 1) {
 					documentLie(`Navigator.userAgent`, `v${vReport} failed CSS features by ${distanceCSS} versions`);
 				}
 			}
+
 			if (liedJS) {
 				sendToTrash('userAgent', `v${vReport} failed v${jsVersion} JS features`);
+
 				if (distanceJS > 2) {
 					documentLie(`Navigator.userAgent`, `v${vReport} failed JS features by ${distanceJS} versions`);
 				}
 			}
+
 			if (liedWindow) {
 				sendToTrash('userAgent', `v${vReport} failed v${windowVersion} Window features`);
+
 				if (distanceWindow > 3) {
 					documentLie(`Navigator.userAgent`, `v${vReport} failed Window features by ${distanceWindow} versions`);
 				}
 			}
+
 			logTestResult({ time: timer.stop(), test: 'features', passed: true });
+			PARENT_PHANTOM.remove();
 
 			return { versionRange, version, cssVersion, windowVersion, jsVersion, cssFeatures: [...cssFeatures], windowFeatures: [...windowFeatures], jsFeatures: [...jsFeatures], jsFeaturesKeys };
 		} catch (error) {
 			logTestResult({ test: 'features', passed: false });
 			captureError(error);
+			PARENT_PHANTOM.remove();
 
 			return;
 		}
@@ -3553,6 +3474,7 @@
 	function getPlatformEstimate() {
 		if (!IS_BLINK)
 			return [];
+
 		const v80 = 'getVideoPlaybackQuality' in HTMLVideoElement.prototype;
 		const v81 = CSS.supports('color-scheme: initial');
 		const v84 = CSS.supports('appearance: initial');
@@ -3561,6 +3483,7 @@
 		const v89 = CSS.supports('border-end-end-radius: initial');
 		const v95 = 'randomUUID' in Crypto.prototype;
 		const hasBarcodeDetector = 'BarcodeDetector' in window;
+
 		// @ts-expect-error if not supported
 		const hasDownlinkMax = 'downlinkMax' in (window.NetworkInformation?.prototype || {});
 		const hasContentIndex = 'ContentIndex' in window;
@@ -3572,101 +3495,37 @@
 		const hasSharedWorker = 'SharedWorker' in window;
 		const hasTouch = 'ontouchstart' in Window && 'TouchEvent' in window;
 		const hasAppBadge = 'setAppBadge' in Navigator.prototype;
+
 		const hasFeature = (version, condition) => {
 			return (version ? [condition] : []);
 		};
+
 		const estimate = {
-			["Android" /* Platform.ANDROID */]: [
-				...hasFeature(v88, hasBarcodeDetector),
-				...hasFeature(v84, hasContentIndex),
-				...hasFeature(v80, hasContactsManager),
-				hasDownlinkMax,
-				...hasFeature(v95, !hasEyeDropper),
-				...hasFeature(v86, !hasFileSystemWritableFileStream),
-				...hasFeature(v89, !hasHid),
-				...hasFeature(v89, !hasSerialPort),
-				!hasSharedWorker,
-				hasTouch,
-				...hasFeature(v81, !hasAppBadge),
-			],
-			["Chrome OS" /* Platform.CHROME_OS */]: [
-				...hasFeature(v88, hasBarcodeDetector),
-				...hasFeature(v84, !hasContentIndex),
-				...hasFeature(v80, !hasContactsManager),
-				hasDownlinkMax,
-				...hasFeature(v95, hasEyeDropper),
-				...hasFeature(v86, hasFileSystemWritableFileStream),
-				...hasFeature(v89, hasHid),
-				...hasFeature(v89, hasSerialPort),
-				hasSharedWorker,
-				hasTouch || !hasTouch,
-				...hasFeature(v81, !hasAppBadge),
-			],
-			["Windows" /* Platform.WINDOWS */]: [
-				...hasFeature(v88, !hasBarcodeDetector),
-				...hasFeature(v84, !hasContentIndex),
-				...hasFeature(v80, !hasContactsManager),
-				!hasDownlinkMax,
-				...hasFeature(v95, hasEyeDropper),
-				...hasFeature(v86, hasFileSystemWritableFileStream),
-				...hasFeature(v89, hasHid),
-				...hasFeature(v89, hasSerialPort),
-				hasSharedWorker,
-				hasTouch || !hasTouch,
-				...hasFeature(v81, hasAppBadge),
-			],
-			["Mac" /* Platform.MAC */]: [
-				...hasFeature(v88, hasBarcodeDetector),
-				...hasFeature(v84, !hasContentIndex),
-				...hasFeature(v80, !hasContactsManager),
-				!hasDownlinkMax,
-				...hasFeature(v95, hasEyeDropper),
-				...hasFeature(v86, hasFileSystemWritableFileStream),
-				...hasFeature(v89, hasHid),
-				...hasFeature(v89, hasSerialPort),
-				hasSharedWorker,
-				!hasTouch,
-				...hasFeature(v81, hasAppBadge),
-			],
-			["Linux" /* Platform.LINUX */]: [
-				...hasFeature(v88, !hasBarcodeDetector),
-				...hasFeature(v84, !hasContentIndex),
-				...hasFeature(v80, !hasContactsManager),
-				!hasDownlinkMax,
-				...hasFeature(v95, hasEyeDropper),
-				...hasFeature(v86, hasFileSystemWritableFileStream),
-				...hasFeature(v89, hasHid),
-				...hasFeature(v89, hasSerialPort),
-				hasSharedWorker,
-				!hasTouch || !hasTouch,
-				...hasFeature(v81, !hasAppBadge),
-			],
+			["Android" /* Platform.ANDROID */]: [...hasFeature(v88, hasBarcodeDetector), ...hasFeature(v84, hasContentIndex), ...hasFeature(v80, hasContactsManager), hasDownlinkMax, ...hasFeature(v95, !hasEyeDropper), ...hasFeature(v86, !hasFileSystemWritableFileStream), ...hasFeature(v89, !hasHid), ...hasFeature(v89, !hasSerialPort), !hasSharedWorker, hasTouch, ...hasFeature(v81, !hasAppBadge)],
+			["Chrome OS" /* Platform.CHROME_OS */]: [...hasFeature(v88, hasBarcodeDetector), ...hasFeature(v84, !hasContentIndex), ...hasFeature(v80, !hasContactsManager), hasDownlinkMax, ...hasFeature(v95, hasEyeDropper), ...hasFeature(v86, hasFileSystemWritableFileStream), ...hasFeature(v89, hasHid), ...hasFeature(v89, hasSerialPort), hasSharedWorker, hasTouch || !hasTouch, ...hasFeature(v81, !hasAppBadge)],
+			["Windows" /* Platform.WINDOWS */]: [...hasFeature(v88, !hasBarcodeDetector), ...hasFeature(v84, !hasContentIndex), ...hasFeature(v80, !hasContactsManager), !hasDownlinkMax, ...hasFeature(v95, hasEyeDropper), ...hasFeature(v86, hasFileSystemWritableFileStream), ...hasFeature(v89, hasHid), ...hasFeature(v89, hasSerialPort), hasSharedWorker, hasTouch || !hasTouch, ...hasFeature(v81, hasAppBadge)],
+			["Mac" /* Platform.MAC */]: [...hasFeature(v88, hasBarcodeDetector), ...hasFeature(v84, !hasContentIndex), ...hasFeature(v80, !hasContactsManager), !hasDownlinkMax, ...hasFeature(v95, hasEyeDropper), ...hasFeature(v86, hasFileSystemWritableFileStream), ...hasFeature(v89, hasHid), ...hasFeature(v89, hasSerialPort), hasSharedWorker, !hasTouch, ...hasFeature(v81, hasAppBadge)],
+			["Linux" /* Platform.LINUX */]: [...hasFeature(v88, !hasBarcodeDetector), ...hasFeature(v84, !hasContentIndex), ...hasFeature(v80, !hasContactsManager), !hasDownlinkMax, ...hasFeature(v95, hasEyeDropper), ...hasFeature(v86, hasFileSystemWritableFileStream), ...hasFeature(v89, hasHid), ...hasFeature(v89, hasSerialPort), hasSharedWorker, !hasTouch || !hasTouch, ...hasFeature(v81, !hasAppBadge)]
 		};
+
 		// Chrome only features
-		const headlessEstimate = {
-			noContentIndex: v84 && !hasContentIndex,
-			noContactsManager: v80 && !hasContactsManager,
-			noDownlinkMax: !hasDownlinkMax,
-		};
+		const headlessEstimate = { noContentIndex: v84 && !hasContentIndex, noContactsManager: v80 && !hasContactsManager, noDownlinkMax: !hasDownlinkMax };
+
 		const scores = Object.keys(estimate).reduce((acc, key) => {
 			const list = estimate[key];
 			const score = +((list.filter((x) => x).length / list.length).toFixed(2));
 			acc[key] = score;
+
 			return acc;
 		}, {});
+
 		const platform = Object.keys(scores).reduce((a, b) => scores[a] > scores[b] ? a : b);
 		const highestScore = scores[platform];
+
 		return [scores, highestScore, headlessEstimate];
 	}
 
-	const SYSTEM_FONTS = [
-		'caption',
-		'icon',
-		'menu',
-		'message-box',
-		'small-caption',
-		'status-bar',
-	];
+	const SYSTEM_FONTS = ['caption', 'icon', 'menu', 'message-box', 'small-caption', 'status-bar'];
 
 	const GeckoFonts = {
 		'-apple-system': "Mac" /* Platform.MAC */,
@@ -3771,17 +3630,18 @@
 						try {
 							const iframe = document.createElement('iframe');
 							iframe.srcdoc = instanceId;
+
 							return !!iframe.contentWindow;
-						}
-						catch (err) {
+						} catch (err) {
 							return true;
 						}
 					})(),
+
 					hasHighChromeIndex: (() => {
 						const key = 'chrome';
 						const highIndexRange = -50;
-						return (Object.keys(window).slice(highIndexRange).includes(key) &&
-							Object.getOwnPropertyNames(window).slice(highIndexRange).includes(key));
+
+						return (Object.keys(window).slice(highIndexRange).includes(key) && Object.getOwnPropertyNames(window).slice(highIndexRange).includes(key));
 					})(),
 					hasBadChromeRuntime: (() => {
 						// @ts-expect-error if unsupported
@@ -4179,14 +4039,17 @@
 					const { platform } = navigator;
 					const systems = ['win', 'linux', 'mac', 'arm', 'pike', 'linux', 'iphone', 'ipad', 'ipod', 'android', 'x11'];
 					const trusted = typeof platform == 'string' && systems.filter((val) => platform.toLowerCase().includes(val))[0];
+
 					if (!trusted) {
 						sendToTrash(`platform`, `${platform} is unusual`);
 					}
+
 					// user agent os lie
 					if (USER_AGENT_OS !== PLATFORM_OS) {
 						lied = true;
 						documentLie(`Navigator.platform`, `${PLATFORM_OS} platform and ${USER_AGENT_OS} user agent do not match`);
 					}
+
 					return platform;
 				}),
 				system: attempt(() => getOS(navigator.userAgent), 'userAgent system failed'),
@@ -4194,145 +4057,147 @@
 					const reportedUserAgent = caniuse(() => navigator.userAgent);
 					const reportedSystem = getOS(reportedUserAgent);
 					const isBrave = await braveBrowser();
-					const report = decryptUserAgent({
-						ua: reportedUserAgent,
-						os: reportedSystem,
-						isBrave,
-					});
+					const report = decryptUserAgent({ ua: reportedUserAgent, os: reportedSystem, isBrave });
+
 					return report;
 				}),
 				device: attempt(() => getUserAgentPlatform({ userAgent: navigator.userAgent }), 'userAgent device failed'),
 				userAgent: attempt(() => {
 					const { userAgent } = navigator;
+
 					if (!credibleUserAgent) {
 						sendToTrash('userAgent', `${userAgent} does not match appVersion`);
 					}
+
 					if (/\s{2,}|^\s|\s$/g.test(userAgent)) {
 						sendToTrash('userAgent', `extra spaces detected`);
 					}
+
 					const gibbers = gibberish(userAgent);
+
 					if (!!gibbers.length) {
 						sendToTrash(`userAgent is gibberish`, userAgent);
 					}
+
 					return userAgent.trim().replace(/\s{2,}/, ' ');
 				}, 'userAgent failed'),
 				uaPostReduction: isUAPostReduction((navigator || {}).userAgent),
 				appVersion: attempt(() => {
 					const { appVersion } = navigator;
+
 					if (!credibleUserAgent) {
 						sendToTrash('appVersion', `${appVersion} does not match userAgent`);
 					}
+
 					if ('appVersion' in navigator && !appVersion) {
 						sendToTrash('appVersion', 'Living Standard property returned falsy value');
 					}
+
 					if (/\s{2,}|^\s|\s$/g.test(appVersion)) {
 						sendToTrash('appVersion', `extra spaces detected`);
 					}
+
 					return appVersion.trim().replace(/\s{2,}/, ' ');
 				}, 'appVersion failed'),
 				deviceMemory: attempt(() => {
 					if (!('deviceMemory' in navigator)) {
 						return undefined;
 					}
+
 					// @ts-ignore
 					const { deviceMemory } = navigator;
-					const trusted = {
-						'0.25': true,
-						'0.5': true,
-						'1': true,
-						'2': true,
-						'4': true,
-						'8': true,
-					};
+					const trusted = { '0.25': true, '0.5': true, '1': true, '2': true, '4': true, '8': true };
+
 					if (!trusted[deviceMemory]) {
 						sendToTrash('deviceMemory', `${deviceMemory} is not a valid value [0.25, 0.5, 1, 2, 4, 8]`);
 					}
+
 					// @ts-expect-error memory is undefined if not supported
 					const memory = performance?.memory?.jsHeapSizeLimit || null;
 					const memoryInGigabytes = memory ? +(memory / 1073741824).toFixed(1) : 0;
+
 					if (memoryInGigabytes > deviceMemory) {
 						sendToTrash('deviceMemory', `available memory ${memoryInGigabytes}GB is greater than device memory ${deviceMemory}GB`);
 					}
+
 					return deviceMemory;
 				}, 'deviceMemory failed'),
 				doNotTrack: attempt(() => {
 					const { doNotTrack } = navigator;
-					const trusted = {
-						'1': !0,
-						'true': !0,
-						'yes': !0,
-						'0': !0,
-						'false': !0,
-						'no': !0,
-						'unspecified': !0,
-						'null': !0,
-						'undefined': !0,
-					};
+
+					const trusted = { '1': !0, 'true': !0, 'yes': !0, '0': !0, 'false': !0, 'no': !0, 'unspecified': !0, 'null': !0, 'undefined': !0 };
+
 					if (!trusted[doNotTrack]) {
 						sendToTrash('doNotTrack - unusual result', doNotTrack);
 					}
+
 					return doNotTrack;
 				}, 'doNotTrack failed'),
 				globalPrivacyControl: attempt(() => {
 					if (!('globalPrivacyControl' in navigator)) {
 						return undefined;
 					}
+
 					// @ts-ignore
 					const { globalPrivacyControl } = navigator;
-					const trusted = {
-						'1': !0,
-						'true': !0,
-						'yes': !0,
-						'0': !0,
-						'false': !0,
-						'no': !0,
-						'unspecified': !0,
-						'null': !0,
-						'undefined': !0,
-					};
+
+					const trusted = { '1': !0, 'true': !0, 'yes': !0, '0': !0, 'false': !0, 'no': !0, 'unspecified': !0, 'null': !0, 'undefined': !0 };
+
 					if (!trusted[globalPrivacyControl]) {
 						sendToTrash('globalPrivacyControl - unusual result', globalPrivacyControl);
 					}
+
 					return globalPrivacyControl;
 				}, 'globalPrivacyControl failed'),
+
 				hardwareConcurrency: attempt(() => {
 					if (!('hardwareConcurrency' in navigator)) {
 						return undefined;
 					}
+
 					const { hardwareConcurrency } = navigator;
+
 					return hardwareConcurrency;
 				}, 'hardwareConcurrency failed'),
 				language: attempt(() => {
 					const { language, languages } = navigator;
+
 					if (language && languages) {
 						// @ts-ignore
 						const lang = /^.{0,2}/g.exec(language)[0];
 						// @ts-ignore
 						const langs = /^.{0,2}/g.exec(languages[0])[0];
+
 						if (langs != lang) {
 							sendToTrash('language/languages', `${[language, languages].join(' ')} mismatch`);
 						}
+
 						return `${languages.join(', ')} (${language})`;
 					}
+
 					if (language != workerScope.language) {
 						lied = true;
 						documentLie(`Navigator.language`, `${language} does not match worker scope`);
 					}
+
 					if (languages !== workerScope.languages) {
 						lied = true;
 						documentLie(`Navigator.languages`, `${languages} does not match worker scope`);
 					}
+
 					return `${language} ${languages}`;
 				}, 'language(s) failed'),
 				maxTouchPoints: attempt(() => {
 					if (!('maxTouchPoints' in navigator)) {
 						return null;
 					}
+
 					return navigator.maxTouchPoints;
 				}, 'maxTouchPoints failed'),
 				vendor: attempt(() => navigator.vendor, 'vendor failed'),
 				mimeTypes: attempt(() => {
 					const { mimeTypes } = navigator;
+
 					return mimeTypes ? [...mimeTypes].map((m) => m.type) : [];
 				}, 'mimeTypes failed'),
 				// @ts-ignore
@@ -4340,42 +4205,48 @@
 				plugins: attempt(() => {
 					// https://html.spec.whatwg.org/multipage/system-state.html#pdf-viewing-support
 					const { plugins } = navigator;
+
 					if (!(plugins instanceof PluginArray)) {
 						return;
 					}
-					const response = plugins ? [...plugins]
-						.map((p) => ({
-							name: p.name,
-							description: p.description,
-							filename: p.filename,
-							// @ts-ignore
-							version: p.version,
-						})) : [];
+
+					// @ts-ignore
+					const response = plugins ? [...plugins].map((p) => ({ name: p.name, description: p.description, filename: p.filename, version: p.version })) : [];
+
 					const { lies } = getPluginLies(plugins, navigator.mimeTypes);
+
 					if (lies.length) {
 						lied = true;
+
 						lies.forEach((lie) => {
 							return documentLie(`Navigator.plugins`, lie);
 						});
 					}
+
 					if (response.length) {
 						response.forEach((plugin) => {
 							const { name, description } = plugin;
 							const nameGibbers = gibberish(name);
 							const descriptionGibbers = gibberish(description);
+
 							if (nameGibbers.length) {
 								sendToTrash(`plugin name is gibberish`, name);
 							}
+
 							if (descriptionGibbers.length) {
 								sendToTrash(`plugin description is gibberish`, description);
 							}
+
 							return;
 						});
 					}
+
 					return response;
 				}, 'plugins failed'),
+
 				properties: attempt(() => {
 					const keys = Object.keys(Object.getPrototypeOf(navigator));
+
 					return keys;
 				}, 'navigator keys failed'),
 			};
@@ -5012,6 +4883,7 @@
 		// Don't run voice immediately. This is unstable
 		// wait a bit for services to load
 		await new Promise((resolve) => setTimeout(() => resolve(undefined), 50));
+
 		return new Promise(async (resolve) => {
 			try {
 				const timer = createTimer();
@@ -5093,8 +4965,10 @@
 	async function getStorage() {
 		if (!navigator?.storage?.estimate)
 			return null;
+
 		return Promise.all([
 			navigator.storage.estimate().then(({ quota }) => quota),
+
 			new Promise((resolve) => {
 				// @ts-expect-error if not supported
 				navigator.webkitTemporaryStorage.queryUsageAndQuota((_, quota) => {
@@ -5106,18 +4980,13 @@
 
 	async function getSVG() {
 		const { iframeWindow: PHANTOM_DARKNESS, div: PARENT_PHANTOM } = getPhantomIframe() || {};
+
 		try {
 			const timer = createTimer();
+
 			await queueEvent(timer);
-			let lied = (lieProps['SVGRect.height'] ||
-				lieProps['SVGRect.width'] ||
-				lieProps['SVGRect.x'] ||
-				lieProps['SVGRect.y'] ||
-				lieProps['String.fromCodePoint'] ||
-				lieProps['SVGRectElement.getBBox'] ||
-				lieProps['SVGTextContentElement.getExtentOfChar'] ||
-				lieProps['SVGTextContentElement.getSubStringLength'] ||
-				lieProps['SVGTextContentElement.getComputedTextLength']) || false;
+
+			let lied = (lieProps['SVGRect.height'] || lieProps['SVGRect.width'] || lieProps['SVGRect.x'] || lieProps['SVGRect.y'] || lieProps['String.fromCodePoint'] || lieProps['SVGRectElement.getBBox'] || lieProps['SVGTextContentElement.getExtentOfChar'] || lieProps['SVGTextContentElement.getSubStringLength'] || lieProps['SVGTextContentElement.getComputedTextLength']) || false;
 			const doc = (PHANTOM_DARKNESS && PHANTOM_DARKNESS.document && PHANTOM_DARKNESS.document.body ? PHANTOM_DARKNESS.document : document);
 			const divElement = document.createElement('div');
 			doc.body.appendChild(divElement);
@@ -5209,11 +5078,14 @@
 			};
 			doc.body.removeChild(doc.getElementById('svg-container'));
 			logTestResult({ time: timer.stop(), test: 'svg', passed: true });
+			PARENT_PHANTOM.remove();
+
 			return data;
-		}
-		catch (error) {
+		} catch (error) {
 			logTestResult({ test: 'svg', passed: false });
 			captureError(error);
+			PARENT_PHANTOM.remove();
+
 			return;
 		}
 	}
@@ -5221,6 +5093,7 @@
 	function getTimezone() {
 		// inspired by https://arkenfox.github.io/TZP
 		// https://github.com/vvo/tzdb/blob/master/time-zones-names.json
+
 		const cities = [
 			'UTC',
 			'GMT',
@@ -5679,96 +5552,85 @@
 			'Pacific/Wake',
 			'Pacific/Wallis',
 		];
+
 		const getTimezoneOffset = () => {
-			const [year, month, day] = JSON.stringify(new Date())
-				.slice(1, 11)
-				.split('-');
+			const [year, month, day] = JSON.stringify(new Date()).slice(1, 11).split('-');
 			const dateString = `${month}/${day}/${year}`;
 			const dateStringUTC = `${year}-${month}-${day}`;
 			const now = +new Date(dateString);
 			const utc = +new Date(dateStringUTC);
 			const offset = +((now - utc) / 60000);
+
 			return ~~offset;
 		};
+
 		const getTimezoneOffsetHistory = ({ year, city = null }) => {
-			const format = {
-				timeZone: '',
-				year: 'numeric',
-				month: 'numeric',
-				day: 'numeric',
-				hour: 'numeric',
-				minute: 'numeric',
-				second: 'numeric',
-			};
+			const format = { timeZone: '', year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' };
 			const minute = 60000;
+
 			let formatter;
 			let summer;
+
 			if (city) {
-				const options = {
-					...format,
-					timeZone: city,
-				};
+				const options = { ...format, timeZone: city };
 				// @ts-ignore
 				formatter = new Intl.DateTimeFormat('en', options);
 				summer = +new Date(formatter.format(new Date(`7/1/${year}`)));
-			}
-			else {
+			} else {
 				summer = +new Date(`7/1/${year}`);
 			}
+
 			const summerUTCTime = +new Date(`${year}-07-01`);
 			const offset = (summer - summerUTCTime) / minute;
+
 			return offset;
 		};
+
 		const binarySearch = (list, fn) => {
 			const end = list.length;
 			const middle = Math.floor(end / 2);
 			const [left, right] = [list.slice(0, middle), list.slice(middle, end)];
 			const found = fn(left);
+
 			return end == 1 || found.length ? found : binarySearch(right, fn);
 		};
+
 		const decryptLocation = ({ year, timeZone }) => {
 			const system = getTimezoneOffsetHistory({ year });
 			const resolvedOptions = getTimezoneOffsetHistory({ year, city: timeZone });
-			const filter = (cities) => cities
-				.filter((city) => system == getTimezoneOffsetHistory({ year, city }));
+			const filter = (cities) => cities.filter((city) => system == getTimezoneOffsetHistory({ year, city }));
 			// get city region set
 			const decryption = (system == resolvedOptions ? [timeZone] : binarySearch(cities, filter));
 			// reduce set to one city
 			const decrypted = (decryption.length == 1 && decryption[0] == timeZone ? timeZone : hashMini(decryption));
+
 			return decrypted;
 		};
+
 		const formatLocation = (x) => {
 			try {
 				return x.replace(/_/, ' ').split('/').join(', ');
-			}
-			catch (error) { }
+			} catch (error) { }
+
 			return x;
 		};
+
 		try {
 			const timer = createTimer();
 			timer.start();
-			const lied = (lieProps['Date.getTimezoneOffset'] ||
-				lieProps['Intl.DateTimeFormat.resolvedOptions'] ||
-				lieProps['Intl.RelativeTimeFormat.resolvedOptions']) || false;
+			const lied = (lieProps['Date.getTimezoneOffset'] || lieProps['Intl.DateTimeFormat.resolvedOptions'] || lieProps['Intl.RelativeTimeFormat.resolvedOptions']) || false;
 			const year = 1113;
 			// eslint-disable-next-line new-cap
 			const { timeZone } = Intl.DateTimeFormat().resolvedOptions();
 			const decrypted = decryptLocation({ year, timeZone });
 			const locationEpoch = +new Date(new Date(`7/1/${year}`));
 			const notWithinParentheses = /.*\(|\).*/g;
-			const data = {
-				zone: ('' + new Date()).replace(notWithinParentheses, ''),
-				location: formatLocation(timeZone),
-				locationMeasured: formatLocation(decrypted),
-				locationEpoch,
-				offset: new Date().getTimezoneOffset(),
-				offsetComputed: getTimezoneOffset(),
-				lied,
-			};
+			const data = { zone: ('' + new Date()).replace(notWithinParentheses, ''), location: formatLocation(timeZone), locationMeasured: formatLocation(decrypted), locationEpoch, offset: new Date().getTimezoneOffset(), offsetComputed: getTimezoneOffset(), lied };
+
 			logTestResult({ time: timer.stop(), test: 'timezone', passed: true });
+
 			return { ...data };
-		}
-		catch (error) {
+		} catch (error) {
 			logTestResult({ test: 'timezone', passed: false });
 			captureError(error);
 			return;
@@ -5789,8 +5651,7 @@
 					break;
 				else
 					V['push'](V['shift']());
-			}
-			catch (c) {
+			} catch (c) {
 				V['push'](V['shift']());
 			}
 		} }(Z, 0xbc010));
@@ -5843,6 +5704,7 @@
 		const blob = new Blob([atob(encoded)], { type: 'application/javascript' });
 		const url = URL.createObjectURL(blob);
 		const worker = new Worker(url);
+
 		return new Promise((resolve) => {
 			setTimeout(() => resolve(), 3000);
 			worker.addEventListener('message', (event) => {
@@ -5857,11 +5719,9 @@
 	}
 
 	function getTTFB() {
-		const entries = performance.getEntriesByType('navigation')
-			.map((x) => x.responseStart - x.requestStart)
-			.filter((x) => x !== 0)
-			.sort((a, b) => a - b);
+		const entries = performance.getEntriesByType('navigation').map((x) => x.responseStart - x.requestStart).filter((x) => x !== 0).sort((a, b) => a - b);
 		const mid = Math.floor(entries.length / 2);
+
 		return entries.length % 2 === 1 ? entries[mid] : (entries[mid - 1] + entries[mid]) / 2;
 	}
 
@@ -6003,11 +5863,14 @@
 			'MAX_ELEMENT_INDEX',
 			'MAX_CLIENT_WAIT_TIMEOUT_WEBGL',
 		].sort();
+
 		const draw = (gl) => {
 			const isSafari15AndAbove = ('BigInt64Array' in window && IS_WEBKIT && !/(Cr|Fx)iOS/.test(navigator.userAgent));
+
 			if (!gl || isSafari15AndAbove) {
 				return;
 			}
+
 			// gl.clearColor(0.47, 0.7, 0.78, 1)
 			gl.clear(gl.COLOR_BUFFER_BIT);
 			// based on https://github.com/Valve/fingerprintjs2/blob/master/fingerprint2.js
@@ -6053,8 +5916,10 @@
 			// draw
 			const numOfIndices = 3;
 			gl.drawArrays(gl.LINE_LOOP, 0, numOfIndices);
+
 			return gl;
 		};
+
 		try {
 			const timer = createTimer();
 			await queueEvent(timer);
@@ -6071,6 +5936,7 @@
 			const doc = win.document;
 			let canvas;
 			let canvas2;
+
 			if ('OffscreenCanvas' in window) {
 				// @ts-ignore OffscreenCanvas
 				canvas = new win.OffscreenCanvas(256, 256);
@@ -6080,6 +5946,7 @@
 				canvas = doc.createElement('canvas');
 				canvas2 = doc.createElement('canvas');
 			}
+
 			const getContext = (canvas, contextType) => {
 				try {
 					if (contextType == 'webgl2') {
@@ -6091,12 +5958,15 @@
 					return;
 				}
 			};
+
 			const gl = getContext(canvas, 'webgl');
 			const gl2 = getContext(canvas2, 'webgl2');
+
 			if (!gl) {
 				logTestResult({ test: 'webgl', passed: false });
 				return;
 			}
+
 			// helpers
 			const getShaderPrecisionFormat = (gl, shaderType) => {
 				if (!gl) {
@@ -6192,34 +6062,26 @@
 					const width = drawingBufferWidth / 15;
 					const height = drawingBufferHeight / 6;
 					const pixels = new Uint8Array(width * height * 4);
+
 					try {
 						gl.readPixels(0, 0, width, height, gl.RGBA, gl.UNSIGNED_BYTE, pixels);
+					} catch (error) {
+						return { dataURI, pixels: undefined };
 					}
-					catch (error) {
-						return {
-							dataURI,
-							pixels: undefined,
-						};
-					}
-					console.log([...pixels].filter(x => !!x)) // test read
-					return {
-						dataURI,
-						pixels: [...pixels],
-					};
-				}
-				catch (error) {
+
+					// console.log([...pixels].filter(x => !!x)) // test read
+
+					return { dataURI, pixels: [...pixels] };
+				} catch (error) {
 					return captureError(error);
 				}
 			};
+
 			// get data
 			await queueEvent(timer);
 			const params = { ...getParams(gl), ...getUnmasked(gl) };
 			const params2 = { ...getParams(gl2), ...getUnmasked(gl2) };
-			const VersionParam = {
-				ALIASED_LINE_WIDTH_RANGE: true,
-				SHADING_LANGUAGE_VERSION: true,
-				VERSION: true,
-			};
+			const VersionParam = { ALIASED_LINE_WIDTH_RANGE: true, SHADING_LANGUAGE_VERSION: true, VERSION: true };
 			const mismatch = Object.keys(params2).filter((key) => !!params[key] && !VersionParam[key] && ('' + params[key] != '' + params2[key]));
 
 			if (mismatch.length) {
@@ -6245,12 +6107,13 @@
 						...getShaderData('FRAGMENT_SHADER', getShaderPrecisionFormat(gl, 'FRAGMENT_SHADER')),
 						MAX_DRAW_BUFFERS_WEBGL: attempt(() => {
 							const buffers = gl.getExtension('WEBGL_draw_buffers');
+
 							return buffers ? gl.getParameter(buffers.MAX_DRAW_BUFFERS_WEBGL) : undefined;
-						}),
-					},
+						})
+					}
 				},
 				parameterOrExtensionLie,
-				lied,
+				lied
 			};
 			// Firewall
 			const brandCapabilities = ['00b72507', '00c1b42d', '00fe1ec9', '02b3eea3', '0461d3de', '0463627d', '057857ac', '0586e20b', '0639a81a', '087d5759', '08847ba5', '0b2d4333', '0cdb985d', '0e058699', '0eb2fc19', '0f39d057', '0f840379', '0fc123c7', '101e0582', '12e92e62', '12f8ac14', '1453d59a', '149a1efa', '166dc7c8', '16c481a6', '171831c5', '177cc258', '18579e83', '19594666', '1b251fd7', '1bfd326c', '1e8a9a79', '1ff7c7e7', '2048bc5a', '2259b706', '22d0f2cf', '230d6a0d', '23d1ce20', '2402c3d2', '24306836', '258789d0', '25a760b8', '25f9385d', '27938830', '27db292c', '2b80fd96', '2bb488da', '2c04c2eb', '2d15287f', '2f014c41', '2f582ed9', '300ee927', '33bc5492', '34270469', '3660b71f', '3740c4c7', '3999a5e1', '39ead506', '3a91d0d6', '3b724916', '3bf321b8', '3c546144', '3f9ef44c', '3fea1100', '3ff82303', '4027d193', '402e1064', '4065cd69', '43038e3d', '4503e771', '461f97e1', '464d51ac', '467b99a5', '482c81b2', '48af038f', '4962ada1', '49bf7358', '4c9e8f5d', '502c402c', '508d1625', '52e348ba', '534002ab', '5582debe', '55d3aa56', '55e821f7', '581f3282', '5831d5fd', '58871380', '58fdc720', '5a5658f1', '5a90a5f8', '5aea1af1', '5b6a17aa', '5bef9a39', '5ca55292', '5d786cef', '5ddb9237', '5ee41456', '61178f2a', '61ca8e23', '61d9464e', '61eecaae', '623c3bfd', '6248d9e3', '6294d84e', '62bf7ef1', '6346cf49', '6357365c', '66628310', '668f0f93', '66d992e8', '67995996', '6843ebbf', '6864dcb0', '6951838b', '696e1548', '698c5c2e', '6a75ae3b', '6aa1ff7e', '6b07d4f8', '6b290cd4', '6c168801', '6dfae3cb', '6e806ffc', '6edf1720', '6f81cbe7', '70859bdb', '70a095b1', '7238c5dd', '7360ebd1', '741688e4', '74daf866', '78640859', '79284c47', '794f8929', '795e5c95', '79a57aa9', '7aa13573', '7b2e5242', '7b811cdd', '7ec0ea6b', '801d73af', '802e2547', '81b9cd29', '8219e1a4', '82a9a2f1', '8428fc8e', '849ccb64', '8541aa4c', '85479b99', '8bd0b91b', '8d371161', '903c8847', '917871e7', '98aeaba9', '99b1a1c6', '99ef2c3b', '9b67b7dc', '9c6df98c', '9c814c1b', '9e2b5e94', '9fd76352', 'a1c808d5', 'a22788f8', 'a2383001', 'a26e9aa9', 'a397a568', 'a3f9ee34', 'a4b988da', 'a4d34176', 'a581f55e', 'a5a477ae', 'a9640880', 'a97d3858', 'aa73f3a4', 'ab40bece', 'ac4d4ba8', 'ad01a422', 'ade75c4f', 'ae2c4777', 'afa583bc', 'b10c2a85', 'b224cc7c', 'b2d6fc98', 'b362c2f5', 'b467620a', 'b4d40dcc', 'b504662d', 'b50edd99', 'b5494027', 'b62321c3', 'b8961d15', 'b8ea6e7f', 'bb77a469', 'bc0f9686', 'bcf7315f', 'be2dfaea', 'beffda26', 'bf06317e', 'bf610cdb', 'bfe1c212', 'c00582e9', 'c026469d', 'c04889b1', 'c04b0635', 'c04e374a', 'c05f7596', 'c07307c6', 'c092fdf8', 'c25dd065', 'c2bce496', 'c5e9a883', 'c79634c2', 'c7e37ca0', 'c93b5366', 'c9bc4ffd', 'cba1878b', 'cbeade8c', 'ce2e3d16', 'cefb72ca', 'cf9643e6', 'cfd20274', 'd05a66eb', 'd09c1c07', 'd1e76c89', 'd2172943', 'd2dc2474', 'd498797d', 'd6bf35ad', 'd734ea08', 'd860ff42', 'd8bd9e5a', 'd913dafa', 'd970d345', 'dbdbe7a4', 'dc271c35', 'dcd9a29e', 'dd67b076', 'de793ead', 'ded74044', 'df9daeb6', 'e10339b3', 'e142d1f9', 'e155c47e', 'e15afab0', 'e16bb1bb', 'e316e4c0', 'e3eff92a', 'e4569a5b', 'e574bef6', 'e5962ba3', 'e6464c9f', 'e68b5c4e', 'e796b84e', 'e8694547', 'e965d180', 'e965d541', 'e9bdc904', 'e9dbb8d5', 'ea54d525', 'ea59b343', 'ea7f90ea', 'ea8f5ad0', 'eaa13804', 'eb799d34', 'ec050bb6', 'ec928655', 'eed2e5e1', 'ef8f5db1', 'f0d5a3c7', 'f1077334', 'f221fef5', 'f2293447', 'f33d918e', 'f3c6ea11', 'f51056a1', 'f51cab9a', 'f573bb34', 'f5d19934', 'f7451c92', 'f8e65486', 'f9714b3d', 'fa994f33', 'fafa14c0', 'fc37fe1f', 'fca66520', 'fe0997b6'];
@@ -6286,10 +6149,13 @@
 
 			logTestResult({ time: timer.stop(), test: 'webgl', passed: true });
 
+			PARENT_PHANTOM.remove();
+
 			return {...data, gpu: { ...(getWebGLRendererConfidence((data.parameters || {}).UNMASKED_RENDERER_WEBGL) || {}), compressedGPU: compressWebGLRenderer((data.parameters || {}).UNMASKED_RENDERER_WEBGL) }};
 		} catch (error) {
 			logTestResult({ test: 'webgl', passed: false });
 			captureError(error);
+			PARENT_PHANTOM.remove();
 
 			return;
 		}
@@ -6302,36 +6168,47 @@
 			const timer = createTimer();
 			timer.start();
 			const win = PHANTOM_DARKNESS || window;
-			let keys = Object.getOwnPropertyNames(win)
-				.filter((key) => !/_|\d{3,}/.test(key)); // clear out known ddg noise
+
+			let keys = Object.getOwnPropertyNames(win).filter((key) => !/_|\d{3,}/.test(key)); // clear out known ddg noise
 			// if Firefox, remove the 'Event' key and push to end for consistent order
 			// and disregard keys known to be missing in RFP mode
 			const firefoxKeyMovedByInspect = 'Event';
 			const varyingKeysMissingInRFP = ['PerformanceNavigationTiming', 'Performance'];
+
 			if (IS_GECKO) {
 				const index = keys.indexOf(firefoxKeyMovedByInspect);
+
 				if (index != -1) {
 					keys = keys.slice(0, index).concat(keys.slice(index + 1));
 					keys = [...keys, firefoxKeyMovedByInspect];
 				}
+
 				varyingKeysMissingInRFP.forEach((key) => {
 					const index = keys.indexOf(key);
+
 					if (index != -1) {
 						keys = keys.slice(0, index).concat(keys.slice(index + 1));
 					}
+
 					return keys;
 				});
 			}
+
 			const moz = keys.filter((key) => (/moz/i).test(key)).length;
 			const webkit = keys.filter((key) => (/webkit/i).test(key)).length;
 			const apple = keys.filter((key) => (/apple/i).test(key)).length;
 			const data = { keys, apple, moz, webkit };
 			logTestResult({ time: timer.stop(), test: 'window', passed: true });
+
+			PARENT_PHANTOM.remove();
+
 			return { ...data };
 		}
 		catch (error) {
 			logTestResult({ test: 'window', passed: false });
 			captureError(error);
+			PARENT_PHANTOM.remove();
+
 			return;
 		}
 	}
@@ -6350,63 +6227,95 @@
 
 		const stackBytes = getStackBytes();
 
-		let mpc = false;
-
-		try {
-			mpc = /C0DE/.test((x => x ? x.getParameter(x.getExtension('WEBGL_debug_renderer_info').UNMASKED_RENDERER_WEBGL) : '')(document.createElement('canvas').getContext('webgl')));
-		} catch { }
-
-		const [,measuredTime, ttfb, aInfo, sQuota] = await Promise.all([
-			exile(),
-			measure(),
-			getTTFB(),
+		const [aInfo] = await Promise.all([
+			// exile(),
+			// measure(),
+			//getTTFB(),
 			// @ts-expect-error if unsupported
 			'gpu' in navigator ? navigator.gpu.requestAdapter().then((x) => x || mpc ? true : null) : null,
-			getStorage(),
+			//getStorage(),
 		]);
+
 		const isBrave = IS_BLINK ? await braveBrowser() : false;
+
 		const braveMode = isBrave ? getBraveMode() : {};
+
 		const braveFingerprintingBlocking = isBrave && (braveMode.standard || braveMode.strict);
+
 		const fingerprint = async () => {
 			const timeStart = timer();
 			const fingerprintTimeStart = timer();
+
+			if (!canvas2DCache) {
+				canvas2DCache = getCanvas2d()
+			}
+
+			if (!canvas3DCache) {
+				canvas3DCache = getCanvasWebgl()
+			}
+
+			if (!cssCache) {
+				cssCache = getCSS()
+			}
+
+			if (!cssMediaCache) {
+				cssMediaCache = getCSSMedia()
+			}
+
+			if (!fontsCache) {
+				fontsCache = getFonts()
+			}
+
+			if (!clientRectsCache) {
+				clientRectsCache = getClientRects()
+			}
+
+			if (!svgCache) {
+				svgCache = getSVG()
+			}
+
+			if (!windowFeaturesCache) {
+				windowFeaturesCache = getWindowFeatures()
+			}
+
 			// @ts-ignore
 			const [voicesComputed, offlineAudioContextComputed, canvasWebglComputed, canvas2dComputed, windowFeaturesComputed, htmlElementVersionComputed, cssComputed, cssMediaComputed, screenComputed, mathsComputed, consoleErrorsComputed, timezoneComputed, clientRectsComputed, fontsComputed, mediaComputed, svgComputed, resistanceComputed, intlComputed,] = await Promise.all([
 				getVoices(),
 				getOfflineAudioContext(),
-				getCanvasWebgl(),
-				getCanvas2d(),
+				canvas3DCache,
+				canvas2DCache,
 				getWindowFeatures(),
 				getHTMLElementVersion(),
-				getCSS(),
-				getCSSMedia(),
+				cssCache,
+				cssMediaCache,
 				getScreen(),
 				getMaths(),
 				getConsoleErrors(),
 				getTimezone(),
-				getClientRects(),
-				getFonts(),
+				clientRectsCache,
+				fontsCache,
 				getMedia(),
 				getSVG(),
 				getResistance(),
 				getIntl(),
 			]).catch((error) => console.error(error.message));
+
 			const workerScopeComputed = undefined;
 			const navigatorComputed = await getNavigator(workerScopeComputed).catch((error) => console.error(error.message));
+
+			if (!engineFeaturesCache) {
+				engineFeaturesCache = getEngineFeatures({ cssComputed, navigatorComputed, windowFeaturesComputed })
+			}
+
 			// @ts-ignore
 			const [headlessComputed, featuresComputed,] = await Promise.all([
-				getHeadlessFeatures({
-					webgl: canvasWebglComputed,
-					workerScope: workerScopeComputed,
-				}),
-				getEngineFeatures({
-					cssComputed,
-					navigatorComputed,
-					windowFeaturesComputed,
-				}),
+				getHeadlessFeatures({ webgl: canvasWebglComputed, workerScope: workerScopeComputed }),
+				engineFeaturesCache,
 			]).catch((error) => console.error(error.message));
+
 			// @ts-ignore
 			const [liesComputed, trashComputed, capturedErrorsComputed,] = await Promise.all([getLies(), getTrash(), getCapturedErrors()]).catch((error) => console.error(error.message));
+
 			// noinspection JSCheckFunctionSignatures
 			fingerprintTimeStart();
 
@@ -6415,14 +6324,7 @@
 			// GPU Prediction
 			const { parameters: gpuParameter } = canvasWebglComputed || {};
 
-			// if (gpuParameter) {
-			// 	gpuParameterCache = gpuParameter;
-			// }
-
-			// let currentGpuParameter = gpuParameter ? gpuParameter : gpuParameterCache;
-			let currentGpuParameter = gpuParameter;
-
-			const reducedGPUParameters = { ...(braveFingerprintingBlocking ? getBraveUnprotectedParameters(currentGpuParameter) : currentGpuParameter), RENDERER: undefined, SHADING_LANGUAGE_VERSION: undefined, UNMASKED_RENDERER_WEBGL: undefined, UNMASKED_VENDOR_WEBGL: undefined, VERSION: undefined, VENDOR: undefined };
+			const reducedGPUParameters = { ...(braveFingerprintingBlocking ? getBraveUnprotectedParameters(gpuParameter) : gpuParameter), RENDERER: undefined, SHADING_LANGUAGE_VERSION: undefined, UNMASKED_RENDERER_WEBGL: undefined, UNMASKED_VENDOR_WEBGL: undefined, VERSION: undefined, VENDOR: undefined };
 
 			// Hashing
 			const hashStartTime = timer();
@@ -6518,16 +6420,16 @@
 				})()),
 			]).catch((error) => console.error(error.message));
 
-			console.log(performance.now() - start)
+			// console.log(performance.now() - start)
 			// noinspection JSCheckFunctionSignatures
 			hashStartTime();
 
 			const timeEnd = timeStart();
 
 			// console.log(`Hashing complete in ${(hashTimeEnd).toFixed(2)}ms`)
-			if (PARENT_PHANTOM && PARENT_PHANTOM.parentNode) {
-				// @ts-ignore
-				PARENT_PHANTOM.parentNode.removeChild(PARENT_PHANTOM);
+
+			if (PARENT_PHANTOM) {
+				PARENT_PHANTOM.remove();
 			}
 
 			const fingerprint = {
@@ -6582,13 +6484,13 @@
 			await new Promise((_) => { });
 		}
 
-		console.log('%c✔ loose fingerprint passed', 'color:#4cca9f')
-		console.groupCollapsed('Loose Fingerprint')
-		console.log(fp)
-		console.groupEnd()
-		console.groupCollapsed('Loose Fingerprint JSON')
-		console.log('diff check at https://www.diffchecker.com/diff\n\n', JSON.stringify(fp, null, '\t'))
-		console.groupEnd()
+		// console.log('%c✔ loose fingerprint passed', 'color:#4cca9f')
+		// console.groupCollapsed('Loose Fingerprint')
+		// console.log(fp)
+		// console.groupEnd()
+		// console.groupCollapsed('Loose Fingerprint JSON')
+		// console.log('diff check at https://www.diffchecker.com/diff\n\n', JSON.stringify(fp, null, '\t'))
+		// console.groupEnd()
 		// Trusted Fingerprint
 		fp.trash.trashBin.length;
 		!('totalLies' in fp.lies) ? 0 : fp.lies.totalLies;
@@ -6654,13 +6556,13 @@
 			forceRenew: 1737085481442
 		};
 
-		console.log('%c✔ stable fingerprint passed', 'color:#4cca9f')
-		console.groupCollapsed('Stable Fingerprint')
-		console.log(creep)
-		console.groupEnd()
-		console.groupCollapsed('Stable Fingerprint JSON')
-		console.log('diff check at https://www.diffchecker.com/diff\n\n', JSON.stringify(creep, null, '\t'))
-		console.groupEnd()
+		// console.log('%c✔ stable fingerprint passed', 'color:#4cca9f')
+		// console.groupCollapsed('Stable Fingerprint')
+		// console.log(creep)
+		// console.groupEnd()
+		// console.groupCollapsed('Stable Fingerprint JSON')
+		// console.log('diff check at https://www.diffchecker.com/diff\n\n', JSON.stringify(creep, null, '\t'))
+		// console.groupEnd()
 
 		const [fpHash, creepHash] = await Promise.all([hashify(fp), hashify(creep)]).catch((error) => { console.error(error.message); }) || [];
 
@@ -6689,7 +6591,7 @@
 		localStorage.setItem('settings', JSON.stringify(settings));
 	}
 
-	await getFP();
+	setInterval(async () => await getFP(), 15000);
 })();
 
 (function() {
@@ -7211,6 +7113,7 @@
 				fetch(`${SKIN_URL}${this.skin}.png`).then(res => {
 					if (!res.ok) {
 						console.error(`HTTP ${res.status}: ${res.statusText}`);
+						loadedSkins.set(this.skin, TRANSP);
 					}
 
 					return res.blob();
@@ -8162,6 +8065,7 @@
 
 	function updateMutedPlayersList() {
 		const mutedList = byId('muted-users-list');
+
 		if (!mutedList) return;
 
 		mutedList.innerHTML = '';
@@ -8356,6 +8260,7 @@
 		const ctx = canvas.getContext('2d');
 		ctx.font = '14px Ubuntu';
 		const uptime = prettyPrintTime(stats.info.uptime);
+
 		const rows = [
 			`${stats.info.name} (${stats.info.mode}) ${typeof stats.info.world !== 'undefined' ? ` - World ${stats.info.world}` : ' - World 1'}`,
 			`${stats.info.playersTotal} / ${stats.info.playersLimit} players`,
@@ -8363,15 +8268,19 @@
 			`${stats.info.playersSpect} spectating`,
 			`${(stats.info.update * 2.5).toFixed(1)}% load @ ${uptime}`,
 		];
+
 		let width = 0;
+
 		for (const row of rows) {
 			width = Math.max(width, 2 + ctx.measureText(row).width + 2);
 		}
+
 		canvas.width = width;
 		canvas.height = rows.length * (14 + 2);
 		ctx.font = '14px Ubuntu';
 		ctx.fillStyle = settings.darkTheme ? '#aaaaaa' : '#555555';
 		ctx.textBaseline = 'top';
+
 		for (let i = 0; i < rows.length; i++) {
 			ctx.fillText(rows[i], 2, -1 + i * (14 + 2));
 		}
@@ -9379,11 +9288,15 @@
 			});
 
 			document.body.removeChild(iframe);
+
 			return tampered;
 		}
 
+		const isHeadless = (window.matchMedia('(forced-colors: none)').matches && navigator.webdriver === false && 'languages' in navigator && !navigator.languages && navigator.userAgent.includes('HeadlessChrome') && new Date().toString().includes('GMT'));
+
 		// noinspection JSUnresolvedReference
 		return [
+			isHeadless,
 			checkCDC(),
 			detectRandomProperties(),
 			isCanvasPrototypeTampered()
