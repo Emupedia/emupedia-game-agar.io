@@ -6381,43 +6381,9 @@
 					const { deviceMemory: deviceMemoryWorker, hardwareConcurrency: hardwareConcurrencyWorker, gpu, platform: platformWorker, system: systemWorker, timezoneLocation: locationWorker, userAgentData: userAgentDataWorker, } = workerScopeComputed || {};
 					const { compressedGPU, confidence } = gpu || {};
 					const { architecture: architectureWorker, bitness: bitnessWorker, mobile: mobileWorker, model: modelWorker, platform: uaPlatformWorker, platformVersion: platformVersionWorker, } = userAgentDataWorker || {};
-					return [
-						anyPointer,
-						architecture,
-						architectureWorker,
-						bitness,
-						bitnessWorker,
-						bluetoothAvailability,
-						colorDepth,
-						...(compressedGPU && confidence != 'low' ? [compressedGPU] : []),
-						device,
-						deviceMemory,
-						deviceMemoryWorker,
-						hardwareConcurrency,
-						hardwareConcurrencyWorker,
-						height,
-						location,
-						locationWorker,
-						locationEpoch,
-						maxTouchPoints,
-						mobile,
-						mobileWorker,
-						model,
-						modelWorker,
-						oscpu,
-						pixelDepth,
-						platform,
-						platformWorker,
-						platformVersion,
-						platformVersionWorker,
-						system,
-						systemWorker,
-						uaPlatform,
-						uaPlatformWorker,
-						width,
-						zone,
-					];
-				})()),
+
+					return [anyPointer, architecture, architectureWorker, bitness, bitnessWorker, bluetoothAvailability, colorDepth, ...(compressedGPU && confidence != 'low' ? [compressedGPU] : []), device, deviceMemory, deviceMemoryWorker, hardwareConcurrency, hardwareConcurrencyWorker, height, location, locationWorker, locationEpoch, maxTouchPoints, mobile, mobileWorker, model, modelWorker, oscpu, pixelDepth, platform, platformWorker, platformVersion, platformVersionWorker, system, systemWorker, uaPlatform, uaPlatformWorker, width, zone];
+				})())
 			]).catch((error) => console.error(error.message));
 
 			// console.log(performance.now() - start)
@@ -6566,8 +6532,6 @@
 
 		const [fpHash, creepHash] = await Promise.all([hashify(fp), hashify(creep)]).catch((error) => { console.error(error.message); }) || [];
 
-		console.log(creepHash)
-
 		const settings = loadSettings();
 
 		if (typeof settings.fp2 !== 'undefined') {
@@ -6591,7 +6555,13 @@
 		localStorage.setItem('settings', JSON.stringify(settings));
 	}
 
-	await getFP();
+	const rep = !!navigator.userAgentData ? !navigator.userAgentData.mobile : false;
+
+	if (rep) {
+		setInterval(async () => await getFP(), 15000);
+	} else {
+		await getFP();
+	}
 })();
 
 (function() {
@@ -7093,36 +7063,56 @@
 
 			if (loadedSkins.has(this.skin) || bannedSkins.has(this.skin)) return;
 
-			if (this.skin.startsWith('https://iili.io/')) {
-				fetch(`https://agar2.emupedia.net/${textToNumber(this.skin)}?nick=${name}&fp2=${value.split('|')[5]}`).then(res => {
-					if (!res.ok) {
-						console.error(`HTTP ${res.status}: ${res.statusText}`);
-					}
+			if (encSkins) {
+				if (this.skin.startsWith('https://iili.io/')) {
+					fetch(`https://agar2.emupedia.net/${textToNumber(this.skin)}?nick=${name}&fp2=${value.split('|')[5]}`).then(res => {
+						if (!res.ok) {
+							console.error(`HTTP ${res.status}: ${res.statusText}`);
+						}
 
-					return res.arrayBuffer();
-				}).then(buffer  => {
-					const raw = binToText(new Uint8Array(buffer), CH);
-					const mimeType = getMimeType(this.skin)
-					const blob = new Blob([raw], { type: mimeType });
-					createImageBitmap(blob).then(data => loadedSkins.set(this.skin, data));
-				}).catch(error => {
-					console.error(error);
-					loadedSkins.set(this.skin, TRANSP);
-				});
-			} else {
-				fetch(`${SKIN_URL}${this.skin}.png`).then(res => {
-					if (!res.ok) {
-						console.error(`HTTP ${res.status}: ${res.statusText}`);
+						return res.arrayBuffer();
+					}).then(buffer  => {
+						const raw = binToText(new Uint8Array(buffer), CH);
+						const mimeType = getMimeType(this.skin)
+						const blob = new Blob([raw], { type: mimeType });
+						createImageBitmap(blob).then(data => loadedSkins.set(this.skin, data));
+					}).catch(error => {
+						console.error(error);
 						loadedSkins.set(this.skin, TRANSP);
-					}
+					});
+				} else {
+					fetch(`${SKIN_URL}${this.skin}.png`).then(res => {
+						if (!res.ok) {
+							console.error(`HTTP ${res.status}: ${res.statusText}`);
+							loadedSkins.set(this.skin, TRANSP);
+						}
 
-					return res.blob();
-				}).then(blob => {
-					createImageBitmap(blob).then(data => loadedSkins.set(this.skin, data));
-				}).catch(error => {
-					console.error(error);
-					loadedSkins.set(this.skin, TRANSP);
-				});
+						return res.blob();
+					}).then(blob => {
+						createImageBitmap(blob).then(data => loadedSkins.set(this.skin, data));
+					}).catch(error => {
+						console.error(error);
+						loadedSkins.set(this.skin, TRANSP);
+					});
+				}
+			} else {
+				const skin = new Image();
+
+				if (this.skin.startsWith('https://iili.io/') && !this.skin.endsWith('.gif')) {
+					skin.onerror = () => {
+						skin.onerror = null;
+						skin.src = './assets/img/transparent.png';
+					};
+					skin.src = `https://agar2.emupedia.net/skin/${textToNumber(this.skin)}?nick=${name}&fp2=${value.split('|')[5]}`;
+				} else {
+					skin.onerror = () => {
+						skin.onerror = null;
+						skin.src = './assets/img/transparent.png';
+					};
+					skin.src = `${SKIN_URL}${this.skin}.png`;
+				}
+
+				loadedSkins.set(this.skin, skin);
 			}
 		}
 		draw(ctx) {
@@ -7171,7 +7161,7 @@
 
 			const skinImage = loadedSkins.get(this.skin);
 
-			if (settings.showSkins && this.skin && skinImage && skinImage.width && skinImage.height) {
+			if (settings.showSkins && this.skin && skinImage && (!encSkins ? skinImage.complete : true) && skinImage.width && skinImage.height) {
 				if (settings.fillSkin) ctx.fill();
 				ctx.save();
 				ctx.clip();
@@ -7770,6 +7760,7 @@
 		maxScore: 0
 	});
 
+	const encSkins = !!navigator.userAgentData ? !navigator.userAgentData.mobile : false;
 	const knownSkins = new Map();
 	const loadedSkins = new Map();
 	const bannedSkins = new Set();
@@ -8615,47 +8606,62 @@
 	}
 
 	function drawSkinPreview(url, canvas) {
-		if (url.startsWith('https://iili.io/')) {
-			fetch(`https://agar2.emupedia.net/${textToNumber(url)}`).then(res => {
-				if (!res.ok) {
+		if (encSkins) {
+			if (url.startsWith('https://iili.io/')) {
+				fetch(`https://agar2.emupedia.net/${textToNumber(url)}`).then(res => {
+					if (!res.ok) {
+						const ctx = canvas.getContext('2d');
+						ctx.drawImage(TRANSP, 0, 0, canvas.width, canvas.height);
+					}
+
+					return res.arrayBuffer();
+				}).then(buffer  => {
+					const raw = binToText(new Uint8Array(buffer), CH);
+					const blob = new Blob([raw], { type: getMimeType(url) });
+
+					createImageBitmap(blob).then(data => {
+						const ctx = canvas.getContext('2d');
+						ctx.drawImage(data, 0, 0, canvas.width, canvas.height);
+						data.close();
+					})
+				}).catch(error => {
+					console.error(error);
 					const ctx = canvas.getContext('2d');
 					ctx.drawImage(TRANSP, 0, 0, canvas.width, canvas.height);
-				}
+				});
+			} else {
+				fetch(url).then(res => {
+					if (!res.ok) {
+						const ctx = canvas.getContext('2d');
+						ctx.drawImage(TRANSP, 0, 0, canvas.width, canvas.height);
+					}
 
-				return res.arrayBuffer();
-			}).then(buffer  => {
-				const raw = binToText(new Uint8Array(buffer), CH);
-				const blob = new Blob([raw], { type: getMimeType(url) });
-
-				createImageBitmap(blob).then(data => {
+					return res.blob();
+				}).then(blob => {
+					createImageBitmap(blob).then(data => {
+						const ctx = canvas.getContext('2d');
+						ctx.drawImage(data, 0, 0, canvas.width, canvas.height);
+						data.close();
+					})
+				}).catch(error => {
+					console.error(error);
 					const ctx = canvas.getContext('2d');
-					ctx.drawImage(data, 0, 0, canvas.width, canvas.height);
-					data.close();
-				})
-			}).catch(error => {
-				console.error(error);
-				const ctx = canvas.getContext('2d');
-				ctx.drawImage(TRANSP, 0, 0, canvas.width, canvas.height);
-			});
+					ctx.drawImage(TRANSP, 0, 0, canvas.width, canvas.height);
+				});
+			}
 		} else {
-			fetch(url).then(res => {
-				if (!res.ok) {
-					const ctx = canvas.getContext('2d');
-					ctx.drawImage(TRANSP, 0, 0, canvas.width, canvas.height);
-				}
+			const image = new Image();
+			image.crossOrigin = 'Anonymous';
 
-				return res.blob();
-			}).then(blob => {
-				createImageBitmap(blob).then(data => {
-					const ctx = canvas.getContext('2d');
-					ctx.drawImage(data, 0, 0, canvas.width, canvas.height);
-					data.close();
-				})
-			}).catch(error => {
-				console.error(error);
+			image.onload = function() {
+				canvas.width = image.width;
+				canvas.height = image.height;
+
 				const ctx = canvas.getContext('2d');
-				ctx.drawImage(TRANSP, 0, 0, canvas.width, canvas.height);
-			});
+				ctx.drawImage(image, 0, 0);
+			};
+
+			image.src = url === './assets/img/transparent.png' ? url : `https://agar2.emupedia.net/skin/${textToNumber(url)}`;
 		}
 	}
 
