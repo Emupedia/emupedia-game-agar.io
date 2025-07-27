@@ -9327,6 +9327,19 @@
 		}, 1000);
 	}
 
+	function fakeClipboard() {
+		const textarea = document.createElement('textarea');
+		textarea.value = '';
+		document.body.appendChild(textarea);
+		textarea.select();
+		document.execCommand('copy');
+		document.body.removeChild(textarea);
+
+		if (document.hasFocus()) {
+			navigator.clipboard.writeText('').catch(e => {});
+		}
+	}
+
 	function init() {
 		TC.postMessage({ type: 'check' });
 
@@ -9957,7 +9970,13 @@
 
 		document.addEventListener('visibilitychange', () => {
 			if (!document.hidden) {
+				window.focus();
+				document.body.focus();
 				mainCanvas.focus();
+
+				fakeClipboard();
+				setTimeout(() => { fakeClipboard(); }, 3000);
+
 				tempShowSkins = settings.showSkins;
 			} else {
 				tempShowSkins = false;
@@ -9967,30 +9986,29 @@
 		document.addEventListener('keyup', event => {
 			if (typeof event['isTrusted'] !== 'boolean' || event['isTrusted'] === false) return;
 
-			if (event.key === 'PrintScreen') {
-				navigator.clipboard.writeText('');
-			}
-		});
-
-		document.addEventListener('keyup', event => {
-			if (typeof event['isTrusted'] !== 'boolean' || event['isTrusted'] === false) return;
-
-			if (event.ctrlKey && event.metaKey && event.key.toLowerCase() === 's') {
+			if (event.metaKey && event.shiftKey && event.key.toLowerCase() === 's') {
 				event.preventDefault();
-				navigator.clipboard.writeText('');
+				fakeClipboard();
 			}
 
 			if (event.key === 'PrintScreen') {
 				event.preventDefault();
-				navigator.clipboard.writeText('');
+				fakeClipboard();
 			}
 		});
 
-		document.onmouseleave = function(){
+		document.onmouseleave = function() {
 			tempShowSkins = false;
 		}
 
 		document.onmouseenter = function() {
+			window.focus();
+			document.body.focus();
+			mainCanvas.focus();
+
+			fakeClipboard();
+			setTimeout(() => { fakeClipboard(); }, 3000);
+
 			tempShowSkins = settings.showSkins;
 		}
 
