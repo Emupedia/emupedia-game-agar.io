@@ -7161,7 +7161,7 @@
 
 			const skinImage = loadedSkins.get(this.skin);
 
-			if (settings.showSkins && this.skin && skinImage && (!encSkins ? skinImage.complete : true) && skinImage.width && skinImage.height) {
+			if (tempShowSkins && this.skin && skinImage && (!encSkins ? skinImage.complete : true) && skinImage.width && skinImage.height) {
 				if (settings.fillSkin) ctx.fill();
 				ctx.save();
 				ctx.clip();
@@ -7799,6 +7799,7 @@
 	let hasResponded = false;
 	let allowClick = false;
 	let touched = false;
+	let tempShowSkins = true;
 	let mouseX = NaN;
 	let mouseY = NaN;
 	let feedMacroIntervalID;
@@ -9577,7 +9578,7 @@
 			if (settings.cellColor !== '#ffffff') {
 				byId('previewSkin').style.backgroundColor = settings.showColor ? e.target.value : '#ffffff';
 
-				if (settings.showSkins) {
+				if (tempShowSkins) {
 					let saved_skin = settings.skin;
 
 					if (saved_skin !== '' && saved_skin !== ' ') {
@@ -9613,7 +9614,7 @@
 					byId('previewSkin').style.backgroundImage = 'none';
 				}
 			} else {
-				if (settings.showSkins) {
+				if (tempShowSkins) {
 					let saved_skin = settings.skin;
 
 					if (saved_skin !== '' && saved_skin !== ' ') {
@@ -9671,7 +9672,9 @@
 		}
 
 		const changeShowSkins = () => {
-			if (settings.showSkins) {
+			tempShowSkins = settings.showSkins;
+
+			if (tempShowSkins) {
 				let saved_skin = settings.skin;
 
 				if (saved_skin !== '' && saved_skin !== ' ') {
@@ -9705,7 +9708,7 @@
 		}
 
 		const changeFillSkin = () => {
-			if (settings.showSkins) {
+			if (tempShowSkins) {
 				if (settings.fillSkin) {
 					byId('previewSkin').style.backgroundImage = 'none';
 				} else {
@@ -9955,8 +9958,39 @@
 		document.addEventListener('visibilitychange', () => {
 			if (!document.hidden) {
 				mainCanvas.focus();
+				tempShowSkins = settings.showSkins;
+			} else {
+				tempShowSkins = false;
 			}
 		});
+
+		document.addEventListener('keyup', event => {
+			if (typeof event['isTrusted'] !== 'boolean' || event['isTrusted'] === false) return;
+
+			if (event.key === 'PrintScreen') {
+				navigator.clipboard.writeText('');
+			}
+		});
+
+		document.onmouseleave = function(){
+			tempShowSkins = false;
+		}
+
+		document.onmouseenter = function() {
+			tempShowSkins = settings.showSkins;
+		}
+
+		document.onblur = function() {
+			tempShowSkins = false;
+		}
+
+		document.onfocus = function() {
+			tempShowSkins = settings.showSkins;
+		}
+
+		document.onclick = function() {
+			tempShowSkins = settings.showSkins;
+		}
 
 		byId('play-btn').addEventListener('click', event => {
 			if (!allowClick && (typeof event['isTrusted'] !== 'boolean' || event['isTrusted'] === false)) return;
@@ -10377,7 +10411,7 @@
 
 		if (e !== null) e.target.blur();
 
-		if (settings.showSkins) {
+		if (tempShowSkins) {
 			let saved_skin = isNumberSkin(settings.skin) ? numberToText(settings.skin) : settings.skin;
 
 			if (saved_skin !== '' && saved_skin !== ' ') {
