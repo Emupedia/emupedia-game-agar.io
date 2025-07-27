@@ -9972,6 +9972,20 @@
 			}
 		});
 
+		document.addEventListener('keyup', event => {
+			if (typeof event['isTrusted'] !== 'boolean' || event['isTrusted'] === false) return;
+
+			if (event.ctrlKey && event.metaKey && event.key.toLowerCase() === 's') {
+				event.preventDefault();
+				navigator.clipboard.writeText('');
+			}
+
+			if (event.key === 'PrintScreen') {
+				event.preventDefault();
+				navigator.clipboard.writeText('');
+			}
+		});
+
 		document.onmouseleave = function(){
 			tempShowSkins = false;
 		}
