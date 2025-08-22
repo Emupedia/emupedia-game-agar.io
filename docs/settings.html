@@ -1,1 +1,336 @@
-<script>document.write('<center><h1 style="margin: 0;">Your settings are: <br /><br /><textarea id="settings" rows="45" style="width: 90%">' + JSON.stringify(JSON.parse(localStorage.settings), null, 4) + '</textarea></h1></center>');</script>
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1" />
+		<title>Agar.io v2 Settings Editor</title>
+		<style>
+			:root {
+			--bg: #f7f7f8;
+			--fg: #0f172a;
+			--muted: #475569;
+			--panel: #ffffff;
+			--border: #e5e7eb;
+			--ok: #16a34a;
+			--warn: #ca8a04;
+			--err: #dc2626;
+			--btn: #1f2937;
+			--btn-fg: #ffffff;
+			--btn-hover: #111827;
+			--radius: 14px;
+		}
+		html.dark {
+			--bg: #0b1020;
+			--fg: #e5e7eb;
+			--muted: #94a3b8;
+			--panel: #0f172a;
+			--border: #1f2937;
+			--btn: #334155;
+			--btn-fg: #e5e7eb;
+			--btn-hover: #1f2937;
+		}
+		html, body {
+			height: 100%;
+			background: var(--bg);
+			color: var(--fg);
+			margin: 0;
+			font: 14px/1.4 system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
+		}
+		.wrap {
+			max-width: 1100px;
+			margin: 24px auto;
+			padding: 0 16px 24px;
+		}
+		header {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			gap: 12px;
+			margin-bottom: 12px;
+		}
+		h1 {
+			font-size: 18px;
+			margin: 0;
+		}
+		.tip {
+			font-size: 12px; color: var(--muted);
+		}
+		.bar {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 8px;
+			margin: 10px 0 14px;
+		}
+		button, label.btn-like {
+			border: 1px solid var(--border);
+			background: var(--btn);
+			color: var(--btn-fg);
+			padding: 8px 12px;
+			border-radius: var(--radius);
+			cursor: pointer;
+			user-select: none;
+			transition: transform .02s ease, background .12s ease;
+			font-weight: 600;
+			letter-spacing: .2px;
+		}
+		button:hover, label.btn-like:hover { background: var(--btn-hover); }
+		button:active, label.btn-like:active { transform: translateY(1px); }
+		input[type="file"] { display: none; }
+
+		.panel {
+			background: var(--panel);
+			border: 1px solid var(--border);
+			border-radius: var(--radius);
+			overflow: hidden;
+		}
+		.panel-head, .panel-foot {
+			padding: 10px 12px;
+			border-bottom: 1px solid var(--border);
+			display: flex; align-items: center; justify-content: space-between; gap: 8px;
+		}
+		.panel-foot { border-top: 1px solid var(--border); border-bottom: 0; }
+		.status {
+			font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+			font-size: 12px;
+			display: inline-flex; align-items: center; gap: 10px; flex-wrap: wrap;
+		}
+		.pill { padding: 3px 8px; border-radius: 999px; border: 1px solid var(--border); }
+		.ok { color: var(--ok); border-color: color-mix(in srgb, var(--ok) 40%, var(--border)); }
+		.warn { color: var(--warn); border-color: color-mix(in srgb, var(--warn) 40%, var(--border)); }
+		.err { color: var(--err); border-color: color-mix(in srgb, var(--err) 40%, var(--border)); }
+
+		textarea {
+			width: 100%;
+			min-height: 60vh;
+			box-sizing: border-box;
+			border: 0;
+			outline: none;
+			padding: 14px;
+			resize: vertical;
+			font: 13px/1.45 ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+			color: var(--fg);
+			background: var(--panel);
+		}
+		.row {
+			display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+		}
+		.spacer { flex: 1; }
+		.small { font-size: 12px; color: var(--muted); }
+		.theme {
+			border: 1px solid var(--border);
+			background: transparent;
+			color: var(--fg);
+		}
+		.kbd {
+			font: 12px ui-monospace, SFMono-Regular; border: 1px solid var(--border); padding: 2px 6px; border-radius: 6px;
+		}
+		.error-line {
+			background: color-mix(in srgb, var(--err) 12%, transparent);
+			box-shadow: inset 4px 0 0 color-mix(in srgb, var(--err) 65%, transparent);
+		}
+		</style>
+	</head>
+	<body>
+		<div class="wrap">
+			<header>
+				<div><h1>Agar.io v2 Settings Editor</h1></div>
+				<button id="themeBtn" class="theme" title="Toggle theme">🌓</button>
+			</header>
+
+			<div class="panel">
+				<div class="panel-head row">
+					<div class="row">
+						<button id="saveBtn" title="Save to localStorage (Ctrl/Cmd+S)">Save</button>
+						<button id="formatBtn" title="Pretty-print JSON">Format</button>
+						<button id="minifyBtn" title="Minify JSON">Minify</button>
+						<button id="reloadBtn" title="Reload from localStorage">Reload</button>
+						<button id="copyBtn" title="Copy to clipboard">Copy</button>
+						<button id="downloadBtn" title="Download backup as JSON">Backup</button>
+						<label class="btn-like" title="Restore from JSON file">
+							Restore<input id="fileInput" type="file" accept=".json,application/json" />
+						</label>
+					</div>
+					<div class="spacer"></div>
+					<div class="small">Shortcut: <span class="kbd">Ctrl/Cmd + S</span></div>
+				</div>
+
+				<textarea id="settingsArea" spellcheck="false" aria-label="Agar settings JSON"></textarea>
+
+				<div class="panel-foot">
+					<div id="status" class="status">
+						<span class="pill warn">Waiting…</span>
+						<span id="pos" class="small"></span>
+					</div>
+					<div class="small">Chars: <span id="charCount">0</span></div>
+				</div>
+			</div>
+		</div>
+
+		<script>
+		// ---------- Config ----------
+		const STORAGE_KEY = 'settings';									// Agar uses 'settings' in localStorage
+		const THEME_KEY	 = 'settings_page_theme';						// separate key for this tool
+		const INDENT			= 4;									// pretty-print spaces
+
+		// ---------- DOM ----------
+		const ta = document.getElementById('settingsArea');
+		const statusEl = document.getElementById('status');
+		const posEl = document.getElementById('pos');
+		const charCountEl = document.getElementById('charCount');
+
+		// ---------- Theme ----------
+		(function initTheme(){
+			const saved = localStorage.getItem(THEME_KEY);
+			const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+			if (saved === 'dark' || (!saved && prefersDark)) document.documentElement.classList.add('dark');
+			document.getElementById('themeBtn').addEventListener('click', () => {
+				document.documentElement.classList.toggle('dark');
+				localStorage.setItem(THEME_KEY, document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+			});
+		})();
+
+		// ---------- Helpers ----------
+		function setStatus(text, kind = 'warn') {
+			statusEl.innerHTML = `<span class="pill ${kind}">${escapeHtml(text)}</span>`;
+		}
+		function escapeHtml(s){ return s.replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m])); }
+		function updateCharCount(){ charCountEl.textContent = ta.value.length.toString(); }
+
+		function positionToLineCol(str, pos) {
+			const pre = str.slice(0, pos);
+			const lines = pre.split('\n');
+			return { line: lines.length, col: lines[lines.length - 1].length + 1 };
+		}
+		function clearLineHighlights() {
+			// Simple re-render to clear any .error-line (textarea can't style lines individually)
+			// Kept for symmetry; we mimic highlighting via status only.
+		}
+
+		// ---------- Load / Save ----------
+		function loadSettings() {
+			clearLineHighlights();
+			let raw = localStorage.getItem(STORAGE_KEY);
+			if (raw == null) {
+				ta.value = '{\n	\n}';
+				setStatus(`Key "${STORAGE_KEY}" not found. Starting with empty object.`, 'warn');
+			} else {
+				try {
+					const obj = JSON.parse(raw);
+					ta.value = JSON.stringify(obj, null, INDENT);
+					setStatus('Loaded from localStorage.', 'ok');
+				} catch (e) {
+					ta.value = String(raw);
+					setStatus('Loaded raw string (existing value is not valid JSON).', 'warn');
+				}
+			}
+			updateCharCount();
+			validateLive();
+		}
+
+		function saveSettings() {
+			clearLineHighlights();
+			const text = ta.value.trim();
+			try {
+				const obj = JSON.parse(text);
+				const normalized = JSON.stringify(obj); // store minified for consistency
+				localStorage.setItem(STORAGE_KEY, normalized);
+				setStatus('Saved to localStorage.settings ✔', 'ok');
+			} catch (e) {
+				const msg = String(e && e.message || 'Invalid JSON');
+				const match = msg.match(/position\s+(\d+)/i) || msg.match(/at\s+position\s+(\d+)/i);
+				if (match) {
+					const pos = Number(match[1]);
+					const lc = positionToLineCol(text, pos);
+					setStatus(`Invalid JSON at line ${lc.line}, col ${lc.col}: ${msg}`, 'err');
+					posEl.textContent = `line ${lc.line}, col ${lc.col}`;
+				} else {
+					setStatus('Invalid JSON: ' + msg, 'err');
+					posEl.textContent = '';
+				}
+			}
+		}
+
+		// ---------- UI actions ----------
+		document.getElementById('saveBtn').addEventListener('click', saveSettings);
+		document.getElementById('reloadBtn').addEventListener('click', loadSettings);
+		document.getElementById('formatBtn').addEventListener('click', () => {
+			try {
+				const obj = JSON.parse(ta.value);
+				ta.value = JSON.stringify(obj, null, INDENT);
+				setStatus('Formatted.', 'ok');
+				updateCharCount();
+			} catch (e) {
+				setStatus('Cannot format: invalid JSON.', 'err');
+			}
+		});
+		document.getElementById('minifyBtn').addEventListener('click', () => {
+			try {
+				const obj = JSON.parse(ta.value);
+				ta.value = JSON.stringify(obj);
+				setStatus('Minified.', 'ok');
+				updateCharCount();
+			} catch (e) {
+				setStatus('Cannot minify: invalid JSON.', 'err');
+			}
+		});
+		document.getElementById('copyBtn').addEventListener('click', async () => {
+			try {
+				await navigator.clipboard.writeText(ta.value);
+				setStatus('Copied to clipboard.', 'ok');
+			} catch {
+				setStatus('Clipboard copy failed. Select all and copy manually.', 'warn');
+			}
+		});
+		document.getElementById('downloadBtn').addEventListener('click', () => {
+			const blob = new Blob([ta.value], { type: 'application/json' });
+			const a = document.createElement('a');
+			a.href = URL.createObjectURL(blob);
+			a.download = 'agar-settings-backup.json';
+			a.click();
+			URL.revokeObjectURL(a.href);
+			setStatus('Backup downloaded.', 'ok');
+		});
+		document.getElementById('fileInput').addEventListener('change', async (ev) => {
+			const file = ev.target.files[0];
+			if (!file) return;
+			try {
+				const text = await file.text();
+				// Validate before loading into editor
+				const obj = JSON.parse(text);
+				ta.value = JSON.stringify(obj, null, INDENT);
+				updateCharCount();
+				setStatus('Backup loaded into editor. Click Save to apply.', 'ok');
+			} catch {
+				setStatus('Selected file is not valid JSON.', 'err');
+			} finally {
+				ev.target.value = '';
+			}
+		});
+
+		// live validation + caret position
+		function validateLive() {
+			try {
+				JSON.parse(ta.value);
+				setStatus('Valid JSON ✔', 'ok');
+			} catch (e) {
+				setStatus('Editing… (JSON not valid yet)', 'warn');
+			}
+		}
+		ta.addEventListener('input', () => { updateCharCount(); validateLive(); });
+		ta.addEventListener('keyup', (e) => {
+			const start = ta.selectionStart;
+			const lc = positionToLineCol(ta.value, start);
+			posEl.textContent = `line ${lc.line}, col ${lc.col}`;
+		});
+
+		// keyboard shortcut: Ctrl/Cmd + S
+		document.addEventListener('keydown', (e) => {
+			const isSave = (e.key === 's' || e.key === 'S') && (e.ctrlKey || e.metaKey);
+			if (isSave) { e.preventDefault(); saveSettings(); }
+		});
+
+		// ---------- Init ----------
+		loadSettings();
+		</script>
+	</body>
+</html>
