@@ -107,7 +107,7 @@
 			outline: none;
 			padding: 14px;
 			resize: vertical;
-			font: 13px/1.45 ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+			font: 11px/1.45 ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 			color: var(--fg);
 			background: var(--panel);
 		}
@@ -132,11 +132,6 @@
 	</head>
 	<body>
 		<div class="wrap">
-			<header>
-				<div><h1>Agar.io v2.0 Settings Editor</h1></div>
-				<button id="themeBtn" class="theme" title="Toggle theme">🌓</button>
-			</header>
-
 			<div class="panel">
 				<div class="panel-head row">
 					<div class="row">
@@ -149,10 +144,11 @@
 						<label class="btn-like" title="Restore from JSON file">Restore<input id="fileInput" type="file" accept=".json,application/json" /></label>
 					</div>
 					<div class="spacer"></div>
-					<div class="small">Shortcut: <span class="kbd">Ctrl/Cmd + S</span></div>
+					<div class="small"><h1>Agar.io v2.0 Settings Editor</h1></div>
+					<button id="themeBtn" class="theme" title="Toggle theme">🌓</button>
 				</div>
 
-				<textarea id="settingsArea" spellcheck="false" aria-label="Agar settings JSON"></textarea>
+				<textarea id="settingsArea" rows="45" spellcheck="false" aria-label="Agar settings JSON"></textarea>
 
 				<div class="panel-foot">
 					<div id="status" class="status">
@@ -165,170 +161,170 @@
 		</div>
 
 		<script>
-		// ---------- Config ----------
-		const STORAGE_KEY = 'settings';									// Agar uses 'settings' in localStorage
-		const THEME_KEY	 = 'settings_page_theme';						// separate key for this tool
-		const INDENT			= 4;									// pretty-print spaces
+			// ---------- Config ----------
+			const STORAGE_KEY = 'settings';									// Agar uses 'settings' in localStorage
+			const THEME_KEY	 = 'settings_page_theme';						// separate key for this tool
+			const INDENT			= 4;									// pretty-print spaces
 
-		// ---------- DOM ----------
-		const ta = document.getElementById('settingsArea');
-		const statusEl = document.getElementById('status');
-		const posEl = document.getElementById('pos');
-		const charCountEl = document.getElementById('charCount');
+			// ---------- DOM ----------
+			const ta = document.getElementById('settingsArea');
+			const statusEl = document.getElementById('status');
+			const posEl = document.getElementById('pos');
+			const charCountEl = document.getElementById('charCount');
 
-		// ---------- Theme ----------
-		(function initTheme(){
-			const saved = localStorage.getItem(THEME_KEY);
-			const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-			if (saved === 'dark' || (!saved && prefersDark)) document.documentElement.classList.add('dark');
-			document.getElementById('themeBtn').addEventListener('click', () => {
-				document.documentElement.classList.toggle('dark');
-				localStorage.setItem(THEME_KEY, document.documentElement.classList.contains('dark') ? 'dark' : 'light');
-			});
-		})();
+			// ---------- Theme ----------
+			(function initTheme(){
+				const saved = localStorage.getItem(THEME_KEY);
+				const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+				if (saved === 'dark' || (!saved && prefersDark)) document.documentElement.classList.add('dark');
+				document.getElementById('themeBtn').addEventListener('click', () => {
+					document.documentElement.classList.toggle('dark');
+					localStorage.setItem(THEME_KEY, document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+				});
+			})();
 
-		// ---------- Helpers ----------
-		function setStatus(text, kind = 'warn') {
-			statusEl.innerHTML = `<span class="pill ${kind}">${escapeHtml(text)}</span>`;
-		}
-		function escapeHtml(s){ return s.replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m])); }
-		function updateCharCount(){ charCountEl.textContent = ta.value.length.toString(); }
-
-		function positionToLineCol(str, pos) {
-			const pre = str.slice(0, pos);
-			const lines = pre.split('\n');
-			return { line: lines.length, col: lines[lines.length - 1].length + 1 };
-		}
-		function clearLineHighlights() {
-			// Simple re-render to clear any .error-line (textarea can't style lines individually)
-			// Kept for symmetry; we mimic highlighting via status only.
-		}
-
-		// ---------- Load / Save ----------
-		function loadSettings() {
-			clearLineHighlights();
-			let raw = localStorage.getItem(STORAGE_KEY);
-			if (raw == null) {
-				ta.value = '{\n	\n}';
-				setStatus(`Key "${STORAGE_KEY}" not found. Starting with empty object.`, 'warn');
-			} else {
-				try {
-					const obj = JSON.parse(raw);
-					ta.value = JSON.stringify(obj, null, INDENT);
-					setStatus('Loaded from localStorage.', 'ok');
-				} catch (e) {
-					ta.value = String(raw);
-					setStatus('Loaded raw string (existing value is not valid JSON).', 'warn');
-				}
+			// ---------- Helpers ----------
+			function setStatus(text, kind = 'warn') {
+				statusEl.innerHTML = `<span class="pill ${kind}">${escapeHtml(text)}</span>`;
 			}
-			updateCharCount();
-			validateLive();
-		}
+			function escapeHtml(s){ return s.replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m])); }
+			function updateCharCount(){ charCountEl.textContent = ta.value.length.toString(); }
 
-		function saveSettings() {
-			clearLineHighlights();
-			const text = ta.value.trim();
-			try {
-				const obj = JSON.parse(text);
-				const normalized = JSON.stringify(obj); // store minified for consistency
-				localStorage.setItem(STORAGE_KEY, normalized);
-				setStatus('Saved to localStorage.settings ✔', 'ok');
-			} catch (e) {
-				const msg = String(e && e.message || 'Invalid JSON');
-				const match = msg.match(/position\s+(\d+)/i) || msg.match(/at\s+position\s+(\d+)/i);
-				if (match) {
-					const pos = Number(match[1]);
-					const lc = positionToLineCol(text, pos);
-					setStatus(`Invalid JSON at line ${lc.line}, col ${lc.col}: ${msg}`, 'err');
-					posEl.textContent = `line ${lc.line}, col ${lc.col}`;
+			function positionToLineCol(str, pos) {
+				const pre = str.slice(0, pos);
+				const lines = pre.split('\n');
+				return { line: lines.length, col: lines[lines.length - 1].length + 1 };
+			}
+			function clearLineHighlights() {
+				// Simple re-render to clear any .error-line (textarea can't style lines individually)
+				// Kept for symmetry; we mimic highlighting via status only.
+			}
+
+			// ---------- Load / Save ----------
+			function loadSettings() {
+				clearLineHighlights();
+				let raw = localStorage.getItem(STORAGE_KEY);
+				if (raw == null) {
+					ta.value = '{\n	\n}';
+					setStatus(`Key "${STORAGE_KEY}" not found. Starting with empty object.`, 'warn');
 				} else {
-					setStatus('Invalid JSON: ' + msg, 'err');
-					posEl.textContent = '';
+					try {
+						const obj = JSON.parse(raw);
+						ta.value = JSON.stringify(obj, null, INDENT);
+						setStatus('Loaded from localStorage.', 'ok');
+					} catch (e) {
+						ta.value = String(raw);
+						setStatus('Loaded raw string (existing value is not valid JSON).', 'warn');
+					}
+				}
+				updateCharCount();
+				validateLive();
+			}
+
+			function saveSettings() {
+				clearLineHighlights();
+				const text = ta.value.trim();
+				try {
+					const obj = JSON.parse(text);
+					const normalized = JSON.stringify(obj); // store minified for consistency
+					localStorage.setItem(STORAGE_KEY, normalized);
+					setStatus('Saved to localStorage.settings ✔', 'ok');
+				} catch (e) {
+					const msg = String(e && e.message || 'Invalid JSON');
+					const match = msg.match(/position\s+(\d+)/i) || msg.match(/at\s+position\s+(\d+)/i);
+					if (match) {
+						const pos = Number(match[1]);
+						const lc = positionToLineCol(text, pos);
+						setStatus(`Invalid JSON at line ${lc.line}, col ${lc.col}: ${msg}`, 'err');
+						posEl.textContent = `line ${lc.line}, col ${lc.col}`;
+					} else {
+						setStatus('Invalid JSON: ' + msg, 'err');
+						posEl.textContent = '';
+					}
 				}
 			}
-		}
 
-		// ---------- UI actions ----------
-		document.getElementById('saveBtn').addEventListener('click', saveSettings);
-		document.getElementById('reloadBtn').addEventListener('click', loadSettings);
-		document.getElementById('formatBtn').addEventListener('click', () => {
-			try {
-				const obj = JSON.parse(ta.value);
-				ta.value = JSON.stringify(obj, null, INDENT);
-				setStatus('Formatted.', 'ok');
-				updateCharCount();
-			} catch (e) {
-				setStatus('Cannot format: invalid JSON.', 'err');
-			}
-		});
-		document.getElementById('minifyBtn').addEventListener('click', () => {
-			try {
-				const obj = JSON.parse(ta.value);
-				ta.value = JSON.stringify(obj);
-				setStatus('Minified.', 'ok');
-				updateCharCount();
-			} catch (e) {
-				setStatus('Cannot minify: invalid JSON.', 'err');
-			}
-		});
-		document.getElementById('copyBtn').addEventListener('click', async () => {
-			try {
-				await navigator.clipboard.writeText(ta.value);
-				setStatus('Copied to clipboard.', 'ok');
-			} catch {
-				setStatus('Clipboard copy failed. Select all and copy manually.', 'warn');
-			}
-		});
-		document.getElementById('downloadBtn').addEventListener('click', () => {
-			const blob = new Blob([ta.value], { type: 'application/json' });
-			const a = document.createElement('a');
-			a.href = URL.createObjectURL(blob);
-			a.download = 'agar-settings-backup.json';
-			a.click();
-			URL.revokeObjectURL(a.href);
-			setStatus('Backup downloaded.', 'ok');
-		});
-		document.getElementById('fileInput').addEventListener('change', async (ev) => {
-			const file = ev.target.files[0];
-			if (!file) return;
-			try {
-				const text = await file.text();
-				// Validate before loading into editor
-				const obj = JSON.parse(text);
-				ta.value = JSON.stringify(obj, null, INDENT);
-				updateCharCount();
-				setStatus('Backup loaded into editor. Click Save to apply.', 'ok');
-			} catch {
-				setStatus('Selected file is not valid JSON.', 'err');
-			} finally {
-				ev.target.value = '';
-			}
-		});
+			// ---------- UI actions ----------
+			document.getElementById('saveBtn').addEventListener('click', saveSettings);
+			document.getElementById('reloadBtn').addEventListener('click', loadSettings);
+			document.getElementById('formatBtn').addEventListener('click', () => {
+				try {
+					const obj = JSON.parse(ta.value);
+					ta.value = JSON.stringify(obj, null, INDENT);
+					setStatus('Formatted.', 'ok');
+					updateCharCount();
+				} catch (e) {
+					setStatus('Cannot format: invalid JSON.', 'err');
+				}
+			});
+			document.getElementById('minifyBtn').addEventListener('click', () => {
+				try {
+					const obj = JSON.parse(ta.value);
+					ta.value = JSON.stringify(obj);
+					setStatus('Minified.', 'ok');
+					updateCharCount();
+				} catch (e) {
+					setStatus('Cannot minify: invalid JSON.', 'err');
+				}
+			});
+			document.getElementById('copyBtn').addEventListener('click', async () => {
+				try {
+					await navigator.clipboard.writeText(ta.value);
+					setStatus('Copied to clipboard.', 'ok');
+				} catch {
+					setStatus('Clipboard copy failed. Select all and copy manually.', 'warn');
+				}
+			});
+			document.getElementById('downloadBtn').addEventListener('click', () => {
+				const blob = new Blob([ta.value], { type: 'application/json' });
+				const a = document.createElement('a');
+				a.href = URL.createObjectURL(blob);
+				a.download = 'agar-settings-backup.json';
+				a.click();
+				URL.revokeObjectURL(a.href);
+				setStatus('Backup downloaded.', 'ok');
+			});
+			document.getElementById('fileInput').addEventListener('change', async (ev) => {
+				const file = ev.target.files[0];
+				if (!file) return;
+				try {
+					const text = await file.text();
+					// Validate before loading into editor
+					const obj = JSON.parse(text);
+					ta.value = JSON.stringify(obj, null, INDENT);
+					updateCharCount();
+					setStatus('Backup loaded into editor. Click Save to apply.', 'ok');
+				} catch {
+					setStatus('Selected file is not valid JSON.', 'err');
+				} finally {
+					ev.target.value = '';
+				}
+			});
 
-		// live validation + caret position
-		function validateLive() {
-			try {
-				JSON.parse(ta.value);
-				setStatus('Valid JSON ✔', 'ok');
-			} catch (e) {
-				setStatus('Editing… (JSON not valid yet)', 'warn');
+			// live validation + caret position
+			function validateLive() {
+				try {
+					JSON.parse(ta.value);
+					setStatus('Valid JSON ✔', 'ok');
+				} catch (e) {
+					setStatus('Editing… (JSON not valid yet)', 'warn');
+				}
 			}
-		}
-		ta.addEventListener('input', () => { updateCharCount(); validateLive(); });
-		ta.addEventListener('keyup', (e) => {
-			const start = ta.selectionStart;
-			const lc = positionToLineCol(ta.value, start);
-			posEl.textContent = `line ${lc.line}, col ${lc.col}`;
-		});
+			ta.addEventListener('input', () => { updateCharCount(); validateLive(); });
+			ta.addEventListener('keyup', (e) => {
+				const start = ta.selectionStart;
+				const lc = positionToLineCol(ta.value, start);
+				posEl.textContent = `line ${lc.line}, col ${lc.col}`;
+			});
 
-		// keyboard shortcut: Ctrl/Cmd + S
-		document.addEventListener('keydown', (e) => {
-			const isSave = (e.key === 's' || e.key === 'S') && (e.ctrlKey || e.metaKey);
-			if (isSave) { e.preventDefault(); saveSettings(); }
-		});
+			// keyboard shortcut: Ctrl/Cmd + S
+			document.addEventListener('keydown', (e) => {
+				const isSave = (e.key === 's' || e.key === 'S') && (e.ctrlKey || e.metaKey);
+				if (isSave) { e.preventDefault(); saveSettings(); }
+			});
 
-		// ---------- Init ----------
-		loadSettings();
+			// ---------- Init ----------
+			loadSettings();
 		</script>
 	</body>
 </html>
