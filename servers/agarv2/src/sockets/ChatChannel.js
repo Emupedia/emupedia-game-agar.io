@@ -63,6 +63,8 @@ class ChatChannel {
 	 * @param {string} message
 	 */
 	shouldFilter(message) {
+		return false
+
 		message = message.toLowerCase()
 		message = message.replace(/  +/g, ' ')
 		message = message.replace(/(.)\1{3,}/gi, '$1')
