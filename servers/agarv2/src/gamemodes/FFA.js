@@ -1,5 +1,6 @@
 const Gamemode = require("./Gamemode");
 const Misc = require("../primitives/Misc");
+const AntiTeaming = require("../antiteaming/AntiTeaming");
 
 /**
  * @param {Player} player
@@ -29,6 +30,18 @@ class FFA extends Gamemode {
 
 	static get name() {
 		return 'FFA';
+	}
+
+	/**
+	 * @param {World} world
+	 */
+	onNewWorld(world) {
+		super.onNewWorld(world);
+		
+		// Initialize anti-teaming system for FFA worlds
+		if (this.handle.settings.antiTeamingEnabled) {
+			world.antiTeaming = new AntiTeaming(world);
+		}
 	}
 
 	/**

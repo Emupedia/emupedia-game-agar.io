@@ -106,7 +106,31 @@ const value = Object.seal({
 	playerMergeTime: 30,
 	playerMergeTimeIncrease: 0.02,
 	playerDecayMult: 0.001,
-	playerDecayMultOversize: 10
+	playerDecayMultOversize: 10,
+
+	// Anti-teaming system settings
+	antiTeamingEnabled: true,
+	antiTeamingStealthyPunishment: true,     // Enable stealthy mass absorption reduction
+	antiTeamingStealthyMessage: false,       // Send message to player when stealthy punishment is applied (disabled for maximum stealth)
+	antiTeamingShowWarnings: false,          // Show warning messages to players (can be disabled for stealth mode)
+	antiTeamingShowDetectionMessages: false, // Show immediate detection messages (proximity, feeding, avoidance)
+	antiTeamingMassLossPunishment: false,    // Enable direct mass loss punishment (can be disabled for stealth-only mode)
+	antiTeamingBanEnabled: false,            // Enable temporary bans (disabled by default)
+	antiTeamingProximityMultiplier: 3.0,     // Distance multiplier for proximity detection
+	antiTeamingProximityThreshold: 10,       // Ticks players can be close before suspicion
+	antiTeamingProximitySuspicion: 2,        // Suspicion points added for proximity teaming
+	antiTeamingMassTransferWindow: 75,       // Ticks window to detect mass transfers (3 seconds)
+	antiTeamingMassTransferThreshold: 50,    // Mass threshold for suspicious transfers
+	antiTeamingMassTransferSuspicion: 5,     // Suspicion points for mass transfer teaming
+	antiTeamingAvoidanceThreshold: 20,       // Avoidance instances before suspicion
+	antiTeamingAvoidanceSuspicion: 1,        // Suspicion points for avoidance teaming
+	antiTeamingSuspicionDecay: 0.99,         // Decay rate for suspicion levels per tick
+	antiTeamingWarningThreshold: 15,         // Suspicion level for warnings
+	antiTeamingPunishmentThreshold: 30,      // Suspicion level for punishment
+	antiTeamingMassLossPercent: 25,          // Percentage of mass lost as punishment
+	antiTeamingMaxWarnings: 3,               // Maximum warnings before ban
+	antiTeamingBanDuration: 300,             // Temporary ban duration in seconds (5 minutes)
+	antiTeamingMassAbsorptionPenalty: 0.5    // Multiplier for mass gained when suspected of teaming (0.5 = 50% reduction)
 });
 
 module.exports = value;

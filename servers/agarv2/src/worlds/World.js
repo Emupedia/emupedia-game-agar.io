@@ -7,6 +7,7 @@ const PlayerCell = require("../cells/PlayerCell");
 const Mothercell = require("../cells/Mothercell");
 const Virus = require("../cells/Virus");
 const ChatChannel = require("../sockets/ChatChannel");
+const AntiTeaming = require("../antiteaming/AntiTeaming");
 const { fullyIntersects, SQRT_2 } = require("../primitives/Misc");
 
 /**
@@ -60,6 +61,12 @@ class World {
 		};
 
 		this.setBorder({x: this.settings.worldMapX, y: this.settings.worldMapY, w: this.settings.worldMapW, h: this.settings.worldMapH});
+		
+		// Initialize anti-teaming system for FFA gamemode
+		this.antiTeaming = null;
+		if (this.handle.gamemode && this.handle.gamemode.name === 'FFA' && this.settings.antiTeamingEnabled) {
+			this.antiTeaming = new AntiTeaming(this);
+		}
 	}
 
 	get settings() {
@@ -190,6 +197,11 @@ class World {
 		this.handle.gamemode.onPlayerJoinWorld(player, this);
 		player.router.onWorldSet();
 		this.handle.logger.debug(`player ${player.id} has been added to world ${this.id}`);
+		
+		// Initialize anti-teaming tracking for this player
+		if (this.antiTeaming) {
+			this.antiTeaming.initializePlayer(player);
+		}
 
 		if (!player.router.isExternal) {
 			return;
@@ -207,6 +219,11 @@ class World {
 		player.world = null;
 		player.hasWorld = false;
 		this.worldChat.remove(player.router);
+
+		// Remove anti-teaming tracking for this player
+		if (this.antiTeaming) {
+			this.antiTeaming.removePlayer(player);
+		}
 
 		while (player.ownedCells.length > 0) {
 			this.removeCell(player.ownedCells[0]);
@@ -312,6 +329,11 @@ class World {
 
 	liveUpdate() {
 		this.handle.gamemode.onWorldTick(this);
+
+		// Update anti-teaming system
+		if (this.antiTeaming) {
+			this.antiTeaming.update();
+		}
 
 		/** @type {Cell[]} */
 		const eat = [];
@@ -540,6 +562,12 @@ class World {
 
 		a.whenAte(b);
 		b.whenEatenBy(a);
+		
+		// Notify anti-teaming system about cell consumption
+		if (this.antiTeaming) {
+			this.antiTeaming.onCellEaten(b, a);
+		}
+		
 		this.removeCell(b);
 		this.updateCell(a);
 	}
