@@ -72,6 +72,12 @@ class AntiTeaming {
 		}
 		messagesToRemove.forEach(key => this.lastMessageTimes.delete(key));
 		
+		// Remove stealthy punishment logging data
+		const logKey = `stealthyLog_${player.id}`;
+		if (this.hasOwnProperty(logKey)) {
+			delete this[logKey];
+		}
+		
 		// Remove any teaming pairs involving this player
 		const toRemove = [];
 		for (const pair of this.teamingPairs) {
@@ -197,7 +203,7 @@ class AntiTeaming {
 				
 				if (!this.teamingPairs.has(pairKey)) {
 					this.teamingPairs.add(pairKey);
-					this.logger.warn(`Suspected teaming detected between players ${player1.id} and ${player2.id} (proximity)`);
+					this.logger.inform(`Suspected teaming detected between players ${player1.id} and ${player2.id} (proximity)`);
 				}
 			}
 		} else {
@@ -256,7 +262,7 @@ class AntiTeaming {
 					}
 					
 					this.teamingPairs.add(transferKey);
-					this.logger.warn(`Suspected teaming detected between players ${victim.id} and ${eater.id} (mass transfer)`);
+					this.logger.inform(`Suspected teaming detected between players ${victim.id} and ${eater.id} (mass transfer)`);
 				}
 			}
 
@@ -362,12 +368,17 @@ class AntiTeaming {
 		const warnings = this.playerWarnings.get(player.id) || 0;
 		
 		if (warnings === 0) {
+			const data = this.playerData.get(player.id);
+			const suspicionLevel = data ? data.suspicionLevel.toFixed(1) : "unknown";
+			
 			// Only send warning message if warnings are enabled
 			if (this.settings.antiTeamingShowWarnings) {
 				this.sendMessageToPlayer(player, "⚠️ WARNING: Suspected teaming behavior detected. FFA means everyone fights alone!", "warning");
 			}
 			this.playerWarnings.set(player.id, 1);
-			this.logger.warn(`Warning issued to player ${player.id} for suspected teaming${this.settings.antiTeamingShowWarnings ? "" : " (silent)"}`);
+			
+			// Always log warning action for admin tracking
+			this.logger.inform(`WARNING ISSUED: Player ${player.id} warned for suspected teaming (suspicion: ${suspicionLevel})${this.settings.antiTeamingShowWarnings ? " [visible]" : " [silent]"}`);
 		}
 	}
 
@@ -378,6 +389,8 @@ class AntiTeaming {
 	 */
 	punishPlayer(player, data) {
 		const warnings = this.playerWarnings.get(player.id) || 0;
+		
+		const suspicionLevel = data.suspicionLevel.toFixed(1);
 		
 		if (warnings < this.settings.antiTeamingMaxWarnings) {
 			// Issue warning and potentially reduce mass
@@ -397,10 +410,12 @@ class AntiTeaming {
 			this.playerWarnings.set(player.id, warnings + 1);
 			data.suspicionLevel *= 0.5; // Reduce suspicion after punishment
 			
-			const logMessage = punishmentApplied ? 
-				`Player ${player.id} punished for teaming with mass loss (warning ${warnings + 1}/${this.settings.antiTeamingMaxWarnings})` :
-				`Player ${player.id} warned for teaming without mass loss (warning ${warnings + 1}/${this.settings.antiTeamingMaxWarnings})`;
-			this.logger.warn(`${logMessage}${this.settings.antiTeamingShowWarnings ? "" : " (silent)"}`);
+			// Always log punishment action with detailed information
+			if (punishmentApplied) {
+				this.logger.inform(`MASS LOSS PUNISHMENT: Player ${player.id} lost ${this.settings.antiTeamingMassLossPercent}% mass (warning ${warnings + 1}/${this.settings.antiTeamingMaxWarnings}, suspicion: ${suspicionLevel})${this.settings.antiTeamingShowWarnings ? " [visible]" : " [silent]"}`);
+			} else {
+				this.logger.inform(`WARNING ESCALATION: Player ${player.id} received escalated warning without mass loss (warning ${warnings + 1}/${this.settings.antiTeamingMaxWarnings}, suspicion: ${suspicionLevel})${this.settings.antiTeamingShowWarnings ? " [visible]" : " [silent]"}`);
+			}
 		} else if (this.settings.antiTeamingBanEnabled) {
 			// Temporary ban (only if enabled)
 			if (this.settings.antiTeamingShowWarnings) {
@@ -408,7 +423,8 @@ class AntiTeaming {
 			}
 			this.temporarilyBanPlayer(player);
 			
-			this.logger.warn(`Player ${player.id} temporarily banned for repeated teaming violations${this.settings.antiTeamingShowWarnings ? "" : " (silent)"}`);
+			// Always log ban action
+			this.logger.inform(`TEMPORARY BAN: Player ${player.id} banned for ${this.settings.antiTeamingBanDuration}s for repeated teaming (suspicion: ${suspicionLevel})${this.settings.antiTeamingShowWarnings ? " [visible]" : " [silent]"}`);
 		} else {
 			// Maximum warnings reached but bans are disabled
 			let punishmentApplied = false;
@@ -426,10 +442,12 @@ class AntiTeaming {
 			
 			data.suspicionLevel *= 0.3; // Reduce suspicion more after final warning
 			
-			const logMessage = punishmentApplied ?
-				`Player ${player.id} received final warning for continued teaming with mass loss (bans disabled)` :
-				`Player ${player.id} received final warning for continued teaming without mass loss (bans disabled)`;
-			this.logger.warn(`${logMessage}${this.settings.antiTeamingShowWarnings ? "" : " (silent)"}`);
+			// Always log final warning action
+			if (punishmentApplied) {
+				this.logger.inform(`FINAL WARNING + MASS LOSS: Player ${player.id} lost ${this.settings.antiTeamingMassLossPercent}% mass (max warnings reached, bans disabled, suspicion: ${suspicionLevel})${this.settings.antiTeamingShowWarnings ? " [visible]" : " [silent]"}`);
+			} else {
+				this.logger.inform(`FINAL WARNING: Player ${player.id} received final warning without mass loss (max warnings reached, bans disabled, suspicion: ${suspicionLevel})${this.settings.antiTeamingShowWarnings ? " [visible]" : " [silent]"}`);
+			}
 		}
 	}
 
@@ -522,7 +540,16 @@ class AntiTeaming {
 		if (data.suspicionLevel >= this.settings.antiTeamingWarningThreshold) {
 			const player = this.world.players.find(p => p.id === playerId);
 			if (player) {
-				this.logger.debug(`Stealthy punishment applied to player ${playerId}: mass absorption reduced to ${this.settings.antiTeamingMassAbsorptionPenalty * 100}%`);
+				// Log stealthy punishment periodically (not every time they eat something)
+				// Only log when they first become suspected or every 30 seconds while suspected
+				const currentTick = this.handle.tick;
+				const logKey = `stealthyLog_${playerId}`;
+				const lastLogTime = this[logKey] || 0;
+				
+				if (currentTick - lastLogTime > 750) { // 30 seconds at 25 TPS
+					this.logger.inform(`STEALTHY PUNISHMENT ACTIVE: Player ${playerId} mass absorption reduced to ${this.settings.antiTeamingMassAbsorptionPenalty * 100}% (suspicion: ${data.suspicionLevel.toFixed(1)})`);
+					this[logKey] = currentTick;
+				}
 				
 				// Optional message to player (disabled by default for stealth)
 				if (this.settings.antiTeamingStealthyMessage && eatenCell && eatenCell.type === 0) {
