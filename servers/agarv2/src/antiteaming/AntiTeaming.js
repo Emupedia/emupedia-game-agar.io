@@ -50,7 +50,8 @@ class AntiTeaming {
 				avoidanceCount: 0,
 				lastMassLossTime: 0,
 				suspicionLevel: 0,
-				isBeingTracked: false
+				isBeingTracked: false,
+				wasUnderStealthyPenalty: false
 			});
 		}
 	}
@@ -536,8 +537,11 @@ class AntiTeaming {
 		const data = this.playerData.get(playerId);
 		if (!data) return 1.0;
 
+		const wasUnderPenalty = data.wasUnderStealthyPenalty || false;
+		const isCurrentlyUnderPenalty = data.suspicionLevel >= this.settings.antiTeamingWarningThreshold;
+
 		// Apply penalty if player has any suspicion above warning threshold
-		if (data.suspicionLevel >= this.settings.antiTeamingWarningThreshold) {
+		if (isCurrentlyUnderPenalty) {
 			const player = this.world.players.find(p => p.id === playerId);
 			if (player) {
 				// Log stealthy punishment periodically (not every time they eat something)
@@ -557,10 +561,23 @@ class AntiTeaming {
 				}
 			}
 			
+			// Mark that player is currently under penalty
+			data.wasUnderStealthyPenalty = true;
 			return this.settings.antiTeamingMassAbsorptionPenalty;
+		} else {
+			// Check if player was under penalty but is now cleared
+			if (wasUnderPenalty && this.settings.antiTeamingStealthyMessage) {
+				const player = this.world.players.find(p => p.id === playerId);
+				if (player && eatenCell && eatenCell.type === 0) {
+					this.sendMessageToPlayer(player, "✅ Anti-teaming: Your mass absorption has returned to normal. Suspicion cleared.", "stealthy_cleared");
+					this.logger.inform(`STEALTHY PUNISHMENT CLEARED: Player ${playerId} mass absorption restored to 100% (suspicion: ${data.suspicionLevel.toFixed(1)})`);
+				}
+			}
+			
+			// Mark that player is no longer under penalty
+			data.wasUnderStealthyPenalty = false;
+			return 1.0;
 		}
-
-		return 1.0;
 	}
 
 	/**
