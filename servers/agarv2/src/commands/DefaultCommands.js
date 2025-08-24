@@ -923,9 +923,9 @@ const playerLeaveWorld = {
 			return void chat.directMessage(null, context, "you're not in a world");
 		}
 
-		/*if (context.player.state === 0) {
+		if (context.player.state === 0 && handle.gamemode.name === 'PVP') {
 			return void chat.directMessage(null, context, "you're playing and can't do this right now");
-		}*/
+		}
 
 		context.player.world.removePlayer(context.player);
 	}
