@@ -250,9 +250,10 @@ class AntiTeaming {
 				// Recent mass transfer - increase suspicion
 				const transferKey = this.getPairKey(victim.id, eater.id);
 				const currentTransfers = eaterData.massTransfers.get(victim.id) || 0;
-				eaterData.massTransfers.set(victim.id, currentTransfers + massTransferred);
+				const totalTransfers = currentTransfers + massTransferred;
+				eaterData.massTransfers.set(victim.id, totalTransfers);
 
-				if (currentTransfers > this.settings.antiTeamingMassTransferThreshold) {
+				if (totalTransfers > this.settings.antiTeamingMassTransferThreshold) {
 					victimData.suspicionLevel += this.settings.antiTeamingMassTransferSuspicion;
 					eaterData.suspicionLevel += this.settings.antiTeamingMassTransferSuspicion;
 					
@@ -312,7 +313,8 @@ class AntiTeaming {
 							data1.avoidanceCount++;
 							data2.avoidanceCount++;
 
-							if (data1.avoidanceCount > this.settings.antiTeamingAvoidanceThreshold) {
+							if (data1.avoidanceCount > this.settings.antiTeamingAvoidanceThreshold || 
+							    data2.avoidanceCount > this.settings.antiTeamingAvoidanceThreshold) {
 								data1.suspicionLevel += this.settings.antiTeamingAvoidanceSuspicion;
 								data2.suspicionLevel += this.settings.antiTeamingAvoidanceSuspicion;
 								
@@ -341,6 +343,13 @@ class AntiTeaming {
 			if (this.handle.tick % (25 * 30) === 0) { // Every 30 seconds
 				data.avoidanceCount = Math.floor(data.avoidanceCount * 0.5);
 				data.massTransfers.clear();
+				// Clean up proximity times for disconnected players
+				const connectedPlayerIds = new Set(this.world.players.map(p => p.id));
+				for (const otherPlayerId of data.proximityTimes.keys()) {
+					if (!connectedPlayerIds.has(otherPlayerId)) {
+						data.proximityTimes.delete(otherPlayerId);
+					}
+				}
 			}
 		}
 	}
@@ -576,11 +585,16 @@ class AntiTeaming {
 			return this.settings.antiTeamingMassAbsorptionPenalty;
 		} else {
 			// Check if player was under penalty but is now cleared
-			if (wasUnderPenalty && this.settings.antiTeamingStealthyMessage) {
+			if (wasUnderPenalty) {
 				const player = this.world.players.find(p => p.id === playerId);
 				if (player) {
-					this.sendMessageToPlayer(player, "✅ Anti-teaming: Your mass absorption from player cells has returned to normal. Suspicion cleared.", "stealthy_cleared");
+					// Always log the clearance
 					this.logger.inform(`STEALTHY PUNISHMENT CLEARED: Player ${playerId} mass absorption from player cells restored to 100% (suspicion: ${data.suspicionLevel.toFixed(1)})`);
+					
+					// Send message only if enabled and this is the first time we're clearing
+					if (this.settings.antiTeamingStealthyMessage) {
+						this.sendMessageToPlayer(player, "✅ Anti-teaming: Your mass absorption from player cells has returned to normal. Suspicion cleared.", "stealthy_cleared");
+					}
 				}
 			}
 			
