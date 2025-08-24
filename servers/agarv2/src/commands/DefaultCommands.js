@@ -923,9 +923,9 @@ const playerLeaveWorld = {
 			return void chat.directMessage(null, context, "you're not in a world");
 		}
 
-		if (context.player.state === 0) {
+		/*if (context.player.state === 0) {
 			return void chat.directMessage(null, context, "you're playing and can't do this right now");
-		}
+		}*/
 
 		context.player.world.removePlayer(context.player);
 	}
@@ -1108,22 +1108,22 @@ const antiTeamingStats = {
 	 */
 	exec: (handle, context, args) => {
 		const worldId = args.length >= 1 ? parseInt(args[0]) : null;
-		
+
 		if (worldId !== null) {
 			const world = getWorldByID(args, handle, 0, false);
 			if (world === false) return;
-			
+
 			if (!world.antiTeaming) {
 				return void handle.logger.print("Anti-teaming is not enabled for this world");
 			}
-			
+
 			const stats = world.antiTeaming.getTeamingStats();
 			handle.logger.print(`Anti-teaming stats for world ${worldId}:`);
 			handle.logger.print(`  Total players: ${stats.totalPlayers}`);
 			handle.logger.print(`  Suspected players: ${stats.suspectedPlayers}`);
 			handle.logger.print(`  Active teaming pairs: ${stats.activePairs}`);
 			handle.logger.print(`  Total warnings issued: ${stats.totalWarnings}`);
-			
+
 			if (stats.stealthyPunishmentEnabled) {
 				handle.logger.print(`  Stealthy punishment: ENABLED`);
 				handle.logger.print(`  Players with reduced absorption: ${stats.stealthyPunishedPlayers}`);
@@ -1135,7 +1135,7 @@ const antiTeamingStats = {
 			// Show stats for all worlds
 			let totalSuspected = 0, totalPairs = 0, totalWarnings = 0, totalStealthyPunished = 0;
 			let stealthyEnabled = false;
-			
+
 			for (let id in handle.worlds) {
 				const world = handle.worlds[id];
 				if (world.antiTeaming) {
@@ -1147,12 +1147,12 @@ const antiTeamingStats = {
 					if (stats.stealthyPunishmentEnabled) stealthyEnabled = true;
 				}
 			}
-			
+
 			handle.logger.print("Global anti-teaming statistics:");
 			handle.logger.print(`  Total suspected players: ${totalSuspected}`);
 			handle.logger.print(`  Total active pairs: ${totalPairs}`);
 			handle.logger.print(`  Total warnings issued: ${totalWarnings}`);
-			
+
 			if (stealthyEnabled) {
 				handle.logger.print(`  Total players with reduced absorption: ${totalStealthyPunished}`);
 				handle.logger.print(`  Stealthy punishment: ENABLED globally`);
@@ -1173,15 +1173,15 @@ const antiTeamingClear = {
 	exec: (handle, context, args) => {
 		const world = getWorldByID(args, handle, 0, false);
 		if (world === false) return;
-		
+
 		if (!world.antiTeaming) {
 			return void handle.logger.print("Anti-teaming is not enabled for this world");
 		}
-		
+
 		if (args.length >= 2) {
 			const player = getPlayerByID(args, handle, 1, false);
 			if (player === false) return;
-			
+
 			world.antiTeaming.removePlayer(player);
 			world.antiTeaming.initializePlayer(player);
 			handle.logger.print(`Cleared anti-teaming data for player ${player.id}`);
@@ -1204,14 +1204,14 @@ const antiTeamingToggle = {
 	 */
 	exec: (handle, context, args) => {
 		handle.settings.antiTeamingEnabled = !handle.settings.antiTeamingEnabled;
-		
+
 		const status = handle.settings.antiTeamingEnabled ? "enabled" : "disabled";
 		handle.logger.print(`Anti-teaming system ${status}`);
-		
+
 		// Initialize or destroy anti-teaming systems in existing worlds
 		for (let id in handle.worlds) {
 			const world = handle.worlds[id];
-			
+
 			if (handle.settings.antiTeamingEnabled && handle.gamemode.name === 'FFA') {
 				if (!world.antiTeaming) {
 					world.antiTeaming = new (require("../antiteaming/AntiTeaming"))(world);
@@ -1264,9 +1264,9 @@ module.exports = (commands, chatCommands) => {
 		genCommand(playerHelp),
 		genCommand(playerId),
 		genCommand(playerWorldId),
-		genCommand(playerJoinWorld),
-		genCommand(playerLeaveWorld),
-		genCommand(playerSuicide),
+		//genCommand(playerJoinWorld),
+		//genCommand(playerLeaveWorld),
+		//genCommand(playerSuicide),
 		genCommand(serverStats),
 		genCommand(serverPlayers)
 	);
