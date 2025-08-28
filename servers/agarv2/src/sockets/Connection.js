@@ -20,6 +20,10 @@ class Connection extends Router {
 		this.lastActivityTime = Date.now()
 		this.lastChatTime = Date.now()
 
+		// Admin authentication
+		this.isAdminAuthenticated = false
+		this.adminLoginTime = null
+
 		this.upgradeLevel = 0
 		/** @type {Protocol} */
 		this.protocol = null
@@ -213,6 +217,42 @@ class Connection extends Router {
 	}
 	onWorldReset() {
 		this.protocol.onWorldReset()
+	}
+
+	/**
+	 * Check if admin session is still valid
+	 * @returns {boolean}
+	 */
+	isAdminSessionValid() {
+		if (!this.settings.adminAuthEnabled) return true;
+		if (!this.isAdminAuthenticated) return false;
+		if (!this.adminLoginTime) return false;
+		
+		const sessionAge = Date.now() - this.adminLoginTime;
+		return sessionAge < this.settings.adminSessionTimeout;
+	}
+
+	/**
+	 * Attempt admin authentication
+	 * @param {string} password
+	 * @returns {boolean}
+	 */
+	authenticateAdmin(password) {
+		if (!this.settings.adminAuthEnabled) return true;
+		if (password === this.settings.adminPassword) {
+			this.isAdminAuthenticated = true;
+			this.adminLoginTime = Date.now();
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Logout admin
+	 */
+	logoutAdmin() {
+		this.isAdminAuthenticated = false;
+		this.adminLoginTime = null;
 	}
 	/** @param {Buffer} data */
 	send(data) {

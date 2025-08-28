@@ -130,7 +130,12 @@ const value = Object.seal({
 	antiTeamingMassLossPercent: 25,          // Percentage of mass lost as punishment
 	antiTeamingMaxWarnings: 3,               // Maximum warnings before ban
 	antiTeamingBanDuration: 300,             // Temporary ban duration in seconds (5 minutes)
-	antiTeamingMassAbsorptionPenalty: 0.5    // Multiplier for mass gained when suspected of teaming (0.5 = 50% reduction)
+	antiTeamingMassAbsorptionPenalty: 0.5,   // Multiplier for mass gained when suspected of teaming (0.5 = 50% reduction)
+	
+	// Admin Authentication System
+	adminAuthEnabled: true,                  // Enable admin authentication for chat commands
+	adminPassword: "admin123",               // Password for admin access (change this!)
+	adminSessionTimeout: 300000              // Admin session timeout in milliseconds (5 minutes)
 });
 
 module.exports = value;

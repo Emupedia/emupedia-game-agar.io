@@ -815,10 +815,27 @@ const playerHelp = {
 	 */
 	exec: (handle, context, args) => {
 		const list = handle.chatCommands.list;
+		const hiddenCommands = ['login', 'logout', 'adminstatus']; // Secret admin authentication commands
+		const adminOnlyCommands = ['antiteamstats', 'antiteamclear', 'antiteamtoggle', 'setting']; // Admin-only commands
+		
+		const isAdmin = context.isAdminSessionValid();
+		
 		handle.listener.globalChat.directMessage(null, context, "available commands:");
 
 		for (let name in list) {
-			handle.listener.globalChat.directMessage(null, context, `${name}${list[name].args.length > 0 ? " " : ""}${list[name].args} - ${list[name].description}`);
+			// Always skip completely hidden commands
+			if (hiddenCommands.includes(name)) {
+				continue;
+			}
+			
+			// Show admin commands only to authenticated admins
+			if (adminOnlyCommands.includes(name) && !isAdmin) {
+				continue;
+			}
+			
+			const command = list[name];
+			const adminSuffix = adminOnlyCommands.includes(name) ? " (admin)" : "";
+			handle.listener.globalChat.directMessage(null, context, `${name}${command.args.length > 0 ? " " : ""}${command.args} - ${command.description}${adminSuffix}`);
 		}
 	}
 }
@@ -854,6 +871,89 @@ const playerWorldId = {
 		}
 
 		chat.directMessage(null, context, `your world ID is ${context.player.world.id}`);
+	}
+}
+
+const adminLogin = {
+	name: "login",
+	args: "<password>",
+	desc: "authenticate as admin to access admin commands",
+	/**
+	 * @param {ServerHandle} handle
+	 * @param {Connection} context
+	 * @param {string[]} args
+	 */
+	exec: (handle, context, args) => {
+		const chat = handle.listener.globalChat;
+
+		if (!handle.settings.adminAuthEnabled) {
+			return void chat.directMessage(null, context, "Admin authentication is disabled");
+		}
+
+		if (args.length === 0) {
+			return void chat.directMessage(null, context, "Usage: /login <password>");
+		}
+
+		const password = args.join(" ");
+		
+		if (context.authenticateAdmin(password)) {
+			chat.directMessage(null, context, "✅ Admin authentication successful! Session will expire in " + Math.floor(handle.settings.adminSessionTimeout / 60000) + " minutes.");
+			handle.logger.inform(`Admin authenticated from IP ${context.remoteAddress} (Player ID: ${context.hasPlayer ? context.player.id : 'spectator'})`);
+		} else {
+			chat.directMessage(null, context, "❌ Invalid admin password");
+			handle.logger.warn(`Failed admin login attempt from IP ${context.remoteAddress} (Player ID: ${context.hasPlayer ? context.player.id : 'spectator'})`);
+		}
+	}
+}
+
+const adminLogout = {
+	name: "logout",
+	args: "",
+	desc: "logout from admin session",
+	/**
+	 * @param {ServerHandle} handle
+	 * @param {Connection} context
+	 * @param {string[]} args
+	 */
+	exec: (handle, context, args) => {
+		const chat = handle.listener.globalChat;
+
+		if (!handle.settings.adminAuthEnabled) {
+			return void chat.directMessage(null, context, "Admin authentication is disabled");
+		}
+
+		if (context.isAdminAuthenticated) {
+			context.logoutAdmin();
+			chat.directMessage(null, context, "✅ Admin logout successful");
+			handle.logger.inform(`Admin logged out from IP ${context.remoteAddress}`);
+		} else {
+			chat.directMessage(null, context, "❌ You are not logged in as admin");
+		}
+	}
+}
+
+const adminStatus = {
+	name: "adminstatus",
+	args: "",
+	desc: "check admin authentication status",
+	/**
+	 * @param {ServerHandle} handle
+	 * @param {Connection} context
+	 * @param {string[]} args
+	 */
+	exec: (handle, context, args) => {
+		const chat = handle.listener.globalChat;
+
+		if (!handle.settings.adminAuthEnabled) {
+			return void chat.directMessage(null, context, "Admin authentication is disabled");
+		}
+
+		if (context.isAdminSessionValid()) {
+			const timeLeft = Math.floor((handle.settings.adminSessionTimeout - (Date.now() - context.adminLoginTime)) / 60000);
+			chat.directMessage(null, context, `✅ Admin authenticated. Session expires in ${timeLeft} minutes.`);
+		} else {
+			chat.directMessage(null, context, "❌ Not authenticated as admin. Use /login <password>");
+		}
 	}
 }
 
@@ -1228,6 +1328,213 @@ const antiTeamingToggle = {
 }
 
 /**
+ * Check if connection has valid admin authentication for chat commands
+ * @param {ServerHandle} handle
+ * @param {Connection} context
+ * @returns {boolean}
+ */
+function requireAdminAuth(handle, context) {
+	const chat = handle.listener.globalChat;
+	
+	if (!handle.settings.adminAuthEnabled) {
+		return true; // Authentication disabled, allow command
+	}
+	
+	if (!context.isAdminSessionValid()) {
+		chat.directMessage(null, context, "❌ Admin authentication required. Use /login <password>");
+		return false;
+	}
+	
+	return true;
+}
+
+// Secured admin versions of commands for chat use
+const chatAdminAntiTeamingStats = {
+	name: "antiteamstats",
+	args: "[world id]",
+	desc: "show anti-teaming statistics (admin only)",
+	/**
+	 * @param {ServerHandle} handle
+	 * @param {Connection} context
+	 * @param {string[]} args
+	 */
+	exec: (handle, context, args) => {
+		if (!requireAdminAuth(handle, context)) return;
+		
+		const chat = handle.listener.globalChat;
+		
+		// Use the existing antiTeamingStats logic but send to chat instead of console
+		const worlds = Object.values(handle.worlds);
+		
+		if (args.length > 0) {
+			const worldId = parseInt(args[0]);
+			const world = handle.worlds[worldId];
+			
+			if (!world) {
+				return void chat.directMessage(null, context, `World ${worldId} not found`);
+			}
+			
+			if (!world.antiTeaming) {
+				return void chat.directMessage(null, context, `Anti-teaming not enabled in world ${worldId}`);
+			}
+			
+			const stats = world.antiTeaming.getStats();
+			chat.directMessage(null, context, `📊 Anti-teaming stats for world ${worldId}:`);
+			chat.directMessage(null, context, `  Tracked players: ${stats.totalPlayers}`);
+			chat.directMessage(null, context, `  Suspected players: ${stats.suspectedPlayers}`);
+			chat.directMessage(null, context, `  Teaming pairs: ${stats.teamingPairs}`);
+			
+		} else {
+			let totalStats = { totalPlayers: 0, suspectedPlayers: 0, teamingPairs: 0 };
+			let activeWorlds = 0;
+			
+			for (const world of worlds) {
+				if (world.antiTeaming) {
+					const stats = world.antiTeaming.getStats();
+					totalStats.totalPlayers += stats.totalPlayers;
+					totalStats.suspectedPlayers += stats.suspectedPlayers;
+					totalStats.teamingPairs += stats.teamingPairs;
+					activeWorlds++;
+				}
+			}
+			
+			chat.directMessage(null, context, `📊 Global anti-teaming stats:`);
+			chat.directMessage(null, context, `  Active worlds: ${activeWorlds}`);
+			chat.directMessage(null, context, `  Total tracked players: ${totalStats.totalPlayers}`);
+			chat.directMessage(null, context, `  Total suspected players: ${totalStats.suspectedPlayers}`);
+			chat.directMessage(null, context, `  Total teaming pairs: ${totalStats.teamingPairs}`);
+		}
+	}
+}
+
+const chatAdminAntiTeamingClear = {
+	name: "antiteamclear",
+	args: "<world id> [player id]",
+	desc: "clear anti-teaming data (admin only)",
+	/**
+	 * @param {ServerHandle} handle
+	 * @param {Connection} context
+	 * @param {string[]} args
+	 */
+	exec: (handle, context, args) => {
+		if (!requireAdminAuth(handle, context)) return;
+		
+		const chat = handle.listener.globalChat;
+		
+		if (args.length === 0) {
+			return void chat.directMessage(null, context, "Usage: /antiteamclear <world id> [player id]");
+		}
+		
+		const worldId = parseInt(args[0]);
+		const world = handle.worlds[worldId];
+		
+		if (!world) {
+			return void chat.directMessage(null, context, `World ${worldId} not found`);
+		}
+		
+		if (!world.antiTeaming) {
+			return void chat.directMessage(null, context, `Anti-teaming not enabled in world ${worldId}`);
+		}
+		
+		if (args.length >= 2) {
+			const playerId = parseInt(args[1]);
+			const player = world.players.find(p => p.id === playerId);
+			
+			if (!player) {
+				return void chat.directMessage(null, context, `Player ${playerId} not found in world ${worldId}`);
+			}
+			
+			world.antiTeaming.playerData.delete(playerId);
+			world.antiTeaming.playerWarnings.delete(playerId);
+			chat.directMessage(null, context, `✅ Cleared anti-teaming data for player ${playerId}`);
+		} else {
+			world.antiTeaming.playerData.clear();
+			world.antiTeaming.playerWarnings.clear();
+			world.antiTeaming.teamingPairs.clear();
+			chat.directMessage(null, context, `✅ Cleared all anti-teaming data for world ${worldId}`);
+		}
+	}
+}
+
+const chatAdminAntiTeamingToggle = {
+	name: "antiteamtoggle",
+	args: "",
+	desc: "toggle anti-teaming system (admin only)",
+	/**
+	 * @param {ServerHandle} handle
+	 * @param {Connection} context
+	 * @param {string[]} args
+	 */
+	exec: (handle, context, args) => {
+		if (!requireAdminAuth(handle, context)) return;
+		
+		const chat = handle.listener.globalChat;
+		
+		handle.settings.antiTeamingEnabled = !handle.settings.antiTeamingEnabled;
+		const status = handle.settings.antiTeamingEnabled ? "enabled" : "disabled";
+		
+		chat.directMessage(null, context, `✅ Anti-teaming system ${status}`);
+		
+		// Initialize or destroy anti-teaming systems in existing worlds
+		for (let id in handle.worlds) {
+			const world = handle.worlds[id];
+			
+			if (handle.settings.antiTeamingEnabled && handle.gamemode.name === 'FFA') {
+				if (!world.antiTeaming) {
+					world.antiTeaming = new (require("../antiteaming/AntiTeaming"))(world);
+					// Initialize tracking for existing players
+					for (const player of world.players) {
+						world.antiTeaming.initializePlayer(player);
+					}
+				}
+			} else {
+				world.antiTeaming = null;
+			}
+		}
+	}
+}
+
+const chatAdminSetting = {
+	name: "setting",
+	args: "<name> [value]",
+	desc: "change/view server settings (admin only)",
+	/**
+	 * @param {ServerHandle} handle
+	 * @param {Connection} context
+	 * @param {string[]} args
+	 */
+	exec: (handle, context, args) => {
+		if (!requireAdminAuth(handle, context)) return;
+		
+		const chat = handle.listener.globalChat;
+		
+		if (args.length < 1) {
+			return void chat.directMessage(null, context, "Usage: /setting <name> [value]");
+		}
+		
+		const settingName = args[0];
+		
+		if (!handle.settings.hasOwnProperty(settingName)) {
+			return void chat.directMessage(null, context, `Setting '${settingName}' not found`);
+		}
+		
+		if (args.length >= 2) {
+			try {
+				const settingValue = JSON.parse(args.slice(1).join(" "));
+				const newSettings = Object.assign({}, handle.settings);
+				newSettings[settingName] = settingValue;
+				handle.setSettings(newSettings);
+				chat.directMessage(null, context, `✅ Setting '${settingName}' changed to: ${JSON.stringify(settingValue)}`);
+			} catch (e) {
+				chat.directMessage(null, context, `❌ Invalid JSON value: ${e.message}`);
+			}
+		} else {
+			chat.directMessage(null, context, `Setting '${settingName}': ${JSON.stringify(handle.settings[settingName])}`);
+		}
+	}
+}
+
+/**
  * @param {CommandList} commands
  * @param {CommandList} chatCommands
  */
@@ -1268,6 +1575,15 @@ module.exports = (commands, chatCommands) => {
 		//genCommand(playerLeaveWorld),
 		//genCommand(playerSuicide),
 		genCommand(serverStats),
-		genCommand(serverPlayers)
+		genCommand(serverPlayers),
+		// Admin authentication commands
+		genCommand(adminLogin),
+		genCommand(adminLogout),
+		genCommand(adminStatus),
+		// Secured admin commands
+		genCommand(chatAdminAntiTeamingStats),
+		genCommand(chatAdminAntiTeamingClear),
+		genCommand(chatAdminAntiTeamingToggle),
+		genCommand(chatAdminSetting)
 	);
 };
