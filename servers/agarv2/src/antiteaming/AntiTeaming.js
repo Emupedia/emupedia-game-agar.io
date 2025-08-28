@@ -230,12 +230,12 @@ class AntiTeaming {
 	onCellEaten(eatenCell, eaterCell) {
 		if (!this.settings.antiTeamingEnabled) return;
 		
-		if (eatenCell.type === 0 && eaterCell.type === 0) {
-			// Player cell eaten by another player cell
+		// Detect both player cell feeding (type 0) and ejected mass feeding (type 3)
+		if ((eatenCell.type === 0 || eatenCell.type === 3) && eaterCell.type === 0) {
 			const victim = eatenCell.owner;
 			const eater = eaterCell.owner;
 
-			if (victim.id === eater.id) return; // Same player, not teaming
+			if (!victim || !eater || victim.id === eater.id) return; // Same player or invalid, not teaming
 
 			const victimData = this.playerData.get(victim.id);
 			const eaterData = this.playerData.get(eater.id);
@@ -546,12 +546,12 @@ class AntiTeaming {
 		const data = this.playerData.get(playerId);
 		if (!data) return 1.0;
 
-		// Only apply penalty to player cells (type 0), not pellets, viruses, etc.
-		if (!eatenCell || eatenCell.type !== 0) {
+		// Only apply penalty to player cells (type 0) and ejected mass (type 3), not pellets, viruses, etc.
+		if (!eatenCell || (eatenCell.type !== 0 && eatenCell.type !== 3)) {
 			return 1.0;
 		}
 
-		// Don't penalize eating your own cells (merging/recombining)
+		// Don't penalize eating your own cells (merging/recombining) or your own ejected mass
 		if (eatenCell.owner && eatenCell.owner.id === playerId) {
 			return 1.0;
 		}
@@ -570,13 +570,13 @@ class AntiTeaming {
 				const lastLogTime = this[logKey] || 0;
 				
 				if (currentTick - lastLogTime > 750) { // 30 seconds at 25 TPS
-					this.logger.inform(`STEALTHY PUNISHMENT ACTIVE: Player ${playerId} mass absorption from player cells reduced to ${this.settings.antiTeamingMassAbsorptionPenalty * 100}% (suspicion: ${data.suspicionLevel.toFixed(1)})`);
+					this.logger.inform(`STEALTHY PUNISHMENT ACTIVE: Player ${playerId} mass absorption from player cells and ejected mass reduced to ${this.settings.antiTeamingMassAbsorptionPenalty * 100}% (suspicion: ${data.suspicionLevel.toFixed(1)})`);
 					this[logKey] = currentTick;
 				}
 				
 				// Optional message to player (disabled by default for stealth)
 				if (this.settings.antiTeamingStealthyMessage) {
-					this.sendMessageToPlayer(player, "⚠️ Anti-teaming: Your mass absorption from player cells is reduced due to suspected teaming behavior.", "stealthy");
+					this.sendMessageToPlayer(player, "⚠️ Anti-teaming: Your mass absorption from player cells and ejected mass is reduced due to suspected teaming behavior.", "stealthy");
 				}
 			}
 			
@@ -589,11 +589,11 @@ class AntiTeaming {
 				const player = this.world.players.find(p => p.id === playerId);
 				if (player) {
 					// Always log the clearance
-					this.logger.inform(`STEALTHY PUNISHMENT CLEARED: Player ${playerId} mass absorption from player cells restored to 100% (suspicion: ${data.suspicionLevel.toFixed(1)})`);
+					this.logger.inform(`STEALTHY PUNISHMENT CLEARED: Player ${playerId} mass absorption from player cells and ejected mass restored to 100% (suspicion: ${data.suspicionLevel.toFixed(1)})`);
 					
 					// Send message only if enabled and this is the first time we're clearing
 					if (this.settings.antiTeamingStealthyMessage) {
-						this.sendMessageToPlayer(player, "✅ Anti-teaming: Your mass absorption from player cells has returned to normal. Suspicion cleared.", "stealthy_cleared");
+						this.sendMessageToPlayer(player, "✅ Anti-teaming: Your mass absorption from player cells and ejected mass has returned to normal. Suspicion cleared.", "stealthy_cleared");
 					}
 				}
 			}
