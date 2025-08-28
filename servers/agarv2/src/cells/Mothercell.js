@@ -91,6 +91,24 @@ class Mothercell extends Cell {
 		this.size = Math.min(this.size, this.world.settings.mothercellMaxSize);
 	}
 
+	// Override size setter to enforce maximum size limit
+	set size(value) {
+		const limitedValue = Math.min(value, this.world.settings.mothercellMaxSize);
+		super.size = limitedValue;
+	}
+
+	// Override squareSize setter to enforce maximum size limit
+	set squareSize(value) {
+		const limitedSize = Math.min(Math.sqrt(value), this.world.settings.mothercellMaxSize);
+		super.size = limitedSize;
+	}
+
+	// Override mass setter to enforce maximum size limit
+	set mass(value) {
+		const limitedSize = Math.min(Math.sqrt(100 * value), this.world.settings.mothercellMaxSize);
+		super.size = limitedSize;
+	}
+
 	/**
 	 * @param {Cell} cell
 	 */
