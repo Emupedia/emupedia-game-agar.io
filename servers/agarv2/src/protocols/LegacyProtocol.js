@@ -46,22 +46,6 @@ class LegacyProtocol extends Protocol {
 		return true;
 	}
 
-	filterName(name) {
-		let newname = name || ''
-
-		for (let i = 0, l = this.settings.chatFilteredPhrases.length; i < l; i++) {
-			if (newname.toLowerCase().indexOf(this.settings.chatFilteredPhrases[i].toLowerCase()) !== -1) {
-				newname = newname.replace(new RegExp(this.settings.chatFilteredPhrases[i].toLowerCase(), 'gi'), '')
-			}
-		}
-
-		if (newname === '') {
-			return 'An unnamed cell'
-		}
-
-		return newname
-	}
-
 	/**
 	 * @param {Reader} reader
 	 */

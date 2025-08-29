@@ -131,6 +131,35 @@ class Protocol {
 	}
 
 	/**
+	 * Filter player name against forbidden names and chat filter
+	 * @param {string} name
+	 * @returns {string}
+	 */
+	filterName(name) {
+		let newname = name || ''
+
+		// Check for forbidden names first - if any forbidden word is found, return default name
+		for (let i = 0, l = this.settings.chatForbiddenNames.length; i < l; i++) {
+			if (newname.toLowerCase().indexOf(this.settings.chatForbiddenNames[i].toLowerCase()) !== -1) {
+				return 'An unnamed cell'
+			}
+		}
+
+		// Filter bad phrases from the name
+		for (let i = 0, l = this.settings.chatFilteredPhrases.length; i < l; i++) {
+			if (newname.toLowerCase().indexOf(this.settings.chatFilteredPhrases[i].toLowerCase()) !== -1) {
+				newname = newname.replace(new RegExp(this.settings.chatFilteredPhrases[i].toLowerCase(), 'gi'), '')
+			}
+		}
+
+		if (newname === '') {
+			return 'An unnamed cell'
+		}
+
+		return newname
+	}
+
+	/**
 	 * @param {number=} code
 	 * @param {string=} reason
 	 */

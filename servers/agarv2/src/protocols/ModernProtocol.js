@@ -95,7 +95,8 @@ class ModernProtocol extends Protocol {
 						return void this.fail(1003, "Unexpected message format");
 					}
 
-					this.connection.spawningName = reader.readZTStringUTF8();
+					const rawName = reader.readZTStringUTF8();
+					this.connection.spawningName = this.filterName(rawName);
 				}
 
 				if (globalFlags & 2) {

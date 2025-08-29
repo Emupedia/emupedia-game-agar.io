@@ -1,4 +1,9 @@
 const value = Object.seal({
+	// Admin Authentication System
+	adminAuthEnabled: true,                  // Enable admin authentication for chat commands
+	adminPassword: "admin123",               // Password for admin access (change this!)
+	adminSessionTimeout: 300000,             // Admin session timeout in milliseconds (5 minutes)
+
 	/** @type {IPAddress[]} */
 	listenerForbiddenIPs: [],
 	/** @type {string[]} */
@@ -15,6 +20,8 @@ const value = Object.seal({
 
 	chatEnabled: true,
 	chatSpectatorEnabled: true,
+	/** @type {string[]} */
+	chatForbiddenNames: [],
 	/** @type {string[]} */
 	chatFilteredPhrases: [],
 	chatCooldown: 1000,
@@ -42,6 +49,7 @@ const value = Object.seal({
 	worldEnforceMinCount: true,
 	worldMinCount: 0,
 	worldMaxCount: 2,
+
 	matchmakerNeedsQueuing: false,
 	matchmakerBulkSize: 1,
 
@@ -131,11 +139,6 @@ const value = Object.seal({
 	antiTeamingMaxWarnings: 3,               // Maximum warnings before ban
 	antiTeamingBanDuration: 300,             // Temporary ban duration in seconds (5 minutes)
 	antiTeamingMassAbsorptionPenalty: 0.5,   // Multiplier for mass gained when suspected of teaming (0.5 = 50% reduction)
-	
-	// Admin Authentication System
-	adminAuthEnabled: true,                  // Enable admin authentication for chat commands
-	adminPassword: "admin123",               // Password for admin access (change this!)
-	adminSessionTimeout: 300000              // Admin session timeout in milliseconds (5 minutes)
 });
 
 module.exports = value;
