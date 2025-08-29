@@ -587,10 +587,14 @@ const serverSetting = {
 		}
 
 		if (args.length >= 2) {
-			const settingValue = JSON.parse(args.slice(1).join(" "));
-			const newSettings = Object.assign({}, handle.settings);
-			newSettings[settingName] = settingValue;
-			handle.setSettings(newSettings);
+			try {
+				const settingValue = JSON.parse(args.slice(1).join(" "));
+				const newSettings = Object.assign({}, handle.settings);
+				newSettings[settingName] = settingValue;
+				handle.setSettings(newSettings);
+			} catch (error) {
+				return void handle.logger.print(`Invalid JSON value: ${error.message}`);
+			}
 		}
 
 		handle.logger.print(handle.settings[settingName]);
@@ -788,6 +792,10 @@ const playerMergeCells = {
 
 		const l = player.ownedCells.length;
 
+		if (l === 0) {
+			return void handle.logger.print("player has no cells to merge");
+		}
+
 		let sqSize = 0;
 
 		for (let i = 0; i < l; i++) {
@@ -817,9 +825,9 @@ const playerHelp = {
 		const list = handle.chatCommands.list;
 		const hiddenCommands = ['login', 'logout', 'adminstatus']; // Secret admin authentication commands
 		const adminOnlyCommands = ['antiteamstats', 'antiteamclear', 'antiteamtoggle', 'setting']; // Admin-only commands
-		
+
 		const isAdmin = context.isAdminSessionValid();
-		
+
 		handle.listener.globalChat.directMessage(null, context, "available commands:");
 
 		for (let name in list) {
@@ -827,12 +835,12 @@ const playerHelp = {
 			if (hiddenCommands.includes(name)) {
 				continue;
 			}
-			
+
 			// Show admin commands only to authenticated admins
 			if (adminOnlyCommands.includes(name) && !isAdmin) {
 				continue;
 			}
-			
+
 			const command = list[name];
 			const adminSuffix = adminOnlyCommands.includes(name) ? " (admin)" : "";
 			handle.listener.globalChat.directMessage(null, context, `${name}${command.args.length > 0 ? " " : ""}${command.args} - ${command.description}${adminSuffix}`);
@@ -895,7 +903,7 @@ const adminLogin = {
 		}
 
 		const password = args.join(" ");
-		
+
 		if (context.authenticateAdmin(password)) {
 			chat.directMessage(null, context, "✅ Admin authentication successful! Session will expire in " + Math.floor(handle.settings.adminSessionTimeout / 60000) + " minutes.");
 			handle.logger.inform(`Admin authenticated from IP ${context.remoteAddress} (Player ID: ${context.hasPlayer ? context.player.id : 'spectator'})`);
@@ -979,18 +987,12 @@ const playerJoinWorld = {
 
 		if (!context.hasPlayer) {
 			return void chat.directMessage(null, context, "you don't have a player instance associated with yourself");
-		}
-
-		if (context.player.hasWorld) {
-			if (!context.hasPlayer) {
-				return void chat.directMessage(null, context, "you don't have a player associated with yourself");
-			}
-
+		} else {
 			if (!context.player.hasWorld) {
 				return void chat.directMessage(null, context, "you're not in a world");
+			} else {
+				context.player.world.removePlayer(context.player);
 			}
-
-			context.player.world.removePlayer(context.player);
 		}
 
 		if (!handle.worlds.hasOwnProperty(id)) {
@@ -1119,6 +1121,10 @@ const playerExplode = {
 
 		if (player === false) {
 			return;
+		}
+
+		if (player.ownedCells.length === 0) {
+			return void handle.logger.print("player has no cells to explode");
 		}
 
 		player.world.popPlayerCell(player.ownedCells[0]);
@@ -1335,16 +1341,16 @@ const antiTeamingToggle = {
  */
 function requireAdminAuth(handle, context) {
 	const chat = handle.listener.globalChat;
-	
+
 	if (!handle.settings.adminAuthEnabled) {
 		return true; // Authentication disabled, allow command
 	}
-	
+
 	if (!context.isAdminSessionValid()) {
 		chat.directMessage(null, context, "❌ Admin authentication required. Use /login <password>");
 		return false;
 	}
-	
+
 	return true;
 }
 
@@ -1360,44 +1366,44 @@ const chatAdminAntiTeamingStats = {
 	 */
 	exec: (handle, context, args) => {
 		if (!requireAdminAuth(handle, context)) return;
-		
+
 		const chat = handle.listener.globalChat;
-		
+
 		// Use the existing antiTeamingStats logic but send to chat instead of console
 		const worlds = Object.values(handle.worlds);
-		
+
 		if (args.length > 0) {
 			const worldId = parseInt(args[0]);
 			const world = handle.worlds[worldId];
-			
+
 			if (!world) {
 				return void chat.directMessage(null, context, `World ${worldId} not found`);
 			}
-			
+
 			if (!world.antiTeaming) {
 				return void chat.directMessage(null, context, `Anti-teaming not enabled in world ${worldId}`);
 			}
-			
-			const stats = world.antiTeaming.getStats();
+
+			const stats = world.antiTeaming.getTeamingStats();
 			chat.directMessage(null, context, `📊 Anti-teaming stats for world ${worldId}:`);
 			chat.directMessage(null, context, `  Tracked players: ${stats.totalPlayers}`);
 			chat.directMessage(null, context, `  Suspected players: ${stats.suspectedPlayers}`);
 			chat.directMessage(null, context, `  Teaming pairs: ${stats.teamingPairs}`);
-			
+
 		} else {
 			let totalStats = { totalPlayers: 0, suspectedPlayers: 0, teamingPairs: 0 };
 			let activeWorlds = 0;
-			
+
 			for (const world of worlds) {
 				if (world.antiTeaming) {
-					const stats = world.antiTeaming.getStats();
+					const stats = world.antiTeaming.getTeamingStats();
 					totalStats.totalPlayers += stats.totalPlayers;
 					totalStats.suspectedPlayers += stats.suspectedPlayers;
 					totalStats.teamingPairs += stats.teamingPairs;
 					activeWorlds++;
 				}
 			}
-			
+
 			chat.directMessage(null, context, `📊 Global anti-teaming stats:`);
 			chat.directMessage(null, context, `  Active worlds: ${activeWorlds}`);
 			chat.directMessage(null, context, `  Total tracked players: ${totalStats.totalPlayers}`);
@@ -1418,32 +1424,32 @@ const chatAdminAntiTeamingClear = {
 	 */
 	exec: (handle, context, args) => {
 		if (!requireAdminAuth(handle, context)) return;
-		
+
 		const chat = handle.listener.globalChat;
-		
+
 		if (args.length === 0) {
 			return void chat.directMessage(null, context, "Usage: /antiteamclear <world id> [player id]");
 		}
-		
+
 		const worldId = parseInt(args[0]);
 		const world = handle.worlds[worldId];
-		
+
 		if (!world) {
 			return void chat.directMessage(null, context, `World ${worldId} not found`);
 		}
-		
+
 		if (!world.antiTeaming) {
 			return void chat.directMessage(null, context, `Anti-teaming not enabled in world ${worldId}`);
 		}
-		
+
 		if (args.length >= 2) {
 			const playerId = parseInt(args[1]);
 			const player = world.players.find(p => p.id === playerId);
-			
+
 			if (!player) {
 				return void chat.directMessage(null, context, `Player ${playerId} not found in world ${worldId}`);
 			}
-			
+
 			world.antiTeaming.playerData.delete(playerId);
 			world.antiTeaming.playerWarnings.delete(playerId);
 			chat.directMessage(null, context, `✅ Cleared anti-teaming data for player ${playerId}`);
@@ -1467,18 +1473,18 @@ const chatAdminAntiTeamingToggle = {
 	 */
 	exec: (handle, context, args) => {
 		if (!requireAdminAuth(handle, context)) return;
-		
+
 		const chat = handle.listener.globalChat;
-		
+
 		handle.settings.antiTeamingEnabled = !handle.settings.antiTeamingEnabled;
 		const status = handle.settings.antiTeamingEnabled ? "enabled" : "disabled";
-		
+
 		chat.directMessage(null, context, `✅ Anti-teaming system ${status}`);
-		
+
 		// Initialize or destroy anti-teaming systems in existing worlds
 		for (let id in handle.worlds) {
 			const world = handle.worlds[id];
-			
+
 			if (handle.settings.antiTeamingEnabled && handle.gamemode.name === 'FFA') {
 				if (!world.antiTeaming) {
 					world.antiTeaming = new (require("../antiteaming/AntiTeaming"))(world);
@@ -1505,19 +1511,19 @@ const chatAdminSetting = {
 	 */
 	exec: (handle, context, args) => {
 		if (!requireAdminAuth(handle, context)) return;
-		
+
 		const chat = handle.listener.globalChat;
-		
+
 		if (args.length < 1) {
 			return void chat.directMessage(null, context, "Usage: /setting <name> [value]");
 		}
-		
+
 		const settingName = args[0];
-		
+
 		if (!handle.settings.hasOwnProperty(settingName)) {
 			return void chat.directMessage(null, context, `Setting '${settingName}' not found`);
 		}
-		
+
 		if (args.length >= 2) {
 			try {
 				const settingValue = JSON.parse(args.slice(1).join(" "));

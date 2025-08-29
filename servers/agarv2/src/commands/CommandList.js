@@ -65,7 +65,12 @@ class CommandList {
 		// Log admin command executions for audit purposes
 		this._logAdminCommand(context, command.name, split.slice(1));
 
-		command.executor(this.handle, context, split.slice(1));
+		try {
+			command.executor(this.handle, context, split.slice(1));
+		} catch (error) {
+			this.handle.logger.error(`Command '${command.name}' failed: ${error.message}`);
+			this.handle.logger.error(error.stack);
+		}
 
 		return true;
 	}
