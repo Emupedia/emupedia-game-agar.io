@@ -52,7 +52,10 @@ class Mothercell extends Cell {
 
 		while (this.activePelletFormQueue > 0) {
 			if (this.squareSize > minSpawnSqSize) {
-				this.spawnPellet(), this.squareSize -= pelletSize * pelletSize;
+				this.spawnPellet();
+				// Safely reduce squareSize, ensuring it doesn't go negative
+				const newSquareSize = Math.max(0, this.squareSize - pelletSize * pelletSize);
+				this.squareSize = newSquareSize;
 			} else if (this.size > mothercellSize) {
 				this.size = mothercellSize;
 			}
@@ -70,6 +73,12 @@ class Mothercell extends Cell {
 	}
 
 	spawnPellet() {
+		// Ensure size is valid before spawning
+		if (!Number.isFinite(this.size) || this.size <= 0) {
+			const defaultSize = 149; // fallback if settings are corrupted
+			this.size = this.world.settings?.mothercellSize || defaultSize;
+		}
+		
 		const angle = Math.random() * 2 * Math.PI;
 		const x = this.x + this.size * Math.sin(angle);
 		const y = this.y + this.size * Math.cos(angle);
@@ -93,19 +102,32 @@ class Mothercell extends Cell {
 
 	// Override size setter to enforce maximum size limit
 	set size(value) {
-		const limitedValue = Math.min(value, this.world.settings.mothercellMaxSize);
+		// Ensure value is a valid number and not NaN
+		const defaultSize = 149; // fallback if settings are corrupted
+		const defaultMaxSize = 1500; // fallback if settings are corrupted
+		const safeValue = Number.isFinite(value) ? value : (this.world.settings?.mothercellSize || defaultSize);
+		const maxSize = this.world.settings?.mothercellMaxSize || defaultMaxSize;
+		const limitedValue = Math.min(safeValue, maxSize);
 		super.size = limitedValue;
 	}
 
 	// Override squareSize setter to enforce maximum size limit
 	set squareSize(value) {
-		const limitedSize = Math.min(Math.sqrt(value), this.world.settings.mothercellMaxSize);
+		// Ensure value is not negative to prevent NaN from Math.sqrt
+		const safeValue = Math.max(0, value);
+		const defaultMaxSize = 1500; // fallback if settings are corrupted
+		const maxSize = this.world.settings?.mothercellMaxSize || defaultMaxSize;
+		const limitedSize = Math.min(Math.sqrt(safeValue), maxSize);
 		this.size = limitedSize;
 	}
 
 	// Override mass setter to enforce maximum size limit
 	set mass(value) {
-		const limitedSize = Math.min(Math.sqrt(100 * value), this.world.settings.mothercellMaxSize);
+		// Ensure value is not negative to prevent NaN from Math.sqrt
+		const safeValue = Math.max(0, value);
+		const defaultMaxSize = 1500; // fallback if settings are corrupted
+		const maxSize = this.world.settings?.mothercellMaxSize || defaultMaxSize;
+		const limitedSize = Math.min(Math.sqrt(100 * safeValue), maxSize);
 		this.size = limitedSize;
 	}
 
