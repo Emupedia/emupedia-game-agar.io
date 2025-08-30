@@ -107,17 +107,6 @@ class Cell {
 	}
 
 	set size(value) {
-		// Special handling for mothercells to prevent NaN and enforce size limits
-		if (this.type === 4) { // Mothercell type
-			// Ensure value is a valid number and not NaN
-			if (!Number.isFinite(value) || value < 0) {
-				value = 149; // Default mothercell size
-			}
-			// Enforce maximum size limit for mothercells
-			const maxSize = this.world?.settings?.mothercellMaxSize || 1500;
-			value = Math.min(value, maxSize);
-		}
-		
 		throwIfBadOrNegativeNumber(value);
 		this._size = value;
 		this.sizeChanged = true;
@@ -129,14 +118,7 @@ class Cell {
 	}
 
 	set squareSize(value) {
-		// Special handling for mothercells to prevent NaN from negative squareSize
-		if (this.type === 4) { // Mothercell type
-			// Ensure value is not negative to prevent NaN from Math.sqrt
-			const safeValue = Math.max(0, value);
-			this.size = Math.sqrt(safeValue);
-		} else {
-			this.size = Math.sqrt(value);
-		}
+		this.size = Math.sqrt(value);
 	}
 
 	/** @type {number} */
@@ -145,14 +127,7 @@ class Cell {
 	}
 
 	set mass(value) {
-		// Special handling for mothercells to prevent NaN from negative mass
-		if (this.type === 4) { // Mothercell type
-			// Ensure value is not negative to prevent NaN from Math.sqrt
-			const safeValue = Math.max(0, value);
-			this.size = Math.sqrt(100 * safeValue);
-		} else {
-			this.size = Math.sqrt(100 * value);
-		}
+		this.size = Math.sqrt(100 * value);
 	}
 
 	/** @type {number} */
