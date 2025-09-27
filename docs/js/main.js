@@ -10,6 +10,11 @@
 		leftTouchStartPos = new Vector2(0, 0),
 		leftVector = new Vector2(0, 0);
 
+	var lastFeedTime = 0;
+	var lastSplitTime = 0;
+	var minFeedDelay = 50;
+	var minSplitDelay = 50;
+
 	function gameLoop() {
 		ma = true;
 		document.getElementById("canvas").focus();
@@ -50,35 +55,45 @@
 			isTyping = true;
 		};
 
-		var spacePressed = false,
-			qPressed = false,
-			ePressed = false,
-			rPressed = false,
-			tPressed = false,
-			wPressed = false;
+		var spacePressed = false, qPressed = false, ePressed = false, rPressed = false, tPressed = false, wPressed = false;
 
 		wHandle.onkeydown = function (event) {
 			if (typeof event['isTrusted'] !== 'boolean' || event['isTrusted'] === false) return;
 
+			var currentTime = Date.now();
+
 			switch (event.keyCode) {
 				case 32: // split
+					if (currentTime - lastSplitTime < minSplitDelay) {
+						return;
+					}
+
 					if ((!spacePressed) && (!isTyping)) {
 						sendMouseMove();
 						sendUint8(17);
 						if (!sMacro) spacePressed = true;
+						lastSplitTime = currentTime;
+						//console.log("SPACE pressed")
 					}
 					break;
 				case 81: // key q pressed
 					if ((!qPressed) && (!isTyping)) {
 						sendUint8(18);
 						if (!qMacro) qPressed = true;
+						//console.log("Q pressed")
 					}
 					break;
 				case 87: // eject mass
+					if (currentTime - lastFeedTime < minFeedDelay) {
+						return;
+					}
+
 					if ((!wPressed) && (!isTyping)) {
 						sendMouseMove();
 						sendUint8(21);
 						if (!wMacro) wPressed = true;
+						lastFeedTime = currentTime;
+						//console.log("W pressed")
 					}
 					break;
 				case 69: // e key
@@ -86,7 +101,7 @@
 						sendMouseMove();
 						sendUint8(22);
 						if (!eMacro) ePressed = true;
-						console.log("E pressed")
+						//console.log("E pressed")
 					}
 					break;
 				case 82: // r key
@@ -94,7 +109,7 @@
 						sendMouseMove();
 						sendUint8(23);
 						if (!rMacro) rPressed = true;
-						console.log("R pressed")
+						//console.log("R pressed")
 					}
 					break;
 				case 84: // T key
@@ -102,7 +117,7 @@
 						sendMouseMove();
 						sendUint8(24);
 						tPressed = true;
-						console.log("T pressed")
+						//console.log("T pressed")
 					}
 					break;
 				case 27: // quit
@@ -223,13 +238,29 @@
 			var size = ~~(canvasWidth / 10);
 
 			if ((touch.clientX > canvasWidth - size) && (touch.clientY > canvasHeight - size)) {
-				sendMouseMove();
-				sendUint8(17); //split
+				// Rate limiting for touch split to prevent spam
+				var currentTime = Date.now();
+				if (currentTime - lastSplitTime >= minSplitDelay) {
+					sendMouseMove();
+					sendUint8(17); //split
+					lastSplitTime = currentTime;
+					console.log("Touch split pressed");
+				} else {
+					console.log("Touch split rate limited - too fast");
+				}
 			}
 
 			if ((touch.clientX > canvasWidth - size) && (touch.clientY > canvasHeight - 2 * size - 10) && (touch.clientY < canvasHeight - size - 10)) {
-				sendMouseMove();
-				sendUint8(21); //eject
+				// Rate limiting for touch eject to prevent spam
+				var currentTime = Date.now();
+				if (currentTime - lastFeedTime >= minFeedDelay) {
+					sendMouseMove();
+					sendUint8(21); //eject
+					lastFeedTime = currentTime;
+					console.log("Touch eject pressed");
+				} else {
+					console.log("Touch eject rate limited - too fast");
+				}
 			}
 
 			if ((touch.clientX > canvasWidth - size) && (touch.clientY > canvasHeight - 3 * size - 20) && (touch.clientY < canvasHeight - 2 * size - 30)) {
@@ -697,32 +728,32 @@
 		}
 		/*
 		 // Macros
-			sMacro: 0,
-			wMacro: 0,
-			qMacro: 0,
-			eMacro: 0,
-			rMacro: 0,
+		 sMacro: 0,
+		 wMacro: 0,
+		 qMacro: 0,
+		 eMacro: 0,
+		 rMacro: 0,
 
-			// Current client configs
-			darkBG: 1,
-			chat: 2,
-			skins: 2,
-			grid: 2,
-			acid: 1,
-			colors: 2,
-			names: 2,
-			showMass: 1,
-			smooth: 1,
+		 // Current client configs
+		 darkBG: 1,
+		 chat: 2,
+		 skins: 2,
+		 grid: 2,
+		 acid: 1,
+		 colors: 2,
+		 names: 2,
+		 showMass: 1,
+		 smooth: 1,
 
-			// Future feature
-			minionCount: 0,
-			minimap: 0,
+		 // Future feature
+		 minionCount: 0,
+		 minimap: 0,
 
-			// Others
-			maxName: 15,
-			instructions: "";
-			customHTML:  "";
-		*/
+		 // Others
+		 maxName: 15,
+		 instructions: "";
+		 customHTML:  "";
+		 */
 		if (Data.leavemessage) {
 			wjQuery(window).bind('beforeunload', function() {
 				return clientData.leavemessage
@@ -1278,108 +1309,108 @@
 	var localProtocol = wHandle.location.protocol, localProtocolHttps = "https:" == localProtocol;
 
 	var nCanvas, ctx, mainCanvas, lbCanvas, chatCanvas, canvasWidth, canvasHeight, qTree = null,
-	ws = null,
-	delay = 500,
-	oldX = -1,
-	oldY = -1,
-	z = 1,
-	scoreText = null,
-	skins = {},
-	nodeX = 0,
-	nodeY = 0,
-	nodesOnScreen = [],
-	playerCells = [],
-	nodes = {}, nodelist = [],
-	Cells = [],
-	leaderBoard = [],
-	chatBoard = [],
-	rawMouseX = 0,
-	rawMouseY = 0,
-	X = -1,
-	Y = -1,
-	cb = 0,
-	timestamp = 0,
-	userNickName = null,
-	leftPos = 0,
-	topPos = 0,
-	rightPos = 1E4,
-	bottomPos = 1E4,
-	viewZoom = 1,
-	w = null,
-	showSkin = true,
-	showName = true,
-	showColor = false,
-	hideGrid = false,
-	ua = false,
-	userScore = 0,
-	sMacro = false,
-	wMacro = false,
-	qMacro = false,
-	eMacro = false,
-	rMacro = false,
-	reconnectTimeout = null,
-	mouseinterval = false,
-	clientData = { // Levels of "permission": 0 = not allowed, 1 = checked off but changeable, 2 = checked on but changeable, 3 = always on
-		// Macros
-		sMacro: 0,
-		wMacro: 0,
-		qMacro: 0,
-		eMacro: 0,
-		rMacro: 0,
+		ws = null,
+		delay = 500,
+		oldX = -1,
+		oldY = -1,
+		z = 1,
+		scoreText = null,
+		skins = {},
+		nodeX = 0,
+		nodeY = 0,
+		nodesOnScreen = [],
+		playerCells = [],
+		nodes = {}, nodelist = [],
+		Cells = [],
+		leaderBoard = [],
+		chatBoard = [],
+		rawMouseX = 0,
+		rawMouseY = 0,
+		X = -1,
+		Y = -1,
+		cb = 0,
+		timestamp = 0,
+		userNickName = null,
+		leftPos = 0,
+		topPos = 0,
+		rightPos = 1E4,
+		bottomPos = 1E4,
+		viewZoom = 1,
+		w = null,
+		showSkin = true,
+		showName = true,
+		showColor = false,
+		hideGrid = false,
+		ua = false,
+		userScore = 0,
+		sMacro = false,
+		wMacro = false,
+		qMacro = false,
+		eMacro = false,
+		rMacro = false,
+		reconnectTimeout = null,
+		mouseinterval = false,
+		clientData = { // Levels of "permission": 0 = not allowed, 1 = checked off but changeable, 2 = checked on but changeable, 3 = always on
+			// Macros
+			sMacro: 2,
+			wMacro: 2,
+			qMacro: 2,
+			eMacro: 2,
+			rMacro: 2,
 
-		// Current client configs
-		darkBG: 1,
-		chat: 2,
-		skins: 2,
-		grid: 2,
-		acid: 1,
-		colors: 2,
-		names: 2,
-		showMass: 1,
-		smooth: 1,
+			// Current client configs
+			darkBG: 1,
+			chat: 2,
+			skins: 2,
+			grid: 2,
+			acid: 1,
+			colors: 2,
+			names: 2,
+			showMass: 1,
+			smooth: 1,
 
-		// Future feature
-		minionCount: 0,
-		minimap: 0,
+			// Future feature
+			minionCount: 0,
+			minimap: 0,
 
-		// Others
-		maxName: 15,
-		customHTML: "",
-		title: "",
-		defaultusername: "",
-		nickplaceholder: "",
-		leavemessage: "",
-		instructions: "Control your cell using the mouse, w for eject, space for split. Add &lt;skinname&gt; in your username for skins."
-	},
-	showDarkTheme = false,
-	showMass = false,
-	showMinimap = true,
-	connectUrl = "",
-	isNewProto = false,
-	defaultPort = 0,
-	smoothRender = .4,
-	hideChat = false,
-	posX = nodeX = ~~((leftPos + rightPos) / 2),
-	posY = nodeY = ~~((topPos + bottomPos) / 2),
-	posSize = 1,
-	gameMode = "",
-	teamScores = null,
-	ma = false,
-	hasOverlay = true,
-	drawLine = false,
-	lineX = 0,
-	lineY = 0,
-	drawLineX = 0,
-	drawLineY = 0,
-	teamColor = ["#333333", "#FF3333", "#33FF33", "#3333FF"],
-	xa = false,
-	zoom = 1,
-	fullscreenIcon = new Image,
-	fullscreenOffIcon = new Image,
-	splitIcon = new Image,
-	ejectIcon = new Image,
-	noRanking = false,
-	showBackgroundSectors = true;
+			// Others
+			maxName: 15,
+			customHTML: "",
+			title: "",
+			defaultusername: "",
+			nickplaceholder: "",
+			leavemessage: "",
+			instructions: "Control your cell using the mouse, w for eject, space for split. Add &lt;skinname&gt; in your username for skins."
+		},
+		showDarkTheme = false,
+		showMass = false,
+		showMinimap = true,
+		connectUrl = "",
+		isNewProto = false,
+		defaultPort = 0,
+		smoothRender = .4,
+		hideChat = false,
+		posX = nodeX = ~~((leftPos + rightPos) / 2),
+		posY = nodeY = ~~((topPos + bottomPos) / 2),
+		posSize = 1,
+		gameMode = "",
+		teamScores = null,
+		ma = false,
+		hasOverlay = true,
+		drawLine = false,
+		lineX = 0,
+		lineY = 0,
+		drawLineX = 0,
+		drawLineY = 0,
+		teamColor = ["#333333", "#FF3333", "#33FF33", "#3333FF"],
+		xa = false,
+		zoom = 1,
+		fullscreenIcon = new Image,
+		fullscreenOffIcon = new Image,
+		splitIcon = new Image,
+		ejectIcon = new Image,
+		noRanking = false,
+		showBackgroundSectors = true;
 	fullscreenIcon.src = 'img/fullscreen.png';
 	fullscreenOffIcon.src = 'img/fullscreen_off.png';
 	splitIcon.src = 'img/split.png';
@@ -1402,6 +1433,12 @@
 	};
 	wHandle.setDarkTheme = function (arg) {
 		if (clientData.darkBG != 0 && clientData.darkBG != 3) showDarkTheme = arg
+	};
+	wHandle.setSplitMacro = function (arg) {
+		if (clientData.sMacro != 0 && clientData.sMacro != 3) sMacro = arg ? 2 : 0
+	};
+	wHandle.setFeedMacro = function (arg) {
+		if (clientData.wMacro != 0 && clientData.wMacro != 3) wMacro = arg ? 2 : 0
 	};
 	wHandle.setColors = function (arg) {
 		if (clientData.colors != 0 && clientData.colors != 3) showColor = arg
