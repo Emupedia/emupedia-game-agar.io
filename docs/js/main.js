@@ -1352,11 +1352,11 @@
 		mouseinterval = false,
 		clientData = { // Levels of "permission": 0 = not allowed, 1 = checked off but changeable, 2 = checked on but changeable, 3 = always on
 			// Macros
-			sMacro: 2,
-			wMacro: 2,
-			qMacro: 2,
-			eMacro: 2,
-			rMacro: 2,
+			sMacro: 1,
+			wMacro: 1,
+			qMacro: 0,
+			eMacro: 0,
+			rMacro: 0,
 
 			// Current client configs
 			darkBG: 1,
@@ -1435,10 +1435,10 @@
 		if (clientData.darkBG != 0 && clientData.darkBG != 3) showDarkTheme = arg
 	};
 	wHandle.setSplitMacro = function (arg) {
-		if (clientData.sMacro != 0 && clientData.sMacro != 3) sMacro = arg ? 2 : 0
+		if (clientData.sMacro != 0 && clientData.sMacro != 3) sMacro = arg ? 1 : 0
 	};
 	wHandle.setFeedMacro = function (arg) {
-		if (clientData.wMacro != 0 && clientData.wMacro != 3) wMacro = arg ? 2 : 0
+		if (clientData.wMacro != 0 && clientData.wMacro != 3) wMacro = arg ? 1 : 0
 	};
 	wHandle.setColors = function (arg) {
 		if (clientData.colors != 0 && clientData.colors != 3) showColor = arg
