@@ -38,7 +38,7 @@
 
 		<link href="https://fonts.googleapis.com/css?family=Ubuntu:700" rel="stylesheet" type="text/css" />
 		<link href="assets/css/bootstrap.min.css" rel="stylesheet" />
-		<link href="assets/css/index.css?v=26" rel="stylesheet" />
+		<link href="assets/css/index.css?v=27" rel="stylesheet" />
 	</head>
 
 	<body>
@@ -128,6 +128,14 @@
 						<div style="margin: 6px;">
 							<label><input id="toggleFullscreen" type="checkbox" />Toggle Fullscreen</label>
 							<label><input id="darkTheme" type="checkbox" />Dark Theme</label>
+							<label>
+								<input id="cameraSmoothing" type="checkbox" />Camera Smoothing
+								<input id="cameraAnimationSpeed" type="range" min="1" max="20" step="1" value="9">
+							</label>
+							<label>
+								<input id="cellAnimationSpeed" type="checkbox" />Cell Animations Speed
+								<input id="animationSpeed" type="range" min="1" max="250" step="1" value="120">
+							</label>
 							<label><input id="showSkins" type="checkbox" />Cell Skins</label>
 							<label><input id="showNames" type="checkbox" />Cell Names</label>
 							<label><input id="showColor" type="checkbox" />Cell Colors</label>
@@ -360,6 +368,6 @@
 		<iframe id="multicheck" style="display:none;"></iframe>
 		<script src="assets/js/nipplejs.js"></script>
 		<script src="assets/js/quadtree.js"></script>
-		<script src="assets/js/main.min.js?v=176"></script>
+		<script src="assets/js/main.min.js?v=177"></script>
 	</body>
 </html>

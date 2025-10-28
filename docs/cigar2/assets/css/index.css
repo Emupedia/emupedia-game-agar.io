@@ -419,6 +419,30 @@ label#nick-list:after, label#skin-list:after {
 	vertical-align: middle;
 }
 
+#cellAnimationSpeed:checked + #animationSpeed {
+	display: inline;
+}
+
+#animationSpeed {
+	display: none;
+	width: 100px;
+	height: 18px;
+	padding: 0;
+	vertical-align: middle;
+}
+
+#cameraSmoothing:checked + #cameraAnimationSpeed {
+	display: inline;
+}
+
+#cameraAnimationSpeed {
+	display: none;
+	width: 100px;
+	height: 18px;
+	padding: 0;
+	vertical-align: middle;
+}
+
 #settings {
 	height: 355px;
 	overflow: auto;
