@@ -477,7 +477,7 @@ module.exports = class GameServer {
 
       function close(error) {
         if (this.socket.remoteAddress && self.ipcounts[this.socket.remoteAddress]) {
-        self.ipcounts[this.socket.remoteAddress]--;
+          self.ipcounts[this.socket.remoteAddress]--;
           if (self.ipcounts[this.socket.remoteAddress] <= 0) {
             delete self.ipcounts[this.socket.remoteAddress];
           }
@@ -1711,27 +1711,27 @@ module.exports = class GameServer {
 
         for (var i = rainbowIndex; i < endIndex; i++) {
           var node = nodeArray[i];
-        if (!node || !node.watch) {
-            continue;
-        }
-        count++;
+          if (!node || !node.watch) {
+              continue;
+          }
+          count++;
 
-        if (!node.rainbow) {
-          node.rainbow = Math.floor(Math.random() * this.colors.length);
-        }
+          if (!node.rainbow) {
+            node.rainbow = Math.floor(Math.random() * this.colors.length);
+          }
 
-        if (node.rainbow >= this.colors.length) {
-          node.rainbow = 0;
-        }
+          if (node.rainbow >= this.colors.length) {
+            node.rainbow = 0;
+          }
 
-        node.color = this.colors[node.rainbow];
-        node.rainbow += this.config.rainbowspeed;
+          node.color = this.colors[node.rainbow];
+          node.rainbow += this.config.rainbowspeed;
         }
 
         this.rainbowIndex = endIndex >= nodeArray.length ? 0 : endIndex;
 
         if (count <= 0 && endIndex >= nodeArray.length) {
-        this.clearRainbowNodes();
+          this.clearRainbowNodes();
         }
       } else {
         var rnodes = this.getRainbowNodes();
@@ -2040,7 +2040,7 @@ module.exports = class GameServer {
             var intervalSeconds = self.config.serverPacketStatsInterval || 20;
             var timestamp = new Date().toISOString().replace('T', ' ').substring(0, 19);
             console.log('[' + timestamp + '] [Packet Stats] Last ' + intervalSeconds + ' seconds:');
-            
+
             // Helper functions for table formatting
             function stripEmojis(str) {
               // Remove emojis and other wide Unicode characters that break monospace alignment
@@ -2050,7 +2050,7 @@ module.exports = class GameServer {
               for (var i = 0; i < str.length; i++) {
                 var char = str.charAt(i);
                 var code = str.charCodeAt(i);
-                
+
                 // Check for surrogate pairs (emojis are often 2-char sequences)
                 // High surrogate: 0xD800-0xDBFF, Low surrogate: 0xDC00-0xDFFF
                 if (code >= 0xD800 && code <= 0xDBFF) {
@@ -2063,12 +2063,12 @@ module.exports = class GameServer {
                     continue;
                   }
                 }
-                
+
                 // Skip low surrogates (they're already handled above)
                 if (code >= 0xDC00 && code <= 0xDFFF) {
                   continue;
                 }
-                
+
                 // Check for variation selectors and zero-width characters
                 if (code >= 0xFE00 && code <= 0xFE0F) {
                   // Variation selectors - skip
@@ -2078,7 +2078,7 @@ module.exports = class GameServer {
                   // Zero-width joiner, keycap, BOM - skip
                   continue;
                 }
-                
+
                 // Check for emoji ranges (single code point emojis)
                 if ((code >= 0x1F300 && code <= 0x1F9FF) || // Misc Symbols and Pictographs
                     (code >= 0x2600 && code <= 0x26FF) ||     // Misc symbols
@@ -2086,31 +2086,31 @@ module.exports = class GameServer {
                   result += '?';
                   continue;
                 }
-                
+
                 // Keep ASCII printable and basic Latin characters
                 if ((code >= 32 && code <= 126) || (code >= 160 && code <= 255)) {
                   result += char;
                   continue;
                 }
-                
+
                 // Keep common single-width Unicode ranges
                 if ((code >= 0x00A0 && code <= 0x024F) || // Latin Extended
                     (code >= 0x0400 && code <= 0x04FF)) {  // Cyrillic
                   result += char;
                   continue;
                 }
-                
+
                 // Skip control characters
                 if (code < 32) {
                   continue;
                 }
-                
+
                 // Replace other wide/unknown characters with placeholder
                 result += '?';
               }
               return result;
             }
-            
+
             function padRight(str, width) {
               str = str.toString();
               if (str.length > width) {
@@ -2118,7 +2118,7 @@ module.exports = class GameServer {
               }
               return str + ' '.repeat(width - str.length);
             }
-            
+
             function padCenter(str, width) {
               str = str.toString();
               if (str.length >= width) {
@@ -2129,7 +2129,7 @@ module.exports = class GameServer {
               var rightPad = pad - leftPad;
               return ' '.repeat(leftPad) + str + ' '.repeat(rightPad);
             }
-            
+
             function truncate(str, width) {
               str = str.toString();
               if (str.length > width) {
@@ -2137,7 +2137,7 @@ module.exports = class GameServer {
               }
               return str;
             }
-            
+
             // Define all known packet types (from packetNames mapping)
             // This ensures all packet types are always shown as columns, even if they're 0
             var knownPacketTypes = {
@@ -2156,7 +2156,7 @@ module.exports = class GameServer {
               'ProtocolAck': true,
               'Connect': true
             };
-            
+
             // Collect all unique packet types from all reports (including unknown ones)
             var packetTypes = {};
             // Start with all known packet types
@@ -2176,7 +2176,7 @@ module.exports = class GameServer {
                 }
               }
             }
-            
+
             // Convert to sorted array for consistent column order
             var packetTypeArray = [];
             // First add known packet types in a specific order
@@ -2206,7 +2206,7 @@ module.exports = class GameServer {
             for (var u = 0; u < unknownTypes.length; u++) {
               packetTypeArray.push(unknownTypes[u]);
             }
-            
+
             // Calculate column widths for base columns
             var colWidths = {
               id: 5,
@@ -2216,13 +2216,13 @@ module.exports = class GameServer {
               period: 8,
               diff: 6
             };
-            
+
             // Initialize widths for packet type columns
             for (var p = 0; p < packetTypeArray.length; p++) {
               var pt = packetTypeArray[p];
               colWidths[pt] = Math.max(pt.length, 6); // At least as wide as the header name
             }
-            
+
             // Adjust column widths based on actual data
             for (var j = 0; j < report.length; j++) {
               var r = report[j];
@@ -2238,7 +2238,7 @@ module.exports = class GameServer {
               if (perStr.length > colWidths.period) colWidths.period = Math.min(perStr.length, 10);
               var diffStr = (r.diff >= 0 ? '+' : '') + r.diff.toString();
               if (diffStr.length > colWidths.diff) colWidths.diff = Math.min(diffStr.length, 8);
-              
+
               // Check packet type column widths
               if (r.breakdown && typeof r.breakdown === 'object') {
                 for (var p = 0; p < packetTypeArray.length; p++) {
@@ -2251,7 +2251,7 @@ module.exports = class GameServer {
                 }
               }
             }
-            
+
             // Build table header row
             var headerParts = [];
             headerParts.push('┌' + '─'.repeat(colWidths.id));
@@ -2264,7 +2264,7 @@ module.exports = class GameServer {
               headerParts.push('─'.repeat(colWidths[packetTypeArray[p]]));
             }
             var headerRow = headerParts.join('┬') + '┐';
-            
+
             // Build header content
             var headerContentParts = [];
             headerContentParts.push('│' + padCenter('ID', colWidths.id));
@@ -2277,7 +2277,7 @@ module.exports = class GameServer {
               headerContentParts.push(padCenter(packetTypeArray[p], colWidths[packetTypeArray[p]]));
             }
             var headerContent = headerContentParts.join('│') + '│';
-            
+
             // Build header separator
             var separatorParts = [];
             separatorParts.push('├' + '─'.repeat(colWidths.id));
@@ -2290,7 +2290,7 @@ module.exports = class GameServer {
               separatorParts.push('─'.repeat(colWidths[packetTypeArray[p]]));
             }
             var headerSeparator = separatorParts.join('┼') + '┤';
-            
+
             // Build footer row
             var footerParts = [];
             footerParts.push('└' + '─'.repeat(colWidths.id));
@@ -2303,11 +2303,11 @@ module.exports = class GameServer {
               footerParts.push('─'.repeat(colWidths[packetTypeArray[p]]));
             }
             var footerRow = footerParts.join('┴') + '┘';
-            
+
             console.log(headerRow);
             console.log(headerContent);
             console.log(headerSeparator);
-            
+
             // Build data rows
             for (var j = 0; j < report.length; j++) {
               var r = report[j];
@@ -2317,7 +2317,7 @@ module.exports = class GameServer {
               var name = truncate(sanitizedName, colWidths.name);
               // IP is not truncated
               var ip = r.ip;
-              
+
               var dataRowParts = [];
               dataRowParts.push('│' + padRight(r.id.toString(), colWidths.id));
               dataRowParts.push(padRight(ip, colWidths.ip));
@@ -2325,18 +2325,18 @@ module.exports = class GameServer {
               dataRowParts.push(padRight(r.cumulative.toString(), colWidths.cumulative));
               dataRowParts.push(padRight(r.total.toString(), colWidths.period));
               dataRowParts.push(padRight(diffStr, colWidths.diff));
-              
+
               // Add packet type columns
               for (var p = 0; p < packetTypeArray.length; p++) {
                 var pt = packetTypeArray[p];
                 var count = (r.breakdown && r.breakdown[pt]) ? r.breakdown[pt] : 0;
                 dataRowParts.push(padRight(count.toString(), colWidths[pt]));
               }
-              
+
               var dataRow = dataRowParts.join('│') + '│';
               console.log(dataRow);
             }
-            
+
             console.log(footerRow);
           }
 
