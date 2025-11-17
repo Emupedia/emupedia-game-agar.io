@@ -1998,20 +1998,26 @@ module.exports = class GameServer {
 
             // Calculate diff from previous stats
             var clientKey = playerId + '|' + ip;
-            var previousTotal = self.previousPacketStats[clientKey] || 0;
-            var diff = totalPackets - previousTotal;
-
+            var previousPeriodTotal = self.previousPacketStats[clientKey] || 0;
+            var diff = totalPackets - previousPeriodTotal;
+            
+            // Calculate cumulative total (current period + all previous periods)
+            var cumulativeTotal = (self.previousPacketStats[clientKey + '_cumulative'] || 0) + totalPackets;
+            
             report.push({
               name: playerName,
               ip: ip,
               id: playerId,
-              total: totalPackets,
-              diff: diff,
+              total: totalPackets, // Packets in this period
+              cumulative: cumulativeTotal, // Cumulative total since connection
+              diff: diff, // Change from previous period
               breakdown: packetBreakdown.join(', ')
             });
-
-            // Store current stats for next diff calculation
+            
+            // Store current period total for next diff calculation
             self.previousPacketStats[clientKey] = totalPackets;
+            // Store cumulative total
+            self.previousPacketStats[clientKey + '_cumulative'] = cumulativeTotal;
           }
         }
 
@@ -2023,17 +2029,17 @@ module.exports = class GameServer {
         } else {
           // All clients processed, now sort, log and reset
           if (hasStats) {
-            // Sort by total packets (descending)
+            // Sort by cumulative total packets (descending)
             report.sort(function(a, b) {
-              return b.total - a.total;
+              return b.cumulative - a.cumulative;
             });
-
+            
             var intervalSeconds = self.config.serverPacketStatsInterval || 20;
             console.log('[' + (new Date().toISOString().replace('T', ' ')) + '] [Packet Stats] Last ' + intervalSeconds + ' seconds:');
             for (var j = 0; j < report.length; j++) {
               var r = report[j];
               var diffStr = r.diff >= 0 ? '+' + r.diff : r.diff.toString();
-              console.log('  [' + r.name + '] (ID:' + r.id + ', IP:' + r.ip + ') Total: ' + r.total + ' packets (Diff: ' + diffStr + ') - ' + r.breakdown);
+              console.log('  [' + r.name + '] (ID:' + r.id + ', IP:' + r.ip + ') Cumulative: ' + r.cumulative + ' packets, Period: ' + r.total + ' packets (Diff: ' + diffStr + ') - ' + r.breakdown);
             }
           }
 
@@ -2059,8 +2065,13 @@ module.exports = class GameServer {
 
             // Remove stats for clients that are no longer connected
             for (var key in self.previousPacketStats) {
-              if (!activeClientKeys[key]) {
-                delete self.previousPacketStats[key];
+              // Check if this is a client key (not a cumulative key)
+              if (key.indexOf('_cumulative') === -1) {
+                var baseKey = key;
+                if (!activeClientKeys[baseKey]) {
+                  delete self.previousPacketStats[baseKey];
+                  delete self.previousPacketStats[baseKey + '_cumulative'];
+                }
               }
             }
           });
