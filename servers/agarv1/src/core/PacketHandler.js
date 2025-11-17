@@ -30,6 +30,23 @@ function PacketHandler(gameServer, socket) {
   // Rate limiting for key presses to prevent packet flooding from scripts
   this.lastWPressTime = 0;
   this.lastSpacePressTime = 0;
+  
+  // Packet statistics tracking
+  this.packetStats = {
+    0: 0,   // Set Nickname
+    1: 0,   // Spectate
+    16: 0,  // Set Target (mouse)
+    17: 0,  // Space (split)
+    18: 0,  // Q key
+    19: 0,  // Q key released
+    21: 0,  // W key (feed)
+    22: 0,  // E key
+    23: 0,  // R key
+    24: 0,  // T key
+    90: 0,  // Chat (cigar)
+    99: 0,  // Chat (cigar)
+    255: 0  // Connection Start
+  };
 }
 
 module.exports = PacketHandler;
@@ -56,6 +73,20 @@ PacketHandler.prototype.handleMessage = function(message) {
     var buffer = stobuf(message);
     var view = new DataView(buffer);
     var packetId = view.getUint8(0, true);
+    
+    // Track packet statistics
+    if (this.packetStats[packetId] !== undefined) {
+      this.packetStats[packetId]++;
+    } else {
+      // Track unknown packet types
+      if (!this.packetStats.unknown) {
+        this.packetStats.unknown = {};
+      }
+      if (!this.packetStats.unknown[packetId]) {
+        this.packetStats.unknown[packetId] = 0;
+      }
+      this.packetStats.unknown[packetId]++;
+    }
 
     switch (packetId) {
       case 0:
@@ -413,5 +444,31 @@ PacketHandler.prototype.setNickname = function(newNick) {
 
     // Turn off spectate mode
     client.spectate = false;
+  }
+};
+
+// Get and reset packet statistics
+PacketHandler.prototype.getPacketStats = function() {
+  var stats = {};
+  for (var key in this.packetStats) {
+    if (this.packetStats.hasOwnProperty(key)) {
+      stats[key] = this.packetStats[key];
+    }
+  }
+  return stats;
+};
+
+PacketHandler.prototype.resetPacketStats = function() {
+  for (var key in this.packetStats) {
+    if (this.packetStats.hasOwnProperty(key)) {
+      if (typeof this.packetStats[key] === 'object') {
+        // Reset unknown packet types
+        for (var subKey in this.packetStats[key]) {
+          this.packetStats[key][subKey] = 0;
+        }
+      } else {
+        this.packetStats[key] = 0;
+      }
+    }
   }
 };

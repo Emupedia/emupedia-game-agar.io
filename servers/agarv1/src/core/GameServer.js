@@ -368,6 +368,9 @@ module.exports = class GameServer {
         this.consoleService.execCommand("restart", split);
 
       }
+      
+      // Start packet statistics reporting (every 10 seconds)
+      setInterval(this.reportPacketStats.bind(this), 10000);
       if (this.config.vps == 1) {
         console.log("\x1b[31m[IMPORTANT] You are using a VPS provider. Stats server and port choosing is disabled.\x1b[0m")
       }
@@ -1831,7 +1834,96 @@ module.exports = class GameServer {
   cellTick() {
     // Move cells
     this.updateMoveEngine();
-  };
+  }
+
+  reportPacketStats() {
+    // Report packet statistics for each client every 10 seconds
+    var clients = this.getClients();
+    var hasStats = false;
+    var report = [];
+    
+    for (var i = 0; i < clients.length; i++) {
+      var client = clients[i];
+      if (!client || !client.packetHandler) continue;
+      
+      var stats = client.packetHandler.getPacketStats();
+      var totalPackets = 0;
+      var packetBreakdown = [];
+      
+      // Calculate total and build breakdown
+      for (var packetId in stats) {
+        if (stats.hasOwnProperty(packetId)) {
+          if (packetId === 'unknown') {
+            // Handle unknown packet types
+            if (typeof stats[packetId] === 'object') {
+              for (var unknownId in stats[packetId]) {
+                if (stats[packetId].hasOwnProperty(unknownId)) {
+                  var count = stats[packetId][unknownId];
+                  if (count > 0) {
+                    totalPackets += count;
+                    packetBreakdown.push('ID' + unknownId + ':' + count);
+                  }
+                }
+              }
+            }
+          } else {
+            var count = stats[packetId];
+            if (count > 0) {
+              totalPackets += count;
+              // Map packet IDs to readable names
+              var packetNames = {
+                0: 'Nickname',
+                1: 'Spectate',
+                16: 'Mouse',
+                17: 'Split',
+                18: 'Q',
+                19: 'Q-Up',
+                21: 'W(Feed)',
+                22: 'E',
+                23: 'R',
+                24: 'T',
+                90: 'Chat90',
+                99: 'Chat99',
+                255: 'Connect'
+              };
+              var name = packetNames[packetId] || 'ID' + packetId;
+              packetBreakdown.push(name + ':' + count);
+            }
+          }
+        }
+      }
+      
+      if (totalPackets > 0) {
+        hasStats = true;
+        var playerName = client.playerTracker && client.playerTracker.name ? client.playerTracker.name : 'Unknown';
+        var ip = client.remoteAddress || 'N/A';
+        var playerId = client.playerTracker && client.playerTracker.pID ? client.playerTracker.pID : 'N/A';
+        
+        report.push({
+          name: playerName,
+          ip: ip,
+          id: playerId,
+          total: totalPackets,
+          breakdown: packetBreakdown.join(', ')
+        });
+      }
+    }
+    
+    if (hasStats) {
+      console.log('[' + (new Date().toISOString().replace('T', ' ')) + '] [Packet Stats] Last 10 seconds:');
+      for (var j = 0; j < report.length; j++) {
+        var r = report[j];
+        console.log('  [' + r.name + '] (ID:' + r.id + ', IP:' + r.ip + ') Total: ' + r.total + ' packets - ' + r.breakdown);
+      }
+      
+      // Reset stats after reporting
+      for (var k = 0; k < clients.length; k++) {
+        if (clients[k] && clients[k].packetHandler) {
+          clients[k].packetHandler.resetPacketStats();
+        }
+      }
+    }
+  }
 
   // todo this needs a rewrite/merge with updater service
   masterServer() {
