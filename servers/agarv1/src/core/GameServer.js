@@ -60,7 +60,7 @@ module.exports = class GameServer {
     this.nospawn = [];
 
     this.ipCounts = [];
-    
+
     // Store previous packet stats for diff calculation
     this.previousPacketStats = {};
 
@@ -371,10 +371,11 @@ module.exports = class GameServer {
         this.consoleService.execCommand("restart", split);
 
       }
-      
-      // Start packet statistics reporting (every 10 seconds) if enabled
+
+      // Start packet statistics reporting if enabled
       if (this.config.serverPacketStats == 1) {
-        setInterval(this.reportPacketStats.bind(this), 10000);
+        var statsInterval = (this.config.serverPacketStatsInterval || 20) * 1000; // Convert to milliseconds
+        setInterval(this.reportPacketStats.bind(this), statsInterval);
       }
       if (this.config.vps == 1) {
         console.log("\x1b[31m[IMPORTANT] You are using a VPS provider. Stats server and port choosing is disabled.\x1b[0m")
@@ -1086,7 +1087,7 @@ module.exports = class GameServer {
           let cell = new Entity.PlayerCell(this.world.getNextNodeId(), player, pos, mass, this);
           this.addNode(cell, "player");
         }
-        
+
         // Log player spawn
         if (this.config.showjlinfo == 1) {
           var timestamp = new Date().toISOString().replace('T', ' ').substring(0, 19);
@@ -1707,7 +1708,7 @@ module.exports = class GameServer {
         var batchSize = 50; // Process 50 nodes per tick to avoid blocking
         var endIndex = Math.min(rainbowIndex + batchSize, nodeArray.length);
         var count = 0;
-        
+
         for (var i = rainbowIndex; i < endIndex; i++) {
           var node = nodeArray[i];
           if (!node || !node.watch) {
@@ -1726,9 +1727,9 @@ module.exports = class GameServer {
           node.color = this.colors[node.rainbow];
           node.rainbow += this.config.rainbowspeed;
         }
-        
+
         this.rainbowIndex = endIndex >= nodeArray.length ? 0 : endIndex;
-        
+
         if (count <= 0 && endIndex >= nodeArray.length) {
           this.clearRainbowNodes();
         }
@@ -1739,7 +1740,7 @@ module.exports = class GameServer {
           var batchSize = 50;
           var endIndex = Math.min(rainbowIndex + batchSize, rnodes.length);
           var count = 0;
-          
+
           for (var i = rainbowIndex; i < endIndex; i++) {
             var node = rnodes[i];
             if (!node || !node.watch) {
@@ -1758,9 +1759,9 @@ module.exports = class GameServer {
             node.color = this.colors[node.rainbow];
             node.rainbow += this.config.rainbowspeed;
           }
-          
+
           this.rainbowIndex = endIndex >= rnodes.length ? 0 : endIndex;
-          
+
           if (count <= 0 && endIndex >= rnodes.length) {
             this.clearRainbowNodes();
           }
@@ -1926,25 +1927,26 @@ module.exports = class GameServer {
   reportPacketStats() {
     // Report packet statistics for each client every 10 seconds
     // Use setImmediate to prevent blocking the event loop
+    var self = this; // Store reference to this for nested functions
     setImmediate(function() {
-      var clients = this.getClients();
+      var clients = self.getClients();
       var hasStats = false;
       var report = [];
-      
+
       // Process clients in batches to avoid blocking
       var clientIndex = 0;
       var processBatch = function() {
         var batchSize = 10; // Process 10 clients at a time
         var endIndex = Math.min(clientIndex + batchSize, clients.length);
-        
+
         for (var i = clientIndex; i < endIndex; i++) {
           var client = clients[i];
           if (!client || !client.packetHandler) continue;
-          
+
           var stats = client.packetHandler.getPacketStats();
           var totalPackets = 0;
           var packetBreakdown = [];
-          
+
           // Calculate total and build breakdown
           for (var packetId in stats) {
             if (stats.hasOwnProperty(packetId)) {
@@ -1987,18 +1989,18 @@ module.exports = class GameServer {
               }
             }
           }
-          
+
           if (totalPackets > 0) {
             hasStats = true;
             var playerName = client.playerTracker && client.playerTracker.name ? client.playerTracker.name : 'Unknown';
             var ip = client.remoteAddress || 'N/A';
             var playerId = client.playerTracker && client.playerTracker.pID ? client.playerTracker.pID : 'N/A';
-            
+
             // Calculate diff from previous stats
             var clientKey = playerId + '|' + ip;
-            var previousTotal = this.previousPacketStats[clientKey] || 0;
+            var previousTotal = self.previousPacketStats[clientKey] || 0;
             var diff = totalPackets - previousTotal;
-            
+
             report.push({
               name: playerName,
               ip: ip,
@@ -2007,14 +2009,14 @@ module.exports = class GameServer {
               diff: diff,
               breakdown: packetBreakdown.join(', ')
             });
-            
+
             // Store current stats for next diff calculation
-            this.previousPacketStats[clientKey] = totalPackets;
+            self.previousPacketStats[clientKey] = totalPackets;
           }
         }
-        
+
         clientIndex = endIndex;
-        
+
         // Continue processing if there are more clients
         if (clientIndex < clients.length) {
           setImmediate(processBatch);
@@ -2025,15 +2027,16 @@ module.exports = class GameServer {
             report.sort(function(a, b) {
               return b.total - a.total;
             });
-            
-            console.log('[' + (new Date().toISOString().replace('T', ' ')) + '] [Packet Stats] Last 10 seconds:');
+
+            var intervalSeconds = self.config.serverPacketStatsInterval || 20;
+            console.log('[' + (new Date().toISOString().replace('T', ' ')) + '] [Packet Stats] Last ' + intervalSeconds + ' seconds:');
             for (var j = 0; j < report.length; j++) {
               var r = report[j];
               var diffStr = r.diff >= 0 ? '+' + r.diff : r.diff.toString();
               console.log('  [' + r.name + '] (ID:' + r.id + ', IP:' + r.ip + ') Total: ' + r.total + ' packets (Diff: ' + diffStr + ') - ' + r.breakdown);
             }
           }
-          
+
           // Reset stats after reporting (non-blocking)
           // Note: We keep previousPacketStats to calculate diffs, but reset current stats
           setImmediate(function() {
@@ -2042,7 +2045,7 @@ module.exports = class GameServer {
                 clients[k].packetHandler.resetPacketStats();
               }
             }
-            
+
             // Clean up previous stats for disconnected clients
             var activeClientKeys = {};
             for (var m = 0; m < clients.length; m++) {
@@ -2053,17 +2056,17 @@ module.exports = class GameServer {
                 activeClientKeys[id + '|' + ip] = true;
               }
             }
-            
+
             // Remove stats for clients that are no longer connected
-            for (var key in this.previousPacketStats) {
+            for (var key in self.previousPacketStats) {
               if (!activeClientKeys[key]) {
-                delete this.previousPacketStats[key];
+                delete self.previousPacketStats[key];
               }
             }
-          }.bind(this));
+          });
         }
       };
-      
+
       processBatch();
     }.bind(this));
   }
