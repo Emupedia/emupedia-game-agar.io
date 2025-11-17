@@ -419,7 +419,7 @@ module.exports = class GameServer {
 
       let showlmsg = this.config.showjlinfo;
 
-      const ip = ws.upgradeReq.headers['x-real-ip'] !== 'undefined' ? ws.upgradeReq.headers['x-real-ip'] : ws._socket.remoteAddress;
+      const ip = typeof ws.upgradeReq.headers['x-real-ip'] !== 'undefined' ? ws.upgradeReq.headers['x-real-ip'] : ws._socket.remoteAddress;
 
       if (this.configService.getUniBan().indexOf(ip) !== -1) {
         console.log('[' + (new Date().toISOString().replace('T', ' ')) + '] IP ' + ip + ' BANNED');
@@ -452,6 +452,14 @@ module.exports = class GameServer {
         this.ipcounts[ip] = 1;
       }
 
+      // Check if IP has exceeded the maximum connections per IP limit
+      if (this.ipcounts[ip] > this.config.serverMaxConnectionsPerIp) {
+        console.log('[' + (new Date().toISOString().replace('T', ' ')) + '] IP ' + ip + ' REJECTED - Too many connections (' + this.ipcounts[ip] + '/' + this.config.serverMaxConnectionsPerIp + ')');
+        this.ipcounts[ip]--; // Decrement since we're rejecting this connection
+        ws.close();
+        return;
+      }
+
       if (this.config.showjlinfo == 1) {
         var timestamp = new Date().toISOString().replace('T', ' ').substring(0, 19);
         console.log("[" + timestamp + "] [" + this.name + "] A player with an IP of " + ip + " joined the game");
@@ -467,7 +475,12 @@ module.exports = class GameServer {
       let self = this;
 
       function close(error) {
-        self.ipcounts[this.socket.remoteAddress]--;
+        if (this.socket.remoteAddress && self.ipcounts[this.socket.remoteAddress]) {
+          self.ipcounts[this.socket.remoteAddress]--;
+          if (self.ipcounts[this.socket.remoteAddress] <= 0) {
+            delete self.ipcounts[this.socket.remoteAddress];
+          }
+        }
         var names = this.socket.playerTracker.reservedNamesMap;
         for (var i in names) {
           var name = names[i];
