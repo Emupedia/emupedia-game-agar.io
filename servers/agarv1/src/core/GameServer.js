@@ -2042,6 +2042,75 @@ module.exports = class GameServer {
             console.log('[' + timestamp + '] [Packet Stats] Last ' + intervalSeconds + ' seconds:');
             
             // Helper functions for table formatting
+            function stripEmojis(str) {
+              // Remove emojis and other wide Unicode characters that break monospace alignment
+              // Works with older Node.js versions by checking character codes directly
+              str = str.toString();
+              var result = '';
+              for (var i = 0; i < str.length; i++) {
+                var char = str.charAt(i);
+                var code = str.charCodeAt(i);
+                
+                // Check for surrogate pairs (emojis are often 2-char sequences)
+                // High surrogate: 0xD800-0xDBFF, Low surrogate: 0xDC00-0xDFFF
+                if (code >= 0xD800 && code <= 0xDBFF) {
+                  // High surrogate - check if next is low surrogate
+                  var nextCode = (i + 1 < str.length) ? str.charCodeAt(i + 1) : 0;
+                  if (nextCode >= 0xDC00 && nextCode <= 0xDFFF) {
+                    // This is a surrogate pair (emoji or other 4-byte character) - replace with placeholder
+                    i++; // Skip the next character too
+                    result += '?';
+                    continue;
+                  }
+                }
+                
+                // Skip low surrogates (they're already handled above)
+                if (code >= 0xDC00 && code <= 0xDFFF) {
+                  continue;
+                }
+                
+                // Check for variation selectors and zero-width characters
+                if (code >= 0xFE00 && code <= 0xFE0F) {
+                  // Variation selectors - skip
+                  continue;
+                }
+                if (code === 0x200D || code === 0x20E3 || code === 0xFEFF) {
+                  // Zero-width joiner, keycap, BOM - skip
+                  continue;
+                }
+                
+                // Check for emoji ranges (single code point emojis)
+                if ((code >= 0x1F300 && code <= 0x1F9FF) || // Misc Symbols and Pictographs
+                    (code >= 0x2600 && code <= 0x26FF) ||     // Misc symbols
+                    (code >= 0x2700 && code <= 0x27BF)) {     // Dingbats
+                  result += '?';
+                  continue;
+                }
+                
+                // Keep ASCII printable and basic Latin characters
+                if ((code >= 32 && code <= 126) || (code >= 160 && code <= 255)) {
+                  result += char;
+                  continue;
+                }
+                
+                // Keep common single-width Unicode ranges
+                if ((code >= 0x00A0 && code <= 0x024F) || // Latin Extended
+                    (code >= 0x0400 && code <= 0x04FF)) {  // Cyrillic
+                  result += char;
+                  continue;
+                }
+                
+                // Skip control characters
+                if (code < 32) {
+                  continue;
+                }
+                
+                // Replace other wide/unknown characters with placeholder
+                result += '?';
+              }
+              return result;
+            }
+            
             function padRight(str, width) {
               str = str.toString();
               if (str.length > width) {
@@ -2114,7 +2183,9 @@ module.exports = class GameServer {
               var idStr = r.id.toString();
               if (idStr.length > colWidths.id) colWidths.id = Math.min(idStr.length, 8);
               if (r.ip.length > colWidths.ip) colWidths.ip = r.ip.length; // No truncation for IP
-              if (r.name.length > colWidths.name) colWidths.name = Math.min(r.name.length, 30);
+              // Strip emojis from name before calculating width to prevent alignment issues
+              var sanitizedName = stripEmojis(r.name);
+              if (sanitizedName.length > colWidths.name) colWidths.name = Math.min(sanitizedName.length, 30);
               var cumStr = r.cumulative.toString();
               if (cumStr.length > colWidths.cumulative) colWidths.cumulative = Math.min(cumStr.length, 15);
               var perStr = r.total.toString();
@@ -2195,7 +2266,9 @@ module.exports = class GameServer {
             for (var j = 0; j < report.length; j++) {
               var r = report[j];
               var diffStr = (r.diff >= 0 ? '+' : '') + r.diff.toString();
-              var name = truncate(r.name, colWidths.name);
+              // Strip emojis from name to prevent table alignment issues
+              var sanitizedName = stripEmojis(r.name);
+              var name = truncate(sanitizedName, colWidths.name);
               // IP is not truncated
               var ip = r.ip;
               
