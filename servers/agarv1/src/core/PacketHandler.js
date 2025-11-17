@@ -350,8 +350,15 @@ PacketHandler.prototype.handleMessage = function(message) {
             check_message = check_message.replace(/  +/g, ' ');
             check_message = check_message.replace(/(.)\1{3,}/gi, '$1');
 
+            // Cache parsed blocked words to avoid parsing on every message
             if (!this.chatBlockedWords) {
-              this.chatBlockedWords = JSON.parse(this.gameServer.config.chatBlockedWords.replace(/'/g, '"'));
+              try {
+                this.chatBlockedWords = JSON.parse(this.gameServer.config.chatBlockedWords.replace(/'/g, '"'));
+              } catch (e) {
+                // If parsing fails, set to empty array to prevent repeated parsing attempts
+                this.chatBlockedWords = [];
+                console.log('[WARN] Failed to parse chatBlockedWords config');
+              }
             }
 
             if (Array.isArray(this.chatBlockedWords) && this.chatBlockedWords.length) {

@@ -1803,14 +1803,19 @@ module.exports = class GameServer {
           // Get client with largest score if gamemode doesn't have a leaderboard
           let largestClient = undefined;
           let largestClientScore = 0;
+          var clients = this.clients;
+          var clientCount = clients.length;
 
-          this.clients.forEach((client) => {
+          // Use regular for loop instead of forEach for better performance
+          for (var i = 0; i < clientCount; i++) {
+            var client = clients[i];
+            if (!client || !client.playerTracker) continue;
             let clientScore = client.playerTracker.getScore(true);
             if (clientScore > largestClientScore) {
               largestClient = client;
               largestClientScore = clientScore;
             }
-          });
+          }
 
           this.largestClient = largestClient;
         } else {
@@ -1823,14 +1828,19 @@ module.exports = class GameServer {
 
       let humans = 0,
         bots = 0;
+      var clients = this.getClients();
+      var clientCount = clients.length;
 
-      this.getClients().forEach((client) => {
+      // Use regular for loop instead of forEach for better performance
+      for (var i = 0; i < clientCount; i++) {
+        var client = clients[i];
+        if (!client || !client.playerTracker) continue;
         if ('_socket' in client) {
           humans++;
         } else if (!client.playerTracker.owner) {
           bots++;
         }
-      });
+      }
 
       if (this.config.smartbotspawn === 1) {
         if (bots < this.config.smartbspawnbase - humans + this.sbo && humans > 0) {
