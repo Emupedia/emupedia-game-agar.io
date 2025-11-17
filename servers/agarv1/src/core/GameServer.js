@@ -477,7 +477,7 @@ module.exports = class GameServer {
 
       function close(error) {
         if (this.socket.remoteAddress && self.ipcounts[this.socket.remoteAddress]) {
-          self.ipcounts[this.socket.remoteAddress]--;
+        self.ipcounts[this.socket.remoteAddress]--;
           if (self.ipcounts[this.socket.remoteAddress] <= 0) {
             delete self.ipcounts[this.socket.remoteAddress];
           }
@@ -1711,27 +1711,27 @@ module.exports = class GameServer {
 
         for (var i = rainbowIndex; i < endIndex; i++) {
           var node = nodeArray[i];
-          if (!node || !node.watch) {
+        if (!node || !node.watch) {
             continue;
-          }
-          count++;
+        }
+        count++;
 
-          if (!node.rainbow) {
-            node.rainbow = Math.floor(Math.random() * this.colors.length);
-          }
+        if (!node.rainbow) {
+          node.rainbow = Math.floor(Math.random() * this.colors.length);
+        }
 
-          if (node.rainbow >= this.colors.length) {
-            node.rainbow = 0;
-          }
+        if (node.rainbow >= this.colors.length) {
+          node.rainbow = 0;
+        }
 
-          node.color = this.colors[node.rainbow];
-          node.rainbow += this.config.rainbowspeed;
+        node.color = this.colors[node.rainbow];
+        node.rainbow += this.config.rainbowspeed;
         }
 
         this.rainbowIndex = endIndex >= nodeArray.length ? 0 : endIndex;
 
         if (count <= 0 && endIndex >= nodeArray.length) {
-          this.clearRainbowNodes();
+        this.clearRainbowNodes();
         }
       } else {
         var rnodes = this.getRainbowNodes();
@@ -2138,8 +2138,34 @@ module.exports = class GameServer {
               return str;
             }
             
-            // Collect all unique packet types from all reports
+            // Define all known packet types (from packetNames mapping)
+            // This ensures all packet types are always shown as columns, even if they're 0
+            var knownPacketTypes = {
+              'Nickname': true,
+              'Spectate': true,
+              'Mouse': true,
+              'Split': true,
+              'Q': true,
+              'Q-Up': true,
+              'W': true,
+              'E': true,
+              'R': true,
+              'T': true,
+              'Chat90': true,
+              'Chat99': true,
+              'ProtocolAck': true,
+              'Connect': true
+            };
+            
+            // Collect all unique packet types from all reports (including unknown ones)
             var packetTypes = {};
+            // Start with all known packet types
+            for (var knownType in knownPacketTypes) {
+              if (knownPacketTypes.hasOwnProperty(knownType)) {
+                packetTypes[knownType] = true;
+              }
+            }
+            // Add any unknown packet types found in the data
             for (var j = 0; j < report.length; j++) {
               var r = report[j];
               if (r.breakdown && typeof r.breakdown === 'object') {
@@ -2153,13 +2179,33 @@ module.exports = class GameServer {
             
             // Convert to sorted array for consistent column order
             var packetTypeArray = [];
-            for (var packetName in packetTypes) {
-              if (packetTypes.hasOwnProperty(packetName)) {
-                packetTypeArray.push(packetName);
+            // First add known packet types in a specific order
+            var knownOrder = ['Nickname', 'Spectate', 'Mouse', 'Split', 'Q', 'Q-Up', 'W', 'E', 'R', 'T', 'Chat90', 'Chat99', 'ProtocolAck', 'Connect'];
+            for (var k = 0; k < knownOrder.length; k++) {
+              if (packetTypes[knownOrder[k]]) {
+                packetTypeArray.push(knownOrder[k]);
               }
             }
-            // Sort packet types for consistent ordering
-            packetTypeArray.sort();
+            // Then add any unknown packet types (sorted alphabetically)
+            var unknownTypes = [];
+            for (var packetName in packetTypes) {
+              if (packetTypes.hasOwnProperty(packetName)) {
+                var isKnown = false;
+                for (var k = 0; k < knownOrder.length; k++) {
+                  if (packetName === knownOrder[k]) {
+                    isKnown = true;
+                    break;
+                  }
+                }
+                if (!isKnown) {
+                  unknownTypes.push(packetName);
+                }
+              }
+            }
+            unknownTypes.sort();
+            for (var u = 0; u < unknownTypes.length; u++) {
+              packetTypeArray.push(unknownTypes[u]);
+            }
             
             // Calculate column widths for base columns
             var colWidths = {
