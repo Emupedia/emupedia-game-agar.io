@@ -26,11 +26,11 @@ function PacketHandler(gameServer, socket) {
   this.pressE = false;
   this.pressR = false;
   this.pressT = false;
-  
+
   // Rate limiting for key presses to prevent packet flooding from scripts
   this.lastWPressTime = 0;
   this.lastSpacePressTime = 0;
-  
+
   // Packet statistics tracking
   this.packetStats = {
     0: 0,   // Set Nickname
@@ -73,7 +73,7 @@ PacketHandler.prototype.handleMessage = function(message) {
     var buffer = stobuf(message);
     var view = new DataView(buffer);
     var packetId = view.getUint8(0, true);
-    
+
     // Track packet statistics
     if (this.packetStats[packetId] !== undefined) {
       this.packetStats[packetId]++;
