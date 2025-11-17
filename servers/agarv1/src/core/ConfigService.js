@@ -138,6 +138,7 @@ module.exports = class ConfigService {
       serverStatsPort: 88, // Port for stats server. Having a negative number will disable the stats server.
       serverStatsUpdate: 60, // Amount of seconds per update for the server stats
       serverLogLevel: 1, // Logging level of the server. 0 = No logs, 1 = Logs the console, 2 = Logs console and ip connections
+      serverPacketStats: 1, // Enable packet statistics reporting (1 = enabled, 0 = disabled)
       serverScrambleCoords: 0, // Toggles scrambling of coordinates. 0 = No scrambling, 1 = scrambling. Default is 1.
       borderLeft: 0, // Left border of map (Vanilla value: 0)
       borderRight: 6000, // Right border of map (Vanilla value: 11180.3398875)

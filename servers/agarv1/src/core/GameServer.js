@@ -369,8 +369,10 @@ module.exports = class GameServer {
 
       }
       
-      // Start packet statistics reporting (every 10 seconds)
-      setInterval(this.reportPacketStats.bind(this), 10000);
+      // Start packet statistics reporting (every 10 seconds) if enabled
+      if (this.config.serverPacketStats == 1) {
+        setInterval(this.reportPacketStats.bind(this), 10000);
+      }
       if (this.config.vps == 1) {
         console.log("\x1b[31m[IMPORTANT] You are using a VPS provider. Stats server and port choosing is disabled.\x1b[0m")
       }
