@@ -1945,7 +1945,25 @@ module.exports = class GameServer {
 
           var stats = client.packetHandler.getPacketStats();
           var totalPackets = 0;
-          var packetBreakdown = [];
+          var packetBreakdown = {}; // Store as object instead of array
+
+          // Map packet IDs to readable names
+          var packetNames = {
+            0: 'Nickname',
+            1: 'Spectate',
+            16: 'Mouse',
+            17: 'Split',
+            18: 'Q',
+            19: 'Q-Up',
+            21: 'W',
+            22: 'E',
+            23: 'R',
+            24: 'T',
+            90: 'Chat90',
+            99: 'Chat99',
+            254: 'ProtocolAck',
+            255: 'Connect'
+          };
 
           // Calculate total and build breakdown
           for (var packetId in stats) {
@@ -1958,7 +1976,8 @@ module.exports = class GameServer {
                       var count = stats[packetId][unknownId];
                       if (count > 0) {
                         totalPackets += count;
-                        packetBreakdown.push('ID' + unknownId + ':' + count);
+                        var unknownName = 'ID' + unknownId;
+                        packetBreakdown[unknownName] = count;
                       }
                     }
                   }
@@ -1967,25 +1986,8 @@ module.exports = class GameServer {
                 var count = stats[packetId];
                 if (count > 0) {
                   totalPackets += count;
-                  // Map packet IDs to readable names
-                  var packetNames = {
-                    0: 'Nickname',
-                    1: 'Spectate',
-                    16: 'Mouse',
-                    17: 'Split',
-                    18: 'Q',
-                    19: 'Q-Up',
-                    21: 'W',
-                    22: 'E',
-                    23: 'R',
-                    24: 'T',
-                    90: 'Chat90',
-                    99: 'Chat99',
-                    254: 'ProtocolAck',
-                    255: 'Connect'
-                  };
                   var name = packetNames[packetId] || 'ID' + packetId;
-                  packetBreakdown.push(name + ':' + count);
+                  packetBreakdown[name] = count;
                 }
               }
             }
@@ -2012,7 +2014,7 @@ module.exports = class GameServer {
               total: totalPackets, // Packets in this period
               cumulative: cumulativeTotal, // Cumulative total since connection
               diff: diff, // Change from previous period
-              breakdown: packetBreakdown.join(', ')
+              breakdown: packetBreakdown // Store as object
             });
 
             // Store current period total for next diff calculation
@@ -2036,12 +2038,187 @@ module.exports = class GameServer {
             });
 
             var intervalSeconds = self.config.serverPacketStatsInterval || 20;
-            console.log('[' + (new Date().toISOString().replace('T', ' ')) + '] [Packet Stats] Last ' + intervalSeconds + ' seconds:');
+            var timestamp = new Date().toISOString().replace('T', ' ').substring(0, 19);
+            console.log('[' + timestamp + '] [Packet Stats] Last ' + intervalSeconds + ' seconds:');
+            
+            // Helper functions for table formatting
+            function padRight(str, width) {
+              str = str.toString();
+              if (str.length > width) {
+                return str.substring(0, width - 1) + '…';
+              }
+              return str + ' '.repeat(width - str.length);
+            }
+            
+            function padCenter(str, width) {
+              str = str.toString();
+              if (str.length >= width) {
+                return str.substring(0, width);
+              }
+              var pad = width - str.length;
+              var leftPad = Math.floor(pad / 2);
+              var rightPad = pad - leftPad;
+              return ' '.repeat(leftPad) + str + ' '.repeat(rightPad);
+            }
+            
+            function truncate(str, width) {
+              str = str.toString();
+              if (str.length > width) {
+                return str.substring(0, width - 1) + '…';
+              }
+              return str;
+            }
+            
+            // Collect all unique packet types from all reports
+            var packetTypes = {};
             for (var j = 0; j < report.length; j++) {
               var r = report[j];
-              var diffStr = r.diff >= 0 ? '+' + r.diff : r.diff.toString();
-              console.log('  [' + r.name + '] (ID:' + r.id + ', IP:' + r.ip + ') Cumulative: ' + r.cumulative + ' packets, Period: ' + r.total + ' packets (Diff: ' + diffStr + ') - ' + r.breakdown);
+              if (r.breakdown && typeof r.breakdown === 'object') {
+                for (var packetName in r.breakdown) {
+                  if (r.breakdown.hasOwnProperty(packetName)) {
+                    packetTypes[packetName] = true;
+                  }
+                }
+              }
             }
+            
+            // Convert to sorted array for consistent column order
+            var packetTypeArray = [];
+            for (var packetName in packetTypes) {
+              if (packetTypes.hasOwnProperty(packetName)) {
+                packetTypeArray.push(packetName);
+              }
+            }
+            // Sort packet types for consistent ordering
+            packetTypeArray.sort();
+            
+            // Calculate column widths for base columns
+            var colWidths = {
+              id: 5,
+              ip: 25,
+              name: 15,
+              cumulative: 12,
+              period: 8,
+              diff: 6
+            };
+            
+            // Initialize widths for packet type columns
+            for (var p = 0; p < packetTypeArray.length; p++) {
+              var pt = packetTypeArray[p];
+              colWidths[pt] = Math.max(pt.length, 6); // At least as wide as the header name
+            }
+            
+            // Adjust column widths based on actual data
+            for (var j = 0; j < report.length; j++) {
+              var r = report[j];
+              var idStr = r.id.toString();
+              if (idStr.length > colWidths.id) colWidths.id = Math.min(idStr.length, 8);
+              if (r.ip.length > colWidths.ip) colWidths.ip = r.ip.length; // No truncation for IP
+              if (r.name.length > colWidths.name) colWidths.name = Math.min(r.name.length, 30);
+              var cumStr = r.cumulative.toString();
+              if (cumStr.length > colWidths.cumulative) colWidths.cumulative = Math.min(cumStr.length, 15);
+              var perStr = r.total.toString();
+              if (perStr.length > colWidths.period) colWidths.period = Math.min(perStr.length, 10);
+              var diffStr = (r.diff >= 0 ? '+' : '') + r.diff.toString();
+              if (diffStr.length > colWidths.diff) colWidths.diff = Math.min(diffStr.length, 8);
+              
+              // Check packet type column widths
+              if (r.breakdown && typeof r.breakdown === 'object') {
+                for (var p = 0; p < packetTypeArray.length; p++) {
+                  var pt = packetTypeArray[p];
+                  var count = r.breakdown[pt] || 0;
+                  var countStr = count.toString();
+                  if (countStr.length > colWidths[pt]) {
+                    colWidths[pt] = Math.min(countStr.length, 10);
+                  }
+                }
+              }
+            }
+            
+            // Build table header row
+            var headerParts = [];
+            headerParts.push('┌' + '─'.repeat(colWidths.id));
+            headerParts.push('─'.repeat(colWidths.ip));
+            headerParts.push('─'.repeat(colWidths.name));
+            headerParts.push('─'.repeat(colWidths.cumulative));
+            headerParts.push('─'.repeat(colWidths.period));
+            headerParts.push('─'.repeat(colWidths.diff));
+            for (var p = 0; p < packetTypeArray.length; p++) {
+              headerParts.push('─'.repeat(colWidths[packetTypeArray[p]]));
+            }
+            var headerRow = headerParts.join('┬') + '┐';
+            
+            // Build header content
+            var headerContentParts = [];
+            headerContentParts.push('│' + padCenter('ID', colWidths.id));
+            headerContentParts.push(padCenter('IP', colWidths.ip));
+            headerContentParts.push(padCenter('Player Name', colWidths.name));
+            headerContentParts.push(padCenter('Cumulative', colWidths.cumulative));
+            headerContentParts.push(padCenter('Period', colWidths.period));
+            headerContentParts.push(padCenter('Diff', colWidths.diff));
+            for (var p = 0; p < packetTypeArray.length; p++) {
+              headerContentParts.push(padCenter(packetTypeArray[p], colWidths[packetTypeArray[p]]));
+            }
+            var headerContent = headerContentParts.join('│') + '│';
+            
+            // Build header separator
+            var separatorParts = [];
+            separatorParts.push('├' + '─'.repeat(colWidths.id));
+            separatorParts.push('─'.repeat(colWidths.ip));
+            separatorParts.push('─'.repeat(colWidths.name));
+            separatorParts.push('─'.repeat(colWidths.cumulative));
+            separatorParts.push('─'.repeat(colWidths.period));
+            separatorParts.push('─'.repeat(colWidths.diff));
+            for (var p = 0; p < packetTypeArray.length; p++) {
+              separatorParts.push('─'.repeat(colWidths[packetTypeArray[p]]));
+            }
+            var headerSeparator = separatorParts.join('┼') + '┤';
+            
+            // Build footer row
+            var footerParts = [];
+            footerParts.push('└' + '─'.repeat(colWidths.id));
+            footerParts.push('─'.repeat(colWidths.ip));
+            footerParts.push('─'.repeat(colWidths.name));
+            footerParts.push('─'.repeat(colWidths.cumulative));
+            footerParts.push('─'.repeat(colWidths.period));
+            footerParts.push('─'.repeat(colWidths.diff));
+            for (var p = 0; p < packetTypeArray.length; p++) {
+              footerParts.push('─'.repeat(colWidths[packetTypeArray[p]]));
+            }
+            var footerRow = footerParts.join('┴') + '┘';
+            
+            console.log(headerRow);
+            console.log(headerContent);
+            console.log(headerSeparator);
+            
+            // Build data rows
+            for (var j = 0; j < report.length; j++) {
+              var r = report[j];
+              var diffStr = (r.diff >= 0 ? '+' : '') + r.diff.toString();
+              var name = truncate(r.name, colWidths.name);
+              // IP is not truncated
+              var ip = r.ip;
+              
+              var dataRowParts = [];
+              dataRowParts.push('│' + padRight(r.id.toString(), colWidths.id));
+              dataRowParts.push(padRight(ip, colWidths.ip));
+              dataRowParts.push(padRight(name, colWidths.name));
+              dataRowParts.push(padRight(r.cumulative.toString(), colWidths.cumulative));
+              dataRowParts.push(padRight(r.total.toString(), colWidths.period));
+              dataRowParts.push(padRight(diffStr, colWidths.diff));
+              
+              // Add packet type columns
+              for (var p = 0; p < packetTypeArray.length; p++) {
+                var pt = packetTypeArray[p];
+                var count = (r.breakdown && r.breakdown[pt]) ? r.breakdown[pt] : 0;
+                dataRowParts.push(padRight(count.toString(), colWidths[pt]));
+              }
+              
+              var dataRow = dataRowParts.join('│') + '│';
+              console.log(dataRow);
+            }
+            
+            console.log(footerRow);
           }
 
           // Reset stats after reporting (non-blocking)
