@@ -60,6 +60,9 @@ module.exports = class GameServer {
     this.nospawn = [];
 
     this.ipCounts = [];
+    
+    // Store previous packet stats for diff calculation
+    this.previousPacketStats = {};
 
     this.leaderboard = []; // leaderboard
     this.port = port;
@@ -450,7 +453,8 @@ module.exports = class GameServer {
       }
 
       if (this.config.showjlinfo == 1) {
-        console.log("[" + this.name + "] A player with an IP of " + ip + " joined the game");
+        var timestamp = new Date().toISOString().replace('T', ' ').substring(0, 19);
+        console.log("[" + timestamp + "] [" + this.name + "] A player with an IP of " + ip + " joined the game");
       }
 
       if (this.config.porportional == 1) {
@@ -474,7 +478,8 @@ module.exports = class GameServer {
         }
         // Log disconnections
         if (showlmsg == 1) {
-          console.log("[" + self.name + "] A player with an IP of " + this.socket.remoteAddress + " left the game");
+          var timestamp = new Date().toISOString().replace('T', ' ').substring(0, 19);
+          console.log("[" + timestamp + "] [" + self.name + "] A player with an IP of " + this.socket.remoteAddress + " left the game");
         }
         if (self.config.porportional == 1) {
           self.config.borderLeft += self.config.borderDec;
@@ -1068,7 +1073,13 @@ module.exports = class GameServer {
           let cell = new Entity.PlayerCell(this.world.getNextNodeId(), player, pos, mass, this);
           this.addNode(cell, "player");
         }
-
+        
+        // Log player spawn
+        if (this.config.showjlinfo == 1) {
+          var timestamp = new Date().toISOString().replace('T', ' ').substring(0, 19);
+          var playerName = player.name || "Unknown";
+          console.log("[" + timestamp + "] [" + this.name + "] A player with an IP of " + player.socket.remoteAddress + " spawned into the game as '" + playerName + "'");
+        }
       }
 
       // Set initial mouse coords
@@ -1970,13 +1981,22 @@ module.exports = class GameServer {
             var ip = client.remoteAddress || 'N/A';
             var playerId = client.playerTracker && client.playerTracker.pID ? client.playerTracker.pID : 'N/A';
             
+            // Calculate diff from previous stats
+            var clientKey = playerId + '|' + ip;
+            var previousTotal = this.previousPacketStats[clientKey] || 0;
+            var diff = totalPackets - previousTotal;
+            
             report.push({
               name: playerName,
               ip: ip,
               id: playerId,
               total: totalPackets,
+              diff: diff,
               breakdown: packetBreakdown.join(', ')
             });
+            
+            // Store current stats for next diff calculation
+            this.previousPacketStats[clientKey] = totalPackets;
           }
         }
         
@@ -1986,23 +2006,48 @@ module.exports = class GameServer {
         if (clientIndex < clients.length) {
           setImmediate(processBatch);
         } else {
-          // All clients processed, now log and reset
+          // All clients processed, now sort, log and reset
           if (hasStats) {
+            // Sort by total packets (descending)
+            report.sort(function(a, b) {
+              return b.total - a.total;
+            });
+            
             console.log('[' + (new Date().toISOString().replace('T', ' ')) + '] [Packet Stats] Last 10 seconds:');
             for (var j = 0; j < report.length; j++) {
               var r = report[j];
-              console.log('  [' + r.name + '] (ID:' + r.id + ', IP:' + r.ip + ') Total: ' + r.total + ' packets - ' + r.breakdown);
+              var diffStr = r.diff >= 0 ? '+' + r.diff : r.diff.toString();
+              console.log('  [' + r.name + '] (ID:' + r.id + ', IP:' + r.ip + ') Total: ' + r.total + ' packets (Diff: ' + diffStr + ') - ' + r.breakdown);
             }
           }
           
           // Reset stats after reporting (non-blocking)
+          // Note: We keep previousPacketStats to calculate diffs, but reset current stats
           setImmediate(function() {
             for (var k = 0; k < clients.length; k++) {
               if (clients[k] && clients[k].packetHandler) {
                 clients[k].packetHandler.resetPacketStats();
               }
             }
-          });
+            
+            // Clean up previous stats for disconnected clients
+            var activeClientKeys = {};
+            for (var m = 0; m < clients.length; m++) {
+              if (clients[m] && clients[m].playerTracker && clients[m].packetHandler) {
+                var pt = clients[m].playerTracker;
+                var ip = clients[m].remoteAddress || 'N/A';
+                var id = pt.pID || 'N/A';
+                activeClientKeys[id + '|' + ip] = true;
+              }
+            }
+            
+            // Remove stats for clients that are no longer connected
+            for (var key in this.previousPacketStats) {
+              if (!activeClientKeys[key]) {
+                delete this.previousPacketStats[key];
+              }
+            }
+          }.bind(this));
         }
       };
       
