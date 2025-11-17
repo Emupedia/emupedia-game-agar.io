@@ -1673,28 +1673,72 @@ module.exports = class GameServer {
       // Update cells/leaderboard loop
       this.tickMain++;
 
-      let count = 0;
-      var rnodes = (this.config.rainbowMode == 1) ? this.world.getNodes() : this.getRainbowNodes();
-      rnodes.forEach((node) => {
-        if (!node || !node.watch) {
-          return;
+      // Process rainbow nodes in batches to avoid blocking
+      if (this.config.rainbowMode == 1) {
+        var rnodes = this.world.getNodes();
+        var nodeArray = rnodes.toArray ? rnodes.toArray() : Array.from(rnodes);
+        var rainbowIndex = this.rainbowIndex || 0;
+        var batchSize = 50; // Process 50 nodes per tick to avoid blocking
+        var endIndex = Math.min(rainbowIndex + batchSize, nodeArray.length);
+        var count = 0;
+        
+        for (var i = rainbowIndex; i < endIndex; i++) {
+          var node = nodeArray[i];
+          if (!node || !node.watch) {
+            continue;
+          }
+          count++;
+
+          if (!node.rainbow) {
+            node.rainbow = Math.floor(Math.random() * this.colors.length);
+          }
+
+          if (node.rainbow >= this.colors.length) {
+            node.rainbow = 0;
+          }
+
+          node.color = this.colors[node.rainbow];
+          node.rainbow += this.config.rainbowspeed;
         }
-        count++;
-
-        if (!node.rainbow) {
-          node.rainbow = Math.floor(Math.random() * this.colors.length);
+        
+        this.rainbowIndex = endIndex >= nodeArray.length ? 0 : endIndex;
+        
+        if (count <= 0 && endIndex >= nodeArray.length) {
+          this.clearRainbowNodes();
         }
+      } else {
+        var rnodes = this.getRainbowNodes();
+        if (rnodes && rnodes.length) {
+          var rainbowIndex = this.rainbowIndex || 0;
+          var batchSize = 50;
+          var endIndex = Math.min(rainbowIndex + batchSize, rnodes.length);
+          var count = 0;
+          
+          for (var i = rainbowIndex; i < endIndex; i++) {
+            var node = rnodes[i];
+            if (!node || !node.watch) {
+              continue;
+            }
+            count++;
 
-        if (node.rainbow >= this.colors.length) {
-          node.rainbow = 0;
+            if (!node.rainbow) {
+              node.rainbow = Math.floor(Math.random() * this.colors.length);
+            }
+
+            if (node.rainbow >= this.colors.length) {
+              node.rainbow = 0;
+            }
+
+            node.color = this.colors[node.rainbow];
+            node.rainbow += this.config.rainbowspeed;
+          }
+          
+          this.rainbowIndex = endIndex >= rnodes.length ? 0 : endIndex;
+          
+          if (count <= 0 && endIndex >= rnodes.length) {
+            this.clearRainbowNodes();
+          }
         }
-
-        node.color = this.colors[node.rainbow];
-        node.rainbow += this.config.rainbowspeed;
-      });
-
-      if (count <= 0) {
-        this.clearRainbowNodes();
       }
 
       if (this.tickMain >= this.config.fps) { // 1 Second
@@ -1706,22 +1750,29 @@ module.exports = class GameServer {
           this.rrticks = 0;
           let a = [];
           let d = false;
+          var clients = this.getClients();
+          var clientCount = clients.length;
 
-          this.getClients().forEach((client) => {
+          // Process clients synchronously but limit to prevent blocking
+          // This check runs once per second, so it's acceptable to process all at once
+          // but we'll use a regular for loop instead of forEach for better performance
+          for (var i = 0; i < clientCount; i++) {
+            var client = clients[i];
+            if (!client || !client.playerTracker) continue;
 
             if (client.remoteAddress && this.whlist.indexOf(client.remoteAddress) == -1 && !client.playerTracker.nospawn) {
-              if (a[client.playerTracker.mouse] === undefined) {
-                a[client.playerTracker.mouse] = 1;
-
+              var mouseKey = client.playerTracker.mouse;
+              if (a[mouseKey] === undefined) {
+                a[mouseKey] = 1;
               } else { // Where it checks for duplicates. If there is over 5, it activates mouse filter using mfre, to see how it works, go to playertracker. This is here so i can reduce lag using a simple and less cpu using method to check for duplicates because the method to actually get rid of them is not efficient.
-                a[client.playerTracker.mouse]++;
-                if (a[client.playerTracker.mouse] > this.config.mbchance) {
+                a[mouseKey]++;
+                if (a[mouseKey] > this.config.mbchance) {
                   this.mfre = true;
                   d = true;
                 }
               }
             }
-          });
+          }
 
           if (d == false) {
             this.mfre = false;
@@ -1838,91 +1889,113 @@ module.exports = class GameServer {
 
   reportPacketStats() {
     // Report packet statistics for each client every 10 seconds
-    var clients = this.getClients();
-    var hasStats = false;
-    var report = [];
-    
-    for (var i = 0; i < clients.length; i++) {
-      var client = clients[i];
-      if (!client || !client.packetHandler) continue;
+    // Use setImmediate to prevent blocking the event loop
+    setImmediate(function() {
+      var clients = this.getClients();
+      var hasStats = false;
+      var report = [];
       
-      var stats = client.packetHandler.getPacketStats();
-      var totalPackets = 0;
-      var packetBreakdown = [];
-      
-      // Calculate total and build breakdown
-      for (var packetId in stats) {
-        if (stats.hasOwnProperty(packetId)) {
-          if (packetId === 'unknown') {
-            // Handle unknown packet types
-            if (typeof stats[packetId] === 'object') {
-              for (var unknownId in stats[packetId]) {
-                if (stats[packetId].hasOwnProperty(unknownId)) {
-                  var count = stats[packetId][unknownId];
-                  if (count > 0) {
-                    totalPackets += count;
-                    packetBreakdown.push('ID' + unknownId + ':' + count);
+      // Process clients in batches to avoid blocking
+      var clientIndex = 0;
+      var processBatch = function() {
+        var batchSize = 10; // Process 10 clients at a time
+        var endIndex = Math.min(clientIndex + batchSize, clients.length);
+        
+        for (var i = clientIndex; i < endIndex; i++) {
+          var client = clients[i];
+          if (!client || !client.packetHandler) continue;
+          
+          var stats = client.packetHandler.getPacketStats();
+          var totalPackets = 0;
+          var packetBreakdown = [];
+          
+          // Calculate total and build breakdown
+          for (var packetId in stats) {
+            if (stats.hasOwnProperty(packetId)) {
+              if (packetId === 'unknown') {
+                // Handle unknown packet types
+                if (typeof stats[packetId] === 'object') {
+                  for (var unknownId in stats[packetId]) {
+                    if (stats[packetId].hasOwnProperty(unknownId)) {
+                      var count = stats[packetId][unknownId];
+                      if (count > 0) {
+                        totalPackets += count;
+                        packetBreakdown.push('ID' + unknownId + ':' + count);
+                      }
+                    }
                   }
+                }
+              } else {
+                var count = stats[packetId];
+                if (count > 0) {
+                  totalPackets += count;
+                  // Map packet IDs to readable names
+                  var packetNames = {
+                    0: 'Nickname',
+                    1: 'Spectate',
+                    16: 'Mouse',
+                    17: 'Split',
+                    18: 'Q',
+                    19: 'Q-Up',
+                    21: 'W(Feed)',
+                    22: 'E',
+                    23: 'R',
+                    24: 'T',
+                    90: 'Chat90',
+                    99: 'Chat99',
+                    255: 'Connect'
+                  };
+                  var name = packetNames[packetId] || 'ID' + packetId;
+                  packetBreakdown.push(name + ':' + count);
                 }
               }
             }
-          } else {
-            var count = stats[packetId];
-            if (count > 0) {
-              totalPackets += count;
-              // Map packet IDs to readable names
-              var packetNames = {
-                0: 'Nickname',
-                1: 'Spectate',
-                16: 'Mouse',
-                17: 'Split',
-                18: 'Q',
-                19: 'Q-Up',
-                21: 'W(Feed)',
-                22: 'E',
-                23: 'R',
-                24: 'T',
-                90: 'Chat90',
-                99: 'Chat99',
-                255: 'Connect'
-              };
-              var name = packetNames[packetId] || 'ID' + packetId;
-              packetBreakdown.push(name + ':' + count);
-            }
+          }
+          
+          if (totalPackets > 0) {
+            hasStats = true;
+            var playerName = client.playerTracker && client.playerTracker.name ? client.playerTracker.name : 'Unknown';
+            var ip = client.remoteAddress || 'N/A';
+            var playerId = client.playerTracker && client.playerTracker.pID ? client.playerTracker.pID : 'N/A';
+            
+            report.push({
+              name: playerName,
+              ip: ip,
+              id: playerId,
+              total: totalPackets,
+              breakdown: packetBreakdown.join(', ')
+            });
           }
         }
-      }
-      
-      if (totalPackets > 0) {
-        hasStats = true;
-        var playerName = client.playerTracker && client.playerTracker.name ? client.playerTracker.name : 'Unknown';
-        var ip = client.remoteAddress || 'N/A';
-        var playerId = client.playerTracker && client.playerTracker.pID ? client.playerTracker.pID : 'N/A';
         
-        report.push({
-          name: playerName,
-          ip: ip,
-          id: playerId,
-          total: totalPackets,
-          breakdown: packetBreakdown.join(', ')
-        });
-      }
-    }
-    
-    if (hasStats) {
-      console.log('[' + (new Date().toISOString().replace('T', ' ')) + '] [Packet Stats] Last 10 seconds:');
-      for (var j = 0; j < report.length; j++) {
-        var r = report[j];
-        console.log('  [' + r.name + '] (ID:' + r.id + ', IP:' + r.ip + ') Total: ' + r.total + ' packets - ' + r.breakdown);
-      }
-      
-      // Reset stats after reporting
-      for (var k = 0; k < clients.length; k++) {
-        if (clients[k] && clients[k].packetHandler) {
-          clients[k].packetHandler.resetPacketStats();
+        clientIndex = endIndex;
+        
+        // Continue processing if there are more clients
+        if (clientIndex < clients.length) {
+          setImmediate(processBatch);
+        } else {
+          // All clients processed, now log and reset
+          if (hasStats) {
+            console.log('[' + (new Date().toISOString().replace('T', ' ')) + '] [Packet Stats] Last 10 seconds:');
+            for (var j = 0; j < report.length; j++) {
+              var r = report[j];
+              console.log('  [' + r.name + '] (ID:' + r.id + ', IP:' + r.ip + ') Total: ' + r.total + ' packets - ' + r.breakdown);
+            }
+          }
+          
+          // Reset stats after reporting (non-blocking)
+          setImmediate(function() {
+            for (var k = 0; k < clients.length; k++) {
+              if (clients[k] && clients[k].packetHandler) {
+                clients[k].packetHandler.resetPacketStats();
+              }
+            }
+          });
         }
-      }
-    }
+      };
+      
+      processBatch();
+    }.bind(this));
   }
 
   // todo this needs a rewrite/merge with updater service
