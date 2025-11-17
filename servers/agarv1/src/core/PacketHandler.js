@@ -26,6 +26,10 @@ function PacketHandler(gameServer, socket) {
   this.pressE = false;
   this.pressR = false;
   this.pressT = false;
+  
+  // Rate limiting for key presses to prevent packet flooding from scripts
+  this.lastWPressTime = 0;
+  this.lastSpacePressTime = 0;
 }
 
 module.exports = PacketHandler;
@@ -108,7 +112,14 @@ PacketHandler.prototype.handleMessage = function(message) {
         break;
       case 17:
         // Space Press - Split cell
-        this.pressSpace = true;
+        // Rate limit split packets using splitCooldown config to prevent rapid splitting from scripts
+        var now = Date.now();
+        var splitMinInterval = this.gameServer.config.splitCooldown || 100; // Reuse splitCooldown config
+        if (!this.lastSpacePressTime || (now - this.lastSpacePressTime >= splitMinInterval)) {
+          this.pressSpace = true;
+          this.lastSpacePressTime = now;
+        }
+        // Silently ignore packets that arrive too quickly (prevents server lag)
         break;
       case 18:
         // Q Key Pressed
@@ -119,7 +130,14 @@ PacketHandler.prototype.handleMessage = function(message) {
         break;
       case 21:
         // W Press - Eject mass
-        this.pressW = true;
+        // Rate limit W key presses at packet level using ejectMassCooldown config to prevent packet flooding
+        var now = Date.now();
+        var minInterval = this.gameServer.config.ejectMassCooldown || 50; // Reuse ejectMassCooldown config (same as game logic)
+        if (!this.lastWPressTime || (now - this.lastWPressTime >= minInterval)) {
+          this.pressW = true;
+          this.lastWPressTime = now;
+        }
+        // Silently ignore packets that arrive too quickly (prevents server lag)
         break;
       case 22:
         this.pressE = true;
