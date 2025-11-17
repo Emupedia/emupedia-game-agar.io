@@ -45,6 +45,7 @@ function PacketHandler(gameServer, socket) {
     24: 0,  // T key
     90: 0,  // Chat (cigar)
     99: 0,  // Chat (cigar)
+    254: 0, // Protocol acknowledgment/handshake
     255: 0  // Connection Start
   };
 }

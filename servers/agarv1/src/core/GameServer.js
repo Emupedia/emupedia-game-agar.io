@@ -1975,12 +1975,13 @@ module.exports = class GameServer {
                     17: 'Split',
                     18: 'Q',
                     19: 'Q-Up',
-                    21: 'W(Feed)',
+                    21: 'W',
                     22: 'E',
                     23: 'R',
                     24: 'T',
                     90: 'Chat90',
                     99: 'Chat99',
+                    254: 'ProtocolAck',
                     255: 'Connect'
                   };
                   var name = packetNames[packetId] || 'ID' + packetId;
@@ -2000,10 +2001,10 @@ module.exports = class GameServer {
             var clientKey = playerId + '|' + ip;
             var previousPeriodTotal = self.previousPacketStats[clientKey] || 0;
             var diff = totalPackets - previousPeriodTotal;
-            
+
             // Calculate cumulative total (current period + all previous periods)
             var cumulativeTotal = (self.previousPacketStats[clientKey + '_cumulative'] || 0) + totalPackets;
-            
+
             report.push({
               name: playerName,
               ip: ip,
@@ -2013,7 +2014,7 @@ module.exports = class GameServer {
               diff: diff, // Change from previous period
               breakdown: packetBreakdown.join(', ')
             });
-            
+
             // Store current period total for next diff calculation
             self.previousPacketStats[clientKey] = totalPackets;
             // Store cumulative total
@@ -2033,7 +2034,7 @@ module.exports = class GameServer {
             report.sort(function(a, b) {
               return b.cumulative - a.cumulative;
             });
-            
+
             var intervalSeconds = self.config.serverPacketStatsInterval || 20;
             console.log('[' + (new Date().toISOString().replace('T', ' ')) + '] [Packet Stats] Last ' + intervalSeconds + ' seconds:');
             for (var j = 0; j < report.length; j++) {
