@@ -339,11 +339,11 @@ label#nick-list:after, label#skin-list:after {
 	left: 0;
 }
 
-#touchCircle, #menuBtn, #fullscreenBtn, #splitBtn, #ejectBtn {
+#touchCircle, #menuBtn, #fullscreenBtn, #splitBtn, #ejectBtn, #doubleSplitBtn, #multiSplitBtn, #zoomInBtn, #zoomOutBtn {
 	position: fixed;
 }
 
-#menuBtn, #fullscreenBtn, #splitBtn, #ejectBtn {
+#menuBtn, #fullscreenBtn, #splitBtn, #ejectBtn, #doubleSplitBtn, #multiSplitBtn, #zoomInBtn, #zoomOutBtn {
 	z-index: 2;
 }
 
@@ -356,13 +356,19 @@ label#nick-list:after, label#skin-list:after {
 	z-index: 3;
 }
 
-#menuBtn, #fullscreenBtn, #splitBtn, #ejectBtn {
+#menuBtn, #fullscreenBtn, #splitBtn, #ejectBtn, #doubleSplitBtn, #multiSplitBtn, #zoomInBtn, #zoomOutBtn {
 	width: 12vw;
 	height: 12vw;
 	border-radius: 6vw;
 	background: #fff;
 	opacity: 0.3;
 	filter: invert(1);
+	transition: border 0.2s ease;
+}
+
+#menuBtn.draggable, #fullscreenBtn.draggable, #splitBtn.draggable, #ejectBtn.draggable, #doubleSplitBtn.draggable, #multiSplitBtn.draggable, #zoomInBtn.draggable, #zoomOutBtn.draggable {
+	border: 3px solid #ff0000;
+	box-sizing: border-box;
 }
 
 #menuBtn {
@@ -376,12 +382,7 @@ label#nick-list:after, label#skin-list:after {
 }
 
 #splitBtn {
-	right: 18vw;
-	bottom: 11vh;
-}
-
-.flipped-controls #splitBtn {
-	left: 18vw;
+	right: 12vw;
 	bottom: 11vh;
 }
 
@@ -390,9 +391,24 @@ label#nick-list:after, label#skin-list:after {
 	bottom: 18vw;
 }
 
-.flipped-controls #ejectBtn {
-	left: 0;
-	bottom: 18vw;
+#doubleSplitBtn {
+	right: 26vw;
+	bottom: 11vh;
+}
+
+#multiSplitBtn {
+	right: 40vw;
+	bottom: 11vh;
+}
+
+#zoomInBtn {
+	left: 38vw;
+	top: 1vh;
+}
+
+#zoomOutBtn {
+	left: 52vw;
+	top: 1vh;
 }
 
 #playSounds:checked + #soundsVolume {
@@ -505,7 +521,7 @@ label#nick-list:after, label#skin-list:after {
 	color: #fff;
 }
 
-.darkTheme #menuBtn, .darkTheme #fullscreenBtn, .darkTheme #splitBtn, .darkTheme #ejectBtn {
+.darkTheme #menuBtn, .darkTheme #fullscreenBtn, .darkTheme #splitBtn, .darkTheme #ejectBtn, .darkTheme #doubleSplitBtn, .darkTheme #multiSplitBtn, .darkTheme #zoomInBtn, .darkTheme #zoomOutBtn {
 	filter: none;
 }
 
