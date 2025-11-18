@@ -46,6 +46,12 @@ img {
 	-webkit-touch-callout: none;
 }
 
+.touch-button {
+	touch-action: none;
+	user-select: none;
+	-webkit-user-select: none;
+}
+
 hr {
 	border-top: 2px solid #000;
 	margin-top: 15px;
