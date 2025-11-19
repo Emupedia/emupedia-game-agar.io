@@ -82,7 +82,7 @@
 
 					<div class="form-wrapper">
 						<div class="form-label-wrapper">
-							<label id="nick-list"><span>Nickname</span><input id="nick" list="nicknames" class="form-control" onfocus="this.oldvalue=this.value;this.value=''" onblur="if(this.value==='')this.value=this.oldvalue || ''" placeholder="Nickname" maxlength="16" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></label>
+							<label id="nick-list"><span>Nickname</span><input id="nick" list="nicknames" class="form-control" onfocus="this.oldvalue=this.value;this.value=''" onblur="if(this.value==='')this.value=this.oldvalue || ''" placeholder="Nickname" maxlength="16" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" required></label>
 							<datalist id="nicknames">
 								<option value=""> </option>
 							</datalist>
@@ -298,7 +298,12 @@
 						<h2 class="title">News</h2>
 						<hr class="top" />
 						<div class="text">
-							<b>18/11/2025</b>
+							<b>19/11/2025</b>
+							<ul>
+								<li><b>Nicknames</b> are now required, you can't have empty <b>nicknames</b> anymore</li>
+								<li><b>Improved Mute Player Function</b> now <b>Mute</b> will try to differenciate between <b>Players</b> with same <b>Nickname</b> and try to mute the one you wanted</li>
+							</ul>
+							<hr /><b>18/11/2025</b>
 							<ul>
 								<li>Added <b>Zoom In</b> and <b>Zoom Out</b> Mobile Buttons, you can toggle <b>Show Zoom Slider</b> to <b>Show</b> or <b>Hide</b> them in <b>Settings</b></li>
 								<li><b>Improved Mobile Buttons Position Customization</b>, now you can <b>Tap</b> for 3 seconds on any Button to move it around</li>
@@ -306,7 +311,7 @@
 								<li>Added <b>Lock Mobile Buttons</b> in <b>Settings</b>, if you check this you cannot move the buttons</li>
 								<li>Removed <b>Flip Touch Controls</b> from <b>Settings</b> (no longer needed, you can now move the Buttons wherever you want)</li>
 							</ul>
-							<hr /><b>28/10/2025</b>
+							<b>28/10/2025</b>
 							<ul>
 								<li>Added Customizable <b>Keyboard Buttons</b> and <b>Mouse Buttons</b> in <b>Settings</b></li>
 								<li>Added <b>Camera Smoothing</b> and <b>Cell Animations Speed</b> in <b>Settings</b></li>
@@ -456,6 +461,6 @@
 		<iframe id="multicheck" style="display:none;"></iframe>
 		<script src="assets/js/nipplejs.js"></script>
 		<script src="assets/js/quadtree.js"></script>
-		<script src="assets/js/main.min.js?v=190"></script>
+		<script src="assets/js/main.min.js?v=191"></script>
 	</body>
 </html>
