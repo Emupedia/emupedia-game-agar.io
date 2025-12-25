@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>ChatFilter Unit Tests</title>
+	<style>
+		body {
+			font-family: 'Courier New', monospace;
+			margin: 20px;
+			background: #f5f5f5;
+		}
+		#output {
+			background: #fff;
+			padding: 20px;
+			border-radius: 5px;
+			box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+			white-space: pre-wrap;
+			font-size: 14px;
+			line-height: 1.6;
+		}
+		.test-pass {
+			color: #28a745;
+		}
+		.test-fail {
+			color: #dc3545;
+		}
+		.summary {
+			margin-top: 20px;
+			padding: 15px;
+			border-radius: 5px;
+			font-weight: bold;
+		}
+		.summary.pass {
+			background: #d4edda;
+			border: 1px solid #c3e6cb;
+			color: #155724;
+		}
+		.summary.fail {
+			background: #f8d7da;
+			border: 1px solid #f5c6cb;
+			color: #721c24;
+		}
+		.assertion-pass {
+			color: #28a745;
+			margin-left: 20px;
+		}
+		.assertion-fail {
+			color: #dc3545;
+			margin-left: 20px;
+		}
+		.assertion-detail {
+			margin-left: 40px;
+			font-size: 12px;
+			color: #666;
+		}
+		h1 {
+			color: #333;
+		}
+	</style>
+</head>
+<body>
+	<h1>ChatFilter Unit Tests</h1>
+	<div id="output">Loading tests...</div>
+
+	<!-- Load ChatFilter first -->
+	<script src="assets/js/chat-filter.js"></script>
+	<!-- Then load tests -->
+	<script src="assets/js/chat-filter.test.js"></script>
+</body>
+</html>
+
