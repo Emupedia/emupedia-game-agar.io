@@ -96,7 +96,7 @@ class ChatChannel {
 		for (let i = 0, l = this.connections.length; i < l; i++) {
 			const conn = this.connections[i]
 
-			if (conn && conn.socket && conn.socket !== source) {
+			if (conn && conn.socket && conn.socket !== source && conn.socket.protocol) {
 				conn.socket.protocol.onChatMessage(sourceInfo, message)
 			}
 		}
@@ -107,12 +107,12 @@ class ChatChannel {
 	 * @param {string} message
 	 */
 	directMessage(source, recipient, message) {
-		if (this.shouldFilter(message)) {
+		if (this.shouldFilter(message) && recipient.protocol) {
 			return recipient.protocol.onChatMessage(serverSource, 'Last message was not sent, because it contains banned words.')
 		}
 
 		const sourceInfo = source == null ? serverSource : getSourceFromConnection(source)
-		recipient.protocol.onChatMessage(sourceInfo, message)
+		if (recipient.protocol) recipient.protocol.onChatMessage(sourceInfo, message)
 	}
 }
 
