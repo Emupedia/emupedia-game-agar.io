@@ -9,6 +9,7 @@ class Bot extends Router {
 	 */
 	constructor(world) {
 		super(world.handle.listener);
+		this.world = world;
 		this.createPlayer();
 		world.addPlayer(this.player);
 	}
