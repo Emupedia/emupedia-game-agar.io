@@ -33,6 +33,23 @@ class Mothercell extends Cell {
 		return true;
 	}
 
+	set size(value) {
+		if (!Number.isFinite(value) || value < 0) {
+			value = 149;
+		}
+		// Enforce maximum size limit for mothercells
+		const maxSize = (this.world && this.world.settings && this.world.settings.mothercellMaxSize) || 1500;
+		super.size = Math.min(value, maxSize);
+	}
+
+	set squareSize(value) {
+		this.size = Math.sqrt(Math.max(0, value));
+	}
+
+	set mass(value) {
+		this.size = Math.sqrt(100 * Math.max(0, value));
+	}
+
 	/**
 	 * @param {Cell} other
 	 * @returns {CellEatResult}
