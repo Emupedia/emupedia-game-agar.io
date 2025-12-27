@@ -1324,7 +1324,12 @@ class AdvancedPlayerBot extends Bot {
 	 * Priority Engine: Evaluate tactical actions
 	 */
 	_evaluateTacticalAction(cell, player, ctx) {
-		// 0. Hyper-Aggressive Pellet Farming (Fixed Reference & Moved from dead code)
+		// 0. Priority: Explosive Growth (Virus Popping)
+		// If we are small/medium and safe, farming viruses is the fastest way to grow.
+		const popping = this.checkVirusPoppingOpportunity(cell, player, ctx);
+		if (popping && popping.shouldFarm) return { x: popping.x, y: popping.y, type: "move" };
+
+		// 0.5 Hyper-Aggressive Pellet Farming (Fixed Reference & Moved from dead code)
 		if (ctx.cellCount < ctx.settings.playerMaxCells && ctx.tCount === 0 && ctx.totalMass > 500 && this.splitCooldownTicks <= 0) {
 			const bestP = ctx.bestPelletCell;
 			if (bestP && (bestP.x - cell.x) ** 2 + (bestP.y - cell.y) ** 2 > (cell.size * 2) ** 2) {
@@ -1361,9 +1366,7 @@ class AdvancedPlayerBot extends Bot {
 		const lure = this.checkLuringOpportunity(cell, player, ctx);
 		if (lure.shouldLure) return { x: lure.x, y: lure.y, type: lure.action === "gift" ? "eject" : "move" };
 
-		// 7. Virus Popping (Was the duplicate method)
-		const popping = this.checkVirusPoppingOpportunity(cell, player, ctx);
-		if (popping && popping.shouldFarm) return { x: popping.x, y: popping.y, type: "move" };
+
 
 		return null;
 	}
@@ -1396,15 +1399,21 @@ class AdvancedPlayerBot extends Bot {
 	 */
 	checkVirusPoppingOpportunity(cell, player, ctx) {
 		const viruses = ctx.nearViruses, enemies = ctx.visibleEnemies, settings = ctx.settings;
-		if (ctx.cellCount >= settings.playerMaxCells / 2 || cell.mass < 150) return { shouldFarm: false };
+		// Relaxed: Farm until we are almost full (leave 1 splits' worth of room)
+		if (ctx.cellCount >= settings.playerMaxCells - 1 || cell.mass < 120) return { shouldFarm: false };
+		
 		const eatMult = ctx.eatMult, vRadSq = (cell.size * 2) ** 2, tRadSq = (cell.size * 6) ** 2;
 		for (let i = 0, lenV = viruses.length; i < lenV; i++) {
 			const v = viruses[i].cell;
 			if (this.canEat(cell.size, v.size, eatMult) && (v.x - cell.x) ** 2 + (v.y - cell.y) ** 2 < vRadSq) {
 				let highRisk = false;
+				// Only fear enemies that can punish our split pieces (size/2)
+				const splitSize = Math.sqrt(cell.mass / 2 * 100);
+				
 				for (let j = 0, lenE = enemies.length; j < lenE; j++) {
 					const e = enemies[j].cell;
-					if (this.canEat(e.size, cell.size * 0.5, eatMult) && (e.x - v.x) ** 2 + (e.y - v.y) ** 2 < tRadSq) { highRisk = true; break; }
+					// If enemy is dangerous to our future pieces
+					if (this.canEat(e.size, splitSize, eatMult) && (e.x - v.x) ** 2 + (e.y - v.y) ** 2 < tRadSq) { highRisk = true; break; }
 				}
 				if (!highRisk) return { shouldFarm: true, x: v.x, y: v.y };
 			}
