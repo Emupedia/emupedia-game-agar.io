@@ -85,7 +85,7 @@ const value = Object.seal({
 	mothercellActiveSpawnSpeed: 1,
 	mothercellPelletBoost: 90,
 	mothercellMaxPellets: 96,
-	mothercellMaxSize: 65535,
+	mothercellMaxSize: 1500,
 
 	playerRoamSpeed: 32,
 	playerRoamViewScale: 0.4,
