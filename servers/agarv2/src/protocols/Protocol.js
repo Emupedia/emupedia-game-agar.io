@@ -145,6 +145,16 @@ class Protocol {
 			}
 		}
 
+		// Automate Bot Name Reservation: Block players from taking bot names
+		// If the name exactly matches a reserved bot name (case-insensitive), block it.
+		if (this.settings.worldPlayerBotNames && this.settings.worldPlayerBotNames.length > 0) {
+			for (let i = 0, l = this.settings.worldPlayerBotNames.length; i < l; i++) {
+				if (newname.toLowerCase() === this.settings.worldPlayerBotNames[i].toLowerCase()) {
+					return 'An unnamed cell';
+				}
+			}
+		}
+
 		// Filter bad phrases from the name
 		for (let i = 0, l = this.settings.chatFilteredPhrases.length; i < l; i++) {
 			if (newname.toLowerCase().indexOf(this.settings.chatFilteredPhrases[i].toLowerCase()) !== -1) {
