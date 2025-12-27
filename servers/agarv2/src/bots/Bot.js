@@ -1,4 +1,4 @@
-const Router = require("../sockets/Router");
+const Router = require("../sockets/Router.js");
 
 /**
  * @abstract

@@ -40,6 +40,7 @@ const value = Object.seal({
 	worldEatOverlapDiv: 3,
 
 	worldPlayerBotsPerWorld: 0,
+	worldPlayerBotAdvancedEnabled: false,
 	/** @type {string[]} */
 	worldPlayerBotNames: [],
 	/** @type {string[]} */

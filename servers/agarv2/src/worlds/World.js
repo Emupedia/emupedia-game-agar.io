@@ -60,8 +60,8 @@ class World {
 			worldId: this.id || 1
 		};
 
-		this.setBorder({x: this.settings.worldMapX, y: this.settings.worldMapY, w: this.settings.worldMapW, h: this.settings.worldMapH});
-		
+		this.setBorder({ x: this.settings.worldMapX, y: this.settings.worldMapY, w: this.settings.worldMapW, h: this.settings.worldMapH });
+
 		// Initialize anti-teaming system for FFA gamemode
 		this.antiTeaming = null;
 		if (this.handle.gamemode && this.handle.gamemode.name === 'FFA' && this.settings.antiTeamingEnabled) {
@@ -78,8 +78,9 @@ class World {
 	}
 
 	afterCreation() {
+		const BotClass = this.settings.worldPlayerBotAdvancedEnabled ? require("../bots/AdvancedPlayerBot.js") : require("../bots/PlayerBot.js");
 		for (let i = 0; i < this.settings.worldPlayerBotsPerWorld; i++) {
-			new PlayerBot(this);
+			new BotClass(this);
 		}
 	}
 
@@ -197,7 +198,7 @@ class World {
 		this.handle.gamemode.onPlayerJoinWorld(player, this);
 		player.router.onWorldSet();
 		this.handle.logger.debug(`player ${player.id} has been added to world ${this.id}`);
-		
+
 		// Initialize anti-teaming tracking for this player
 		if (this.antiTeaming) {
 			this.antiTeaming.initializePlayer(player);
@@ -261,7 +262,7 @@ class World {
 		while (--tries >= 0) {
 			const pos = this.getRandomPos(cellSize);
 
-			if (this.isSafeSpawnPos({x: pos.x, y: pos.y, w: cellSize, h: cellSize})) {
+			if (this.isSafeSpawnPos({ x: pos.x, y: pos.y, w: cellSize, h: cellSize })) {
 				return pos;
 			}
 		}
@@ -280,15 +281,15 @@ class World {
 			while (--tries >= 0) {
 				const cell = this.ejectedCells[~~(Math.random() * this.ejectedCells.length)];
 
-				if (this.isSafeSpawnPos({x: cell.x, y: cell.y, w: cellSize, h: cellSize})) {
+				if (this.isSafeSpawnPos({ x: cell.x, y: cell.y, w: cellSize, h: cellSize })) {
 					this.removeCell(cell);
 
-					return {color: cell.color, pos: {x: cell.x, y: cell.y}};
+					return { color: cell.color, pos: { x: cell.x, y: cell.y } };
 				}
 			}
 		}
 
-		return {color: null, pos: this.getSafeSpawnPos(cellSize)};
+		return { color: null, pos: this.getSafeSpawnPos(cellSize) };
 	}
 
 	/**
@@ -562,12 +563,12 @@ class World {
 
 		a.whenAte(b);
 		b.whenEatenBy(a);
-		
+
 		// Notify anti-teaming system about cell consumption
 		if (this.antiTeaming) {
 			this.antiTeaming.onCellEaten(b, a);
 		}
-		
+
 		this.removeCell(b);
 		this.updateCell(a);
 	}

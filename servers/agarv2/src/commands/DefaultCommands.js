@@ -360,13 +360,13 @@ const serverRouters = {
 
 		handle.logger.print(table({
 			columns: [
-				{text: "INDEX", headPad: " ", emptyPad: "/", rowPad: " ", separated: false},
-				{text: "TYPE", headPad: " ", emptyPad: "/", rowPad: " ", separated: false},
-				{text: "SOURCE", headPad: " ", emptyPad: "/", rowPad: " ", separated: true},
-				{text: "ACTIVE", headPad: " ", emptyPad: "/", rowPad: " ", separated: false},
-				{text: "DORMANT", headPad: " ", emptyPad: "/", rowPad: " ", separated: false},
-				{text: "PROTOCOL", headPad: " ", emptyPad: "/", rowPad: " ", separated: false},
-				{text: "PID", headPad: " ", emptyPad: "/", rowPad: " ", separated: false}
+				{ text: "INDEX", headPad: " ", emptyPad: "/", rowPad: " ", separated: false },
+				{ text: "TYPE", headPad: " ", emptyPad: "/", rowPad: " ", separated: false },
+				{ text: "SOURCE", headPad: " ", emptyPad: "/", rowPad: " ", separated: true },
+				{ text: "ACTIVE", headPad: " ", emptyPad: "/", rowPad: " ", separated: false },
+				{ text: "DORMANT", headPad: " ", emptyPad: "/", rowPad: " ", separated: false },
+				{ text: "PROTOCOL", headPad: " ", emptyPad: "/", rowPad: " ", separated: false },
+				{ text: "PID", headPad: " ", emptyPad: "/", rowPad: " ", separated: false }
 			],
 			rows: routers.map((v, i) => [
 				i.toString(),
@@ -396,12 +396,12 @@ const serverPlayers = {
 
 		const tableData = {
 			columns: [
-				{text: "ID", headPad: " ", emptyPad: "/", rowPad: " ", separated: false},
-				{text: "WORLD", headPad: " ", emptyPad: "/", rowPad: " ", separated: true},
-				{text: "FOLLOWING", headPad: " ", emptyPad: "/", rowPad: " ", separated: false},
-				{text: "STATE", headPad: " ", emptyPad: "/", rowPad: " ", separated: false},
-				{text: "SCORE", headPad: " ", emptyPad: "/", rowPad: " ", separated: false},
-				{text: "NAME", headPad: " ", emptyPad: "/", rowPad: " ", separated: false}
+				{ text: "ID", headPad: " ", emptyPad: "/", rowPad: " ", separated: false },
+				{ text: "WORLD", headPad: " ", emptyPad: "/", rowPad: " ", separated: true },
+				{ text: "FOLLOWING", headPad: " ", emptyPad: "/", rowPad: " ", separated: false },
+				{ text: "STATE", headPad: " ", emptyPad: "/", rowPad: " ", separated: false },
+				{ text: "SCORE", headPad: " ", emptyPad: "/", rowPad: " ", separated: false },
+				{ text: "NAME", headPad: " ", emptyPad: "/", rowPad: " ", separated: false }
 			],
 			rows: players.map((v) => {
 				let ret = [
@@ -466,8 +466,9 @@ const serverAddBot = {
 			return;
 		}
 
+		const BotClass = handle.settings.worldPlayerBotAdvancedEnabled ? require("../bots/AdvancedPlayerBot.js") : require("../bots/PlayerBot.js");
 		for (let i = 0; i < count; i++) {
-			new PlayerBot(world);
+			new BotClass(world);
 		}
 
 		handle.logger.print(`added ${count} player bots to world`);
@@ -568,7 +569,7 @@ const serverSetting = {
 		if (!handle.settings.hasOwnProperty(settingName)) {
 			const settingIdSplit = splitSettingId(settingName);
 			const possible = Object.keys(handle.settings).map(v => {
-				return {name: v, hits: getSplitSettingHits(splitSettingId(v), settingIdSplit)};
+				return { name: v, hits: getSplitSettingHits(splitSettingId(v), settingIdSplit) };
 			}).sort((a, b) => b.hits - a.hits).filter((v) => v.hits > 0).filter((v, i, array) => array[0].hits === v.hits).map(v => v.name);
 
 			let printing = "no such setting";

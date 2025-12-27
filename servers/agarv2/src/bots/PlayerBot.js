@@ -1,4 +1,4 @@
-const Bot = require("./Bot");
+const Bot = require("./Bot.js");
 
 class PlayerBot extends Bot {
 	/**
@@ -42,6 +42,8 @@ class PlayerBot extends Bot {
 
 			if (this.spawningName.indexOf("<*>") !== -1) {
 				this.spawningName = this.spawningName.replace("<*>", `<${skins[~~(Math.random() * skins.length)]}>`);
+			} else if (skins && skins.length > 0 && this.spawningName.indexOf("<") !== 0) {
+				this.spawningName = `<${skins[~~(Math.random() * skins.length)]}>${this.spawningName}`;
 			}
 
 			this.onSpawnRequest();

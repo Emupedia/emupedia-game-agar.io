@@ -1,4 +1,4 @@
-const Bot = require("./Bot");
+const Bot = require("./Bot.js");
 
 class Minion extends Bot {
 	/**
