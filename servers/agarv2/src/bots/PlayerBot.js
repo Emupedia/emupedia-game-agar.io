@@ -1,4 +1,4 @@
-const Bot = require("./Bot.js");
+const Bot = require("./Bot");
 
 class PlayerBot extends Bot {
 	/**

@@ -7,7 +7,7 @@ class AdvancedPlayerBot extends Bot {
 	 */
 	constructor(world) {
 		super(world);
-
+		this.world = world;
 		this.splitCooldownTicks = 0;
 		this.splitAttempts = 0;
 		this.target = null;
@@ -74,7 +74,7 @@ class AdvancedPlayerBot extends Bot {
 
 	/**
 	 * Send a chat message to the server
-	 * @param {string} message 
+	 * @param {string} message
 	 */
 	sendChat(message) {
 		if (this.listener && this.listener.globalChat) {
@@ -374,10 +374,10 @@ class AdvancedPlayerBot extends Bot {
 					}
 
 					visibleCells[id] = cell; // Populate visibleCells during the single search pass
-					
+
 					let memoryEntry = threatsMemory.get(id);
-					if (!memoryEntry) { 
-						memoryEntry = { x: cell.x, y: cell.y, size: cell.size, lastSeen: currentTick, vx: 0, vy: 0, ownerId: cell.owner.id, threatLevel: 0 }; threatsMemory.set(id, memoryEntry); 
+					if (!memoryEntry) {
+						memoryEntry = { x: cell.x, y: cell.y, size: cell.size, lastSeen: currentTick, vx: 0, vy: 0, ownerId: cell.owner.id, threatLevel: 0 }; threatsMemory.set(id, memoryEntry);
 					} else {
 						const dt = Math.max(1, currentTick - memoryEntry.lastSeen), iDt = 1 / dt;
 						// Elite Optimization: Sync with server boost physics for perfect velocity truth
@@ -389,7 +389,7 @@ class AdvancedPlayerBot extends Bot {
 						}
 						memoryEntry.x = cell.x; memoryEntry.y = cell.y; memoryEntry.size = cell.size; memoryEntry.lastSeen = currentTick;
 					}
-					
+
 					if (isThreat) {
 						memoryEntry.threatLevel = cell.size * invSize;
 						if (memoryEntry.threatLevel > 1.0) {
@@ -499,7 +499,7 @@ class AdvancedPlayerBot extends Bot {
 				const e = enemies[i];
 				if (e.distSq < cell.size * cell.size && this.canEat(e.cell.size, cell.size * 0.5, eatMult)) {
 					const virusSafeRangeSq = (cell.size * 1.5) ** 2;
-					const viruses = ctx.visibleViruses;
+					const viruses = ctx.nearViruses;
 					for (let j = 0, vLen = viruses.length; j < vLen; j++) {
 						const v = viruses[j];
 						const vdx = cell.x - v.cell.x, vdy = cell.y - v.cell.y;
@@ -532,7 +532,7 @@ class AdvancedPlayerBot extends Bot {
 					const bestScore = this.scoreTarget(largest, bestAvailable, player, ctx, (largest.size * 6) ** 2);
 					if (bestScore > currentScore * 1.5) this.target = bestAvailable; // Switch if 50% better
 				}
-				
+
 				const path = this.calculatePath(largest, this.target, player, ctx);
 				this._setMousePosition(path.x, path.y);
 				return;
@@ -641,7 +641,7 @@ class AdvancedPlayerBot extends Bot {
 		// Reset deceptive state
 		this.fakeWeaknessActive = false;
 
-		// Note: Anti-Teaming and Teaming are disabled in this environment. 
+		// Note: Anti-Teaming and Teaming are disabled in this environment.
 		// Previous "isSuspected" block removed for specialized FFA performance.
 
 		if (threatCount === 0 && opportunityCount > 2 && totalMass > (ctx.settings.playerMaxSize || 1500) * 2) {
@@ -653,7 +653,7 @@ class AdvancedPlayerBot extends Bot {
 			if (threatCount === 1 && d > cell.size * 3 && d < cell.size * 6) {
 				this.fakeWeaknessActive = true;
 				this.strategyMode = "deceptive";
-				this.strategyRiskTolerance = 0.8; 
+				this.strategyRiskTolerance = 0.8;
 				return;
 			}
 			// Elite: Oversize Panic Aggression (Sync with Settings.js:118)
@@ -879,7 +879,7 @@ class AdvancedPlayerBot extends Bot {
 				}
 			}
 		}
-		
+
 		// Elite: Rigid Physics Gliding (Aligning with World.js:resolveRigidCheck)
 		// If we are touching a cell we can't eat, adjust vector to glide around its circumference
 		const rigidRad = cell.size + 10;
@@ -922,7 +922,7 @@ class AdvancedPlayerBot extends Bot {
 		const id = this._getOwnerId(cell);
 		const pat = id && this.memory.playerPatterns.get(id);
 		let x = cell.x, y = cell.y;
-		
+
 		if (pat && pat.positions.length >= 2) {
 			const last = pat.positions[pat.positions.length - 1], prev = pat.positions[pat.positions.length - 2];
 			const dt = Math.max(1, last.tick - prev.tick);
@@ -1129,7 +1129,7 @@ class AdvancedPlayerBot extends Bot {
 		const predDistSq = (pred.x - cell.x) ** 2 + (pred.y - cell.y) ** 2;
 		const predD = Math.sqrt(predDistSq);
 		const eatMult = ctx.eatMult, border = ctx.border;
-		
+
 		// 1. Base Score (Mass based)
 		let score = (target.size * 2.5) + (30 / (1 + d * invSize));
 
@@ -1140,7 +1140,7 @@ class AdvancedPlayerBot extends Bot {
 		if (cell.mass > (ctx.settings.playerMaxSize || 1500) && decayOver > decayNorm) {
 			score *= 1.5;
 		}
-		
+
 		// 3. Predictive Alignment
 		score += (60 / (1 + predD * invSize));
 
@@ -1149,9 +1149,15 @@ class AdvancedPlayerBot extends Bot {
 		for (let i = 0, len = threats.length; i < len; i++) {
 			const t = threats[i], decay = 1 / (1 + t.distSq * (invSize * invSize));
 			risk += (t.cell.size * invSize) * decay * 50;
+			risk += (t.cell.size * invSize) * decay * 50;
 			if ((t.cell.x - target.x) ** 2 + (t.cell.y - target.y) ** 2 < (cell.size * 3) ** 2) score -= 20;
 		}
-		
+
+		// 4. Suicide Prevention: Massive Penalty for targets that are too big to fight (and likely to eat us)
+		// If target is > 2.5x our size, it's suicidal to annoy them unless we are desperate
+		if (target.size > cell.size * 2.5) score -= 5000;
+		else if (target.size > cell.size * 1.5) score -= 500;
+
 		// Border proximity penalties
 		if (border) {
 			const bDist = this._getBorderDistance(target, border);
@@ -1164,7 +1170,7 @@ class AdvancedPlayerBot extends Bot {
 		const sSize = cell.size / (ctx.settings.playerSplitSizeDiv || 1.414);
 		const sDist = (ctx.settings.playerSplitDistance || 40) + (ctx.settings.playerSplitBoost || 780) / 9;
 		const canSplitKill = this.canEat(sSize, target.size, eatMult) && d - sDist <= cell.size - target.size / (ctx.settings.worldEatOverlapDiv || 3);
-		
+
 		if (canSplitKill) score += 150;
 
 		return score - risk;
@@ -1243,11 +1249,11 @@ class AdvancedPlayerBot extends Bot {
 
 	_triggerSocialEvent(type, other) {
 		if (!this.hasPlayer || !other || !other.owner || other.owner.id === this.player.id || this.chatCooldown > 0) return;
-		
+
 		let name = this._leaderboardName(other);
 		// Sanitization: Strip control characters and trim to prevent spoofing/bloat
 		name = name.replace(/[\x00-\x1F\x7F-\x9F]/g, "").substring(0, 16);
-		
+
 		let msg = "";
 		if (type === "kill") {
 			this.killStreak++;
@@ -1329,8 +1335,11 @@ class AdvancedPlayerBot extends Bot {
 		}
 
 		// 1. Virus Sniper (Sniper has highest priority if mass is sufficient)
-		const vSnipe = this.checkVirusManipulation(cell, player, ctx);
-		if (vSnipe.action === "feed") return { x: vSnipe.x, y: vSnipe.y, type: "eject" };
+		// Safety: Don't snipe if a huge player is right on top of us
+		if (!ctx.closestThreat || ctx.closestThreat._dist > cell.size * 4) {
+			const vSnipe = this.checkVirusManipulation(cell, player, ctx);
+			if (vSnipe.action === "feed") return { x: vSnipe.x, y: vSnipe.y, type: "eject" };
+		}
 
 		// 2. Virus Walls (Defensive shooting)
 		const vWall = this.checkVirusWallOpportunity(cell, player, ctx);
@@ -1344,11 +1353,11 @@ class AdvancedPlayerBot extends Bot {
 		const fragmentFarming = this.checkFragmentFarmingOpportunity(cell, player, ctx);
 		if (fragmentFarming && fragmentFarming.shouldFarm) return { x: fragmentFarming.x, y: fragmentFarming.y, type: "move" };
 
-		// 5. Baiting 
+		// 5. Baiting
 		const bait = this.checkBaitingOpportunity(cell, player, ctx);
 		if (bait.shouldBait) return { x: bait.x, y: bait.y, type: "move" };
 
-		// 6. Luring 
+		// 6. Luring
 		const lure = this.checkLuringOpportunity(cell, player, ctx);
 		if (lure.shouldLure) return { x: lure.x, y: lure.y, type: lure.action === "gift" ? "eject" : "move" };
 
