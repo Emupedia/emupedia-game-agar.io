@@ -498,7 +498,7 @@ class AdvancedPlayerBot extends Bot {
 
 	_handlePopSplitPrep(player, ctx) {
 		// Optimization: With fast merge (playerMergeTime: 1), aggressive mode is safe even with 1.5x mass
-		if (player.ownedCells.length > 1 && ctx.allCanMerge) {
+		if (player.ownedCells.length > 1 && ctx.allCanMerge && this.strategyMode !== "merge") {
 			this.strategyMode = "aggressive";
 			this.strategyRiskTolerance = 1.0; // Max risk with fast merge
 		}
@@ -530,6 +530,13 @@ class AdvancedPlayerBot extends Bot {
 	 * Optimized: Consolidated Targeting & Movement logic
 	 */
 	_handleTargetingAndMovement(largest, player, ctx) {
+		// Phase 3: Defensive Merge Protocol Priority
+		if (this.strategyMode === "merge") {
+			this.target = null; // Drop any previous targets
+			this._setMousePosition(largest.x, largest.y);
+			return;
+		}
+
 		const settings = ctx.settings;
 		// 1. Existing Target validation & Re-evaluation
 		if (this.target != null) {
@@ -610,15 +617,7 @@ class AdvancedPlayerBot extends Bot {
 			}
 		}
 
-		// Elite: Active Regrouping (Phase 2) & Defensive Merge Protocol (Phase 3)
-		if (this.strategyMode === "merge") {
-			// Phase 3: Defensive Merge Protocol
-			// Ignore everything else and stack on largest cell
-			this._setMousePosition(largest.x, largest.y);
-			return;
-		}
-		
-		// Phase 2: Gentle Regrouping
+		// Elite: Active Regrouping (Phase 2)
 		// If we are split into many pieces and safe, gently drift towards our geometric center to encourage merging
 		if (ctx.cellCount > 4 && this.strategyMode !== "aggressive" && !ctx.closestThreat) {
 			let comX = 0, comY = 0, totalM = 0;
@@ -683,8 +682,9 @@ class AdvancedPlayerBot extends Bot {
 	updateStrategy(cell, player, ctx) {
 		const threatCount = ctx.tCount, opportunityCount = ctx.oCount, totalMass = ctx.totalMass;
 
-		// Reset deceptive state
+		// Reset deceptive state and strategy mode
 		this.fakeWeaknessActive = false;
+		this.strategyMode = "balanced";
 
 		// Note: Anti-Teaming and Teaming are disabled in this environment.
 		// Previous "isSuspected" block removed for specialized FFA performance.
@@ -1443,6 +1443,10 @@ class AdvancedPlayerBot extends Bot {
 	 * Priority Engine: Evaluate tactical actions
 	 */
 	_evaluateTacticalAction(cell, player, ctx) {
+		// Elite: Defensive Merge Priority (Phase 3)
+		// If we are frantically merging, do not get distracted by viruses or bait
+		if (this.strategyMode === "merge") return null;
+
 		// 0. Priority: Explosive Growth (Virus Popping)
 		// If we are small/medium and safe, farming viruses is the fastest way to grow.
 		const popping = this.checkVirusPoppingOpportunity(cell, player, ctx);
@@ -1485,11 +1489,6 @@ class AdvancedPlayerBot extends Bot {
 		const lure = this.checkLuringOpportunity(cell, player, ctx);
 		if (lure.shouldLure) return { x: lure.x, y: lure.y, type: lure.action === "gift" ? "eject" : "move" };
 
-		// 7. Mass Cleanup (Phase 4)
-		if (ctx.bestEjectedCell && ctx.bestEjectedDistSq < (cell.size * 15) ** 2) {
-			return { x: ctx.bestEjectedCell.x, y: ctx.bestEjectedCell.y, type: "move" };
-		}
-		
 		return null;
 	}
 
