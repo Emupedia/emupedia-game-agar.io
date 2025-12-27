@@ -361,7 +361,7 @@ class World {
 		/** @type {number} */
 		let l;
 
-		for (i = 0, l = this.cells.length; i < l; i++) {
+		for (i = this.cells.length - 1; i >= 0; i--) {
 			this.cells[i].onTick();
 		}
 

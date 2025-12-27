@@ -67,6 +67,12 @@ class Mothercell extends Cell {
 	}
 
 	onTick() {
+		// Self-repair: corrupt size state
+		if (isNaN(this.size) || !isFinite(this.size)) {
+			this.world.handle.logger.onFatal("Mothercell %s has corrupt size: %s. Resetting to 149.", this.id, this.size);
+			this.size = 149;
+		}
+
 		const settings = this.world.settings;
 		const mothercellSize = settings.mothercellSize;
 		const pelletSize = settings.pelletMinSize;
