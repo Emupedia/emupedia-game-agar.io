@@ -1248,7 +1248,7 @@ class AdvancedPlayerBot extends Bot {
 	onDeath(killer) { this._triggerSocialEvent("death", killer); }
 
 	_triggerSocialEvent(type, other) {
-		if (!this.hasPlayer || !other || !other.owner || other.owner.id === this.player.id || this.chatCooldown > 0) return;
+		if (!this.hasPlayer || !other || !other.owner || other.owner === this.player || other.owner.id == this.player.id || this.chatCooldown > 0) return;
 
 		let name = this._leaderboardName(other);
 		// Sanitization: Strip control characters and trim to prevent spoofing/bloat
