@@ -692,6 +692,10 @@ class AdvancedPlayerBot extends Bot {
 		if (threatCount === 0 && opportunityCount > 2 && totalMass > (ctx.settings.playerMaxSize || 1500) * 2) {
 			this.strategyMode = "aggressive";
 			this.strategyRiskTolerance = 0.8; // Higher baseline aggression
+		} else if (ctx.tCount === 0 && ctx.nearViruses.length > 0 && ctx.totalMass < 2500) {
+			// Phase 5: Virus Greed
+			// If safe and small/medium, be aggressive about finding food (viruses)
+			this.strategyRiskTolerance = 0.8; 
 		} else if (ctx.closestThreat) {
 			const threat = ctx.closestThreat, d = threat._dist;
 			// Elite: "Fake Weakness" logic
@@ -1260,6 +1264,22 @@ class AdvancedPlayerBot extends Bot {
 			}
 		}
 
+		// Phase 6: Threat Zones (Guarded Cells)
+		// Check if this target is "protected" by a bigger cell (same owner) nearby
+		if (target.owner && target.owner.ownedCells && target.owner.ownedCells.length > 1) {
+			const protectors = target.owner.ownedCells;
+			const guardRangeSq = (cell.size * 5) ** 2; // Approximate split range of protector
+			for (let i = 0; i < protectors.length; i++) {
+				const p = protectors[i];
+				if (p !== target && p.size > cell.size * 1.25) { // Protector is bigger than us
+					if ((p.x - target.x) ** 2 + (p.y - target.y) ** 2 < guardRangeSq) {
+						score -= 3000; // IT'S A TRAP!
+						break;
+					}
+				}
+			}
+		}
+
 		// If target cell itself is > 2.5x our size, it's suicidal to annoy them unless we are desperate
 		if (target.size > cell.size * 2.5) score -= 5000;
 		else if (target.size > cell.size * 1.5) score -= 500;
@@ -1288,6 +1308,21 @@ class AdvancedPlayerBot extends Bot {
 		} else if (ctx.cellCount === 1) {
 			// If we are one big cell, we WANT to split-kill.
 			if (canSplitKill) score *= 1.2;
+			
+			// Phase 6: Cluster Targeting (Efficiency)
+			// If we are big and singular, prefer hitting a GROUP of small cells
+			let clusterBonus = 0;
+			const enemies = ctx.visibleEnemies;
+			const clusterRangeSq = (target.size * 4) ** 2;
+			for (let i = 0; i < enemies.length; i++) {
+				const e = enemies[i].cell;
+				if (e !== target && this.canEat(sSize, e.size, eatMult)) {
+					if ((e.x - target.x) ** 2 + (e.y - target.y) ** 2 < clusterRangeSq) {
+						clusterBonus += 25; // Bonus for each extra kill
+					}
+				}
+			}
+			score += Math.min(200, clusterBonus);
 		}
 
 		return score - risk;
@@ -1450,7 +1485,13 @@ class AdvancedPlayerBot extends Bot {
 		// 0. Priority: Explosive Growth (Virus Popping)
 		// If we are small/medium and safe, farming viruses is the fastest way to grow.
 		const popping = this.checkVirusPoppingOpportunity(cell, player, ctx);
-		if (popping && popping.shouldFarm) return { x: popping.x, y: popping.y, type: "move" };
+		if (popping && popping.shouldFarm) {
+			if (popping.action === "merge_to_farm") {
+				this.strategyMode = "merge";
+				return null; // Fall through to _handleTargetingAndMovement to execute merge
+			}
+			return { x: popping.x, y: popping.y, type: "move" };
+		}
 
 		// 0.5 Hyper-Aggressive Pellet Farming (Fixed Reference & Moved from dead code)
 		if (ctx.cellCount < ctx.settings.playerMaxCells && ctx.tCount === 0 && ctx.totalMass > 500 && this.splitCooldownTicks <= 0) {
@@ -1521,12 +1562,15 @@ class AdvancedPlayerBot extends Bot {
 	checkVirusPoppingOpportunity(largestCell, player, ctx) {
 		const viruses = ctx.nearViruses, enemies = ctx.visibleEnemies, settings = ctx.settings;
 		// Relaxed: Farm until we are almost full (leave 1 splits' worth of room)
-		if (ctx.cellCount >= settings.playerMaxCells - 1) return { shouldFarm: false };
+		// Elite: Allow farming even if full, if we can merge (Greed factor)
+		if (ctx.cellCount >= settings.playerMaxCells) {
+			if (!ctx.allCanMerge) return { shouldFarm: false };
+		}
 		
 		const eatMult = ctx.eatMult;
 		const owned = player.ownedCells;
 
-		// Iterate ALL owned cells, not just largest, to find opportunities
+		// 1. Direct Farm: Do we have a cell ready to pop?
 		for (let k = 0; k < owned.length; k++) {
 			const cell = owned[k];
 			if (cell.mass < 120) continue; // Too small to eat virus
@@ -1548,6 +1592,29 @@ class AdvancedPlayerBot extends Bot {
 				}
 			}
 		}
+
+		// Phase 5: Merge-to-Farm Logic
+		// If no single cell can eat a virus, but our TOTAL mass can...
+		if (ctx.totalMass > 150 && ctx.cellCount > 1 && ctx.cellCount < settings.playerMaxCells && !ctx.closestThreat) {
+			// Find nearest virus
+			let bestV = null, bestDist = Infinity;
+			for (let i = 0; i < viruses.length; i++) {
+				const v = viruses[i];
+				if (v.distSq < bestDist) { bestDist = v.distSq; bestV = v; }
+			}
+			
+			// If we found a virus and our total mass is enough to eat it (+safety margin)
+			if (bestV && this.canEat(Math.sqrt(ctx.totalMass * 100), bestV.cell.size * 1.1, eatMult)) {
+				// FORCE MERGE
+				// Check if enemies are too close to risk a merge
+				let safe = true;
+				for (let j = 0; j < enemies.length; j++) {
+					if (enemies[j].distSq < (Math.sqrt(ctx.totalMass * 100) * 5) ** 2) { safe = false; break; }
+				}
+				if (safe) return { shouldFarm: true, x: bestV.cell.x, y: bestV.cell.y, action: "merge_to_farm" };
+			}
+		}
+
 		return { shouldFarm: false };
 	}
 }
