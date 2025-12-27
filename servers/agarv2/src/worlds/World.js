@@ -98,6 +98,14 @@ class World {
 	 * @param {Rect} range
 	 */
 	setBorder(range) {
+		// Validate range values to prevent NaN propagation
+		if (isNaN(range.x) || isNaN(range.y) || isNaN(range.w) || isNaN(range.h)) {
+			this.handle.logger.onFatal("Attempting to set border with NaN values: x=%s, y=%s, w=%s, h=%s, worldId=%s. Using defaults.", 
+				range.x, range.y, range.w, range.h, this.id);
+			// Use safe defaults
+			range = { x: 0, y: 0, w: 3000, h: 3000 };
+		}
+
 		this.border.x = range.x;
 		this.border.y = range.y;
 		this.border.w = range.w;
@@ -239,6 +247,14 @@ class World {
 	 * @returns {Point}
 	 */
 	getRandomPos(cellSize) {
+		// Validate border values to prevent NaN propagation
+		if (isNaN(this.border.x) || isNaN(this.border.y) || isNaN(this.border.w) || isNaN(this.border.h)) {
+			this.handle.logger.onFatal("World border has NaN values: x=%s, y=%s, w=%s, h=%s, worldId=%s", 
+				this.border.x, this.border.y, this.border.w, this.border.h, this.id);
+			// Return center of a default map as fallback
+			return { x: 0, y: 0 };
+		}
+
 		return {
 			x: this.border.x - this.border.w + cellSize + Math.random() * (2 * this.border.w - cellSize),
 			y: this.border.y - this.border.h + cellSize + Math.random() * (2 * this.border.h - cellSize),
