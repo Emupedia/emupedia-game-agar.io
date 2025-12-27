@@ -1434,14 +1434,47 @@ AdvancedPlayerBot.BRAG_MESSAGES = [
 	"More mass from {target}!", "Delicious {target}!", "Snack time, {target}!", "Omg sorry {target}!",
 	"Was that you {target}?", "Need more mass, thanks {target}!", "Tasty snack {target}!",
 	"Gulp! Bye {target}!", "You made a good meal {target}!", "Diet starts tomorrow, {target}!",
-	"Feed me more {target}!", "Can't catch me {target}!", "Nice try {target}!", "Burp! Excuse me {target}!"
+	"Feed me more {target}!", "Can't catch me {target}!", "Nice try {target}!", "Burp! Excuse me {target}!",
+	"Get rekt {target}!", "Nothing personal {target}!", "GG {target}, you tried!",
+	"Mmm protein {target}!", "Dinner is served, {target}!", "Outplayed {target}!",
+	"You're mine {target}!", "Better luck next time {target}!", "Absolutely demolished {target}!",
+	"You hate to see it {target}!", "Sit down {target}!", "Who's next after {target}?",
+	"Easy pickings {target}!", "Git gud {target}!", "Skill issue {target}!", "No escape {target}!",
+	"Fastest meal ever {target}!", "Thanks for feeding me {target}!", "You thought {target}!",
+	"That was MY spot {target}!", "Prediction 100 {target}!", "Gotcha {target}!",
+	"You've been consumed {target}!", "Tastes like victory {target}!", "Checkmate {target}!",
+	"Absorbed {target}!", "Into the void {target}!", "Rekt and wrecked {target}!",
+	"You're now part of me {target}!", "That's how it's done {target}!",
+	"Breakfast lunch and dinner {target}!", "Too predictable {target}!", "Saw that coming {target}!", "Destroyed {target}!",
+	"Nom nom nom {target}!", "You're in my belly now {target}!",
+	"That's what you get {target}!", "360 no scope {target}!", "Welcome to the food chain {target}!", "Munched {target}!", "Chomped {target}!",
+	"You're history {target}!", "Sent to the shadow realm {target}!"
 ];
 AdvancedPlayerBot.REVENGE_MESSAGES = [
 	"I'll be back, {killer}!", "Lucky shot, {killer}...", "You'll pay for that, {killer}!",
 	"Enjoy it while it lasts, {killer}!", "Hey! That was my favorite cell, {killer}!",
 	"Nice move {killer}, but I'm not done!", "Lag! I swear it was lag, {killer}!",
 	"I'm coming for you now, {killer}!", "Well played {killer}, see you in a minute.",
-	"You're on my list now, {killer}!"
+	"You're on my list now, {killer}!", "This isn't over {killer}!",
+	"Rematch time {killer}!", "You got me {killer}, GG!", "Wow {killer}, teach me!",
+	"That was personal {killer}!", "Revenge mode activated {killer}!",
+	"You had to tryhard {killer}?", "Caught me slipping {killer}!",
+	"Respawn and revenge {killer}!", "Round 2 incoming {killer}!",
+	"I wasn't ready {killer}!", "Okay you win this round {killer}...",
+	"My keyboard wasn't working {killer}!", "I had connection issues {killer}!",
+	"You're the main target now {killer}!",
+	"Can't believe you got me {killer}!", "Not bad {killer}, not bad!",
+	"I demand a rematch {killer}!", "That was cheap {killer}!",
+	"Respectable kill {killer}!", "You woke up the beast {killer}!",
+	"Alright {killer}, you win THIS time!", "How did you even... {killer}?!",
+	"You... you monster {killer}!", "Impressive {killer}, very impressive!",
+	"My revenge will be swift {killer}!", "Watch your back {killer}!",
+	"I underestimated you {killer}!", "You're good {killer}, I'll admit it!",
+	"Bruh {killer}...", "Seriously {killer}?!", "Are you hacking {killer}?!",
+	"That hurt {killer}!", "I'll remember that {killer}!", "You just made an enemy {killer}!",
+	"Fastest respawn ever {killer}!", "Time for payback {killer}!",
+	"I'm upgrading my strats {killer}!", "You activated my trap card {killer}!", "You shouldn't have done that {killer}...",
+	"That's it, now it's personal {killer}!"
 ];
 
 module.exports = AdvancedPlayerBot;
