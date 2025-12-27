@@ -114,7 +114,7 @@ class Cell {
 				value = 149; // Default mothercell size
 			}
 			// Enforce maximum size limit for mothercells
-			const maxSize = this.world?.settings?.mothercellMaxSize || 1500;
+			const maxSize = (this.world && this.world.settings && parseInt(this.world.settings.mothercellMaxSize)) || 1500;
 			value = Math.min(value, maxSize);
 		}
 		
