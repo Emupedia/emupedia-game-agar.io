@@ -451,17 +451,23 @@ class AdvancedPlayerBot extends Bot {
 				const canEatV = this.canEat(cellSize, cell.size, eatMult);
 
 				// Track best virus for targeting (strictly edible now to prevent circling)
+				// Phase 18: Only target viruses if we can actually eat them
 				if (canEatV && distSq < ctx.bestVirusDistSq) { ctx.bestVirusCell = cell; ctx.bestVirusDistSq = distSq; }
 
 				const invGap = 1 / Math.max(1, Math.sqrt(distSq) - cellSize - cell.size);
 				// Elite: Attraction to viruses when strictly edible.
-				// If not edible, we MUST repel to prevent the bot from sitting on it or circling it.
 				let inf = 0;
 				if (canEatV) {
 					inf = ctx.cellCount >= settings.playerMaxCells ? ctx.truncatedInf * 15 : (ctx.tCount > 0 ? ctx.truncatedInf : ctx.truncatedInf * 5);
 				} else {
-					// Nudge away from non-edible viruses to avoid unintentional collision
-					inf = -1; 
+					// Phase 18: Permeability
+					// If we are smaller than the virus, don't repel (we can pass through).
+					// Only repel if we are NEAR the size of the virus but not large enough to eat it.
+					if (cellSize > cell.size * 0.8) {
+						inf = -1; // Nudge away to avoid accidental popping
+					} else {
+						inf = 0;  // Neutral: Allow passing through or using as shield
+					}
 				}
 				const contribution = inf * invGap * invGap;
 				mx += dx * contribution; my += dy * contribution;
@@ -967,7 +973,11 @@ class AdvancedPlayerBot extends Bot {
 			if (blocked) break;
 			for (let j = 0, lenV = nearV.length; j < lenV; j++) {
 				const v = nearV[j];
-				if (v.cell === target) continue; // Fix Phase 14: Don't block our own target
+				if (v.cell === target) continue; 
+				// Phase 18: Virus Permeability
+				// Only block if our cell is large enough to be popped by the virus
+				if (cell.size < v.cell.size) continue; 
+				
 				const vdx = v.cell.x - tx, vdy = v.cell.y - ty;
 				if (vdx * vdx + vdy * vdy < checkRadVSq) { blocked = true; break; }
 			}
@@ -996,7 +1006,10 @@ class AdvancedPlayerBot extends Bot {
 						}
 						if (ab) break;
 						for (let j = 0, lenV = nearV.length; j < lenV; j++) {
-							const vir = nearV[j]; if ((vir.cell.x - tx) ** 2 + (vir.cell.y - ty) ** 2 < checkRadVSq) { ab = true; break; }
+							const vir = nearV[j]; 
+							// Phase 18: Virus Permeability
+							if (cell.size < vir.cell.size) continue;
+							if ((vir.cell.x - tx) ** 2 + (vir.cell.y - ty) ** 2 < checkRadVSq) { ab = true; break; }
 						}
 						if (ab) break;
 						for (let j = 0, lenTM = nearTM.length; j < lenTM; j++) {
@@ -1023,7 +1036,10 @@ class AdvancedPlayerBot extends Bot {
 							}
 							if (ab) break;
 							for (let j = 0, lenV = nearV.length; j < lenV; j++) {
-								const vir = nearV[j]; if ((vir.cell.x - tx) ** 2 + (vir.cell.y - ty) ** 2 < checkRadVSq) { ab = true; break; }
+								const vir = nearV[j];
+								// Phase 18: Virus Permeability
+								if (cell.size < vir.cell.size) continue;
+								if ((vir.cell.x - tx) ** 2 + (vir.cell.y - ty) ** 2 < checkRadVSq) { ab = true; break; }
 							}
 							if (ab) break;
 							for (let j = 0, lenTM = nearTM.length; j < lenTM; j++) {
