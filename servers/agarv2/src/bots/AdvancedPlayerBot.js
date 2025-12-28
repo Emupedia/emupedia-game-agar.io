@@ -179,8 +179,11 @@ class AdvancedPlayerBot extends Bot {
 
 		// 0. Update Cooldowns and Memory Decay
 		if (this.splitCooldownTicks > 0) this.splitCooldownTicks--;
-		// Only clear target if it's no longer valid or exists, not every tick
-		if (this.target && (!this.target.exists || !this.target.size)) this.target = null;
+		// Fix Phase 16: Persistent Tactical Targets
+		// Coordinate-based targets lack 'exists'/'size', so we use a flag to preserve them.
+		if (this.target && !this.targetIsTactical && (!this.target.exists || !this.target.size)) {
+			this.target = null;
+		}
 
 		if (this.ejectCooldownTicks > 0) this.ejectCooldownTicks--;
 		this.updateMemoryDecay(currentTick);
@@ -226,13 +229,19 @@ class AdvancedPlayerBot extends Bot {
 
 		// 6. Tactical Phases (Priority Engine)
 		const action = this._evaluateTacticalAction(largest, player, ctx);
+		ctx.tacticalAction = action; // Phase 17: Cache for performance
+		this.targetIsTactical = false; 
+		this.strategyFixed = false;   
+
 		if (action) {
-			this._setMousePosition(action.x, action.y);
 			if (action.type === "eject" && this.ejectCooldownTicks <= 0) {
+				this._setMousePosition(action.x, action.y);
 				this.ejectCooldownTicks = Math.max(1, settings.playerEjectDelay || 2);
 				this.attemptEject();
 			}
-			return;
+			this.target = action; 
+			this.targetIsTactical = true; 
+			this.strategyFixed = true;    
 		}
 
 		// 6.5 Speed Splitting (Mobility)
@@ -421,8 +430,14 @@ class AdvancedPlayerBot extends Bot {
 				const bestValSq = ctx.bestPelletCell ? (ctx.bestPelletCell.size * ctx.bestPelletCell.size) / Math.max(1, ctx.bestPelletDistSq) : -1;
 				if (valSq > bestValSq) { ctx.bestPelletCell = cell; ctx.bestPelletDistSq = distSq; }
 				if (pelletCount < 20 && distSq < (cellSize * 5) ** 2) {
+					// Fix Phase 13/15: Pellet Suppression & Recycling Priority
+					// Once large enough (>300 mass), ignore pellets if a virus is visible
+					// BUT always prioritize Ejected Mass (Type 3) for recycling.
+					let pWeight = 1;
+					if (ctx.totalMass > 300 && ctx.bestVirusCell) pWeight = 0.1;
+
 					const invGap = 1 / Math.max(1, Math.sqrt(distSq) - cellSize - cell.size);
-					const contribution = (1 + cell.size * pMaxSqInv) * invGap * invGap;
+					const contribution = (1 + cell.size * pMaxSqInv) * invGap * invGap * pWeight;
 					mx += dx * contribution; my += dy * contribution; pelletCount++;
 				}
 			} else if (cell.type === 2) {
@@ -433,14 +448,21 @@ class AdvancedPlayerBot extends Bot {
 
 				if (distSq < tacticalRangeSq) ctx.nearViruses.push(vData);
 				
-				// Track best virus for targeting
-				if (distSq < ctx.bestVirusDistSq) { ctx.bestVirusCell = cell; ctx.bestVirusDistSq = distSq; }
+				const canEatV = this.canEat(cellSize, cell.size, eatMult);
+
+				// Track best virus for targeting (strictly edible now to prevent circling)
+				if (canEatV && distSq < ctx.bestVirusDistSq) { ctx.bestVirusCell = cell; ctx.bestVirusDistSq = distSq; }
 
 				const invGap = 1 / Math.max(1, Math.sqrt(distSq) - cellSize - cell.size);
-				// Elite: Attraction to viruses when safe and wanting to grow
-				// If we are full, we harvest (attract). If threatened, we stay near (attract/neutral).
-				// If safe and small, we seek (attract).
-				const inf = ctx.cellCount >= settings.playerMaxCells ? ctx.truncatedInf * 15 : (ctx.tCount > 0 ? ctx.truncatedInf : ctx.truncatedInf * 5);
+				// Elite: Attraction to viruses when strictly edible.
+				// If not edible, we MUST repel to prevent the bot from sitting on it or circling it.
+				let inf = 0;
+				if (canEatV) {
+					inf = ctx.cellCount >= settings.playerMaxCells ? ctx.truncatedInf * 15 : (ctx.tCount > 0 ? ctx.truncatedInf : ctx.truncatedInf * 5);
+				} else {
+					// Nudge away from non-edible viruses to avoid unintentional collision
+					inf = -1; 
+				}
 				const contribution = inf * invGap * invGap;
 				mx += dx * contribution; my += dy * contribution;
 			} else if (cell.type === 3) {
@@ -465,6 +487,26 @@ class AdvancedPlayerBot extends Bot {
 
 		const tw = Math.max(0.1, 1 + (1 - Math.max(1, cellSize * 0.005)) * 2);
 		ctx.infX = mx + tix * tw + oix; ctx.infY = my + tiy * tw + oiy;
+
+		// Phase 9: Border Repulsion & Idle Drift
+		if (border) {
+			const bXmin = border.x - border.w, bXmax = border.x + border.w;
+			const bYmin = border.y - border.h, bYmax = border.y + border.h;
+			const margin = cellSize * 3;
+			
+			// Strong repulsion when near wall
+			if (largest.x - bXmin < margin) ctx.infX += (1 - (largest.x - bXmin) / margin) * 10;
+			if (bXmax - largest.x < margin) ctx.infX -= (1 - (bXmax - largest.x) / margin) * 10;
+			if (largest.y - bYmin < margin) ctx.infY += (1 - (largest.y - bYmin) / margin) * 10;
+			if (bYmax - largest.y < margin) ctx.infY -= (1 - (bYmax - largest.y) / margin) * 10;
+		}
+
+		// Idle Drift: If total influence is negligible, drift towards center to avoid freezing
+		if (Math.abs(ctx.infX) < 0.01 && Math.abs(ctx.infY) < 0.01) {
+			ctx.infX = (border ? border.x : 0) - largest.x;
+			ctx.infY = (border ? border.y : 0) - largest.y;
+		}
+
 		this.updateStrategy(largest, player, ctx);
 		return ctx;
 	}
@@ -536,10 +578,27 @@ class AdvancedPlayerBot extends Bot {
 	 * Optimized: Consolidated Targeting & Movement logic
 	 */
 	_handleTargetingAndMovement(largest, player, ctx) {
+		// Fix Phase 17: Mouse Conflict Resolution
+		// If we are specifically self-feeding (consolidating mass), do NOT overwrite the mouse
+		// with a tactical target unless the target is of critical value.
+		if (this.selfFeedCooldown > 8) return; 
+
 		// Phase 3: Defensive Merge Protocol Priority
 		if (this.strategyMode === "merge") {
 			this.target = null; // Drop any previous targets
-			this._setMousePosition(largest.x, largest.y);
+			
+			// Elite: Active Regrouping during Merge (Phase 2 Refinement)
+			// Move towards the geometric center of all cells to force stacking
+			let comX = 0, comY = 0, totalM = 0;
+			const owned = player.ownedCells;
+			for (let i = 0; i < owned.length; i++) {
+				const c = owned[i]; comX += c.x * c.mass; comY += c.y * c.mass; totalM += c.mass;
+			}
+			if (totalM > 0) {
+				this._setMousePosition(comX / totalM, comY / totalM);
+			} else {
+				this._setMousePosition(largest.x, largest.y);
+			}
 			return;
 		}
 
@@ -604,7 +663,8 @@ class AdvancedPlayerBot extends Bot {
 		}
 
 		// Elite: The Shield Maneuver (Defensive/Offensive Barrier)
-		if (player.ownedCells.length > 1 && ctx.closestThreat) {
+		// Fix Phase 12: Only trigger if threat is close enough to warrant defensive shielding
+		if (player.ownedCells.length > 1 && ctx.closestThreat && ctx.closestThreat._dist < largest.size * 3) {
 			const threat = ctx.closestThreat.cell, dx = threat.x - largest.x, dy = threat.y - largest.y;
 			const invD = 1 / Math.max(1, ctx.closestThreat._dist || Math.sqrt(ctx.closestThreat.distSq));
 			const shieldDist = this.strategyMode === "defensive" ? -largest.size : largest.size * 0.8;
@@ -666,8 +726,12 @@ class AdvancedPlayerBot extends Bot {
 	shouldSelfFeed(player, ctx) {
 		if (ctx.cellCount < 2) return false;
 		if (this.strategyMode === "merge") return true; // Force feed to merge
+		
+		// Fix Phase 14: Only self-feed if no immediate threat is ready to split-kill us
+		if (ctx.closestThreat && ctx.closestThreat._dist < ctx.largest.size * 4) return false;
+		
 		const threshold = ctx.settings.playerMaxSize ? ctx.settings.playerMaxSize * 1.33 : 2000;
-		return ctx.tCount > 0 || ctx.totalMass > threshold;
+		return ctx.totalMass > threshold || (ctx.tCount > 0 && ctx.totalMass > 500);
 	}
 
 	/**
@@ -694,6 +758,9 @@ class AdvancedPlayerBot extends Bot {
 	 */
 	updateStrategy(cell, player, ctx) {
 		const threatCount = ctx.tCount, opportunityCount = ctx.oCount, totalMass = ctx.totalMass;
+
+		// Fix Phase 16: Respect Strategy Fixed flag from tactical modules
+		if (this.strategyFixed) return;
 
 		// Reset deceptive state and strategy mode
 		this.fakeWeaknessActive = false;
@@ -724,10 +791,10 @@ class AdvancedPlayerBot extends Bot {
 				return;
 			}
 
-			// Phase 3: Defensive Merge Protocol
+			// Phase 3/15: Consolidated Merge Protocol
 			// If threat is bigger than our biggest cell, BUT our total mass allows us to win if merged...
-			// And we are split enough that merging is a relevant action (cellCount > 1)
-			if (ctx.cellCount > 1 && threat.cell.size > cell.size && totalMass > threat.cell.mass * 1.25) {
+			// OR if we are specifically in a merge-to-farm state
+			if (ctx.cellCount > 1 && ((threat.cell.size > cell.size && totalMass > threat.cell.mass * 1.25) || this.strategyMode === "merge")) {
 				const dist = threat._dist;
 				// Only if we have some space to breathe (not instant death)
 				if (dist > cell.size * 2) {
@@ -777,13 +844,20 @@ class AdvancedPlayerBot extends Bot {
 		}
 	}
 
-	/**
-	 * Optimized: Cornered detection
-	 */
 	isCornered(cell, player, ctx) {
 		const border = this._getValidBorder(player);
-		if (!border || this._getBorderDistance(cell, border) >= cell.size * 2) return false;
-		return ctx.tCount > 0;
+		if (!border) return false;
+		const d = this._getBorderDistance(cell, border);
+		return d < cell.size * 2 && ctx.tCount > 0;
+	}
+
+	_getBorderDistance(cell, border) {
+		return Math.min(
+			Math.abs(cell.x - (border.x - border.w)),
+			Math.abs(cell.x - (border.x + border.w)),
+			Math.abs(cell.y - (border.y - border.h)),
+			Math.abs(cell.y - (border.y + border.h))
+		);
 	}
 
 	/**
@@ -886,18 +960,21 @@ class AdvancedPlayerBot extends Bot {
 			const tx = cell.x + bx * cell.size * i, ty = cell.y + by * cell.size * i;
 			for (let j = 0, lenT = nearT.length; j < lenT; j++) {
 				const e = nearT[j];
+				if (e.cell === target) continue; // Fix Phase 14: Don't block our own target
 				const edx = e.cell.x - tx, edy = e.cell.y - ty;
 				if (edx * edx + edy * edy < checkRadTSq) { blocked = true; break; }
 			}
 			if (blocked) break;
 			for (let j = 0, lenV = nearV.length; j < lenV; j++) {
 				const v = nearV[j];
+				if (v.cell === target) continue; // Fix Phase 14: Don't block our own target
 				const vdx = v.cell.x - tx, vdy = v.cell.y - ty;
 				if (vdx * vdx + vdy * vdy < checkRadVSq) { blocked = true; break; }
 			}
 			if (blocked) break;
 			for (let j = 0, lenTM = nearTM.length; j < lenTM; j++) {
 				const t = nearTM[j];
+				if (t.cell === target) continue; // Fix Phase 14: Don't block our own target
 				const tdx = t.cell.x - tx, tdy = t.cell.y - ty;
 				if (tdx * tdx + tdy * tdy < checkRadTMSq) { blocked = true; break; }
 			}
@@ -986,7 +1063,20 @@ class AdvancedPlayerBot extends Bot {
 
 
 		let fX = cell.x + bx * ctx.viewDims.w * 0.4, fY = cell.y + by * ctx.viewDims.h * 0.4;
-		if (ctx.tCount > 0 && ctx.currentTick - this.lastJitterTick > 4) {
+		
+		// Fix Phase 12: Integrate Influence Bias into Pathfinding
+		// This prevents "tunnel vision" where chasing a target leads the bot into threats
+		const infX = ctx.infX, infY = ctx.infY;
+		const infD = Math.sqrt(infX * infX + infY * infY);
+		if (infD > 0.1) {
+			fX = fX * 0.9 + (cell.x + (infX / infD) * ctx.viewDims.w * 0.4) * 0.1;
+			fY = fY * 0.9 + (cell.y + (infY / infD) * ctx.viewDims.h * 0.4) * 0.1;
+		}
+
+		// Fix Phase 12/17: Smart Jitter Inhibition
+		// Disable jitter during tactical moves (sniping/baiting) for precision
+		const isTactical = ctx.tacticalAction;
+		if (ctx.tCount > 0 && ctx.currentTick - this.lastJitterTick > 4 && !isTactical) {
 			const j = cell.size * 0.1;
 			fX += (Math.random() - 0.5) * j; fY += (Math.random() - 0.5) * j;
 			this.lastJitterTick = ctx.currentTick;
@@ -1063,6 +1153,15 @@ class AdvancedPlayerBot extends Bot {
 		for (let i = 0, lenE = enemies.length; i < lenE; i++) {
 			const data = enemies[i], check = data.cell;
 			if (this.canEat(cell.size, check.size, eatMult) && this.canEat(check.size * 1.5, cell.size, eatMult) && data.distSq < baitRad * baitRad) {
+				// Elite: Total Mass Safety Check
+				// Only bait if we are overwhelmingly larger (2.5x) to absorb ejection costs
+				let oppTotal = check.mass;
+				if (check.owner && check.owner.ownedCells) {
+					oppTotal = 0;
+					for (let k = 0; k < check.owner.ownedCells.length; k++) oppTotal += check.owner.ownedCells[k].mass;
+				}
+				if (ctx.totalMass < oppTotal * 2.5) continue;
+
 				let baitPos = null;
 				for (let j = 0, lenV = viruses.length; j < lenV; j++) {
 					const vData = viruses[j];
@@ -1363,10 +1462,19 @@ class AdvancedPlayerBot extends Bot {
 
 		if (bestT && maxScore > 0) return bestT;
 
+		// Fix Phase 16: Priority Harmony
+		// If we already have a high-priority TACTICAL target (Virus/Eject),
+		// do NOT overwrite it with a low-priority pellet or distant mothercell.
+		if (this.targetIsTactical) return null;
+
 		if (ctx.bestMotherCellCell) return ctx.bestMotherCellCell;
 		
-		// Elite: Prioritize Viruses for growth if safe
-		if (ctx.bestVirusCell && ctx.nearThreats.length === 0 && ctx.totalMass < 10000) return ctx.bestVirusCell;
+		// Elite: Prioritize Viruses for growth if safe AND strictly edible
+		if (ctx.bestVirusCell && ctx.nearThreats.length === 0 && ctx.totalMass < 10000) {
+			if (this.canEat(cell.size, ctx.bestVirusCell.size, ctx.eatMult)) {
+				return ctx.bestVirusCell;
+			}
+		}
 		
 		// Phase 4: Prioritize Ejected Mass over Pellets
 		if (ctx.bestEjectedCell) return ctx.bestEjectedCell;
@@ -1378,6 +1486,8 @@ class AdvancedPlayerBot extends Bot {
 	 * Logic: Validate split-kill attempt
 	 */
 	shouldAttemptSplitKill(cell, player, target, ctx, scanRadiusSq) {
+		// Fix Phase 14: Never split-kill a virus
+		if (target.type === 2) return false;
 		if (this.splitCooldownTicks > 0 || ctx.cellCount >= ctx.settings.playerMaxCells) return false;
 		const viruses = ctx.nearViruses;
 		for (let i = 0, len = viruses.length; i < len; i++) { if (viruses[i].distSq < (cell.size * 2) ** 2) return false; }
@@ -1385,12 +1495,25 @@ class AdvancedPlayerBot extends Bot {
 	}
 
 	checkLuringOpportunity(cell, player, ctx) {
-		if (cell.mass < 500 || this.ejectCooldownTicks > 0) return { shouldLure: false };
+		// Elite: Mass Sustainability Check
+		// Only lure if we have significant mass to spare (> 600 in this cell)
+		if (cell.mass < 600 || this.ejectCooldownTicks > 0) return { shouldLure: false };
 		const iLSq = (cell.size * 3) ** 2, oLSq = (cell.size * 6) ** 2, eatMult = ctx.eatMult, enemies = ctx.visibleEnemies;
 		for (let i = 0, len = enemies.length; i < len; i++) {
 			const eData = enemies[i], e = eData.cell, dSq = eData.distSq;
 			if (this.canEat(cell.size, e.size * 2, eatMult) && dSq > iLSq && dSq < oLSq) {
-				if (this.strategyMode === "deceptive" && Math.random() < 0.3) return { shouldLure: true, x: e.x, y: e.y, action: "gift" };
+				// Elite: Total Mass Safety Check
+				// Only lure if we are overwhelmingly larger (2.5x) than the whole player
+				let oppTotal = e.mass;
+				if (e.owner && e.owner.ownedCells) {
+					oppTotal = 0;
+					for (let k = 0; k < e.owner.ownedCells.length; k++) oppTotal += e.owner.ownedCells[k].mass;
+				}
+				if (ctx.totalMass < oppTotal * 2.5) continue;
+
+				// Limit ejection frequency to prevent excessive mass dumping
+				// Only "gift" if we are a single cell (not vulnerable to split-kills)
+				if (ctx.cellCount === 1 && this.strategyMode === "deceptive" && Math.random() < 0.1) return { shouldLure: true, x: e.x, y: e.y, action: "gift" };
 				return { shouldLure: true, x: e.x, y: e.y };
 			}
 		}
@@ -1515,9 +1638,15 @@ class AdvancedPlayerBot extends Bot {
 	 * Priority Engine: Evaluate tactical actions
 	 */
 	_evaluateTacticalAction(cell, player, ctx) {
+		// Fix Phase 15/17: Survival & Consolidation Overrides
+		// Immediately drop tactical aggression if we are cornered, under critical threat, or consolidating
+		if (this.isCornered(cell, player, ctx)) return null;
+		if (ctx.closestThreat && ctx.closestThreat._dist < cell.size * 2.5) return null;
+		if (this.strategyMode === "merge" && this.selfFeedCooldown > 0) return null;
+
 		// Elite: Defensive Merge Priority (Phase 3)
-		// If we are frantically merging, do not get distracted by viruses or bait
-		if (this.strategyMode === "merge") return null;
+		// Only block tactics if we are merging DEFENSIVELY (due to a threat)
+		if (this.strategyMode === "merge" && ctx.nearThreats.length > 0) return null;
 
 		// 0. Priority: Explosive Growth (Virus Popping)
 		// If we are small/medium and safe, farming viruses is the fastest way to grow.
@@ -1612,12 +1741,13 @@ class AdvancedPlayerBot extends Bot {
 			const cell = owned[k];
 			if (cell.mass < 120) continue; // Too small to eat virus
 
-			const vRadSq = (cell.size * 2) ** 2, tRadSq = (cell.size * 6) ** 2;
+			const vRadSq = (cell.size * 10) ** 2, tRadSq = (cell.size * 6) ** 2; // Expanded search radius
 			for (let i = 0, lenV = viruses.length; i < lenV; i++) {
 				const v = viruses[i].cell;
 				if (this.canEat(cell.size, v.size, eatMult) && (v.x - cell.x) ** 2 + (v.y - cell.y) ** 2 < vRadSq) {
 					let highRisk = false;
 					// Only fear enemies that can punish our split pieces (size/2)
+					// If we are already split, we are more willing to pop on a virus to grow
 					const splitSize = Math.sqrt(cell.mass / 2 * 100);
 					
 					for (let j = 0, lenE = enemies.length; j < lenE; j++) {
@@ -1632,8 +1762,9 @@ class AdvancedPlayerBot extends Bot {
 
 		// Phase 5: Merge-to-Farm Logic
 		// If no single cell can eat a virus, but our TOTAL mass can...
-		// Relaxed: Only block if threat is NEAR, not just visible in viewport
-		if (ctx.totalMass > 150 && ctx.cellCount > 1 && ctx.cellCount < settings.playerMaxCells && ctx.nearThreats.length === 0) {
+		// Only trigger if we are ready to merge soon (within 150 ticks / ~6 seconds)
+		if (ctx.totalMass > 150 && ctx.cellCount > 1 && ctx.cellCount < settings.playerMaxCells && 
+			ctx.nearThreats.length === 0 && this.lastMergeTicks < 150) {
 			// Find nearest virus
 			let bestV = null, bestDist = Infinity;
 			for (let i = 0; i < viruses.length; i++) {
