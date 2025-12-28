@@ -52,7 +52,8 @@ class AdvancedPlayerBot extends Bot {
 			infX: 0, infY: 0,
 			enemyDataPool: [], enemyDataIdx: 0,
 			virusDataPool: [], virusDataIdx: 0,
-			bestEjectedCell: null, bestEjectedDistSq: Infinity
+			bestEjectedCell: null, bestEjectedDistSq: Infinity,
+			bestVirusCell: null, bestVirusDistSq: Infinity
 		};
 
 		// Mock protocol for ChatChannel compatibility
@@ -296,6 +297,7 @@ class AdvancedPlayerBot extends Bot {
 		ctx.bestPelletCell = null; ctx.bestPelletDistSq = Infinity;
 		ctx.bestMotherCellCell = null; ctx.bestMotherCellDistSq = Infinity;
 		ctx.bestEjectedCell = null; ctx.bestEjectedDistSq = Infinity;
+		ctx.bestVirusCell = null; ctx.bestVirusDistSq = Infinity;
 		ctx.infX = 0; ctx.infY = 0;
 		ctx.stepMult = handle.stepMult || 1;
 		ctx.moveMult = settings.playerMoveMult || 1;
@@ -356,9 +358,6 @@ class AdvancedPlayerBot extends Bot {
 						if (distSq < tacticalRangeSq) ctx.nearThreats.push(cellData);
 					} else if (this.canEat(cellSize, cell.size, eatMult)) {
 						ctx.oCount++;
-						const valSq = (cell.size * cell.size) / Math.max(1, distSq);
-						const bestValSq = ctx.bestOpportunityCell ? (ctx.bestOpportunityCell.size * ctx.bestOpportunityCell.size) / Math.max(1, ctx.bestOpportunityDistSq) : -1;
-						if (valSq > bestValSq) { ctx.bestOpportunityCell = cell; ctx.bestOpportunityDistSq = distSq; }
 					}
 
 					if (enemyCount < 50) {
@@ -433,8 +432,15 @@ class AdvancedPlayerBot extends Bot {
 				vData.cell = cell; vData.distSq = distSq; vData.dx = dx; vData.dy = dy;
 
 				if (distSq < tacticalRangeSq) ctx.nearViruses.push(vData);
+				
+				// Track best virus for targeting
+				if (distSq < ctx.bestVirusDistSq) { ctx.bestVirusCell = cell; ctx.bestVirusDistSq = distSq; }
+
 				const invGap = 1 / Math.max(1, Math.sqrt(distSq) - cellSize - cell.size);
-				const inf = ctx.cellCount >= settings.playerMaxCells ? ctx.truncatedInf * 15 : (ctx.tCount > 0 ? ctx.truncatedInf : -ctx.cellCount);
+				// Elite: Attraction to viruses when safe and wanting to grow
+				// If we are full, we harvest (attract). If threatened, we stay near (attract/neutral).
+				// If safe and small, we seek (attract).
+				const inf = ctx.cellCount >= settings.playerMaxCells ? ctx.truncatedInf * 15 : (ctx.tCount > 0 ? ctx.truncatedInf : ctx.truncatedInf * 5);
 				const contribution = inf * invGap * invGap;
 				mx += dx * contribution; my += dy * contribution;
 			} else if (cell.type === 3) {
@@ -544,17 +550,24 @@ class AdvancedPlayerBot extends Bot {
 			if (!this.target.exists || !this.target.size || largest.size <= this.target.size * eatMult) {
 				this.target = null;
 			} else {
-				// Dynamic Target Re-evaluation: If a much better opportunity is available, switch!
+				// Dynamic Target Re-evaluation
 				const currentScore = this.scoreTarget(largest, this.target, player, ctx, (largest.size * 6) ** 2);
-				const bestAvailable = this.selectBestTarget(largest, player, ctx);
-				if (bestAvailable && bestAvailable !== this.target) {
-					const bestScore = this.scoreTarget(largest, bestAvailable, player, ctx, (largest.size * 6) ** 2);
-					if (bestScore > currentScore * 1.5) this.target = bestAvailable; // Switch if 50% better
-				}
+				
+				// If target is no longer desirable (e.g. protector moved nearby), drop it
+				if (currentScore <= 0) {
+					this.target = null;
+				} else {
+					const bestAvailable = this.selectBestTarget(largest, player, ctx);
+					// Only switch if bestAvailable is a PLAYER cell (scoreable) and significantly better
+					if (bestAvailable && bestAvailable.type === 0 && bestAvailable !== this.target) {
+						const bestScore = this.scoreTarget(largest, bestAvailable, player, ctx, (largest.size * 6) ** 2);
+						if (bestScore > currentScore * 1.5) this.target = bestAvailable;
+					}
 
-				const path = this.calculatePath(largest, this.target, player, ctx);
-				this._setMousePosition(path.x, path.y);
-				return;
+					const path = this.calculatePath(largest, this.target, player, ctx);
+					this._setMousePosition(path.x, path.y);
+					return;
+				}
 			}
 		}
 
@@ -692,10 +705,10 @@ class AdvancedPlayerBot extends Bot {
 		if (threatCount === 0 && opportunityCount > 2 && totalMass > (ctx.settings.playerMaxSize || 1500) * 2) {
 			this.strategyMode = "aggressive";
 			this.strategyRiskTolerance = 0.8; // Higher baseline aggression
-		} else if (ctx.tCount === 0 && ctx.nearViruses.length > 0 && ctx.totalMass < 2500) {
+		} else if (ctx.tCount === 0 && ctx.bestVirusCell && ctx.totalMass < 5000) {
 			// Phase 5: Virus Greed
 			// If safe and small/medium, be aggressive about finding food (viruses)
-			this.strategyRiskTolerance = 0.8; 
+			this.strategyRiskTolerance = 1.0; 
 		} else if (ctx.closestThreat) {
 			const threat = ctx.closestThreat, d = threat._dist;
 			// Elite: "Fake Weakness" logic
@@ -1256,11 +1269,11 @@ class AdvancedPlayerBot extends Bot {
 						else score -= 2000; // Still part of the herd, dangerous
 					}
 				} else if (oppTotal > ctx.totalMass * 1.5) {
-					score -= 2000; // Standard penalty for solid/merging large player
+					score -= 10000; // Phase 7: Massive penalty for players that can eat us
 				}
 			} else {
 				oppTotal = target.mass; // Fallback
-				if (oppTotal > ctx.totalMass * 1.5) score -= 2000;
+				if (oppTotal > ctx.totalMass * 1.5) score -= 10000;
 			}
 		}
 
@@ -1280,9 +1293,15 @@ class AdvancedPlayerBot extends Bot {
 			}
 		}
 
-		// If target cell itself is > 2.5x our size, it's suicidal to annoy them unless we are desperate
-		if (target.size > cell.size * 2.5) score -= 5000;
-		else if (target.size > cell.size * 1.5) score -= 500;
+		// If target cell itself is > our edible size, it's suicidal to target them
+		const canEatUs = target.size > cell.size * (1/eatMult);
+		if (canEatUs) {
+			score -= 10000;
+		} else if (target.size > cell.size * 2.5) {
+			score -= 5000;
+		} else if (target.size > cell.size * 1.5) {
+			score -= 2000;
+		}
 
 		// Border proximity penalties
 		if (border) {
@@ -1296,8 +1315,6 @@ class AdvancedPlayerBot extends Bot {
 		const sSize = cell.size / (ctx.settings.playerSplitSizeDiv || 1.414);
 		const sDist = (ctx.settings.playerSplitDistance || 40) + (ctx.settings.playerSplitBoost || 780) / 9;
 		const canSplitKill = this.canEat(sSize, target.size, eatMult) && d - sDist <= cell.size - target.size / (ctx.settings.worldEatOverlapDiv || 3);
-
-		if (canSplitKill) score += 150;
 
 		if (canSplitKill) score += 150;
 
@@ -1329,8 +1346,28 @@ class AdvancedPlayerBot extends Bot {
 	}
 
 	selectBestTarget(cell, player, ctx) {
-		if (ctx.bestOpportunityCell) return ctx.bestOpportunityCell;
+		const enemies = ctx.visibleEnemies;
+		let bestT = null, maxScore = -99999;
+		const scanRadiusSq = (cell.size * 6) ** 2;
+
+		for (let i = 0; i < enemies.length; i++) {
+			const e = enemies[i].cell;
+			if (this.canEat(cell.size, e.size, ctx.eatMult)) {
+				const score = this.scoreTarget(cell, e, player, ctx, scanRadiusSq);
+				if (score > maxScore) {
+					maxScore = score;
+					bestT = e;
+				}
+			}
+		}
+
+		if (bestT && maxScore > 0) return bestT;
+
 		if (ctx.bestMotherCellCell) return ctx.bestMotherCellCell;
+		
+		// Elite: Prioritize Viruses for growth if safe
+		if (ctx.bestVirusCell && ctx.nearThreats.length === 0 && ctx.totalMass < 10000) return ctx.bestVirusCell;
+		
 		// Phase 4: Prioritize Ejected Mass over Pellets
 		if (ctx.bestEjectedCell) return ctx.bestEjectedCell;
 		if (ctx.bestPelletCell) return ctx.bestPelletCell;
@@ -1494,7 +1531,7 @@ class AdvancedPlayerBot extends Bot {
 		}
 
 		// 0.5 Hyper-Aggressive Pellet Farming (Fixed Reference & Moved from dead code)
-		if (ctx.cellCount < ctx.settings.playerMaxCells && ctx.tCount === 0 && ctx.totalMass > 500 && this.splitCooldownTicks <= 0) {
+		if (ctx.cellCount < ctx.settings.playerMaxCells && ctx.tCount === 0 && ctx.totalMass > 250 && this.splitCooldownTicks <= 0) {
 			const bestP = ctx.bestPelletCell;
 			if (bestP && (bestP.x - cell.x) ** 2 + (bestP.y - cell.y) ** 2 > (cell.size * 2) ** 2) {
 				this.splitCooldownTicks = 5; // Low cooldown for rapid farming
@@ -1595,7 +1632,8 @@ class AdvancedPlayerBot extends Bot {
 
 		// Phase 5: Merge-to-Farm Logic
 		// If no single cell can eat a virus, but our TOTAL mass can...
-		if (ctx.totalMass > 150 && ctx.cellCount > 1 && ctx.cellCount < settings.playerMaxCells && !ctx.closestThreat) {
+		// Relaxed: Only block if threat is NEAR, not just visible in viewport
+		if (ctx.totalMass > 150 && ctx.cellCount > 1 && ctx.cellCount < settings.playerMaxCells && ctx.nearThreats.length === 0) {
 			// Find nearest virus
 			let bestV = null, bestDist = Infinity;
 			for (let i = 0; i < viruses.length; i++) {
@@ -1606,10 +1644,13 @@ class AdvancedPlayerBot extends Bot {
 			// If we found a virus and our total mass is enough to eat it (+safety margin)
 			if (bestV && this.canEat(Math.sqrt(ctx.totalMass * 100), bestV.cell.size * 1.1, eatMult)) {
 				// FORCE MERGE
-				// Check if enemies are too close to risk a merge
+				// Only fear enemies that can actually eat our total mass
 				let safe = true;
 				for (let j = 0; j < enemies.length; j++) {
-					if (enemies[j].distSq < (Math.sqrt(ctx.totalMass * 100) * 5) ** 2) { safe = false; break; }
+					const e = enemies[j];
+					if (this.canEat(e.cell.size, Math.sqrt(ctx.totalMass * 100), eatMult) && e.distSq < (Math.sqrt(ctx.totalMass * 100) * 8) ** 2) { 
+						safe = false; break; 
+					}
 				}
 				if (safe) return { shouldFarm: true, x: bestV.cell.x, y: bestV.cell.y, action: "merge_to_farm" };
 			}
