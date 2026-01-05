@@ -1580,6 +1580,13 @@ class AdvancedPlayerBot extends Bot {
 	_triggerSocialEvent(type, other) {
 		if (!this.hasPlayer || !other || !other.owner || other.owner === this.player || other.owner.id == this.player.id || this.chatCooldown > 0) return;
 
+		const settings = this._getSettings();
+		const chatEnabled = settings.worldPlayerBotAdvancedChatEnabled || false;
+		const chatChance = settings.worldPlayerBotAdvancedChatChance !== undefined ? settings.worldPlayerBotAdvancedChatChance : 0.1;
+
+		// Check if chat is enabled and random chance allows
+		if (!chatEnabled || Math.random() >= chatChance) return;
+
 		let name = this._leaderboardName(other);
 		// Sanitization: Strip control characters and trim to prevent spoofing/bloat
 		name = name.replace(/[\x00-\x1F\x7F-\x9F]/g, "").substring(0, 16);
