@@ -82,7 +82,7 @@
 
 					<div class="form-wrapper">
 						<div class="form-label-wrapper">
-							<label id="nick-list"><span>Nickname</span><input id="nick" list="nicknames" class="form-control" onfocus="this.oldvalue=this.value;this.value=''" onblur="if(this.value==='')this.value=this.oldvalue || ''" placeholder="Nickname" maxlength="16" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" required></label>
+							<label id="nick-list"><span>Nickname</span><input id="nick" list="nicknames" class="form-control" onfocus="this.oldvalue=this.value;this.value=''" onblur="if(this.value==='')this.value=this.oldvalue || ''" placeholder="Nickname" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" minlength="3" maxlength="16" required></label>
 							<datalist id="nicknames">
 								<option value=""> </option>
 							</datalist>
@@ -300,6 +300,7 @@
 						<div class="text">
 							<b>05/01/2026</b>
 							<ul>
+								<li><b>Nicknames</b> now need to be at least <b>3 characters</b></li>
 								<li>Added optional <b>Words Censorship</b> for <b>Chat</b> and <b>Nicknames</b>, it's enabled by default, <u>you can disable it, but then don't complain about people from game and chat being toxic</u> in <a style="font-weight: bolder;" href="https://discord.gg/emupedia-510149138491506688" target="_blank">Discord</a></li>
 								<li>Fixed <b>Spectator Free-Camera Toggle</b>, now you can toggle from Auto Follow players to Free-Camera properly in Spectator mode</li>
 							</ul>
@@ -467,6 +468,6 @@
 		<script src="assets/js/chat-filter.js"></script>
 		<script src="assets/js/nipplejs.js"></script>
 		<script src="assets/js/quadtree.js"></script>
-		<script src="assets/js/main.min.js?v=200"></script>
+		<script src="assets/js/main.min.js?v=201"></script>
 	</body>
 </html>
