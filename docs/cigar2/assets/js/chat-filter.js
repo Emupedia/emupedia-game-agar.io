@@ -1442,6 +1442,56 @@ class ChatFilter {
 	}
 
 	/**
+	 * Checks if a nickname contains profanity without modifying it.
+	 * @param {*} str - The nickname to check (will be converted to string if needed)
+	 * @param {string} [language='en'] - The language code for filtering (defaults to 'en')
+	 * @returns {boolean} True if profanity is detected, false otherwise
+	 */
+	hasProfanity(str, language) {
+		// Input validation
+		const validation = this._validateInput(str, language)
+		if (!validation.valid) {
+			return false
+		}
+		const originalStr = validation.str
+		language = validation.language
+
+		// Early return if blacklist is disabled
+		if (!this._isBlacklistEnabled()) {
+			return false
+		}
+
+		// Prepare normalized version for detection
+		const zalgoRemovedStr = this.remove_zalgo(originalStr)
+		const normalized = this._normalizeWithMapping(zalgoRemovedStr, this.NORMALIZE_TYPES)
+		const normalizedStr = normalized.normalized
+
+		// Check if profanity exists using normalized version
+		let hasProfanity = false
+
+		// Check exact matches
+		const exactMatch = this._checkExactMatch(normalizedStr, language, this.blacklist_data)
+		if (exactMatch) {
+			hasProfanity = true
+		}
+
+		// Check regex matches
+		if (!hasProfanity && this.blacklist_search_regex[language]) {
+			hasProfanity = this._testRegexObject(this.blacklist_search_regex[language], normalizedStr)
+		}
+
+		// Check swear words
+		if (!hasProfanity) {
+			const languageMapping = this._getLanguageMapping(this.blacklist_data, language)
+			if (languageMapping && languageMapping.swear) {
+				hasProfanity = this._processSwearWords(normalizedStr, languageMapping.swear, false)
+			}
+		}
+
+		return hasProfanity
+	}
+
+	/**
 	 * Filters a nickname by surgically replacing only profane parts while preserving Unicode characters.
 	 * Returns the original nickname unchanged if no profanity is detected.
 	 * If profanity is detected, only the profane portions are replaced, preserving fancy Unicode styling.
@@ -1543,12 +1593,7 @@ class ChatFilter {
 
 		// Early return: if no profanity found, return original unchanged
 		if (!hasProfanity) {
-			// Still apply minimal cleanup
-			let result = originalStr
-			if (result.charAt(0) === '/') {
-				result = result.substring(1)
-			}
-			return this._cleanWhitespace(result)
+			return originalStr
 		}
 
 		// Profanity detected: surgically replace only profane parts
