@@ -41,6 +41,8 @@ const value = Object.seal({
 
 	worldPlayerBotsPerWorld: 0,
 	worldPlayerBotAdvancedEnabled: false,
+	worldPlayerBotAdvancedChatEnabled: false,
+	worldPlayerBotAdvancedChatChance: 0.1,
 	/** @type {string[]} */
 	worldPlayerBotNames: [],
 	/** @type {string[]} */
