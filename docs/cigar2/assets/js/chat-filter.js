@@ -35,7 +35,7 @@ class ChatFilter {
 		this.maxLength = this.options.maxLength || 10000
 
 		// Configuration constants
-		this.NORMALIZE_TYPES = ['wide', 'bold-numbers-only', 'sans-serif-bold-numbers-only', 'cursive-numbers-only', 'double-struck-numbers-only', 'circles', 'circles-bold-numbers-only', 'inverted-circles', 'squares', 'inverted-squares', 'dotted-numbers-only', 'parenthesis-numbers-only', 'subscript', 'superscript', 'monospace-numbers-only', 'emoji-numbers-only', 'uncategorized', 'uncategorized-numbers-only', 'diacritics']
+		this.NORMALIZE_TYPES = ['wide', 'wide-numbers-only', 'bold', 'bold-numbers-only', 'italic', 'sans-serif-bold', 'sans-serif-bold-numbers-only', 'sans-serif-italic', 'bold-italic-serif', 'bold-italic-sans', 'small-caps', 'fraktur', 'fraktur-bold', 'cursive', 'cursive-bold', 'cursive-numbers-only', 'double-struck', 'double-struck-numbers-only', 'circles', 'circles-numbers-only', 'circles-bold-numbers-only', 'inverted-circles', 'inverted-circles-numbers-only', 'squares', 'inverted-squares', 'dotted-numbers-only', 'parenthesis', 'parenthesis-numbers-only', 'subscript', 'subscript-numbers-only', 'superscript', 'superscript-numbers-only', 'monospace', 'monospace-numbers-only', 'emoji-numbers-only', 'uncategorized', 'uncategorized-numbers-only', 'diacritics']
 		this.REPLACEMENT_STRING = '``'
 		this.REPLACEMENT_PREFIX = '`'
 		this.REPLACEMENT_SUFFIX = '`'
@@ -735,6 +735,288 @@ class ChatFilter {
 	}
 
 	/**
+	 * Removes invisible Unicode characters that appear after other characters (zero-width joiners and variation selectors).
+	 * @param {string} str - The string to process
+	 * @returns {string} The string with invisible characters removed, or the original value if not a string
+	 */
+	remove_invisible_after(str) {
+		const validated = this._validateStringInput(str)
+		if (!validated) {
+			return str
+		}
+		str = validated
+		// Remove zero-width joiner (\u200d) and variation selector-16 (\ufe0f)
+		return str.replace(/[\u200d\ufe0f]/g, '')
+	}
+
+	/**
+	 * Normalizes a string while tracking character position mappings between original and normalized versions.
+	 * Used for surgical profanity replacement where we need to map profanity matches back to original positions.
+	 * @private
+	 * @param {string} str - The string to normalize
+	 * @param {string|Array<string>} [type] - Normalization type(s) to apply
+	 * @returns {{normalized: string, mapping: Array<number>}} Object with normalized string and position mapping array
+	 */
+	_normalizeWithMapping(str, type) {
+		const validated = this._validateStringInput(str)
+		if (!validated) {
+			return { normalized: str, mapping: [] }
+		}
+		str = validated
+
+		const normalizeData = this.normalize_data
+		if (!normalizeData) {
+			const mapping = []
+			for (let i = 0; i < str.length; i++) {
+				mapping.push(i)
+			}
+			return { normalized: str, mapping: mapping }
+		}
+
+		const includeDiacritics = type === undefined || type === 'diacritics' || 
+			(this._isArray(type) && type.includes('diacritics'))
+		const normalizeMap = includeDiacritics ? this.normalize_map_all : this.normalize_map_no_diacritics
+
+		if (!normalizeMap) {
+			// Fallback: create simple 1:1 mapping
+			const mapping = []
+			for (let i = 0; i < str.length; i++) {
+				mapping.push(i)
+			}
+			return { normalized: str, mapping: mapping }
+		}
+
+		// Normalize while tracking positions
+		const arr = Array.from(str)
+		const arrLen = arr.length
+		const mapping = []
+		let normalizedIndex = 0
+
+		for (let i = 0; i < arrLen; i++) {
+			if (normalizeMap.has(arr[i])) {
+				arr[i] = normalizeMap.get(arr[i])
+			}
+			// Map original position to normalized position (1:1 since we're replacing in place)
+			mapping.push(normalizedIndex)
+			normalizedIndex++
+		}
+
+		return { normalized: arr.join(''), mapping: mapping }
+	}
+
+	/**
+	 * Replaces profanity surgically in the original string while preserving Unicode characters.
+	 * Uses normalized version for detection but replaces only profane parts in original.
+	 * @private
+	 * @param {Array<string>} originalArr - The original nickname as character array (will be modified)
+	 * @param {string} normalizedStr - The normalized version for detection
+	 * @param {Array<number>} positionMapping - Mapping from normalized positions to original positions
+	 * @param {string} language - The language code for filtering
+	 * @returns {string} The original string with only profane parts replaced
+	 */
+	_replaceProfanitySurgically(originalArr, normalizedStr, positionMapping, language) {
+		if (!this._isBlacklistEnabled()) {
+			return originalArr.join('')
+		}
+
+		const lang = language
+		const languageMapping = this._getLanguageMapping(this.blacklist_data, lang)
+		if (!languageMapping) {
+			return originalArr.join('')
+		}
+
+		const prefix = this.REPLACEMENT_PREFIX
+		const suffix = this.REPLACEMENT_SUFFIX
+		const replacementStr = this.REPLACEMENT_STRING
+		let modified = false
+
+		// Check exact matches first
+		const exactMatch = this._checkExactMatch(normalizedStr, lang, this.blacklist_data)
+		if (exactMatch) {
+			// If entire string matches exactly, replace whole thing
+			const isEnglish = lang === 'en'
+			if (exactMatch.replacement) {
+				return prefix + (isEnglish ? exactMatch.replacement : '') + suffix
+			}
+			return isEnglish ? exactMatch.category : replacementStr
+		}
+		
+		// Work with a copy of the array for modifications
+		const workingArr = originalArr.slice()
+
+		// Check regex matches and replace surgically
+		const searchRegex = this.blacklist_search_regex[lang]
+		let currentNormalizedStr = normalizedStr
+		let currentPositionMapping = positionMapping
+		if (searchRegex) {
+			for (let category in searchRegex) {
+				const regex = searchRegex[category]
+				if (regex instanceof RegExp) {
+					// Find all matches in current normalized string
+					let match
+					const matches = []
+					// Reset regex lastIndex to avoid state issues
+					regex.lastIndex = 0
+					while ((match = regex.exec(currentNormalizedStr)) !== null) {
+						matches.push({
+							start: match.index,
+							end: match.index + match[0].length,
+							category: category
+						})
+						// Prevent infinite loop on zero-length matches
+						if (match[0].length === 0) {
+							break
+						}
+					}
+
+					// Replace matches in working array (process from end to start to preserve indices)
+					let categoryModified = false
+					for (let i = matches.length - 1; i >= 0; i--) {
+						const match = matches[i]
+						// Find corresponding positions in working array
+						const originalStart = this._findOriginalPosition(match.start, currentPositionMapping)
+						const originalEnd = this._findOriginalPosition(match.end - 1, currentPositionMapping) + 1
+						if (originalStart >= 0 && originalEnd > originalStart && originalEnd <= workingArr.length) {
+							const replacement = ' ' + match.category + ' '
+							// Replace in working array (not originalArr!)
+							workingArr.splice(originalStart, originalEnd - originalStart, ...Array.from(replacement))
+							modified = true
+							categoryModified = true
+						}
+					}
+					
+					// Re-normalize after this category if it made changes
+					if (categoryModified) {
+						const renormalized = this._normalizeWithMapping(workingArr.join(''), this.NORMALIZE_TYPES)
+						currentNormalizedStr = renormalized.normalized
+						currentPositionMapping = []
+						for (let i = 0; i < currentNormalizedStr.length; i++) {
+							currentPositionMapping.push(i)
+						}
+					}
+			}
+		}
+	}
+
+	// Use current normalized string and position mapping from search regex (already updated after each category)
+	let updatedNormalizedStr = currentNormalizedStr
+	let updatedPositionMapping = currentPositionMapping
+
+	// Apply replace regex
+	const replaceRegex = this.blacklist_replace_regex[lang]
+	let replaceRegexModified = false
+	if (replaceRegex) {
+		for (let category in replaceRegex) {
+			const regex = replaceRegex[category]
+			if (regex instanceof RegExp) {
+				let match
+				const matches = []
+				regex.lastIndex = 0
+				while ((match = regex.exec(updatedNormalizedStr)) !== null) {
+						matches.push({
+							start: match.index,
+							end: match.index + match[0].length,
+							category: category
+						})
+						if (match[0].length === 0) {
+							break
+						}
+					}
+
+				for (let i = matches.length - 1; i >= 0; i--) {
+					const match = matches[i]
+					const originalStart = this._findOriginalPosition(match.start, updatedPositionMapping)
+					const originalEnd = this._findOriginalPosition(match.end - 1, updatedPositionMapping) + 1
+					if (originalStart >= 0 && originalEnd > originalStart && originalEnd <= workingArr.length) {
+						const replacement = ' ' + prefix + match.category + suffix + ' '
+						workingArr.splice(originalStart, originalEnd - originalStart, ...Array.from(replacement))
+						modified = true
+						replaceRegexModified = true
+					}
+				}
+				}
+			}
+		}
+
+		// Re-normalize again if replace regex modified workingArr
+		if (replaceRegexModified) {
+			const renormalized = this._normalizeWithMapping(workingArr.join(''), this.NORMALIZE_TYPES)
+			updatedNormalizedStr = renormalized.normalized
+			updatedPositionMapping = []
+			for (let i = 0; i < updatedNormalizedStr.length; i++) {
+				updatedPositionMapping.push(i)
+			}
+		}
+
+		// Check swear words
+		if (languageMapping.swear) {
+			const swearArray = languageMapping.swear
+			const swearArrayLen = swearArray.length
+			let currentNormalizedStr = updatedNormalizedStr
+			for (let i = 0; i < swearArrayLen; i++) {
+				const swear = swearArray[i]
+				if (!this._isString(swear) || this._isEmpty(swear)) {
+					continue
+				}
+				// Find swear word in normalized string (case-insensitive)
+				let normalizedLower = currentNormalizedStr.toLowerCase()
+				const swearLower = swear.toLowerCase()
+				let swearIndex = normalizedLower.indexOf(swearLower)
+				while (swearIndex !== -1) {
+					const originalStart = this._findOriginalPosition(swearIndex, updatedPositionMapping)
+					const originalEnd = this._findOriginalPosition(swearIndex + swear.length - 1, updatedPositionMapping) + 1
+					
+					if (originalStart >= 0 && originalEnd > originalStart && originalEnd <= workingArr.length) {
+						workingArr.splice(originalStart, originalEnd - originalStart, ...Array.from(replacementStr))
+						modified = true
+						// Update normalized string to reflect replacement (for finding next occurrence)
+						currentNormalizedStr = currentNormalizedStr.substring(0, swearIndex) + replacementStr + currentNormalizedStr.substring(swearIndex + swear.length)
+						normalizedLower = currentNormalizedStr.toLowerCase()
+					}
+					// Find next occurrence
+					swearIndex = normalizedLower.indexOf(swearLower, swearIndex + replacementStr.length)
+				}
+			}
+		}
+
+		// Copy results back to original array
+		if (modified) {
+			originalArr.length = 0
+			originalArr.push.apply(originalArr, workingArr)
+		}
+		const result = originalArr.join('')
+		return result
+	}
+
+	/**
+	 * Finds the original string position corresponding to a normalized position.
+	 * The positionMapping array maps: normalized position -> original position
+	 * @private
+	 * @param {number} normalizedPos - Position in normalized string
+	 * @param {Array<number>} positionMapping - Mapping array (positionMapping[i] = original position for normalized position i)
+	 * @returns {number} Position in original string, or -1 if invalid
+	 */
+	_findOriginalPosition(normalizedPos, positionMapping) {
+		// positionMapping[i] = original position for normalized position i
+		if (normalizedPos >= 0 && normalizedPos < positionMapping.length) {
+			const originalPos = positionMapping[normalizedPos]
+			// Return -1 if mapping is invalid (marked as -1)
+			return originalPos >= 0 ? originalPos : -1
+		}
+		// Fallback: return closest valid position
+		if (normalizedPos < 0) {
+			return 0
+		}
+		// Find last valid mapping
+		for (let i = positionMapping.length - 1; i >= 0; i--) {
+			if (positionMapping[i] >= 0) {
+				return positionMapping[i]
+			}
+		}
+		return 0
+	}
+
+	/**
 	 * Validates and normalizes input string and language code.
 	 * @private
 	 * @param {*} str - The input string (will be converted to string if not already)
@@ -989,43 +1271,6 @@ class ChatFilter {
 	}
 
 	/**
-	 * Main text filtering method that applies the complete filtering pipeline.
-	 * Normalizes text, removes numbers (if enabled), spam, duplicates, and profanity.
-	 * @param {*} str - The text to filter (will be converted to string if needed)
-	 * @param {string} [language='en'] - The language code for filtering (defaults to 'en')
-	 * @returns {string} The filtered text
-	 */
-	filter_text(str, language) {
-		// Input validation
-		const validation = this._validateInput(str, language)
-		if (!validation.valid) {
-			return validation.str
-		}
-		str = validation.str
-		language = validation.language
-
-		// Apply filtering pipeline
-		// 1-2. Remove zalgo and normalize (using _normalizeText which handles both)
-		str = this._normalizeText(str, language)
-
-		// 3. Remove numbers (only if option is enabled)
-		if (this.removeNumbers) {
-			str = this.remove_numbers(str)
-		}
-
-		// 4. Remove spam
-		str = this.remove_spam(str)
-
-		// 5. Remove duplicates
-		str = this.remove_duplicates(str)
-
-		// 6. Remove profanity
-		str = this.remove_profanity(str, language)
-
-		return str
-	}
-
-	/**
 	 * Removes duplicate characters from a string.
 	 * Limits consecutive non-replacement characters to 2, and other characters to 4.
 	 * @param {string} str - The string to process
@@ -1157,6 +1402,170 @@ class ChatFilter {
 		}
 
 		return this._cleanWhitespace(result)
+	}
+
+	/**
+	 * Main text filtering method that applies the complete filtering pipeline.
+	 * Normalizes text, removes numbers (if enabled), spam, duplicates, and profanity.
+	 * @param {*} str - The text to filter (will be converted to string if needed)
+	 * @param {string} [language='en'] - The language code for filtering (defaults to 'en')
+	 * @returns {string} The filtered text
+	 */
+	filter_text(str, language) {
+		// Input validation
+		const validation = this._validateInput(str, language)
+		if (!validation.valid) {
+			return validation.str
+		}
+		str = validation.str
+		language = validation.language
+
+		// Apply filtering pipeline
+		// 1-2. Remove zalgo and normalize (using _normalizeText which handles both)
+		str = this._normalizeText(str, language)
+
+		// 3. Remove numbers (only if option is enabled)
+		if (this.removeNumbers) {
+			str = this.remove_numbers(str)
+		}
+
+		// 4. Remove spam
+		str = this.remove_spam(str)
+
+		// 5. Remove duplicates
+		str = this.remove_duplicates(str)
+
+		// 6. Remove profanity
+		str = this.remove_profanity(str, language)
+
+		return str
+	}
+
+	/**
+	 * Filters a nickname by surgically replacing only profane parts while preserving Unicode characters.
+	 * Returns the original nickname unchanged if no profanity is detected.
+	 * If profanity is detected, only the profane portions are replaced, preserving fancy Unicode styling.
+	 * @param {*} str - The nickname to filter (will be converted to string if needed)
+	 * @param {string} [language='en'] - The language code for filtering (defaults to 'en')
+	 * @returns {string} The filtered nickname (unchanged if no profanity, or with only profane parts replaced)
+	 */
+	filter_nickname(str, language) {
+		// Input validation
+		const validation = this._validateInput(str, language)
+		if (!validation.valid) {
+			return validation.str
+		}
+		const originalStr = validation.str
+		language = validation.language
+
+		// Early return if blacklist is disabled
+		if (!this._isBlacklistEnabled()) {
+			// Still apply minimal cleanup
+			let result = originalStr
+			if (result.charAt(0) === '/') {
+				result = result.substring(1)
+			}
+			return this._cleanWhitespace(result)
+		}
+
+		// Prepare normalized version for detection (with position mapping)
+		// We need to track positions through zalgo removal and normalization
+		// Use remove_zalgo to get zalgo-removed version, then build mapping
+		const zalgoRemovedStr = this.remove_zalgo(originalStr)
+		
+		// Build mapping from zalgo-removed positions to original positions
+		// by comparing characters between original and zalgo-removed strings
+		const originalArr = Array.from(originalStr)
+		const zalgoRemovedArr = Array.from(zalgoRemovedStr)
+		const zalgoMapping = [] // Maps from zalgo-removed position to original position
+		
+		let origIdx = 0
+		for (let zalgoIdx = 0; zalgoIdx < zalgoRemovedArr.length; zalgoIdx++) {
+			// Find matching character in original string
+			while (origIdx < originalArr.length) {
+				if (originalArr[origIdx] === zalgoRemovedArr[zalgoIdx]) {
+					zalgoMapping.push(origIdx)
+					origIdx++
+					break
+				}
+				origIdx++
+			}
+			// If we couldn't find a match, skip this character (shouldn't happen normally)
+			if (origIdx >= originalArr.length && zalgoIdx < zalgoRemovedArr.length - 1) {
+				// Use last known position as fallback
+				zalgoMapping.push(zalgoMapping.length > 0 ? zalgoMapping[zalgoMapping.length - 1] : 0)
+			}
+		}
+		
+		const strForDetection = zalgoRemovedStr
+		
+		// Normalize with position mapping (exclude diacritics for non-English)
+		const normalize_types = language !== 'en' 
+			? this.NORMALIZE_TYPES_NO_DIACRITICS  // Exclude diacritics for non-English
+			: this.NORMALIZE_TYPES  // Use all types for English
+		const normalized = this._normalizeWithMapping(strForDetection, normalize_types)
+		const normalizedStr = normalized.normalized
+		const normalizeMapping = normalized.mapping
+		
+		// Combine mappings: normalized position -> zalgo-removed position -> original position
+		const positionMapping = []
+		for (let i = 0; i < normalizeMapping.length; i++) {
+			const zalgoPos = normalizeMapping[i]
+			if (zalgoPos >= 0 && zalgoPos < zalgoMapping.length) {
+				positionMapping.push(zalgoMapping[zalgoPos])
+			} else {
+				positionMapping.push(-1) // Invalid mapping
+			}
+		}
+
+		// Check if profanity exists using normalized version
+		// Use a simplified check that doesn't require full normalization pipeline
+		let hasProfanity = false
+
+		// Check exact matches
+		const exactMatch = this._checkExactMatch(normalizedStr, language, this.blacklist_data)
+		if (exactMatch) {
+			hasProfanity = true
+		}
+
+		// Check regex matches
+		if (!hasProfanity && this.blacklist_search_regex[language]) {
+			hasProfanity = this._testRegexObject(this.blacklist_search_regex[language], normalizedStr)
+		}
+
+		// Check swear words
+		if (!hasProfanity) {
+			const languageMapping = this._getLanguageMapping(this.blacklist_data, language)
+			if (languageMapping && languageMapping.swear) {
+				hasProfanity = this._processSwearWords(normalizedStr, languageMapping.swear, false)
+			}
+		}
+
+		// Early return: if no profanity found, return original unchanged
+		if (!hasProfanity) {
+			// Still apply minimal cleanup
+			let result = originalStr
+			if (result.charAt(0) === '/') {
+				result = result.substring(1)
+			}
+			return this._cleanWhitespace(result)
+		}
+
+		// Profanity detected: surgically replace only profane parts
+		// Create a copy of original array for modification
+		const resultArr = Array.from(originalStr)
+		let result = this._replaceProfanitySurgically(resultArr, normalizedStr, positionMapping, language)
+
+		// Apply minimal cleanup
+		// Remove leading '/' character
+		if (result.charAt(0) === '/') {
+			result = result.substring(1)
+		}
+
+		// Clean up whitespace
+		result = this._cleanWhitespace(result)
+
+		return result
 	}
 }
 
