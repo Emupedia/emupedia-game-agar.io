@@ -1,6 +1,6 @@
 export default class {
     constructor(core) {
-        this.core = core 
+        this.core = core
         this._settings = this.core.store.settings
     }
 
@@ -9,7 +9,7 @@ export default class {
     }
 
     get skins() {
-        return this.rawSettings.skins 
+        return this.rawSettings.skins
     }
 
     set skins(value) {
@@ -18,7 +18,7 @@ export default class {
     }
 
     get names() {
-        return this.rawSettings.names 
+        return this.rawSettings.names
     }
 
     set names(value) {
@@ -83,7 +83,7 @@ export default class {
     get sectors() {
         return this.rawSettings.sectors
     }
-    
+
     set sectors(value) {
         this.core.app.sectorContainer.visible = value
         this.rawSettings.sectors = value
