@@ -1,0 +1,820 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Agar Settings Control Panel</title>
+<style>
+  :root{
+	  --bg:#f7f7f8;--fg:#0f172a;--muted:#475569;--panel:#ffffff;--border:#e5e7eb;
+	  --ok:#16a34a;--warn:#ca8a04;--err:#dc2626;--btn:#1f2937;--btn-fg:#fff;--btn-hover:#111827;
+	  --radius:14px;--shadow:0 4px 20px rgba(0,0,0,.06)
+  }
+  html.dark{
+	  --bg:#0b1020;--fg:#e5e7eb;--muted:#94a3b8;--panel:#0f172a;--border:#1f2937;
+	  --btn:#334155;--btn-fg:#e5e7eb;--btn-hover:#1f2937
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{margin:0;background:var(--bg);color:var(--fg);font:14px/1.45 system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,"Helvetica Neue",Arial,"Noto Sans"}
+  .wrap{max-width:1200px;margin:24px auto;padding:0 16px 32px}
+  header{display:flex;align-items:center;gap:12px;justify-content:space-between;margin-bottom:14px}
+  h1{font-size:18px;margin:0;display:flex;align-items:center;gap:10px}
+  .dirty-dot{width:8px;height:8px;border-radius:999px;background:var(--warn);display:none}
+  .dirty .dirty-dot{display:inline-block}
+  .tip{font-size:12px;color:var(--muted)}
+  .toolbar{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 14px}
+  button, .btn-like{border:1px solid var(--border);background:var(--btn);color:var(--btn-fg);
+	  padding:8px 12px;border-radius:var(--radius);cursor:pointer;font-weight:600;letter-spacing:.2px}
+  button:hover,.btn-like:hover{background:var(--btn-hover)}
+  input[type="file"]{display:none}
+  .row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .spacer{flex:1}
+  .panel{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow)}
+  .panel-head,.panel-foot{padding:10px 12px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px}
+  .panel-foot{border-top:1px solid var(--border);border-bottom:0;justify-content:space-between}
+  .status{font:12px ui-monospace,SFMono-Regular,Menlo,Consolas,"Courier New";display:flex;gap:8px;flex-wrap:wrap}
+  .pill{padding:3px 8px;border-radius:999px;border:1px solid var(--border)}
+  .ok{color:var(--ok);border-color:color-mix(in srgb,var(--ok) 40%,var(--border))}
+  .warn{color:var(--warn);border-color:color-mix(in srgb,var(--warn) 40%,var(--border))}
+  .err{color:var(--err);border-color:color-mix(in srgb,var(--err) 40%,var(--border))}
+  .theme{border:1px solid var(--border);background:transparent;color:var(--fg)}
+  .kbd{font:12px ui-monospace,SFMono-Regular;border:1px solid var(--border);padding:2px 6px;border-radius:6px}
+  .search{flex:1;min-width:220px}
+  .search input{width:100%;padding:8px 10px;border:1px solid var(--border);background:transparent;color:var(--fg);border-radius:10px}
+  /* Tree / fields */
+  .group{border-top:1px solid var(--border)}
+  details.group{padding:0 12px}
+  details.group>summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:8px;padding:10px 0}
+  details.group>summary::-webkit-details-marker{display:none}
+  .keypath{font:12px;color:var(--muted)}
+  .fields{display:grid;grid-template-columns:260px 1fr;gap:10px 14px;padding:8px 12px 16px}
+  .label{display:flex;align-items:center;gap:8px}
+  .label code{font:12px ui-monospace,SFMono-Regular;color:var(--muted);background:transparent}
+  .control{display:flex;align-items:center;gap:8px}
+  .control input[type="text"], .control input[type="url"], .control input[type="number"]{
+	  width:100%;padding:8px 10px;border:1px solid var(--border);background:transparent;color:var(--fg);border-radius:10px
+  }
+  .control input[type="color"]{width:44px;height:34px;border:1px solid var(--border);border-radius:10px;background:transparent;padding:2px}
+  .note{font-size:12px;color:var(--muted)}
+  .invalid{outline:2px solid color-mix(in srgb,var(--err) 60%, transparent)}
+  .del{background:#7f1d1d}
+  .add{background:#065f46}
+  .micro{padding:6px 8px;border-radius:10px;font-size:12px}
+  /* toggle switch */
+  .switch{position:relative;display:inline-block;width:46px;height:26px}
+  .switch input{opacity:0;width:0;height:0}
+  .slider{position:absolute;cursor:pointer;inset:0;border:1px solid var(--border);background:#9ca3af;border-radius:999px;transition:.15s}
+  .slider:before{content:"";position:absolute;height:22px;width:22px;left:2px;top:1px;background:white;border-radius:50%;transition:.15s}
+  input:checked + .slider{background:#22c55e}
+  input:checked + .slider:before{transform:translateX(20px)}
+  /* array items */
+  .array-item{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center}
+  .array-controls{display:flex;gap:6px}
+  .ghost{opacity:.5}
+  /* image preview */
+  .image-preview{max-width:120px;max-height:120px;border:1px solid var(--border);border-radius:10px;object-fit:contain;margin-left:8px}
+  .preview-container{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .preview-error{color:var(--err);font-size:12px;margin-left:8px}
+  /* skin controls */
+  .skin-gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:12px;padding:12px;background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);margin-top:8px}
+  .skin-item{text-align:center;cursor:pointer;padding:8px;border:2px solid transparent;border-radius:10px;transition:.15s}
+  .skin-item:hover{border-color:var(--border)}
+  .skin-item.selected{border-color:var(--ok)}
+  .skin-item img{width:48px;height:48px;object-fit:contain;border-radius:6px}
+  .skin-item .label{font-size:11px;margin-top:4px;color:var(--muted);overflow:hidden;text-overflow:ellipsis}
+  .skin-browser-btn{background:var(--btn);color:var(--btn-fg);border:1px solid var(--border);padding:6px 10px;border-radius:8px;font-size:12px;cursor:pointer}
+  .skin-browser-btn:hover{background:var(--btn-hover)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="row">
+    <div>
+      <h1><span class="dirty-dot" aria-hidden="true"></span>Agar Settings Control Panel</h1>
+      <div class="tip">Edits <code>localStorage.settings</code>. Works only on the game’s origin.</div>
+    </div>
+    <div class="row">
+      <div class="search"><input id="search" placeholder="Search keys (e.g. theme, zoom, hud)"></div>
+      <button id="themeBtn" class="theme" title="Toggle theme">🌓</button>
+    </div>
+  </header>
+
+  <div class="panel">
+    <div class="panel-head row">
+      <div class="row">
+        <button id="saveBtn" title="Save to localStorage (Ctrl/Cmd+S)">Save</button>
+        <button id="reloadBtn" title="Reload from localStorage">Reload</button>
+        <button id="expandBtn" class="micro" title="Expand all">Expand</button>
+        <button id="collapseBtn" class="micro" title="Collapse all">Collapse</button>
+        <button id="backupBtn" class="micro" title="Download backup JSON">Backup</button>
+        <label class="btn-like micro" title="Restore from JSON file">Restore<input id="fileInput" type="file" accept=".json,application/json"></label>
+      </div>
+      <div class="spacer"></div>
+      <div class="note">Shortcut: <span class="kbd">Ctrl/Cmd + S</span></div>
+    </div>
+
+    <div id="root" class="group" aria-live="polite"></div>
+
+    <div class="panel-foot">
+      <div id="status" class="status"><span class="pill warn">Waiting…</span></div>
+      <div class="note">Keys: <span id="keyCount">0</span></div>
+    </div>
+  </div>
+</div>
+
+<script>
+(() => {
+	// ---------- Config ----------
+	const STORAGE_KEY = 'settings';
+	const THEME_KEY   = 'settings_page_theme2';
+	const INDENT      = 2;
+
+	// ---------- State ----------
+	let settings = {};
+	let dirty = false;
+
+	// ---------- DOM ----------
+	const rootEl   = document.getElementById('root');
+	const statusEl = document.getElementById('status');
+	const keyCount = document.getElementById('keyCount');
+	const searchEl = document.getElementById('search');
+
+	// ---------- Theme ----------
+	(function initTheme(){
+		const saved = localStorage.getItem(THEME_KEY);
+		const prefersDark = matchMedia('(prefers-color-scheme: dark)').matches;
+		if (saved === 'dark' || (!saved && prefersDark)) document.documentElement.classList.add('dark');
+		document.getElementById('themeBtn').addEventListener('click', () => {
+			document.documentElement.classList.toggle('dark');
+			localStorage.setItem(THEME_KEY, document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+		});
+	})();
+
+	// ---------- Utils ----------
+	const esc = s => String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
+	const isPlainObject = v => Object.prototype.toString.call(v) === '[object Object]';
+	const isColorHex = s => typeof s === 'string' && /^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/.test(s.trim());
+	const isURL = s => typeof s === 'string' && /^https?:\/\/[\w\-._~:/?#[\]@!$&'()*+,;=%]+$/i.test(s.trim());
+	const isImageURL = s => isURL(s) && /\.(png|jpe?g|gif|webp|svg)(\?.*)?$/i.test(s.trim());
+	const isSkinKey = path => path.some(p => typeof p === 'string' && p.toLowerCase().includes('skin'));
+	const normalizeSkinURL = s => {
+		if (!s || typeof s !== 'string') return s;
+		s = s.trim();
+		// If it's already a complete URL, return as-is
+		if (isURL(s)) return s;
+		
+		// If it's a relative path, convert to Emupedia URL
+		if (s.startsWith('./skins/') || s.startsWith('skins/') || s.startsWith('./cigar2/skins/') || s.startsWith('cigar2/skins/')) {
+			const skinName = s.replace(/^\.?\/?(?:skins|cigar2\/skins)\//, '');
+			return `https://emupedia.net/emupedia-game-agar.io/cigar2/skins/${skinName}`;
+		}
+		
+		// If it's just a skin name (no path separators)
+		if (!s.includes('/')) {
+			// Add .png extension if not present
+			const skinName = s.endsWith('.png') ? s : `${s}.png`;
+			return `https://emupedia.net/emupedia-game-agar.io/cigar2/skins/${skinName}`;
+		}
+		
+		return s;
+	};
+	const hasDecimals = n => Number.isFinite(n) && Math.floor(n) !== n;
+	const decimalPlaces = n => {
+		if (!Number.isFinite(n)) return 0;
+		const s = String(n);
+		if (!s.includes('.')) return 0;
+		return s.split('.')[1].length;
+	};
+	const clamp = (v,min,max)=>Math.min(max,Math.max(min,v));
+
+	function stepForZeroToOne(n){
+		// At least 2 decimal precision by default; preserve more if present (up to 6)
+		const dp = Math.min(Math.max(decimalPlaces(n), 2), 6);
+		return String(1 / Math.pow(10, dp));
+	}
+
+	function stepForZeroToHundred(n){
+		// 1 for integers, 0.1 or 0.01 if decimals present (up to 2 decimals)
+		const dp = Math.min(Math.max(decimalPlaces(n), hasDecimals(n)?1:0), 2);
+		return dp ? String(1 / Math.pow(10, dp)) : '1';
+	}
+
+	function setDirty(d=true){
+		dirty = d;
+		document.querySelector('h1').parentElement.parentElement.classList.toggle('dirty', dirty);
+	}
+
+	function setStatus(text, kind='warn'){
+		statusEl.innerHTML = `<span class="pill ${kind}">${esc(text)}</span>`;
+	}
+
+	function deepClone(v){ return JSON.parse(JSON.stringify(v)); }
+
+	function getByPath(obj, path){ return path.reduce((o, k) => (o==null?undefined:o[k]), obj); }
+
+	function setByPath(obj, path, value){
+		let o = obj;
+		for (let i=0;i<path.length-1;i++){
+			const k = path[i];
+			if (!(k in o) || typeof o[k] !== 'object' || o[k] === null) o[k] = (Number.isInteger(+path[i+1]) ? [] : {});
+			o = o[k];
+		}
+		o[path[path.length-1]] = value;
+	}
+
+	function deleteByPath(obj, path){
+		const parent = getByPath(obj, path.slice(0,-1));
+		const last = path[path.length-1];
+		if (Array.isArray(parent)) parent.splice(+last,1);
+		else if (parent && typeof parent === 'object') delete parent[last];
+	}
+
+	function pathToString(path){ return path.map(p => `[${typeof p==='number'?p:JSON.stringify(p)}]`).join(''); }
+
+	function countKeys(obj){
+		let c=0;
+		(function walk(v){
+			if (isPlainObject(v)) Object.keys(v).forEach(k=>{c++; walk(v[k])});
+			else if (Array.isArray(v)) v.forEach(walk);
+			else c++;
+		})(obj);
+		return c;
+	}
+
+	// ---------- Renderers ----------
+	function render(){
+		rootEl.innerHTML = '';
+		const top = renderAny(settings, []);
+		rootEl.appendChild(top);
+		keyCount.textContent = String(countKeys(settings));
+	}
+
+	function renderAny(value, path, keyName=null){
+		if (isPlainObject(value)) return renderObject(value, path, keyName);
+		if (Array.isArray(value)) return renderArray(value, path, keyName);
+		return renderLeaf(value, path, keyName);
+	}
+
+	function renderObject(obj, path, keyName){
+		// Root level should not be collapsible
+		const isRoot = path.length === 0;
+		const container = document.createElement(isRoot ? 'div' : 'details');
+		container.className = 'group';
+		if (!isRoot) container.open = path.length <= 1;
+
+		if (!isRoot) {
+			const summary = document.createElement('summary');
+			summary.innerHTML = `<strong>${keyName ?? 'settings'}</strong> <span class="keypath">${esc(pathToString(path)) || '[root]'}</span>`;
+			container.appendChild(summary);
+		} else {
+			// For root, add a simple header instead of summary
+			const header = document.createElement('div');
+			header.style.padding = '10px 12px';
+			header.style.borderBottom = '1px solid var(--border)';
+			header.innerHTML = `<strong>Settings</strong> <span class="keypath">[root]</span>`;
+			container.appendChild(header);
+		}
+
+		const fields = document.createElement('div');
+		fields.className = 'fields';
+
+		// Object controls row
+		const controlsRow = document.createElement('div'); controlsRow.className = 'label';
+		controlsRow.innerHTML = `<code>${esc(keyName ?? '[root]')}</code>`;
+		const controls = document.createElement('div'); controls.className = 'control';
+		controls.innerHTML = `
+      <button class="micro add" title="Add key">Add key</button>
+      ${path.length ? `<button class="micro del" title="Delete object">Delete</button>` : ''}
+    `;
+		fields.appendChild(controlsRow);
+		fields.appendChild(controls);
+
+		controls.querySelector('.add').addEventListener('click', () => promptAddKey(path));
+		if (path.length){
+			controls.querySelector('.del').addEventListener('click', () => {
+				if (confirm(`Delete object "${keyName}"?`)) { deleteByPath(settings, path); setDirty(); render(); }
+			});
+		}
+
+		Object.keys(obj).sort().forEach(k => {
+			const lbl = document.createElement('div'); lbl.className='label';
+			lbl.innerHTML = `<code>${esc(k)}</code>`;
+			const val = document.createElement('div'); val.className='control';
+			val.appendChild(renderAny(obj[k], path.concat(k), k));
+			fields.appendChild(lbl); fields.appendChild(val);
+		});
+
+		container.appendChild(fields);
+		container.dataset.keypath = (keyName ?? 'settings').toLowerCase();
+		return container;
+	}
+
+	function renderArray(arr, path, keyName){
+		const container = document.createElement('details');
+		container.className = 'group';
+		container.open = path.length <= 1;
+
+		const summary = document.createElement('summary');
+		summary.innerHTML = `<strong>${keyName ?? '(array)'}</strong> <span class="keypath">${esc(pathToString(path))}</span> <span class="note">[${arr.length} items]</span>`;
+		container.appendChild(summary);
+
+		const fields = document.createElement('div'); fields.className='fields';
+
+		const lbl = document.createElement('div'); lbl.className='label';
+		lbl.innerHTML = `<code>${esc(keyName ?? '(array)')}</code>`;
+		const ctrl = document.createElement('div'); ctrl.className='control';
+		ctrl.innerHTML = `
+      <button class="micro add" title="Push new item">Add item</button>
+      ${path.length ? `<button class="micro del" title="Delete array">Delete</button>` : ''}
+    `;
+		fields.appendChild(lbl); fields.appendChild(ctrl);
+
+		ctrl.querySelector('.add').addEventListener('click', () => promptAddArrayItem(path));
+		if (path.length){
+			ctrl.querySelector('.del').addEventListener('click', () => {
+				if (confirm(`Delete array "${keyName}"?`)) { deleteByPath(settings, path); setDirty(); render(); }
+			});
+		}
+
+		arr.forEach((item, i) => {
+			const row = document.createElement('div'); row.className='array-item';
+			const editor = renderAny(item, path.concat(i), `${i}`);
+			const controls = document.createElement('div'); controls.className='array-controls';
+			const up = document.createElement('button'); up.className='micro'; up.textContent='↑';
+			const down = document.createElement('button'); down.className='micro'; down.textContent='↓';
+			const del = document.createElement('button'); del.className='micro del'; del.textContent='Remove';
+			up.title='Move up'; down.title='Move down';
+
+			up.addEventListener('click', () => {
+				if (i>0){ const a=getByPath(settings,path); [a[i-1],a[i]]=[a[i],a[i-1]]; setDirty(); render(); }
+			});
+			down.addEventListener('click', () => {
+				const a=getByPath(settings,path); if (i<a.length-1){ [a[i+1],a[i]]=[a[i],a[i+1]]; setDirty(); render(); }
+			});
+			del.addEventListener('click', () => {
+				const a=getByPath(settings,path); a.splice(i,1); setDirty(); render();
+			});
+
+			controls.append(up,down,del);
+			row.append(editor,controls);
+			const itemLbl = document.createElement('div'); itemLbl.className='label'; itemLbl.innerHTML = `<code>[${i}]</code>`;
+			fields.appendChild(itemLbl);
+			const itemCtrl = document.createElement('div'); itemCtrl.className='control'; itemCtrl.appendChild(row);
+			fields.appendChild(itemCtrl);
+		});
+
+		container.appendChild(fields);
+		container.dataset.keypath = (keyName ?? '(array)').toLowerCase();
+		return container;
+	}
+
+	function renderLeaf(value, path, keyName){
+		// Boolean
+		if (typeof value === 'boolean'){
+			const wrap = document.createElement('div');
+			const id = 'sw_' + Math.random().toString(36).slice(2);
+			wrap.innerHTML = `
+        <label class="switch"><input id="${id}" type="checkbox" ${value?'checked':''}><span class="slider"></span></label>
+      `;
+			const input = wrap.querySelector('input');
+			input.addEventListener('change', () => { setByPath(settings, path, !!input.checked); setDirty(); });
+			return wrap;
+		}
+
+		// Number (now with 0–1 sliders)
+		if (typeof value === 'number'){
+			const wrap = document.createElement('div'); wrap.className='row';
+			const num = document.createElement('input'); num.type='number'; num.value=String(value);
+
+			// Decide which slider (0–1 or 0–100) to show, and step size
+			if (value >= 0 && value <= 1){
+				const step = stepForZeroToOne(value);
+				num.step = step;
+				const range = document.createElement('input'); range.type='range';
+				range.min='0'; range.max='1'; range.step=step; range.value=String(value);
+
+				// keep in sync
+				range.addEventListener('input', () => {
+					num.value = range.value;
+					const v = Number(range.value);
+					setByPath(settings, path, v);
+					setDirty();
+				});
+				num.addEventListener('input', () => {
+					const v = Number(num.value);
+					if (Number.isFinite(v)){ num.classList.remove('invalid'); range.value = String(clamp(v,0,1)); setByPath(settings,path,clamp(v,0,1)); setDirty(); }
+					else num.classList.add('invalid');
+				});
+
+				wrap.append(num, range);
+			} else {
+				// Fallback slider for common 0–100 ranges
+				num.step = stepForZeroToHundred(value);
+				if (value >= 0 && value <= 100){
+					const range = document.createElement('input'); range.type='range';
+					range.min='0'; range.max='100'; range.step=num.step; range.value=String(value);
+					range.addEventListener('input', () => {
+						num.value = range.value;
+						const v = Number(range.value);
+						setByPath(settings, path, v);
+						setDirty();
+					});
+					num.addEventListener('input', () => {
+						const v = Number(num.value);
+						if (Number.isFinite(v)){ num.classList.remove('invalid'); range.value = String(clamp(v,0,100)); setByPath(settings,path,clamp(v,0,100)); setDirty(); }
+						else num.classList.add('invalid');
+					});
+					wrap.append(num, range);
+				} else {
+					// No slider; free numeric input
+					num.addEventListener('input', () => {
+						const v = Number(num.value);
+						if (Number.isFinite(v)){ num.classList.remove('invalid'); setByPath(settings,path,v); setDirty(); }
+						else num.classList.add('invalid');
+					});
+					wrap.append(num);
+				}
+			}
+			return wrap;
+		}
+
+		// String (color/url/normal)
+		if (typeof value === 'string'){
+			if (isColorHex(value)){
+				const wrap = document.createElement('div'); wrap.className='row';
+				const color = document.createElement('input'); color.type='color';
+				color.value = normalizeHex6(value);
+				const text = document.createElement('input'); text.type='text'; text.value=value;
+				function syncFromColor(){ text.value = color.value; setByPath(settings,path,color.value); setDirty(); }
+				function syncFromText(){
+					const t = text.value.trim();
+					if (isColorHex(t)){ color.value = normalizeHex6(t); text.classList.remove('invalid'); setByPath(settings,path,normalizeHex6(t)); setDirty(); }
+					else { text.classList.add('invalid'); }
+				}
+				color.addEventListener('input', syncFromColor);
+				text.addEventListener('input', syncFromText);
+				wrap.append(color, text);
+				return wrap;
+			} else if (isURL(value) || isSkinKey(path)) {
+				const container = document.createElement('div');
+				const inputContainer = document.createElement('div');
+				inputContainer.className = 'preview-container';
+				
+				const input = document.createElement('input');
+				input.type = isURL(value) ? 'url' : 'text';
+				input.value = value;
+				
+				let preview = null;
+				let errorMsg = null;
+				
+				function updatePreview(){
+					// Remove existing preview/error
+					if (preview) preview.remove();
+					if (errorMsg) errorMsg.remove();
+					preview = null;
+					errorMsg = null;
+					
+					const val = input.value.trim();
+					if (!val) return;
+					
+					let shouldShowPreview = false;
+					let previewUrl = val;
+					
+					if (isSkinKey(path)) {
+						// For skin keys, always try to show preview
+						shouldShowPreview = true;
+						previewUrl = normalizeSkinURL(val);
+					} else if (isImageURL(val) || val.includes('.png') || val.includes('.jpg') || val.includes('.jpeg') || val.includes('.gif') || val.includes('.webp')) {
+						// For other keys, only if it looks like an image
+						shouldShowPreview = true;
+						previewUrl = val;
+					}
+					
+					if (shouldShowPreview) {
+						preview = createImagePreview(previewUrl, null, () => {
+							errorMsg = document.createElement('span');
+							errorMsg.className = 'preview-error';
+							errorMsg.textContent = 'Failed to load image';
+							inputContainer.appendChild(errorMsg);
+						});
+						inputContainer.appendChild(preview);
+					}
+				}
+				
+				input.addEventListener('input', () => { 
+					setByPath(settings,path,input.value); 
+					setDirty();
+					updatePreview();
+				});
+				
+				inputContainer.appendChild(input);
+				container.appendChild(inputContainer);
+				
+				// Add skin browser for skin-related keys
+				if (isSkinKey(path)) {
+					const skinBrowser = createSkinBrowser(value, (newSkinUrl) => {
+						input.value = newSkinUrl;
+						setByPath(settings, path, newSkinUrl);
+						setDirty();
+						updatePreview();
+					});
+					container.appendChild(skinBrowser);
+				}
+				
+				// Initial preview
+				updatePreview();
+				
+				return container;
+			} else {
+				const input = document.createElement('input');
+				input.type = 'text';
+				input.value = value;
+				input.addEventListener('input', () => { setByPath(settings,path,input.value); setDirty(); });
+				return input;
+			}
+		}
+
+		// null
+		if (value === null){
+			const span = document.createElement('span'); span.className='note'; span.textContent='null';
+			return span;
+		}
+
+		// Fallback
+		const span = document.createElement('span'); span.className='note'; span.textContent = String(value);
+		return span;
+	}
+
+	function normalizeHex6(s){
+		s = s.trim();
+		if (/^#[0-9a-fA-F]{3}$/.test(s)){
+			const r=s[1],g=s[2],b=s[3];
+			return `#${r}${r}${g}${g}${b}${b}`.toLowerCase();
+		}
+		return s.toLowerCase();
+	}
+
+	function createImagePreview(url, onLoad, onError){
+		const img = document.createElement('img');
+		img.className = 'image-preview';
+		img.loading = 'lazy';
+		img.onerror = () => {
+			img.style.display = 'none';
+			if (onError) onError();
+		};
+		img.onload = () => {
+			img.style.display = 'block';
+			if (onLoad) onLoad();
+		};
+		img.src = url;
+		return img;
+	}
+
+	function createSkinBrowser(currentValue, onChange){
+		const container = document.createElement('div');
+		container.innerHTML = `
+			<button class="skin-browser-btn" type="button">Browse Skins</button>
+			<div class="skin-gallery" style="display:none"></div>
+		`;
+		
+		const btn = container.querySelector('.skin-browser-btn');
+		const gallery = container.querySelector('.skin-gallery');
+		
+		btn.addEventListener('click', async () => {
+			if (gallery.style.display === 'none') {
+				await loadSkinGallery(gallery, currentValue, onChange);
+				gallery.style.display = 'grid';
+				btn.textContent = 'Hide Skins';
+			} else {
+				gallery.style.display = 'none';
+				btn.textContent = 'Browse Skins';
+			}
+		});
+		
+		return container;
+	}
+
+	async function loadSkinGallery(gallery, currentValue, onChange){
+		gallery.innerHTML = '<div style="grid-column: 1/-1; text-align: center; color: var(--muted);">Loading skins...</div>';
+		
+		let skinNames = [];
+		
+		// Try to load from skinList.txt
+		try {
+			const response = await fetch('./skinList.txt');
+			if (response.ok) {
+				const text = await response.text();
+				skinNames = text.split(',').map(s => s.trim()).filter(s => s.length > 0);
+			}
+		} catch (e) {
+			console.log('Could not load skinList.txt, using fallback', e);
+		}
+		
+		// Fallback to popular skins if skinList.txt failed
+		if (skinNames.length === 0) {
+			skinNames = [
+				'doge', 'sanik', 'pepe', 'wojak', 'troll', 'russia', 'usa', 'canada', 'australia',
+				'pikachu', 'mario', 'sonic', 'obama', 'trump', 'putin', 'cat', 'dog', 'panda',
+				'apple', 'banana', 'burger_face', 'pizza', 'hotdog', 'donut', 'cookie',
+				'ghost', 'skull', 'ninja', 'pirate', 'robot', 'alien', 'dragon', 'unicorn'
+			];
+		}
+		
+		// Limit to first 100 skins for performance
+		skinNames = skinNames.slice(0, 100);
+		
+		gallery.innerHTML = '';
+		
+		// Add custom URL option
+		const customItem = document.createElement('div');
+		customItem.className = 'skin-item';
+		customItem.innerHTML = `
+			<div style="width:48px;height:48px;border:2px dashed var(--border);border-radius:6px;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:24px;">+</div>
+			<div class="label">Custom URL</div>
+		`;
+		customItem.addEventListener('click', () => {
+			const url = prompt('Enter skin image URL:', currentValue || '');
+			if (url) {
+				gallery.querySelectorAll('.skin-item').forEach(i => i.classList.remove('selected'));
+				customItem.classList.add('selected');
+				onChange(url);
+			}
+		});
+		gallery.appendChild(customItem);
+		
+		skinNames.forEach(skinName => {
+			const item = document.createElement('div');
+			item.className = 'skin-item';
+			if (currentValue && (
+				currentValue.includes(skinName) || 
+				currentValue.endsWith(`${skinName}.png`) ||
+				currentValue === `https://emupedia.net/emupedia-game-agar.io/cigar2/skins/${skinName}.png`
+			)) {
+				item.classList.add('selected');
+			}
+			
+			const img = document.createElement('img');
+			img.src = `https://emupedia.net/emupedia-game-agar.io/cigar2/skins/${skinName}.png`;
+			img.alt = skinName;
+			img.onerror = () => {
+				// Try local fallback paths
+				img.src = `./cigar2/skins/${skinName}.png`;
+
+			};
+			
+			const label = document.createElement('div');
+			label.className = 'label';
+			label.textContent = skinName.replace(/_/g, ' ');
+			
+			item.appendChild(img);
+			item.appendChild(label);
+			
+			item.addEventListener('click', () => {
+				gallery.querySelectorAll('.skin-item').forEach(i => i.classList.remove('selected'));
+				item.classList.add('selected');
+				onChange(`https://emupedia.net/emupedia-game-agar.io/cigar2/skins/${skinName}.png`);
+			});
+			
+			gallery.appendChild(item);
+		});
+		
+		// Add loading message if no skins loaded
+		if (gallery.children.length === 1) { // Only custom URL option
+			const noSkinsMsg = document.createElement('div');
+			noSkinsMsg.style.gridColumn = '1/-1';
+			noSkinsMsg.style.textAlign = 'center';
+			noSkinsMsg.style.color = 'var(--muted)';
+			noSkinsMsg.textContent = 'No skins found. Use "Custom URL" to add your own.';
+			gallery.appendChild(noSkinsMsg);
+		}
+	}
+
+	// ---------- Add / Insert ----------
+	function promptAddKey(path){
+		const name = prompt('New key name (e.g. themeColor, skinUrl, or enableHud)');
+		if (!name) return;
+		if (!/^[^\s[\]".]+$/.test(name)) { alert('Invalid key name. Avoid quotes, brackets, and spaces.'); return; }
+		const type = prompt('Type? one of: boolean, number, string, color, skin, object, array', 'string') || 'string';
+		let init;
+		switch (type.toLowerCase()){
+			case 'boolean': init = false; break;
+			case 'number': init = 0; break;
+			case 'color': init = '#ffffff'; break;
+			case 'skin': init = 'https://emupedia.net/emupedia-game-agar.io/cigar2/skins/doge.png'; break;
+			case 'object': init = {}; break;
+			case 'array': init = []; break;
+			default: init = '';
+		}
+		const obj = getByPath(settings, path);
+		if (isPlainObject(obj)){
+			if (Object.prototype.hasOwnProperty.call(obj, name)) { alert('Key already exists.'); return; }
+			obj[name] = init;
+			setDirty(); render();
+		}
+	}
+
+	function promptAddArrayItem(path){
+		const type = prompt('Item type? boolean, number, string, color, skin, object, array', 'string') || 'string';
+		let init;
+		switch (type.toLowerCase()){
+			case 'boolean': init = false; break;
+			case 'number': init = 0; break;
+			case 'color': init = '#ffffff'; break;
+			case 'skin': init = 'https://emupedia.net/emupedia-game-agar.io/cigar2/skins/doge.png'; break;
+			case 'object': init = {}; break;
+			case 'array': init = []; break;
+			default: init = '';
+		}
+		const arr = getByPath(settings, path);
+		if (Array.isArray(arr)){ arr.push(init); setDirty(); render(); }
+	}
+
+	// ---------- IO ----------
+	function load(){
+		let raw = localStorage.getItem(STORAGE_KEY);
+		if (raw == null){
+			settings = {};
+			setStatus(`Key "${STORAGE_KEY}" not found. Starting with empty object.`, 'warn');
+		} else {
+			try {
+				settings = JSON.parse(raw);
+				setStatus('Loaded from localStorage.', 'ok');
+			} catch {
+				settings = { __raw: String(raw) };
+				setStatus('Existing value is not valid JSON; exposing as "__raw" string.', 'warn');
+			}
+		}
+		setDirty(false);
+		render();
+	}
+
+	function save(){
+		try{
+			const json = JSON.stringify(settings);
+			localStorage.setItem(STORAGE_KEY, json);
+			setStatus('Saved to localStorage.settings ✔', 'ok');
+			setDirty(false);
+		}catch(e){
+			setStatus('Save failed: ' + (e?.message||e), 'err');
+		}
+	}
+
+	// ---------- Search ----------
+	function applySearch(){
+		const q = searchEl.value.trim().toLowerCase();
+		const groups = rootEl.querySelectorAll('.group');
+		if (!q){ groups.forEach(g => g.classList.remove('ghost')); return; }
+		groups.forEach(g => {
+			const sum = g.querySelector('summary strong')?.textContent.toLowerCase() || '';
+			const path = g.querySelector('.keypath')?.textContent.toLowerCase() || '';
+			if (sum.includes(q) || path.includes(q)) g.classList.remove('ghost');
+			else g.classList.add('ghost');
+		});
+	}
+
+	// ---------- Event wiring ----------
+	document.getElementById('saveBtn').addEventListener('click', save);
+	document.getElementById('reloadBtn').addEventListener('click', load);
+	document.getElementById('expandBtn').addEventListener('click', () => {
+		rootEl.querySelectorAll('details.group').forEach(d => d.open = true);
+	});
+	document.getElementById('collapseBtn').addEventListener('click', () => {
+		rootEl.querySelectorAll('details.group').forEach(d => d.open = false);
+	});
+	document.getElementById('backupBtn').addEventListener('click', () => {
+		const blob = new Blob([JSON.stringify(settings, null, INDENT)], { type:'application/json' });
+		const a = document.createElement('a');
+		a.href = URL.createObjectURL(blob);
+		a.download = 'agar-settings-backup.json';
+		a.click();
+		URL.revokeObjectURL(a.href);
+		setStatus('Backup downloaded.', 'ok');
+	});
+	document.getElementById('fileInput').addEventListener('change', async (ev) => {
+		const f = ev.target.files[0]; if (!f) return;
+		try{
+			const text = await f.text();
+			const obj = JSON.parse(text);
+			settings = obj;
+			setDirty(true);
+			render();
+			setStatus('Backup loaded into editor. Click Save to apply.', 'ok');
+		}catch{
+			setStatus('Selected file is not valid JSON.', 'err');
+		}finally{
+			ev.target.value='';
+		}
+	});
+	searchEl.addEventListener('input', applySearch);
+	document.addEventListener('keydown', (e) => {
+		const isSave = (e.key === 's' || e.key === 'S') && (e.ctrlKey || e.metaKey);
+		if (isSave){ e.preventDefault(); save(); }
+	});
+
+	// ---------- Init ----------
+	load();
+})();
+</script>
+</body>
+</html>
