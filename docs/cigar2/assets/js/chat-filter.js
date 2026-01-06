@@ -2,11 +2,11 @@
  * Chat Filter Library
  * A comprehensive word censorship and text filtering system
  * Extracted from main.js for reuse across multiple projects
- * 
+ *
  * @class ChatFilter
  * @description A comprehensive word censorship and text filtering system that normalizes Unicode characters,
  * removes profanity, spam, and other unwanted content from text input.
- * 
+ *
  * @example
  * const filter = new ChatFilter({
  *   normalizeJsonPath: './assets/data/normalize.json',
@@ -39,10 +39,10 @@ class ChatFilter {
 		this.REPLACEMENT_STRING = '``'
 		this.REPLACEMENT_PREFIX = '`'
 		this.REPLACEMENT_SUFFIX = '`'
-		
+
 		// Common return objects (avoid creating new objects repeatedly)
 		this._DISABLED_RESULT = { enabled: false }
-		
+
 		// Helper function for search regex replacements (avoid creating new functions repeatedly)
 		this._searchReplacementFn = function(category) {
 			return ' ' + category + ' '
@@ -55,14 +55,14 @@ class ChatFilter {
 		this.normalize_data = null
 		this.blacklist_data = null
 		this.initialized = false
-		
+
 		// Pre-computed normalization maps for O(1) lookups
 		this.normalize_map_all = null
 		this.normalize_map_no_diacritics = null
-		
+
 		// Pre-computed Set for regex special characters (O(1) lookup)
 		this.REGEX_SPECIAL_CHARS = new Set(['*', '+', '?', '^', '$', '{', '}', '(', ')', '[', ']', '|', '\\'])
-		
+
 		// Pre-compute non-English normalize types (excludes diacritics)
 		const normalizeTypesLen = this.NORMALIZE_TYPES.length
 		this.NORMALIZE_TYPES_NO_DIACRITICS = this.NORMALIZE_TYPES.slice(0, normalizeTypesLen - 1)
@@ -98,7 +98,7 @@ class ChatFilter {
 
 			// Pre-compute normalization maps for O(1) lookups
 			this._buildNormalizeMaps()
-			
+
 			this.build_regex_objects()
 			this.initialized = true
 		} catch (error) {
@@ -258,18 +258,18 @@ class ChatFilter {
 				continue
 			}
 			let regexPattern = this.patternToRegex(pattern)
-			
+
 			// Skip if patternToRegex returned empty (defensive check)
 			if (!regexPattern) {
 				continue
 			}
-			
+
 			if (handleSpaces) {
 				const patternLen = pattern.length
 				const hasLeadingSpace = pattern[0] === ' '
 				// patternLen > 0 is guaranteed because _isEmpty(pattern) check above
 				const hasTrailingSpace = pattern[patternLen - 1] === ' '
-				
+
 				// Handle leading/trailing spaces in patterns
 				if (hasLeadingSpace) {
 					if (patternLen === 1) {
@@ -286,7 +286,7 @@ class ChatFilter {
 					regexPattern = regexPattern.slice(0, -1) + '(?:\\s|\\b|$)'
 				}
 			}
-			
+
 			regexParts.push(regexPattern)
 		}
 		return regexParts.join('|')
@@ -398,25 +398,25 @@ class ChatFilter {
 
 		const normalizeTypes = Object.keys(normalizeMapping)
 		const normalizeTypesLen = normalizeTypes.length
-		
+
 		// Process types in order - later mappings override earlier ones (matching original behavior)
 		for (let i = 0; i < normalizeTypesLen; i++) {
 			const type = normalizeTypes[i]
 			const typeMap = normalizeMapping[type]
-			
+
 			if (!typeMap) {
 				continue
 			}
 
 			const isDiacritics = type === 'diacritics'
-			
+
 			// Add to maps - allow later types to override earlier ones
 			for (let char in typeMap) {
 				const replacement = typeMap[char]
-				
+
 				// Add to all-types map (always, including diacritics)
 				this.normalize_map_all.set(char, replacement)
-				
+
 				// Add to no-diacritics map only if not diacritics
 				if (!isDiacritics) {
 					this.normalize_map_no_diacritics.set(char, replacement)
@@ -435,12 +435,12 @@ class ChatFilter {
 		if (!this._isString(pattern)) {
 			return ''
 		}
-		
+
 		// Use array for better performance with longer strings
 		const result = []
 		let i = 0
 		const patternLen = pattern.length
-		
+
 		while (i < patternLen) {
 			if (pattern[i] === '\\') {
 				// Escaped character - keep as is (including \.)
@@ -469,7 +469,7 @@ class ChatFilter {
 				i++
 			}
 		}
-		
+
 		return result.join('')
 	}
 
@@ -629,8 +629,7 @@ class ChatFilter {
 
 		// Use pre-computed map for O(1) lookups
 		// Check if diacritics should be included
-		const includeDiacritics = type === undefined || type === 'diacritics' || 
-			(this._isArray(type) && type.includes('diacritics'))
+		const includeDiacritics = type === undefined || type === 'diacritics' || (this._isArray(type) && type.includes('diacritics'))
 		const normalizeMap = includeDiacritics ? this.normalize_map_all : this.normalize_map_no_diacritics
 
 		if (!normalizeMap) {
@@ -679,12 +678,12 @@ class ChatFilter {
 		for (let i = 0; i < arrLen; i++) {
 			for (let j = 0; j < normalizeLen; j++) {
 				const normalizeType = normalize[j]
-				
+
 				// Check if this type should be processed
 				if (typeArray && !typeArray.includes(normalizeType)) {
 					continue
 				}
-				
+
 				const typeMap = normalizeMapping[normalizeType]
 				// Apply normalization if mapping exists (later types override earlier ones)
 				if (typeMap && typeMap[arr[i]] !== undefined) {
@@ -773,8 +772,7 @@ class ChatFilter {
 			return { normalized: str, mapping: mapping }
 		}
 
-		const includeDiacritics = type === undefined || type === 'diacritics' || 
-			(this._isArray(type) && type.includes('diacritics'))
+		const includeDiacritics = type === undefined || type === 'diacritics' || (this._isArray(type) && type.includes('diacritics'))
 		const normalizeMap = includeDiacritics ? this.normalize_map_all : this.normalize_map_no_diacritics
 
 		if (!normalizeMap) {
@@ -840,7 +838,7 @@ class ChatFilter {
 			}
 			return isEnglish ? exactMatch.category : replacementStr
 		}
-		
+
 		// Work with a copy of the array for modifications
 		const workingArr = originalArr.slice()
 
@@ -884,7 +882,7 @@ class ChatFilter {
 							categoryModified = true
 						}
 					}
-					
+
 					// Re-normalize after this category if it made changes
 					if (categoryModified) {
 						const renormalized = this._normalizeWithMapping(workingArr.join(''), this.NORMALIZE_TYPES)
@@ -965,7 +963,7 @@ class ChatFilter {
 				while (swearIndex !== -1) {
 					const originalStart = this._findOriginalPosition(swearIndex, updatedPositionMapping)
 					const originalEnd = this._findOriginalPosition(swearIndex + swear.length - 1, updatedPositionMapping) + 1
-					
+
 					if (originalStart >= 0 && originalEnd > originalStart && originalEnd <= workingArr.length) {
 						workingArr.splice(originalStart, originalEnd - originalStart, ...Array.from(replacementStr))
 						modified = true
@@ -1079,7 +1077,7 @@ class ChatFilter {
 	 * @param {string} language - The language code (affects which normalization types are used)
 	 * @returns {string} The normalized string, or the original value if not a string
 	 */
-	_normalizeText(str, language) {
+	_normalizeText(str, language= 'en') {
 		const validated = this._validateStringInput(str)
 		if (!validated) {
 			return str
@@ -1090,17 +1088,15 @@ class ChatFilter {
 		str = this.remove_zalgo(str)
 
 		// 2. Normalize Unicode characters
-		const normalize_types = language !== 'en' 
-			? this.NORMALIZE_TYPES_NO_DIACRITICS  // Exclude diacritics for non-English (pre-computed)
-			: this.NORMALIZE_TYPES  // Use all types for English
+		const normalize_types = language !== 'en' ? this.NORMALIZE_TYPES_NO_DIACRITICS : this.NORMALIZE_TYPES
 		str = this.normalize(str, normalize_types)
 
 		// 3. Remove combining marks and invisible characters
 		str = this.remove_combining(this.remove_invisible_before(str))
-		
+
 		// 4. Normalize spaces around dots and other separators for better pattern matching
 		str = str.replace(/\s*\.\s*/g, '.').replace(/\s+/g, ' ')
-		
+
 		// 5. Clean up whitespace
 		return this._cleanWhitespace(str)
 	}
@@ -1179,7 +1175,7 @@ class ChatFilter {
 					continue
 				}
 				const normalizedPattern = pattern.replace(/\\\$/g, '$').trim().toLowerCase()
-				
+
 				if (normalizedInput === normalizedPattern) {
 					// Check if it's in replace list
 					const replacement = this._checkReplaceList(profanity1Lower, data.replace, language)
@@ -1248,7 +1244,7 @@ class ChatFilter {
 		const replacementStr = this.REPLACEMENT_STRING
 		const spamCategories = ['emailshidden', 'websitesbanned', 'spam']
 		const spamCategoriesLen = spamCategories.length
-		
+
 		for (let catIdx = 0; catIdx < spamCategoriesLen; catIdx++) {
 			const categoryArray = enMapping[spamCategories[catIdx]]
 			if (!this._isArray(categoryArray)) {
@@ -1522,13 +1518,13 @@ class ChatFilter {
 		// We need to track positions through zalgo removal and normalization
 		// Use remove_zalgo to get zalgo-removed version, then build mapping
 		const zalgoRemovedStr = this.remove_zalgo(originalStr)
-		
+
 		// Build mapping from zalgo-removed positions to original positions
 		// by comparing characters between original and zalgo-removed strings
 		const originalArr = Array.from(originalStr)
 		const zalgoRemovedArr = Array.from(zalgoRemovedStr)
 		const zalgoMapping = [] // Maps from zalgo-removed position to original position
-		
+
 		let origIdx = 0
 		for (let zalgoIdx = 0; zalgoIdx < zalgoRemovedArr.length; zalgoIdx++) {
 			// Find matching character in original string
@@ -1546,17 +1542,15 @@ class ChatFilter {
 				zalgoMapping.push(zalgoMapping.length > 0 ? zalgoMapping[zalgoMapping.length - 1] : 0)
 			}
 		}
-		
+
 		const strForDetection = zalgoRemovedStr
-		
+
 		// Normalize with position mapping (exclude diacritics for non-English)
-		const normalize_types = language !== 'en' 
-			? this.NORMALIZE_TYPES_NO_DIACRITICS  // Exclude diacritics for non-English
-			: this.NORMALIZE_TYPES  // Use all types for English
+		const normalize_types = language !== 'en' ? this.NORMALIZE_TYPES_NO_DIACRITICS : this.NORMALIZE_TYPES
 		const normalized = this._normalizeWithMapping(strForDetection, normalize_types)
 		const normalizedStr = normalized.normalized
 		const normalizeMapping = normalized.mapping
-		
+
 		// Combine mappings: normalized position -> zalgo-removed position -> original position
 		const positionMapping = []
 		for (let i = 0; i < normalizeMapping.length; i++) {
