@@ -190,7 +190,7 @@ export default class Network {
         writer.setStringUTF8(text)
         this.send(writer)
     }
-    
+
     onChatMessage(reader) {
         const flagMask = reader.getUint8();
         const color = {
@@ -198,6 +198,7 @@ export default class Network {
             g: reader.getUint8(),
             b: reader.getUint8()
         }
+
         const rawName = reader.getStringUTF8()
         const content = reader.getStringUTF8()
         const name = Cell.parseName(rawName).name || "Unnamed"
@@ -206,14 +207,7 @@ export default class Network {
         const admin = flagMask & 0x40 ? true : false
         const mod = flagMask & 0x20 ? true : false
 
-            this.messages.push({
-                server, 
-                admin,
-                mod,
-                color,
-                name,
-                content
-            });
+        this.messages.push({ server, admin, mod, color, name, content });
         this.core.ui.updateChat()
         this.core.ui.chatContent.scrollTop = 9000000
     }
@@ -340,7 +334,7 @@ export default class Network {
         for (let i = 0; i < addedCount; i++) {
             const killer = reader.getUint32();
             const killed = reader.getUint32();
-			if (!cellsByID.has(killer) || !cellsByID.has(killed)) continue;
+            if (!cellsByID.has(killer) || !cellsByID.has(killed)) continue;
             cellsByID.get(killed).destroy(killer);
         }
 
@@ -380,7 +374,6 @@ export default class Network {
                 if (name) cell.name = name;
                 if (skin) cell.skin = skin;
             } else this.addCell(id, x, y, r, name, color, skin, flags)
-            
         }
 
         // dissapear records
