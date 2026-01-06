@@ -4,11 +4,12 @@
 	},
 	"mapping": {
 		"en": {
-			"numbers": ["number", "numba", " t.w.o", " t..w..o", " tw.o", " t.wo", " t..wo", "t\\.\\.wo", "t\\.wo", "t`wo", "tvvo", " two", "t.h.r.e.e", "th.r.e.e", "t.hree", "t.h.r.e", "th.ree", "thre.e", "th.r.ee", "thr.ee", "three", "f..o..u..r", "f.o.u.r", "f.uo.r", "f.o.ur", "fo..ur", "f.our", "fo.ur", "fou.r", "fo.r", "four", "f...i...v...e", "f..i..v..e", "f..i.v..e", "f...iv..e", "f.i.v.e", "fi..ve", "fiv..e", "f..ive", "f.ive", "five", "fif..ty", "s.i.x.t.y", "si..xty", "s.ixty", "sixty", "s.i.x", "si..x", "si.x", "s.ix", "six", "s.e.v.e.n.t.y", "s.eventy", "seventy", "s.e.v.e.n", "se..ve.n", "se..ven", "s.even", "sev.n", "seven", "e.i.g.h.t.y", "e.ighty", "eighty", "e.i.g.h.t", "e..ight", "e.ight", "ei.gh.t", "eght", " eight", "n.i.n.e.t.y", "n.inety", "ninety", "n..i..n..e", "ni..n..e", "n.i.n.e", " n.ine", "nine", " t.e.n", " te.n", " te..n", " ten", "e..l..e..v..e..n", "e..l..e.ve.n", "e.l.e.v.e.n", "e.leven", "eleven", "t.w.e.l.v.e", "t.welve", "twelve", "t.h.i.r.t.e.e.n", "thirt.een", "t.hirteen", "thirteen", "f.o.u.r.t.e.e.n", "f.ourteen", "fourteen", "f.o.r.t.e.e.n", "f.orteen", "forteen", "f.i.f.t.e.e.n", "f.i.f.f.t.e.e.n", "f.ifteen", "fift.een", "fifteen", "s.i.x.t.e.e.n", "s.ixteen", "s.x.teen", "sixteen", "s.e.v.e.n.t.e.e.n", "seve.nteen", "s.eventeen", "seventeen", "e.i.g.h.t.e.e.n", "e.ighteen" ,"eighteen", "n.i.n.e.t.e.e.n", "n.ineteen", "nineteen", "t..w..e..n..t..y", "t.w.e.n.t.y", "t.wenty", "tw.enty", "twen.y", "twenty", "t.h.i.r.t.y", "thi..rty", "thirt.y", "t.hirty", "thirty", "f.o.u.r.t.y", "f.ourty", "fourty", "f.o.r.t.y", "f.orty", "forty", "f.i.f.t.y", "f.ifty", "fifty", "h.undred", "hu..ndred", "hun..dred", "hundred", "t..h..o..u..s..a..n..d", "thou..sand", "t.housand", "thousand"],
+			"spamcharacters": ["﷽", "〉", "〈", "【", "】", "『", "』", "❞", "❝", "～", "〝", "〞", "ًًًًً", "⸺", "ဪ", "௵", "༽", "╲", "⎝", "⧹", "⎠", "╱", "⧸", "⎨", "⎬", "▀", "▄", "𒐧", "𒐨", "𒐪", "𒐫", "𒀱", "꧁","꧂", "𒆜", "⸻", "𒅃", "𒄊", "𒈜", "𒌧", "𒉮", "𒁎", "𒄡", "𒅌", "𒈓", "𒈙", "𒊎", "꧅",  "ꦿ", "𒀰"],
 			"emailshidden": ["email", "gmail", "yahoo", "@gmail\\.com", "@yahoo\\.com"],
 			"websitesbanned": ["minnit", "minnit\\.chat", "sweet chip", "sweet chat", "sweetchip", "sweetchat", "sweetchip\\.net", "whereby\\.com", "gmail\\.com", "theresalwaysalighthouse\\.com", "yahoo\\.com", "xnxx\\.com", "redtube", "red.tube", "redtube\\.com", "p.o.r.n.h.u.b", "porn.hub", "pornhub", "pronhub", "prn hub", "brazzers", "xvids", "xvideos", "xnxx", "meet\\.google\\.com", "xvideos\\.com", "xnxx\\.com", "pornhub\\.com", "brazzers\\.com", "thothub\\.com", "fifamatchcreator\\.com", "googleads\\.g\\.doubleclick\\.net", "freegiftcards\\.co", "bc\\.vc", "ow\\.ly", "bit\\.ly", "shorturl\\.at", "send\\.digital", "sites\\.social", "great\\.social", "latest\\.digital", "pages\\.news", "pages\\.today", "visit\\.news", "b\\.link", "urlzs\\.com", "tinyurl\\.com", "tiny\\.cc", "tapwith\\.us", "t\\.co", "goo\\.gl", "rblx\\.gg", "discord\\.gg", "gg\\.gg", "iplogger\\.org", "2no\\.co", "joinmy\\.site", "iplogger\\.com", "iplogger\\.ru", "yip\\.su", "iplogger\\.co", "iplogger\\.info", "ipgrabber\\.ru", "ipgraber\\.ru", "iplis\\.ru", "02ip\\.ru", "ezstat\\.ru", "wow\\.link", "grabify\\.link", "bmwforum\\.co", "leancoding\\.co", "spottyfly\\.com", "stopify\\.co", "yoütu\\.be", "discörd\\.com", "minecräft\\.com", "freegiftcards\\.co", "disçordapp\\.com", "fortnight\\.space", "fortnitechat\\.site", "joinmy\\.site", "curiouscat\\.club", "catsnthings\\.fun", "yourtube\\.site", "youtubeshort\\.watch", "catsnthing\\.com", "youtubeshort\\.pro", "amishdatacenter\\.com", "poweredbydialup\\.org", "amishprincess\\.com", "packetlivesmatter\\.club", "packetlivesmatter\\.online", "canadianlumberjacks\\.club", "canadianlumberjacks\\.online", "poweredbydialup\\.club", "poweredbydialup\\.online", "poweredbysecurity\\.org", "poweredbysecurity\\.online"],
 			"卐": ["卐卐", "卐", "卍卍", "卍", "☭☭", "☭", "💩💩", "💩"],
 			"🖕": ["🖕" , "┌∩┐(◣_◢)┌∩┐", "┌∩┐(O_O)┌∩┐", "┌∩┐(-_-)┌∩┐", "╭∩╮", "╭ᑎ╮", "┌∩┐", "\\(\\.\\) \\(\\.\\)", "\\(\\{\\}\\)", "b=d", "b==d", "b===d", "b====d", "d=b", "d==b", "d===b", "d====b", "&amp;=d", "&amp;==d", "&amp;===d", "d====&amp;", "d==&amp;", "d===&amp;", "d====&amp;"],
+			"doxx": ["doxxed", "swat"],
 			"penis": ["p.e.n.i.s", "p.e.n. i s", "p e nis", "p.nis ", "pen.is", "peni.s", "p e e n", "pe en", "pennys", "pennis", "pennies", "peeness", "pness", "penus", "peanus", "peniss", "penis\\*", "penis-", "penis", "penls", "pen!s", "pennios", "benis"],
 			"fml": ["fml"],
 			"hermaphrodite": ["f\\.utanari", "futanari", " futa", "hermaphrodite"],
@@ -51,7 +52,7 @@
 			"sex": ["s.e.x", " s.ex", "se.x", "secs", "seex", "seggs", "secks", "segs", "sexo", "seggz", "segz", "shagg", "secks", "seks", " sks", "se❌", "se❎", "sex", "sx"],
 			"pussy": ["p.u.s.s.y", "pu.s.s.y", "p.u.ss.y", "pu.sy", "puss.y", "pu.s.sy", "p.ussy", "pu.ssy", "puss.y", "pu'ssies", "pussay", "pusse", "pussy", "pusy", "p.ssy", "p\\*ssy", "p\\*\\*ssy", "puzzy", "pu\\*ssi", "pussi", "pussie", "pu55y", "pus\\$y", "pu\\.\\.ssy", "pus\\.\\.\\.\\.sy", "pus\\.\\.\\.sy", "pus\\.\\.sy", "pus\\.sy", "p\\*\\*sy", "pu\\$sy", "pu\\$\\$y", "pweassse", "pweasse", "pwease", "qusy", "puzy", "posy", "pssy", "my psy", "wet psy", "psy wet", "puss", "pus "],
 			"whore": ["w \\. h o re", "w.h.o.r.e", "w.h.o.re", "who.re", "whoree", "wh o r e", "wh or es", "wh or e", "whore", "wh0r3", "wh0re", "whxxe", "whor3", " hoe"],
-			"gay": ["faggot", "i am gei", "ga./y", ",g  a  y", "ggaayy", "G A . Y", "g \\. a \\. y\\.", "g a y", "g,a,y", "g\\.\\.ays", "\\.g\\.a\\.y", "g\\.a\\.y", " g.a.y", "g.@.y", "ga\\.yy", "g\\.ay", "ga\\.y", "ga\\.\\.y", "ga\\.\\.y", "ghey", "gaey", "geay", "gai ", "ga ae", "ga\\.e", "g a e", "ga e", "g ae", "gae ", "gae\\?", "g//ay", "g/ay", "ga//y", "ga/y", "-gay", "ga\\.'y", "g-a y", "g a-y", "g-ay", "ga-y", "\\*gay", "g e a y", "g ay", "ga y", "ga'y", " ge y", "g ey", "gaÿ", "gays", "gyay", "gay", "g@y", "g4y", "gey ", "gei "],
+			"gay": ["faggot", "i am gei", "ga./y", ",g  a  y", "ggaayy", "G A . Y", "g \\. a \\. y\\.", "g a y", "g,a,y", "g\\.\\.ays", "\\.g\\.a\\.y", "g\\.a\\.y", "g.a.y", "g.@.y", "ga\\.yy", "g\\.ay", "ga\\.y", "ga\\.\\.y", "ga\\.\\.y", "ghey", "gaey", "geay", "gai ", "ga ae", "ga\\.e", "g a e", "ga e", "g ae", "gae ", "gae\\?", "g//ay", "g/ay", "ga//y", "ga/y", "-gay", "ga\\.'y", "g-a y", "g a-y", "g-ay", "ga-y", "\\*gay", "g e a y", "g ay", "ga y", "ga'y", " ge y", "g ey", "gaÿ", "gays", "gyay", "gay", "g@y", "g4y", "gey ", "gei "],
 			" cum": ["c\\*\\*uu\\*m", "cc\\*uu\\*mm", "cumcum", "cums", "man juice", "cu'mjar", "cumjar", "cumlicker", "cum licker", "cum drinker", "cumdrinker", "come master", "comemaster", "cumshots", "cumshot", "cum shots", "cum shot", "come on me", "comeonme", "coom", "cummy", ":cum:", "cu\\.\\.m", "c\\.u\\.m", "c/u/m", "c.u./m", "c\\*u/\\*m", "c u m", " c.u.m ", "c.u.m\\?", "c\\.\\.u\\. m", "c.um ", "cu\\./m", "c\\.um", "cu\\.m",  "c\\.um", "c um", "cu m", "cu.m ", "c\\(u\\)m", "c^m", " cum"],
 			"cunt": ["c.u.n.t", "cu\\.\\.\\.nt", "cun..t", "cuunt", "cu\\.\\.nt", "c\\.unt", "cu.nt", "cun.t", "cu.nt", " cuntns ", " cunts ", "cvnt", "cunt"],
 			"killer": ["k i l l ed", "k i lled", "ki/lled", "kelled", "killed", "ki\\|\\|in", "ki\\|\\|ing", "killin", "killing", "ki//ing", "k//ing", "killer", "k!ller", "kller"],
@@ -168,7 +169,7 @@
 			"lube": ["lubrication", "L U B R I C A T E D", "lubricated", "lube"],
 			"lesbian": ["l e s b i a n", "iamlesbean", "le.sb.ian", "le,sb,ian", "lesbians", "lesb.ian", "lesbian", "le\\.bian", "le\\$bian", "lesnian", "lesbean", "le\\.bean", "le\\$bean", "lesbo", "lesbi", "lesby"],
 			"porn": ["p''oorrn", "pornography", "porno", "p0rno", "p0rn0", "p.o.r.n", "po..rn", "po\\.r\\.n", "po.rn", "po,rn", "po rn", "p\\.\\. o rn", "p\\.o\\.rn", "po\\.rn", "p\\.orn", "p o rn", "porrn", "porn", "pron ", "prn ", "pr0n", "p0rn"],
-			"spam": ["spammed", "spamed", "spammer", "spamer", "spamming", "spaming", "sp\\.am", "sp am", "doxxed", "doxx", "swat", "﷽", "〉", "〈", "【", "】", "『", "』", "❞", "❝", "～", "〝", "〞", "ًًًًً", "⸺", "ဪ", "௵", "༽", "╲", "⎝", "⧹", "⎠", "╱", "⧸", "⎨", "⎬", "▀", "▄", "𒐧", "𒐨", "𒐪", "𒐫", "𒀱", "꧁","꧂", "𒆜", "⸻", "𒅃", "𒄊", "𒈜", "𒌧", "𒉮", "𒁎", "𒄡", "𒅌", "𒈓", "𒈙", "𒊎", "꧅",  "ꦿ", "𒀰"],
+			"spam": ["spammed", "spamed", "spammer", "spamer", "spamming", "spaming", "sp\\.am", "sp am"],
 			"tits": ["titties", "tittes", "tities", "tiddies", "tiddys", "tiddis", "t.i.t.s", "tits", "titty", " t its", "tit s", " tit "],
 			"urine": ["drankpiss", "urine", "pi s ing", "pissing", "p i s s", "pi s s", "pi ss", "piss "],
 			"boobs": ["milkers", "juggs", "jugs", "boobs", " bobs", "boobas", "booba", "boobies", "boobie", " boob "],
@@ -230,7 +231,7 @@
 			"smile": ["blood"],
 			"tickled": ["stabbed", "jerkoff"],
 			"student": ["nazi", "communist", "soviet"],
-			"meet": ["gangbang", "kidnapped", "bomb", "genocide", " orgy"],
+			"meet": ["gangbang", "kidnapped", "bomb", "genocide", " orgy", "doxx"],
 			"selfie": ["dickpic", "nude"],
 			"sugar": ["drugs"],
 			"omg": ["omfg"],
@@ -258,7 +259,7 @@
 			"behind": ["anal", "asshole", "anus", " ass "],
 			"🌼": ["卐", "卍", "ᛋᛋ"],
 			"👌": ["🖕"],
-			"": ["address", "numbers", "emailshidden", "websitesbanned", "spam", "swear", "asfaq", "my name", " age ", "bbc"]
+			"": ["spamcharacters", "emailshidden", "websitesbanned", "spam", "swear", "address", "asfaq", " age "]
 		}
 	}
 }

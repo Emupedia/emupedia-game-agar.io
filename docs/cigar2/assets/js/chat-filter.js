@@ -1,8 +1,4 @@
 /**
- * Chat Filter Library
- * A comprehensive word censorship and text filtering system
- * Extracted from main.js for reuse across multiple projects
- *
  * @class ChatFilter
  * @description A comprehensive word censorship and text filtering system that normalizes Unicode characters,
  * removes profanity, spam, and other unwanted content from text input.
@@ -15,6 +11,7 @@
  * await filter.initialize();
  * const filtered = filter.filter_text('some text', 'en');
  */
+
 class ChatFilter {
 	/**
 	 * Creates an instance of ChatFilter.
@@ -105,6 +102,56 @@ class ChatFilter {
 			console.error('Failed to initialize ChatFilter:', error)
 			throw error
 		}
+	}
+
+	str_replace(search, replace, subject, countObj) {
+		let i = 0
+		let j = 0
+		let temp = ''
+		let repl = ''
+		let sl = 0
+		let fl = 0
+		let f = [].concat(search)
+		let r = [].concat(replace)
+		let s = subject
+		let ra = Object.prototype.toString.call(r) === '[object Array]'
+		let sa = Object.prototype.toString.call(s) === '[object Array]'
+		s = [].concat(s)
+
+		if (typeof search === 'object' && typeof replace === 'string') {
+			temp = replace
+			replace = []
+
+			for (i = 0; i < search.length; i += 1) {
+				replace[i] = temp
+			}
+
+			temp = ''
+			r = [].concat(replace)
+			ra = Object.prototype.toString.call(r) === '[object Array]'
+		}
+
+		if (typeof countObj !== 'undefined') {
+			countObj.value = 0
+		}
+
+		for (i = 0, sl = s.length; i < sl; i++) {
+			if (s[i] === '') {
+				continue
+			}
+
+			for (j = 0, fl = f.length; j < fl; j++) {
+				temp = s[i] + ''
+				repl = ra ? (r[j] !== undefined ? r[j] : '') : r[0]
+				s[i] = (temp).split(f[j]).join(repl)
+
+				if (typeof countObj !== 'undefined') {
+					countObj.value += ((temp.split(f[j])).length - 1)
+				}
+			}
+		}
+
+		return sa ? s : s[0]
 	}
 
 	/**
@@ -1224,25 +1271,29 @@ class ChatFilter {
 	 */
 	remove_spam(str) {
 		const validated = this._validateStringInput(str)
+
 		if (!validated) {
 			return str
 		}
+
 		str = validated
 
 		const blacklistData = this.blacklist_data
+
 		if (!blacklistData) {
 			return str
 		}
 
 		// Remove emails, websites, and spam patterns
 		const enMapping = this._getLanguageMapping(blacklistData, 'en')
+
 		if (!enMapping) {
 			return this._cleanWhitespace(str)
 		}
 
 		// Cache replacement string to avoid repeated property access
 		const replacementStr = this.REPLACEMENT_STRING
-		const spamCategories = ['emailshidden', 'websitesbanned', 'spam']
+		const spamCategories = ['spamcharacters', 'emailshidden', 'websitesbanned']
 		const spamCategoriesLen = spamCategories.length
 
 		for (let catIdx = 0; catIdx < spamCategoriesLen; catIdx++) {
@@ -1347,6 +1398,56 @@ class ChatFilter {
 	}
 
 	/**
+	 * Checks if a nickname contains profanity without modifying it.
+	 * @param {*} str - The nickname to check (will be converted to string if needed)
+	 * @param {string} [language='en'] - The language code for filtering (defaults to 'en')
+	 * @returns {boolean} True if profanity is detected, false otherwise
+	 */
+	hasProfanity(str, language) {
+		// Input validation
+		const validation = this._validateInput(str, language)
+		if (!validation.valid) {
+			return false
+		}
+		const originalStr = validation.str
+		language = validation.language
+
+		// Early return if blacklist is disabled
+		if (!this._isBlacklistEnabled()) {
+			return false
+		}
+
+		// Prepare normalized version for detection
+		const zalgoRemovedStr = this.remove_zalgo(originalStr)
+		const normalized = this._normalizeWithMapping(zalgoRemovedStr, this.NORMALIZE_TYPES)
+		const normalizedStr = normalized.normalized
+
+		// Check if profanity exists using normalized version
+		let hasProfanity = false
+
+		// Check exact matches
+		const exactMatch = this._checkExactMatch(normalizedStr, language, this.blacklist_data)
+		if (exactMatch) {
+			hasProfanity = true
+		}
+
+		// Check regex matches
+		if (!hasProfanity && this.blacklist_search_regex[language]) {
+			hasProfanity = this._testRegexObject(this.blacklist_search_regex[language], normalizedStr)
+		}
+
+		// Check swear words
+		if (!hasProfanity) {
+			const languageMapping = this._getLanguageMapping(this.blacklist_data, language)
+			if (languageMapping && languageMapping.swear) {
+				hasProfanity = this._processSwearWords(normalizedStr, languageMapping.swear, false)
+			}
+		}
+
+		return hasProfanity
+	}
+
+	/**
 	 * Removes profanity from a string by replacing it with replacement strings or category names.
 	 * Checks exact matches first, then applies regex replacements, then checks swear words.
 	 * @param {*} str - The text to process (will be converted to string if needed)
@@ -1435,56 +1536,6 @@ class ChatFilter {
 		str = this.remove_profanity(str, language)
 
 		return str
-	}
-
-	/**
-	 * Checks if a nickname contains profanity without modifying it.
-	 * @param {*} str - The nickname to check (will be converted to string if needed)
-	 * @param {string} [language='en'] - The language code for filtering (defaults to 'en')
-	 * @returns {boolean} True if profanity is detected, false otherwise
-	 */
-	hasProfanity(str, language) {
-		// Input validation
-		const validation = this._validateInput(str, language)
-		if (!validation.valid) {
-			return false
-		}
-		const originalStr = validation.str
-		language = validation.language
-
-		// Early return if blacklist is disabled
-		if (!this._isBlacklistEnabled()) {
-			return false
-		}
-
-		// Prepare normalized version for detection
-		const zalgoRemovedStr = this.remove_zalgo(originalStr)
-		const normalized = this._normalizeWithMapping(zalgoRemovedStr, this.NORMALIZE_TYPES)
-		const normalizedStr = normalized.normalized
-
-		// Check if profanity exists using normalized version
-		let hasProfanity = false
-
-		// Check exact matches
-		const exactMatch = this._checkExactMatch(normalizedStr, language, this.blacklist_data)
-		if (exactMatch) {
-			hasProfanity = true
-		}
-
-		// Check regex matches
-		if (!hasProfanity && this.blacklist_search_regex[language]) {
-			hasProfanity = this._testRegexObject(this.blacklist_search_regex[language], normalizedStr)
-		}
-
-		// Check swear words
-		if (!hasProfanity) {
-			const languageMapping = this._getLanguageMapping(this.blacklist_data, language)
-			if (languageMapping && languageMapping.swear) {
-				hasProfanity = this._processSwearWords(normalizedStr, languageMapping.swear, false)
-			}
-		}
-
-		return hasProfanity
 	}
 
 	/**
