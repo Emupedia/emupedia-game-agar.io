@@ -229,7 +229,7 @@ label#nick-list:after, label#skin-list:after {
 
 #news .text, #gameplay .text {
 	overflow-y: scroll;
-	height: 550px;
+	height: 335px;
 	font-size: 15px;
 }
 
