@@ -227,7 +227,13 @@ label#nick-list:after, label#skin-list:after {
 	box-shadow: 0 0 9px #243342;
 }
 
-#news .text, #gameplay .text {
+#news .text {
+	overflow-y: scroll;
+	height: 550px;
+	font-size: 15px;
+}
+
+#gameplay .text {
 	overflow-y: scroll;
 	height: 335px;
 	font-size: 15px;
