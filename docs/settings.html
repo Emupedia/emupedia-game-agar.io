@@ -139,6 +139,7 @@
 						<button id="formatBtn" title="Pretty-print JSON">Format</button>
 						<button id="minifyBtn" title="Minify JSON">Minify</button>
 						<button id="reloadBtn" title="Reload from localStorage">Reload</button>
+						<button id="resetBtn" title="Reset settings to an empty object">Reset</button>
 						<button id="copyBtn" title="Copy to clipboard">Copy</button>
 						<button id="downloadBtn" title="Download backup as JSON">Backup</button>
 						<label class="btn-like" title="Restore from JSON file">Restore<input id="fileInput" type="file" accept=".json,application/json" /></label>
@@ -244,9 +245,26 @@
 				}
 			}
 
+			function resetSettings() {
+				const shouldReset = window.confirm('Are you sure you want to reset your data? This will clear all settings.');
+				if (!shouldReset) {
+					setStatus('Reset canceled.', 'warn');
+					return;
+				}
+
+				const emptySettings = {};
+				localStorage.setItem(STORAGE_KEY, JSON.stringify(emptySettings));
+				ta.value = JSON.stringify(emptySettings, null, INDENT);
+				updateCharCount();
+				validateLive();
+				setStatus('Settings reset and saved to localStorage.', 'ok');
+				posEl.textContent = '';
+			}
+
 			// ---------- UI actions ----------
 			document.getElementById('saveBtn').addEventListener('click', saveSettings);
 			document.getElementById('reloadBtn').addEventListener('click', loadSettings);
+			document.getElementById('resetBtn').addEventListener('click', resetSettings);
 			document.getElementById('formatBtn').addEventListener('click', () => {
 				try {
 					const obj = JSON.parse(ta.value);
