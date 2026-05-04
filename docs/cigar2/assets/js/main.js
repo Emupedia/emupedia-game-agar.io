@@ -9879,16 +9879,16 @@
 			// Store button actions to execute on touchend if not dragging
 			if (event.target.id === 'splitBtn') {
 				dragState.pendingAction = () => {
-				wsSend(UINT8_CACHE[minionControlled ? 0x16 : 0x11]);
-				};
+					wsSend(UINT8_CACHE[minionControlled ? 0x16 : 0x11]);
+				}
 			}
 
 			if (event.target.id === 'doubleSplitBtn') {
 				dragState.pendingAction = () => {
 					const code = UINT8_CACHE[minionControlled ? 0x16 : 0x11];
-				wsSend(code);
 					wsSend(code);
-				};
+					wsSend(code);
+				}
 			}
 
 			if (event.target.id === 'multiSplitBtn') {
@@ -9898,7 +9898,7 @@
 					const macroCooldown = settings.splitMacro ? 0 : 1000 / 7;
 					splitMacroIntervalID = setInterval(() => wsSend(code), macroCooldown);
 					wsSend(code);
-				};
+				}
 			}
 
 			if (event.target.id === 'ejectBtn') {
@@ -10007,11 +10007,17 @@
 		window.addEventListener('touchend', handleTouchEnd, touchListenerOptions);
 		window.addEventListener('touchcancel', handleTouchEnd, touchListenerOptions);
 
+		const isMouseEventFromTouch = event => {
+			const firesTouch = event.sourceCapabilities?.firesTouchEvents;
+			return firesTouch === true;
+		};
+
 		// Mouse event handlers for button dragging
 		// Note: These work independently of touch controls to support desktop/mouse users
 		// Use capture phase to ensure this runs before other mousedown handlers
 		window.addEventListener('mousedown', event => {
 			if (typeof event['isTrusted'] !== 'boolean' || event['isTrusted'] === false) return;
+			if (isMouseEventFromTouch(event)) return;
 
 			const target = event.target;
 			const buttonId = target.id;
@@ -10060,6 +10066,7 @@
 
 		window.addEventListener('mousemove', event => {
 			if (typeof event['isTrusted'] !== 'boolean' || event['isTrusted'] === false) return;
+			if (isMouseEventFromTouch(event)) return;
 
 			if (dragState.activeButton && !dragState.isDragging) {
 				const moveDistance = Math.hypot((event.pageX || event.clientX) - dragState.startX, (event.pageY || event.clientY) - dragState.startY);
@@ -10078,6 +10085,7 @@
 
 		window.addEventListener('mouseup', event => {
 			if (typeof event['isTrusted'] !== 'boolean' || event['isTrusted'] === false) return;
+			if (isMouseEventFromTouch(event)) return;
 
 			if (dragState.isDragging && dragState.activeButton) {
 				saveButtonPosition(dragState.activeButton);
