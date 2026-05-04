@@ -11288,30 +11288,28 @@
 
 		if (e !== null) e.target.blur();
 
-		if (tempShowSkins) {
-			let saved_skin = isNumberSkin(settings.skin) ? numberToText(settings.skin) : settings.skin;
+		let saved_skin = isNumberSkin(settings.skin) ? numberToText(settings.skin) : settings.skin;
 
-			if (saved_skin !== '' && saved_skin !== ' ') {
-				if (saved_skin.startsWith('https://iili.io/') && !saved_skin.endsWith('.gif')) {
-					if (!bannedSkins.has(saved_skin)) {
-						byId('previewSkin').onerror = () => {
-							byId('previewSkin').onerror = null;
-							drawSkinPreview('./assets/img/transparent.png', byId('previewSkin'));
-						};
-						drawSkinPreview(saved_skin, byId('previewSkin'));
-					} else {
-						drawSkinPreview('./assets/img/banned.png', byId('previewSkin'));
-					}
-				} else {
+		if (saved_skin !== '' && saved_skin !== ' ') {
+			if (saved_skin.startsWith('https://iili.io/') && !saved_skin.endsWith('.gif')) {
+				if (!bannedSkins.has(saved_skin)) {
 					byId('previewSkin').onerror = () => {
 						byId('previewSkin').onerror = null;
 						drawSkinPreview('./assets/img/transparent.png', byId('previewSkin'));
 					};
-					drawSkinPreview(`${SKIN_URL}${saved_skin}.png`, byId('previewSkin'));
+					drawSkinPreview(saved_skin, byId('previewSkin'));
+				} else {
+					drawSkinPreview('./assets/img/banned.png', byId('previewSkin'));
 				}
 			} else {
-				drawSkinPreview('./assets/img/transparent.png', byId('previewSkin'));
+				byId('previewSkin').onerror = () => {
+					byId('previewSkin').onerror = null;
+					drawSkinPreview('./assets/img/transparent.png', byId('previewSkin'));
+				};
+				drawSkinPreview(`${SKIN_URL}${saved_skin}.png`, byId('previewSkin'));
 			}
+		} else {
+			drawSkinPreview('./assets/img/transparent.png', byId('previewSkin'));
 		}
 
 		byId('gallery').hide();
