@@ -7204,11 +7204,21 @@
 	const SKIN_URL = './skins/';
 	const USE_HTTPS = 'https:' === window.location.protocol || window.location.hostname === 'localhost';
 	const EMPTY_NAME = 'An unnamed cell';
+	// Format chars, zero-width marks, and letter-like fillers used to bypass empty-nickname checks (e.g. U+3164 Hangul Filler).
+	const NICK_INVISIBLE_CHARS_RE = /[\p{Cf}]|[\u00AD\u034F\u061C\u115F\u1160\u17B4\u17B5\u180E\u200B-\u200F\u202A-\u202E\u2060-\u2069\u2800\u3164\uFEFF\uFFA0]/gu;
+
+	function sanitizeNickname(nickname) {
+		if (nickname == null || nickname === '') return '';
+		return String(nickname).replace(NICK_INVISIBLE_CHARS_RE, '').trim();
+	}
 
 	function filterNicknameForClient(name) {
 		if (!name || name === EMPTY_NAME) {
 			return name;
 		}
+
+		name = sanitizeNickname(name);
+		if (!name) return EMPTY_NAME;
 
 		if (settings.useWordFilters && filters && filters.initialized) {
 			return filters.filter_nickname(filters.filter_nickname(name, 'en'), 'tr');
@@ -7221,6 +7231,9 @@
 		if (!name || name === EMPTY_NAME) {
 			return name || EMPTY_NAME;
 		}
+
+		name = sanitizeNickname(name);
+		if (!name) return EMPTY_NAME;
 
 		if (filters && filters.initialized) {
 			if (filters.hasProfanity(name, 'en')) {
@@ -7372,14 +7385,15 @@
 
 		wsSend(new Uint8Array([0xFE, 6, 0, 0, 0]));
 
-		if (settings.nick !== '') {
+		const playNick = sanitizeNickname(settings.nick);
+		if (playNick !== '') {
 			const writer = new Writer(true);
 			writer.setUint8(0xFF);
 			writer.setUint8(1);
 			writer.setUint8(0);
 			writer.setUint8(0);
 			writer.setUint8(0);
-			writer.setStringUTF8(filterNicknameForServer(settings.nick));
+			writer.setStringUTF8(filterNicknameForServer(playNick));
 			wsSend(writer);
 		} else {
 			wsSend(new Uint8Array([0xFF, 1, 0, 0, 0]));
@@ -7977,7 +7991,9 @@
 			inputElement.setCustomValidity('');
 		}
 
-		if (!nickname || nickname.trim() === '') {
+		nickname = sanitizeNickname(nickname);
+
+		if (!nickname) {
 			const message = 'Please enter a nickname to play.';
 
 			if (inputElement) {
@@ -7997,7 +8013,7 @@
 			return { allowed: false, reason: message };
 		}
 
-		let nickLower = nickname.trim().toLowerCase();
+		let nickLower = nickname.toLowerCase();
 
 		if (filters && filters.initialized) {
 			nickLower = filters._normalizeText(nickLower).toLowerCase();
@@ -8108,7 +8124,11 @@
 			const elm = byId(prop.charAt(0) === '_' ? prop.slice(1) : prop);
 
 			if (elm) {
-				if (Object.hasOwnProperty.call(obj, prop)) settings[prop] = obj[prop];
+				if (Object.hasOwnProperty.call(obj, prop)) {
+					let val = obj[prop];
+					if (prop === 'nick' && typeof val === 'string') val = sanitizeNickname(val);
+					settings[prop] = val;
+				}
 				initSetting(prop, elm);
 			} else {
 				if (prop === 'mutedPlayers') {
@@ -8127,6 +8147,13 @@
 					Logger.info(`setting ${prop} not loaded because there is no element for it.`);
 				}
 			}
+		}
+
+		settings.nick = sanitizeNickname(settings.nick);
+		if (Array.isArray(settings.nicknames)) {
+			settings.nicknames = settings.nicknames
+				.map(n => sanitizeNickname(n))
+				.filter((n, i, arr) => n.length >= 3 && arr.indexOf(n) === i);
 		}
 	}
 
@@ -8188,9 +8215,8 @@
 	}
 
 	function findFp2FromName(name) {
-		if (!name || name.trim() === '') return null;
-
-		name = name.trim();
+		name = sanitizeNickname(name);
+		if (!name) return null;
 
 		// Remove prefixes like [ADMIN], [MOD], [SERVER]
 		const cleanName = name.replace(/^\[(?:ADMIN|MOD|SERVER)\]\s*/, '');
@@ -10451,13 +10477,14 @@
 		const randomColor = Color.randomColor();
 
 		const changeNick = e => {
-			byId('previewName').innerHTML = filterNicknameForClient(e.target.value);
-			// Validate in real-time to provide immediate feedback
-			isNicknameAllowed(e.target.value.trim(), e.target);
+			const nick = sanitizeNickname(e.target.value);
+			byId('previewName').innerHTML = filterNicknameForClient(nick);
+			isNicknameAllowed(nick, e.target);
 		};
 
 		const saveNick = e => {
-			let nick = e.target.value;
+			let nick = sanitizeNickname(e.target.value);
+			e.target.value = nick;
 
 			const validation = isNicknameAllowed(nick, e.target);
 
@@ -10965,7 +10992,8 @@
 			if (!allowClick && (typeof event['isTrusted'] !== 'boolean' || event['isTrusted'] === false)) return;
 
 			const nickInput = byId('nick');
-			const nickValue = nickInput.value.trim();
+			const nickValue = sanitizeNickname(nickInput.value);
+			nickInput.value = nickValue;
 			const validation = isNicknameAllowed(nickValue, nickInput);
 
 			if (!validation.allowed) {
