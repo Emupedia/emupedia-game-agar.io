@@ -6802,17 +6802,57 @@
 			this.born = syncUpdStamp;
 			this.points = [];
 			this.pointsVel = [];
+			this._massStamp = 0;
+			this._massInt = -1;
+			this._massLabel = '';
+			this._massBitmap = null;
+			this._massBitmapKey = '';
+			this._massDrawSize = 0;
+		}
+		updateMassLabel(force) {
+			const massInt = ~~(this.s * this.s / 100);
+
+			if (settings.slowMassUpdates && settings.massUpdateInterval > 0) {
+				if (!force && this._massLabel && syncAppStamp - this._massStamp < settings.massUpdateInterval) return;
+				this._massStamp = syncAppStamp;
+			}
+
+			if (this._massInt !== massInt) {
+				this._massInt = massInt;
+				this._massLabel = massInt > 0 ? massInt.toString() : '';
+				this._massBitmapKey = '';
+			}
+		}
+		syncMassBitmap() {
+			if (!this._massLabel) {
+				this._massBitmap = null;
+				return;
+			}
+			const massSize = quantizeMassFontSize(this.nameSize / 2);
+			this._massDrawSize = this.drawNameSize / 2;
+			const key = this._massLabel + '.' + massSize;
+			if (this._massBitmapKey === key && this._massBitmap) return;
+			this._massBitmapKey = key;
+			this._massBitmap = getMassLabelCache(this._massLabel, massSize);
+		}
+		getMassDrawY() {
+			let y = this.y;
+			if (this.name && settings.showNames) y += Math.max(this.s / 4.5, this.nameSize / 1.5);
+			return y;
 		}
 		destroy(killerId) {
 			cells.byId.delete(this.id);
 
-			if (cells.mine.remove(this.id) && cells.mine.length === 0) {
-				if (settings.autoRespawn && !escOverlayShown) {
-					allowClick = true;
-					byId('play-btn').click();
-					allowClick = false;
-				} else {
-					showESCOverlay();
+			if (cells.mine.remove(this.id)) {
+				cells.mineSet.delete(this.id);
+				if (cells.mine.length === 0) {
+					if (settings.autoRespawn && !escOverlayShown) {
+						allowClick = true;
+						byId('play-btn').click();
+						allowClick = false;
+					} else {
+						showESCOverlay();
+					}
 				}
 			}
 
@@ -7048,9 +7088,9 @@
 		drawText(ctx) {
 			if (this.s < 20 || this.jagged) return;
 
-			const mass = (~~(this.s * this.s / 100)).toString();
+			const massInt = ~~(this.s * this.s / 100);
 
-			if (settings.showIdenticon && this.fp2 && mass > 100) {
+			if (settings.showIdenticon && this.fp2 && massInt > 100) {
 				let y = this.y;
 
 				y += 2 * Math.max(this.s / 4.5, this.nameSize / 1.5);
@@ -7060,14 +7100,6 @@
 
 			if (this.name && settings.showNames) {
 				drawText(ctx, 'name', this.x, this.y, this.nameSize, this.drawNameSize, this.name, this.nameColor ? this.nameColor.toHex().toUpperCase() : '#ffffff');
-			}
-
-			if (settings.showMass && (cells.mine.indexOf(this.id) !== -1 || cells.mine.length === 0)) {
-				let y = this.y;
-
-				if (this.name && settings.showNames) y += Math.max(this.s / 4.5, this.nameSize / 1.5);
-
-				drawText(ctx, 'mass', this.x, y, this.nameSize / 2, this.drawNameSize / 2, mass);
 			}
 		}
 	}
@@ -7159,6 +7191,9 @@
 
 	const QUADTREE_MAX_POINTS = 32;
 	const CELL_POINTS_MIN = 5;
+	const MASS_MIN_SCREEN_RADIUS = 14;
+	const MASS_MIN_VALUE = 10;
+	const MASS_SPECTATOR_MAX_LABELS = 36;
 	const CELL_POINTS_MAX = 120;
 	const VIRUS_POINTS = 100;
 	const PI_2 = Math.PI * 2;
@@ -7336,7 +7371,7 @@
 					if (!cells.byId.has(killer) || !cells.byId.has(killed))
 						continue;
 
-					if (settings.playSounds && cells.mine.includes(killer)) {
+					if (settings.playSounds && cells.mineSet.has(killer)) {
 						(cells.byId.get(killed).s < 20 ? pelletSound : eatSound).play(parseFloat(settings.soundsVolume));
 					}
 
@@ -7436,11 +7471,13 @@
 					cell.destroy(null);
 				}
 				cells.mine = [];
+				cells.mineSet = new Set();
 				break;
 			}
 			// clear my cells
 			case 0x14: {
 				cells.mine = [];
+				cells.mineSet = new Set();
 				break;
 			}
 			// draw line
@@ -7450,7 +7487,9 @@
 			}
 			// new cell
 			case 0x20: {
-				cells.mine.push(reader.getUint32());
+				const mineId = reader.getUint32();
+				cells.mine.push(mineId);
+				cells.mineSet.add(mineId);
 				break;
 			}
 			// text list
@@ -7651,6 +7690,11 @@
 		wsSend(writer);
 	}
 
+	function syncMineSet() {
+		cells.mineSet.clear();
+		for (let i = 0; i < cells.mine.length; i++) cells.mineSet.add(cells.mine[i]);
+	}
+
 	function gameReset() {
 		cleanupObject(cells);
 		cleanupObject(border);
@@ -7660,6 +7704,7 @@
 		chat.messages = [];
 		leaderboard.items = [];
 		cells.mine = [];
+		cells.mineSet = new Set();
 		cells.byId = new Map();
 		cells.list = [];
 		camera.x = camera.y = camera.target.x = camera.target.y = 0;
@@ -7670,9 +7715,13 @@
 
 	const cells = {
 		mine: [],
+		mineSet: new Set(),
 		byId: new Map(),
 		list: [],
 	};
+
+	const massDrawList = [];
+	const viewportBounds = { left: 0, right: 0, top: 0, bottom: 0 };
 
 	const border = {
 		left: -2000,
@@ -7785,6 +7834,8 @@
 		darkTheme: false,
 		showColor: true,
 		showMass: false,
+		slowMassUpdates: true,
+		massUpdateInterval: 300,
 		showIdenticon: false,
 		_showChat: true,
 		mutedPlayers: [],
@@ -8672,6 +8723,21 @@
 		mainCtx.restore();
 	}
 
+	function updateViewportBounds() {
+		const cW = mainCanvas.width / camera.scale;
+		const cH = mainCanvas.height / camera.scale;
+		const margin = 120;
+		viewportBounds.left = camera.x - cW / 2 - margin;
+		viewportBounds.right = camera.x + cW / 2 + margin;
+		viewportBounds.top = camera.y - cH / 2 - margin;
+		viewportBounds.bottom = camera.y + cH / 2 + margin;
+	}
+
+	function isCellInViewport(cell) {
+		const r = cell.s + 50;
+		return cell.x + r >= viewportBounds.left && cell.x - r <= viewportBounds.right && cell.y + r >= viewportBounds.top && cell.y - r <= viewportBounds.bottom;
+	}
+
 	function drawBorders() {
 		if (!settings.showBorder) return;
 		mainCtx.strokeStyle = '#0000ff';
@@ -8718,8 +8784,30 @@
 		toCamera(mainCtx);
 		drawBorders();
 
+		updateViewportBounds();
+
+		let massDrawSet = null;
+		let prevSmoothing;
+		let prevQuality;
+
+		if (settings.showMass) {
+			massDrawSet = prepareMassDrawSet(drawList);
+			if (massDrawSet.size > 0) {
+				prevSmoothing = mainCtx.imageSmoothingEnabled;
+				prevQuality = mainCtx.imageSmoothingQuality;
+				mainCtx.imageSmoothingEnabled = true;
+				mainCtx.imageSmoothingQuality = 'low';
+			}
+		}
+
 		for (const cell of drawList) {
 			cell.draw(mainCtx);
+			if (massDrawSet && massDrawSet.has(cell)) drawCellMass(cell);
+		}
+
+		if (massDrawSet && massDrawSet.size > 0) {
+			mainCtx.imageSmoothingEnabled = prevSmoothing;
+			mainCtx.imageSmoothingQuality = prevQuality;
 		}
 
 		fromCamera(mainCtx);
@@ -8907,15 +8995,23 @@
 		}
 
 		for (const i of cachedFp.keys()) {
-			if (syncAppStamp - cachedFp.get(i).accessTime >= 5000) {
-				cachedFp.delete(i);
+			const sizeMap = cachedFp.get(i);
+			for (const j of sizeMap.keys()) {
+				if (syncAppStamp - sizeMap.get(j).accessTime >= 5000) {
+					sizeMap.delete(j);
+				}
 			}
+			if (sizeMap.size === 0) cachedFp.delete(i);
 		}
 
-		for (const i of cachedMass.keys()) {
-			if (syncAppStamp - cachedMass.get(i).accessTime >= 5000) {
-				cachedMass.delete(i);
+		for (const i of cachedMassLabels.keys()) {
+			const sizeMap = cachedMassLabels.get(i);
+			for (const j of sizeMap.keys()) {
+				if (syncAppStamp - sizeMap.get(j).accessTime >= 5000) {
+					sizeMap.delete(j);
+				}
 			}
+			if (sizeMap.size === 0) cachedMassLabels.delete(i);
 		}
 	}
 
@@ -8926,14 +9022,15 @@
 	}
 
 	const cachedNames = new Map();
-	const cachedMass = new Map();
+	const cachedMassLabels = new Map();
 	const cachedFp = new Map();
 
 	function drawTextOnto(canvas, ctx, text, size, color = '#ffffff') {
+		size = Math.max(1, size | 0);
 		ctx.font = size + 'px Ubuntu';
 		ctx.lineWidth = Math.max(~~(size / 10), 2);
-		canvas.width = ctx.measureText(text).width + 2 * ctx.lineWidth;
-		canvas.height = 4 * size;
+		canvas.width = Math.max(1, ctx.measureText(text).width + 2 * ctx.lineWidth);
+		canvas.height = Math.max(1, 4 * size);
 		ctx.font = size + 'px Ubuntu';
 		ctx.lineWidth = Math.max(~~(size / 10), 2);
 		ctx.textBaseline = 'middle';
@@ -9050,32 +9147,119 @@
 		return cache;
 	}
 
-	function newMassCache(size) {
-		const canvases = {
-			0: { }, 1: { }, 2: { }, 3: { }, 4: { },
-			5: { }, 6: { }, 7: { }, 8: { }, 9: { }
-		};
+	function quantizeMassFontSize(size) {
+		return Math.max(3, ~~(Math.max(1, size | 0) / 3) * 3);
+	}
 
-		for (const i in canvases) {
-			const canvas = canvases[i].canvas = document.createElement('canvas');
-			const ctx = canvas.getContext('2d');
+	function isValidTextCanvas(canvas) {
+		return canvas && canvas.width > 0 && canvas.height > 0;
+	}
 
-			drawTextOnto(canvas, ctx, i, size);
-			canvases[i].canvas = canvas;
-			canvases[i].width = canvas.width;
-			canvases[i].height = canvas.height;
+	function newMassLabelCache(value, size) {
+		size = quantizeMassFontSize(size);
+		const canvas = document.createElement('canvas');
+		const ctx = canvas.getContext('2d');
+
+		drawTextOnto(canvas, ctx, value, size);
+
+		if (!cachedMassLabels.has(value)) {
+			cachedMassLabels.set(value, new Map());
 		}
 
 		const cache = {
-			canvases: canvases,
+			width: canvas.width,
+			height: canvas.height,
+			canvas: canvas,
+			value: value,
 			size: size,
-			lineWidth: Math.max(~~(size / 10), 2),
 			accessTime: syncAppStamp
 		};
 
-		cachedMass.set(size, cache);
+		cachedMassLabels.get(value).set(size, cache);
 
 		return cache;
+	}
+
+	function getMassLabelCache(value, size) {
+		size = quantizeMassFontSize(size);
+
+		let sizes = cachedMassLabels.get(value);
+		if (!sizes) return newMassLabelCache(value, size);
+
+		const direct = sizes.get(size);
+		if (direct && isValidTextCanvas(direct.canvas)) {
+			direct.accessTime = syncAppStamp;
+			return direct;
+		}
+
+		for (const cachedSize of sizes.keys()) {
+			if (cachedSize === size) continue;
+			if (toleranceTest(size, cachedSize, size / 4)) {
+				const cache = sizes.get(cachedSize);
+				if (isValidTextCanvas(cache.canvas)) {
+					cache.accessTime = syncAppStamp;
+					return cache;
+				}
+				sizes.delete(cachedSize);
+				break;
+			}
+		}
+
+		return newMassLabelCache(value, size);
+	}
+
+	function blitCellMass(ctx, cell) {
+		const cache = cell._massBitmap;
+		if (!cache || !isValidTextCanvas(cache.canvas)) return;
+
+		cache.accessTime = syncAppStamp;
+		const drawSize = cell._massDrawSize;
+		const scale = drawSize / Math.max(1, cache.size);
+		const w = cache.width * scale;
+		const h = cache.height * scale;
+		const y = cell.getMassDrawY();
+
+		ctx.drawImage(cache.canvas, cell.x - w * 0.5, y - h * 0.5, w, h);
+	}
+
+	function prepareMassDrawSet(drawList) {
+		const playing = cells.mine.length > 0;
+		const mineSet = cells.mineSet;
+		const scale = camera.scale;
+		const massDrawSet = new Set();
+		massDrawList.length = 0;
+
+		for (let i = 0; i < drawList.length; i++) {
+			const cell = drawList[i];
+			if (cell.s < 20 || cell.jagged) continue;
+			if (cell.s * cell.s < MASS_MIN_VALUE * 100) continue;
+			if (cell.s * scale < MASS_MIN_SCREEN_RADIUS) continue;
+			if (!isCellInViewport(cell)) continue;
+			if (playing) {
+				if (!mineSet.has(cell.id)) continue;
+			}
+			massDrawList.push(cell);
+		}
+
+		if (!playing && massDrawList.length > MASS_SPECTATOR_MAX_LABELS) {
+			massDrawList.sort((a, b) => (b.s * b.s) - (a.s * a.s));
+			for (let i = 0; i < MASS_SPECTATOR_MAX_LABELS; i++) {
+				massDrawSet.add(massDrawList[i]);
+			}
+		} else {
+			for (let i = 0; i < massDrawList.length; i++) {
+				massDrawSet.add(massDrawList[i]);
+			}
+		}
+
+		return massDrawSet;
+	}
+
+	function drawCellMass(cell) {
+		cell.updateMassLabel(!cell._massLabel);
+		if (!cell._massLabel) return;
+		cell.syncMassBitmap();
+		blitCellMass(mainCtx, cell);
 	}
 
 	function toleranceTest(a, b, tolerance) {
@@ -9114,16 +9298,6 @@
 		return newFpCache(value, size, color);
 	}
 
-	function getMassCache(size) {
-		const sizes = Array.from(cachedMass.keys());
-		for (let i = 0, l = sizes.length; i < l; i++) {
-			if (toleranceTest(size, sizes[i], size / 4)) {
-				return cachedMass.get(sizes[i]);
-			}
-		}
-		return newMassCache(size);
-	}
-
 	function drawText(ctx, type, x, y, size, drawSize, value, color = '#ffffff') {
 		ctx.save();
 
@@ -9134,32 +9308,6 @@
 		ctx.imageSmoothingQuality = 'high';
 
 		switch(type) {
-			case 'mass':
-			{
-				const cache = getMassCache(size);
-				cache.accessTime = syncAppStamp;
-				const canvases = cache.canvases;
-				const correctionScale = drawSize / cache.size;
-
-				let width = 0;
-
-				for (let i = 0; i < value.length; i++) {
-					width += canvases[value[i]].width - 2 * cache.lineWidth;
-				}
-
-				ctx.scale(correctionScale, correctionScale);
-				x /= correctionScale;
-				y /= correctionScale;
-				x -= width / 2;
-
-				for (let i = 0; i < value.length; i++) {
-					const item = canvases[value[i]];
-					ctx.drawImage(item.canvas, x, y - item.height / 2);
-					x += item.width - 2 * cache.lineWidth;
-				}
-			}
-			break;
-
 			case 'name':
 			{
 				const cache = getNameCache(value, size, color);

@@ -88,12 +88,14 @@ window.PointQuadTree = (function() {
 					this.children[i].clear();
 				}
 
-				this.children.length = 0;
 				this.children = null;
 			}
 
-			this.points.length = 0;
-			this.points = null;
+			if (!this.points) {
+				this.points = [];
+			} else {
+				this.points.length = 0;
+			}
 		}
 	}
 
