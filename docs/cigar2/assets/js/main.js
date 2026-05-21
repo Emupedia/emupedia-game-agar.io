@@ -6808,6 +6808,22 @@
 			this._massBitmap = null;
 			this._massBitmapKey = '';
 			this._massDrawSize = 0;
+			this._nameBitmap = null;
+			this._nameBitmapKey = '';
+			this._nameDrawSize = 0;
+		}
+		syncNameBitmap() {
+			if (!this.name) {
+				this._nameBitmap = null;
+				return;
+			}
+			const nameSize = this.nameSize;
+			this._nameDrawSize = this.drawNameSize;
+			const color = this.nameColor ? this.nameColor.toHex().toUpperCase() : '#ffffff';
+			const key = this.name + '\x00' + color + '.' + nameSize;
+			if (this._nameBitmapKey === key && this._nameBitmap) return;
+			this._nameBitmapKey = key;
+			this._nameBitmap = getNameCache(this.name, nameSize, color);
 		}
 		updateMassLabel(force) {
 			const massInt = ~~(this.s * this.s / 100);
@@ -7098,9 +7114,6 @@
 				drawText(ctx, 'fp', this.x, y, this.nameSize * 4, this.drawNameSize * 2, this.fp2, settings.showColor ? this.borderColor.toHex() : '#e5e5e5');
 			}
 
-			if (this.name && settings.showNames) {
-				drawText(ctx, 'name', this.x, this.y, this.nameSize, this.drawNameSize, this.name, this.nameColor ? this.nameColor.toHex().toUpperCase() : '#ffffff');
-			}
 		}
 	}
 
@@ -7194,6 +7207,8 @@
 	const MASS_MIN_SCREEN_RADIUS = 14;
 	const MASS_MIN_VALUE = 10;
 	const MASS_SPECTATOR_MAX_LABELS = 36;
+	const NAME_MIN_SCREEN_RADIUS = 12;
+	const NAME_SPECTATOR_MAX_LABELS = 48;
 	const CELL_POINTS_MAX = 120;
 	const VIRUS_POINTS = 100;
 	const PI_2 = Math.PI * 2;
@@ -7721,6 +7736,7 @@
 	};
 
 	const massDrawList = [];
+	const nameDrawList = [];
 	const viewportBounds = { left: 0, right: 0, top: 0, bottom: 0 };
 
 	const border = {
@@ -8786,26 +8802,33 @@
 
 		updateViewportBounds();
 
+		let nameDrawSet = null;
 		let massDrawSet = null;
 		let prevSmoothing;
 		let prevQuality;
 
+		if (settings.showNames) {
+			nameDrawSet = prepareNameDrawSet(drawList);
+		}
 		if (settings.showMass) {
 			massDrawSet = prepareMassDrawSet(drawList);
-			if (massDrawSet.size > 0) {
-				prevSmoothing = mainCtx.imageSmoothingEnabled;
-				prevQuality = mainCtx.imageSmoothingQuality;
-				mainCtx.imageSmoothingEnabled = true;
-				mainCtx.imageSmoothingQuality = 'low';
-			}
+		}
+
+		const labelDrawCount = (nameDrawSet ? nameDrawSet.size : 0) + (massDrawSet ? massDrawSet.size : 0);
+		if (labelDrawCount > 0) {
+			prevSmoothing = mainCtx.imageSmoothingEnabled;
+			prevQuality = mainCtx.imageSmoothingQuality;
+			mainCtx.imageSmoothingEnabled = true;
+			mainCtx.imageSmoothingQuality = 'low';
 		}
 
 		for (const cell of drawList) {
 			cell.draw(mainCtx);
+			if (nameDrawSet && nameDrawSet.has(cell)) drawCellName(cell);
 			if (massDrawSet && massDrawSet.has(cell)) drawCellMass(cell);
 		}
 
-		if (massDrawSet && massDrawSet.size > 0) {
+		if (labelDrawCount > 0) {
 			mainCtx.imageSmoothingEnabled = prevSmoothing;
 			mainCtx.imageSmoothingQuality = prevQuality;
 		}
@@ -8987,11 +9010,13 @@
 
 	function cacheCleanup() {
 		for (const i of cachedNames.keys()) {
-			for (const j of cachedNames.get(i).keys()) {
-				if (syncAppStamp - cachedNames.get(i).get(j).accessTime >= 5000) {
-					cachedNames.get(i).delete(j);
+			const sizeMap = cachedNames.get(i);
+			for (const j of sizeMap.keys()) {
+				if (syncAppStamp - sizeMap.get(j).accessTime >= 5000) {
+					sizeMap.delete(j);
 				}
 			}
+			if (sizeMap.size === 0) cachedNames.delete(i);
 		}
 
 		for (const i of cachedFp.keys()) {
@@ -9015,9 +9040,15 @@
 		}
 	}
 
+	function nameCacheKey(value, color = '#ffffff') {
+		return value + '\x00' + color;
+	}
+
 	function removeNameCache(name) {
-		if (cachedNames.has(name)) {
-			cachedNames.delete(name);
+		for (const key of cachedNames.keys()) {
+			if (key === name || key.startsWith(name + '\x00')) {
+				cachedNames.delete(key);
+			}
 		}
 	}
 
@@ -9103,8 +9134,9 @@
 
 		drawTextOnto(canvas, ctx, value, size, color);
 
-		if (!cachedNames.has(value)) {
-			cachedNames.set(value, new Map());
+		const key = nameCacheKey(value, color);
+		if (!cachedNames.has(key)) {
+			cachedNames.set(key, new Map());
 		}
 
 		const cache = {
@@ -9117,7 +9149,7 @@
 			accessTime: syncAppStamp
 		};
 
-		cachedNames.get(value).set(size, cache);
+		cachedNames.get(key).set(size, cache);
 
 		return cache;
 	}
@@ -9208,6 +9240,53 @@
 		return newMassLabelCache(value, size);
 	}
 
+	function blitCellName(ctx, cell) {
+		const cache = cell._nameBitmap;
+		if (!cache || !isValidTextCanvas(cache.canvas)) return;
+
+		cache.accessTime = syncAppStamp;
+		const drawSize = cell._nameDrawSize;
+		const scale = drawSize / Math.max(1, cache.size);
+		const w = cache.width * scale;
+		const h = cache.height * scale;
+
+		ctx.drawImage(cache.canvas, cell.x - w * 0.5, cell.y - h * 0.5, w, h);
+	}
+
+	function prepareNameDrawSet(drawList) {
+		const playing = cells.mine.length > 0;
+		const scale = camera.scale;
+		const nameDrawSet = new Set();
+		nameDrawList.length = 0;
+
+		for (let i = 0; i < drawList.length; i++) {
+			const cell = drawList[i];
+			if (!cell.name) continue;
+			if (cell.s < 20 || cell.jagged) continue;
+			if (cell.s * scale < NAME_MIN_SCREEN_RADIUS) continue;
+			if (!isCellInViewport(cell)) continue;
+			nameDrawList.push(cell);
+		}
+
+		if (!playing && nameDrawList.length > NAME_SPECTATOR_MAX_LABELS) {
+			nameDrawList.sort((a, b) => (b.s * b.s) - (a.s * a.s));
+			for (let i = 0; i < NAME_SPECTATOR_MAX_LABELS; i++) {
+				nameDrawSet.add(nameDrawList[i]);
+			}
+		} else {
+			for (let i = 0; i < nameDrawList.length; i++) {
+				nameDrawSet.add(nameDrawList[i]);
+			}
+		}
+
+		return nameDrawSet;
+	}
+
+	function drawCellName(cell) {
+		cell.syncNameBitmap();
+		blitCellName(mainCtx, cell);
+	}
+
 	function blitCellMass(ctx, cell) {
 		const cache = cell._massBitmap;
 		if (!cache || !isValidTextCanvas(cache.canvas)) return;
@@ -9267,15 +9346,26 @@
 	}
 
 	function getNameCache(value, size, color = '#ffffff') {
-		if (!cachedNames.has(value)) {
-			return newNameCache(value, size, color);
+		const key = nameCacheKey(value, color);
+		let sizes = cachedNames.get(key);
+		if (!sizes) return newNameCache(value, size, color);
+
+		const direct = sizes.get(size);
+		if (direct && isValidTextCanvas(direct.canvas)) {
+			direct.accessTime = syncAppStamp;
+			return direct;
 		}
 
-		const sizes = Array.from(cachedNames.get(value).keys());
-
-		for (let i = 0, l = sizes.length; i < l; i++) {
-			if (toleranceTest(size, sizes[i], size / 4)) {
-				return cachedNames.get(value).get(sizes[i]);
+		for (const cachedSize of sizes.keys()) {
+			if (cachedSize === size) continue;
+			if (toleranceTest(size, cachedSize, size / 4)) {
+				const cache = sizes.get(cachedSize);
+				if (isValidTextCanvas(cache.canvas)) {
+					cache.accessTime = syncAppStamp;
+					return cache;
+				}
+				sizes.delete(cachedSize);
+				break;
 			}
 		}
 
