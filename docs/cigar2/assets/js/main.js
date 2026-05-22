@@ -6773,6 +6773,33 @@
 		}
 	}
 
+	function drawSkinImageCover(ctx, image, cx, cy, radius) {
+		const iw = image.width;
+		const ih = image.height;
+
+		if (!iw || !ih) return;
+
+		const dest = radius * 2;
+		const scale = Math.max(dest / iw, dest / ih);
+		const dw = iw * scale;
+		const dh = ih * scale;
+
+		ctx.drawImage(image, cx - dw / 2, cy - dh / 2, dw, dh);
+	}
+
+	function drawSkinImageCoverRect(ctx, image, destX, destY, destW, destH) {
+		const iw = image.width;
+		const ih = image.height;
+
+		if (!iw || !ih) return;
+
+		const scale = Math.max(destW / iw, destH / ih);
+		const dw = iw * scale;
+		const dh = ih * scale;
+
+		ctx.drawImage(image, destX + (destW - dw) / 2, destY + (destH - dh) / 2, dw, dh);
+	}
+
 	class Cell {
 		constructor(id, x, y, s, name, nameColor, cellColor, borderColor, skin, flags) {
 			this.destroyed = false;
@@ -7126,7 +7153,7 @@
 				if (settings.fillSkin) ctx.fill();
 				ctx.save();
 				ctx.clip();
-				ctx.drawImage(skinImage, this.x - this.s, this.y - this.s, this.s * 2, this.s * 2);
+				drawSkinImageCover(ctx, skinImage, this.x, this.y, this.s);
 				ctx.restore();
 			} else {
 				ctx.fill();
@@ -8971,63 +8998,95 @@
 		window.requestAnimationFrame(drawGame);
 	}
 
+	function ensurePreviewSkinCanvasSize(canvas) {
+		let size = canvas.offsetWidth || canvas.clientWidth;
+
+		if (!size) {
+			const rect = canvas.getBoundingClientRect();
+			size = rect.width;
+		}
+
+		size = Math.max(64, (size || 256) | 0);
+
+		if (canvas.width !== size || canvas.height !== size) {
+			canvas.width = size;
+			canvas.height = size;
+		}
+
+		return size;
+	}
+
+	function paintSkinPreviewCanvas(canvas, image) {
+		ensurePreviewSkinCanvasSize(canvas);
+
+		const ctx = canvas.getContext('2d');
+
+		ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+		if (image && image.width && image.height) {
+			drawSkinImageCoverRect(ctx, image, 0, 0, canvas.width, canvas.height);
+		}
+	}
+
 	function drawSkinPreview(url, canvas) {
+		const paintFallback = () => {
+			if (TRANSP && TRANSP.width) paintSkinPreviewCanvas(canvas, TRANSP);
+			else ensurePreviewSkinCanvasSize(canvas);
+		}
+
 		if (encSkins) {
 			if (url.startsWith('https://iili.io/')) {
 				fetch(`https://agar2.emupedia.net/${textToNumber(url)}`).then(res => {
 					if (!res.ok) {
-						const ctx = canvas.getContext('2d');
-						ctx.drawImage(TRANSP, 0, 0, canvas.width, canvas.height);
+						paintFallback();
+						return;
 					}
 
 					return res.arrayBuffer();
-				}).then(buffer  => {
+				}).then(buffer => {
+					if (!buffer) return;
 					const raw = binToText(new Uint8Array(buffer), CH);
 					const blob = new Blob([raw], { type: getMimeType(url) });
 
 					createImageBitmap(blob).then(data => {
-						const ctx = canvas.getContext('2d');
-						ctx.drawImage(data, 0, 0, canvas.width, canvas.height);
+						paintSkinPreviewCanvas(canvas, data);
 						data.close();
 					})
 				}).catch(error => {
 					console.error(error);
-					const ctx = canvas.getContext('2d');
-					ctx.drawImage(TRANSP, 0, 0, canvas.width, canvas.height);
-				});
+					paintFallback();
+				})
 			} else {
 				fetch(url).then(res => {
 					if (!res.ok) {
-						const ctx = canvas.getContext('2d');
-						ctx.drawImage(TRANSP, 0, 0, canvas.width, canvas.height);
+						paintFallback();
+						return;
 					}
 
 					return res.blob();
 				}).then(blob => {
+					if (!blob) return;
+
 					createImageBitmap(blob).then(data => {
-						const ctx = canvas.getContext('2d');
-						ctx.drawImage(data, 0, 0, canvas.width, canvas.height);
+						paintSkinPreviewCanvas(canvas, data);
 						data.close();
 					})
 				}).catch(error => {
 					console.error(error);
-					const ctx = canvas.getContext('2d');
-					ctx.drawImage(TRANSP, 0, 0, canvas.width, canvas.height);
-				});
+					paintFallback();
+				})
 			}
 		} else {
 			const image = new Image();
 			image.crossOrigin = 'Anonymous';
 
 			image.onload = function() {
-				canvas.width = image.width;
-				canvas.height = image.height;
+				paintSkinPreviewCanvas(canvas, image);
+			}
 
-				const ctx = canvas.getContext('2d');
-				ctx.drawImage(image, 0, 0);
-			};
+			image.onerror = paintFallback;
 
-			image.src = url === './assets/img/transparent.png' ? url : `https://agar2.emupedia.net/skin/${textToNumber(url)}`;
+			image.src = (url.startsWith('./') || url.startsWith('http://') || url.startsWith('https://')) ? url : `https://agar2.emupedia.net/skin/${textToNumber(url)}`;
 		}
 	}
 
