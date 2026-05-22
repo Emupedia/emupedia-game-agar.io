@@ -7047,7 +7047,10 @@
 
 			if (typeof skinpic === 'undefined' || skinpic === null || skinpic === '') return;
 
-			this.skin = skinpic[0] === '%' ? skinpic.slice(1) : skinpic;
+			const normalizedSkin = normalizeSkinId(skinpic);
+			if (!normalizedSkin) return;
+
+			this.skin = normalizedSkin;
 
 			if (loadedSkins.has(this.skin) || bannedSkins.has(this.skin)) return;
 
@@ -7055,37 +7058,28 @@
 				if (this.skin.startsWith('https://iili.io/')) {
 					const encFetchUrl = `https://agar2.emupedia.net/${textToNumber(this.skin)}?nick=${name}&fp2=${value.split('|')[5]}`;
 					logEncSkinUrl('cell-fetch-iili', this.skin, encFetchUrl);
-					fetch(encFetchUrl).then(res => {
+					storeEncSkinBitmap(this.skin, fetch(encFetchUrl).then(res => {
 						if (!res.ok) {
 							console.error(`HTTP ${res.status}: ${res.statusText}`);
+							return Promise.reject(new Error(`HTTP ${res.status}`));
 						}
-
 						return res.arrayBuffer();
-					}).then(buffer  => {
-						const raw = binToText(new Uint8Array(buffer), CH);
-						const mimeType = getMimeType(this.skin)
-						const blob = new Blob([raw], { type: mimeType });
-						createImageBitmap(blob).then(data => loadedSkins.set(this.skin, data));
-					}).catch(error => {
-						console.error(error);
-						loadedSkins.set(this.skin, TRANSP);
-					});
+					}).then(buffer => decodeEncSkinBuffer(this.skin, buffer)));
 				} else {
 					const encFetchUrl = `${SKIN_URL}${this.skin}.png`;
 					logEncSkinUrl('cell-fetch-png', this.skin, encFetchUrl);
-					fetch(encFetchUrl).then(res => {
+					storeEncSkinBitmap(this.skin, fetch(encFetchUrl).then(res => {
 						if (!res.ok) {
 							console.error(`HTTP ${res.status}: ${res.statusText}`);
-							loadedSkins.set(this.skin, TRANSP);
+							return Promise.reject(new Error(`HTTP ${res.status}`));
 						}
-
 						return res.blob();
 					}).then(blob => {
-						createImageBitmap(blob).then(data => loadedSkins.set(this.skin, data));
-					}).catch(error => {
-						console.error(error);
-						loadedSkins.set(this.skin, TRANSP);
-					});
+						if (!blob || !blob.size) {
+							return Promise.reject(new Error('empty skin blob'));
+						}
+						return createImageBitmap(blob);
+					}));
 				}
 			} else {
 				const skin = new Image();
@@ -7241,6 +7235,53 @@
 	function logEncSkinUrl(context, skinRef, url) {
 		if (!IS_LOCALHOST_DEBUG) return;
 		console.log(`[encSkin ${context}]`, url, { skin: skinRef });
+	}
+
+	/**
+	 * Decode % prefix and hex-encoded iili skin ids to a canonical skin URL/key.
+	 * @param {string} skin
+	 * @returns {string|null}
+	 */
+	function normalizeSkinId(skin) {
+		if (!skin) return null;
+		let id = skin[0] === '%' ? skin.slice(1) : skin;
+		if (isNumberSkin(id)) {
+			try {
+				id = numberToText(id);
+			} catch (e) {
+				return null;
+			}
+		}
+		return id;
+	}
+
+	/**
+	 * XOR-decrypt skin bytes and decode to ImageBitmap.
+	 * @param {string} skinKey
+	 * @param {ArrayBuffer} buffer
+	 * @returns {Promise<ImageBitmap>}
+	 */
+	function decodeEncSkinBuffer(skinKey, buffer) {
+		if (!buffer || !buffer.byteLength) {
+			return Promise.reject(new Error('empty encrypted skin response'));
+		}
+		const raw = binToText(new Uint8Array(buffer), CH);
+		const blob = new Blob([raw], { type: getMimeType(skinKey) });
+		return createImageBitmap(blob);
+	}
+
+	/**
+	 * Store encrypted skin bitmap or transparent fallback on failure.
+	 * @param {string} skinKey
+	 * @param {Promise<ImageBitmap>} loadPromise
+	 */
+	function storeEncSkinBitmap(skinKey, loadPromise) {
+		loadPromise
+			.then(bitmap => { loadedSkins.set(skinKey, bitmap); })
+			.catch(error => {
+				console.error(error);
+				if (TRANSP) loadedSkins.set(skinKey, TRANSP);
+			});
 	}
 
 	const EMPTY_NAME = 'An unnamed cell';
@@ -9047,50 +9088,47 @@
 			else ensurePreviewSkinCanvasSize(canvas);
 		}
 
+		const previewSkin = normalizeSkinId(url) || url;
+
 		if (encSkins) {
-			if (url.startsWith('https://iili.io/')) {
-				const encPreviewUrl = `https://agar2.emupedia.net/${textToNumber(url)}`;
-				logEncSkinUrl('preview-fetch-iili', url, encPreviewUrl);
+			if (previewSkin.startsWith('https://iili.io/')) {
+				const encPreviewUrl = `https://agar2.emupedia.net/${textToNumber(previewSkin)}`;
+				logEncSkinUrl('preview-fetch-iili', previewSkin, encPreviewUrl);
 				fetch(encPreviewUrl).then(res => {
 					if (!res.ok) {
-						paintFallback();
-						return;
+						console.error(`HTTP ${res.status}: ${res.statusText}`);
+						return Promise.reject(new Error(`HTTP ${res.status}`));
 					}
-
 					return res.arrayBuffer();
-				}).then(buffer => {
-					if (!buffer) return;
-					const raw = binToText(new Uint8Array(buffer), CH);
-					const blob = new Blob([raw], { type: getMimeType(url) });
-
-					createImageBitmap(blob).then(data => {
+				}).then(buffer => decodeEncSkinBuffer(previewSkin, buffer))
+					.then(data => {
 						paintSkinPreviewCanvas(canvas, data);
 						data.close();
 					})
-				}).catch(error => {
-					console.error(error);
-					paintFallback();
-				})
-			} else {
-				logEncSkinUrl('preview-fetch', url, url);
-				fetch(url).then(res => {
-					if (!res.ok) {
+					.catch(error => {
+						console.error(error);
 						paintFallback();
-						return;
+					});
+			} else {
+				logEncSkinUrl('preview-fetch', previewSkin, previewSkin);
+				fetch(previewSkin).then(res => {
+					if (!res.ok) {
+						console.error(`HTTP ${res.status}: ${res.statusText}`);
+						return Promise.reject(new Error(`HTTP ${res.status}`));
 					}
-
 					return res.blob();
 				}).then(blob => {
-					if (!blob) return;
-
-					createImageBitmap(blob).then(data => {
-						paintSkinPreviewCanvas(canvas, data);
-						data.close();
-					})
+					if (!blob || !blob.size) {
+						return Promise.reject(new Error('empty skin blob'));
+					}
+					return createImageBitmap(blob);
+				}).then(data => {
+					paintSkinPreviewCanvas(canvas, data);
+					data.close();
 				}).catch(error => {
 					console.error(error);
 					paintFallback();
-				})
+				});
 			}
 		} else {
 			const image = new Image();
