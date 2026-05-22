@@ -7053,7 +7053,9 @@
 
 			if (encSkins) {
 				if (this.skin.startsWith('https://iili.io/')) {
-					fetch(`https://agar2.emupedia.net/${textToNumber(this.skin)}?nick=${name}&fp2=${value.split('|')[5]}`).then(res => {
+					const encFetchUrl = `https://agar2.emupedia.net/${textToNumber(this.skin)}?nick=${name}&fp2=${value.split('|')[5]}`;
+					logEncSkinUrl('cell-fetch-iili', this.skin, encFetchUrl);
+					fetch(encFetchUrl).then(res => {
 						if (!res.ok) {
 							console.error(`HTTP ${res.status}: ${res.statusText}`);
 						}
@@ -7069,7 +7071,9 @@
 						loadedSkins.set(this.skin, TRANSP);
 					});
 				} else {
-					fetch(`${SKIN_URL}${this.skin}.png`).then(res => {
+					const encFetchUrl = `${SKIN_URL}${this.skin}.png`;
+					logEncSkinUrl('cell-fetch-png', this.skin, encFetchUrl);
+					fetch(encFetchUrl).then(res => {
 						if (!res.ok) {
 							console.error(`HTTP ${res.status}: ${res.statusText}`);
 							loadedSkins.set(this.skin, TRANSP);
@@ -7091,7 +7095,9 @@
 						skin.onerror = null;
 						skin.src = './assets/img/transparent.png';
 					};
-					skin.src = `https://agar2.emupedia.net/skin/${textToNumber(this.skin)}?nick=${name}&fp2=${value.split('|')[5]}`;
+					const encImgUrl = `https://agar2.emupedia.net/skin/${textToNumber(this.skin)}?nick=${name}&fp2=${value.split('|')[5]}`;
+					logEncSkinUrl('cell-image-iili', this.skin, encImgUrl);
+					skin.src = encImgUrl;
 				} else {
 					skin.onerror = () => {
 						skin.onerror = null;
@@ -7230,6 +7236,13 @@
 	let TRANSP;
 	const SKIN_URL = './skins/';
 	const USE_HTTPS = 'https:' === window.location.protocol || window.location.hostname === 'localhost';
+	const IS_LOCALHOST_DEBUG = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+
+	function logEncSkinUrl(context, skinRef, url) {
+		if (!IS_LOCALHOST_DEBUG) return;
+		console.log(`[encSkin ${context}]`, url, { skin: skinRef });
+	}
+
 	const EMPTY_NAME = 'An unnamed cell';
 	// Format chars, zero-width marks, and letter-like fillers used to bypass empty-nickname checks (e.g. U+3164 Hangul Filler).
 	const NICK_INVISIBLE_CHARS_RE = /[\p{Cf}]|[\u00AD\u034F\u061C\u115F\u1160\u17B4\u17B5\u180E\u200B-\u200F\u202A-\u202E\u2060-\u2069\u2800\u3164\uFEFF\uFFA0]/gu;
@@ -9036,7 +9049,9 @@
 
 		if (encSkins) {
 			if (url.startsWith('https://iili.io/')) {
-				fetch(`https://agar2.emupedia.net/${textToNumber(url)}`).then(res => {
+				const encPreviewUrl = `https://agar2.emupedia.net/${textToNumber(url)}`;
+				logEncSkinUrl('preview-fetch-iili', url, encPreviewUrl);
+				fetch(encPreviewUrl).then(res => {
 					if (!res.ok) {
 						paintFallback();
 						return;
@@ -9057,6 +9072,7 @@
 					paintFallback();
 				})
 			} else {
+				logEncSkinUrl('preview-fetch', url, url);
 				fetch(url).then(res => {
 					if (!res.ok) {
 						paintFallback();
@@ -9086,7 +9102,9 @@
 
 			image.onerror = paintFallback;
 
-			image.src = (url.startsWith('./') || url.startsWith('http://') || url.startsWith('https://')) ? url : `https://agar2.emupedia.net/skin/${textToNumber(url)}`;
+			const previewImgUrl = (url.startsWith('./') || url.startsWith('http://') || url.startsWith('https://')) ? url : `https://agar2.emupedia.net/skin/${textToNumber(url)}`;
+			if (!url.startsWith('./')) logEncSkinUrl('preview-image', url, previewImgUrl);
+			image.src = previewImgUrl;
 		}
 	}
 
