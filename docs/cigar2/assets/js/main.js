@@ -9974,11 +9974,7 @@
 
 			// VirtualBox: ANGLE (VirtualBox Graphics Adapter (WDDM) Direct3D9Ex vs_3_0 ps_3_0)
 			// VMware: ANGLE (VMware SVGA 3D Direct3D11 vs_4_0 ps_4_0)
-			if (/virtualbox\s+graphics\s+adapter|vmware\s+svga\s+3d|virtualbox|vmware/i.test(gpuInfo))
-				return true;
-
-			const brand = getGpuBrand(renderer);
-			return brand === 'VMWARE' || brand === 'VIRTUALBOX';
+			return /virtualbox\s+graphics\s+adapter|vmware\s+svga\s+3d|virtualbox|vmware/i.test(gpuInfo);
 		}
 
 		const isHeadless = (window.matchMedia('(forced-colors: none)').matches && navigator.webdriver === false && 'languages' in navigator && !navigator.languages && navigator.userAgent.includes('HeadlessChrome') && new Date().toString().includes('GMT'));
