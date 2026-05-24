@@ -9940,6 +9940,47 @@
 			return tampered;
 		}
 
+		function detectVmwareVirtualBox() {
+			function getUnmaskedWebGLInfo() {
+				const contextTypes = ['webgl', 'webgl2', 'experimental-webgl'];
+
+				for (const type of contextTypes) {
+					try {
+						const canvas = document.createElement('canvas');
+						const gl = canvas.getContext(type);
+						if (!gl)
+							continue;
+
+						const debugInfo = gl.getExtension('WEBGL_debug_renderer_info');
+						if (!debugInfo)
+							continue;
+
+						return {
+							vendor: gl.getParameter(debugInfo.UNMASKED_VENDOR_WEBGL) || '',
+							renderer: gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL) || ''
+						};
+					} catch {}
+				}
+
+				return null;
+			}
+
+			const info = getUnmaskedWebGLInfo();
+			if (!info)
+				return false;
+
+			const { vendor, renderer } = info;
+			const gpuInfo = `${vendor} ${renderer}`;
+
+			// VirtualBox: ANGLE (VirtualBox Graphics Adapter (WDDM) Direct3D9Ex vs_3_0 ps_3_0)
+			// VMware: ANGLE (VMware SVGA 3D Direct3D11 vs_4_0 ps_4_0)
+			if (/virtualbox\s+graphics\s+adapter|vmware\s+svga\s+3d|virtualbox|vmware/i.test(gpuInfo))
+				return true;
+
+			const brand = getGpuBrand(renderer);
+			return brand === 'VMWARE' || brand === 'VIRTUALBOX';
+		}
+
 		const isHeadless = (window.matchMedia('(forced-colors: none)').matches && navigator.webdriver === false && 'languages' in navigator && !navigator.languages && navigator.userAgent.includes('HeadlessChrome') && new Date().toString().includes('GMT'));
 
 		// noinspection JSUnresolvedReference
@@ -9947,7 +9988,8 @@
 			isHeadless,
 			checkCDC(),
 			detectRandomProperties(),
-			isCanvasPrototypeTampered()
+			isCanvasPrototypeTampered(),
+			detectVmwareVirtualBox()
 		]
 	}
 
