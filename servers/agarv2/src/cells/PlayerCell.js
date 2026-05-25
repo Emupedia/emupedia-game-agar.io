@@ -45,6 +45,10 @@ class PlayerCell extends Cell {
 	 * @virtual
 	 */
 	whenAte(other) {
+		if (other.type === 2 && this.world.settings.virusEatNoMass) {
+			return;
+		}
+
 		const mass = this.owner.ownedCells.reduce((total, cell) => total + cell.mass, 0);
 
 		if (mass < this.world.settings.playerMaxTotalMass) {
