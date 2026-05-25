@@ -473,6 +473,38 @@ class ChatFilter {
 	}
 
 	/**
+	 * Returns true if the character is an ASCII digit (U+0030–U+0039).
+	 * @private
+	 * @param {string} char - Single character
+	 * @returns {boolean}
+	 */
+	_isAsciiDigit(char) {
+		if (!this._isString(char) || char.length !== 1) {
+			return false
+		}
+		const code = char.charCodeAt(0)
+		return code >= 0x30 && code <= 0x39
+	}
+
+	/**
+	 * Applies a normalization map entry. ASCII digit leet (e.g. "4"->"a") is optional.
+	 * @private
+	 * @param {string} char - Single character
+	 * @param {Map<string, string>} normalizeMap - Pre-computed normalization map
+	 * @param {boolean} [includeAsciiDigitLeet=true] - When false, plain 0-9 are left unchanged
+	 * @returns {string} Normalized character
+	 */
+	_applyNormalizeMapChar(char, normalizeMap, includeAsciiDigitLeet = true) {
+		if (!normalizeMap.has(char)) {
+			return char
+		}
+		if (!includeAsciiDigitLeet && this._isAsciiDigit(char)) {
+			return char
+		}
+		return normalizeMap.get(char)
+	}
+
+	/**
 	 * Converts a pattern string to a regex string, treating unescaped dots as wildcards.
 	 * Escapes regex special characters except dots (which become wildcards).
 	 * @param {string} pattern - The pattern string to convert
@@ -660,9 +692,10 @@ class ChatFilter {
 	 *   'double-struck-numbers-only', 'circles', 'circles-bold-numbers-only', 'inverted-circles', 'squares',
 	 *   'inverted-squares', 'dotted-numbers-only', 'parenthesis-numbers-only', 'subscript', 'superscript',
 	 *   'monospace-numbers-only', 'emoji-numbers-only', 'uncategorized', 'uncategorized-numbers-only', 'diacritics'
+	 * @param {boolean} [includeAsciiDigitLeet=true] - When false, plain ASCII digits are not mapped to letters
 	 * @returns {string} The normalized string, or the original string if invalid input or no normalization data
 	 */
-	normalize(str, type) {
+	normalize(str, type, includeAsciiDigitLeet = true) {
 		const validated = this._validateStringInput(str)
 		if (!validated) {
 			return str
@@ -681,16 +714,14 @@ class ChatFilter {
 
 		if (!normalizeMap) {
 			// Fallback to old method if maps not built
-			return this._normalizeLegacy(str, type)
+			return this._normalizeLegacy(str, type, includeAsciiDigitLeet)
 		}
 
 		// Single-pass normalization with O(1) lookups
 		const arr = Array.from(str)
 		const arrLen = arr.length
 		for (let i = 0; i < arrLen; i++) {
-			if (normalizeMap.has(arr[i])) {
-				arr[i] = normalizeMap.get(arr[i])
-			}
+			arr[i] = this._applyNormalizeMapChar(arr[i], normalizeMap, includeAsciiDigitLeet)
 		}
 
 		return arr.join('')
@@ -701,9 +732,10 @@ class ChatFilter {
 	 * @private
 	 * @param {string} str - The string to normalize
 	 * @param {string|Array<string>} [type] - Normalization type(s) to apply
+	 * @param {boolean} [includeAsciiDigitLeet=true] - When false, plain ASCII digits are not mapped to letters
 	 * @returns {string} The normalized string, or the original string if invalid input
 	 */
-	_normalizeLegacy(str, type) {
+	_normalizeLegacy(str, type, includeAsciiDigitLeet = true) {
 		const validated = this._validateStringInput(str)
 		if (!validated) {
 			return str
@@ -733,7 +765,7 @@ class ChatFilter {
 
 				const typeMap = normalizeMapping[normalizeType]
 				// Apply normalization if mapping exists (later types override earlier ones)
-				if (typeMap && typeMap[arr[i]] !== undefined) {
+				if (typeMap && typeMap[arr[i]] !== undefined && (includeAsciiDigitLeet || !this._isAsciiDigit(arr[i]))) {
 					arr[i] = typeMap[arr[i]]
 				}
 			}
@@ -801,9 +833,10 @@ class ChatFilter {
 	 * @private
 	 * @param {string} str - The string to normalize
 	 * @param {string|Array<string>} [type] - Normalization type(s) to apply
+	 * @param {boolean} [includeAsciiDigitLeet=true] - When false, plain ASCII digits are not mapped to letters
 	 * @returns {{normalized: string, mapping: Array<number>}} Object with normalized string and position mapping array
 	 */
-	_normalizeWithMapping(str, type) {
+	_normalizeWithMapping(str, type, includeAsciiDigitLeet = true) {
 		const validated = this._validateStringInput(str)
 		if (!validated) {
 			return { normalized: str, mapping: [] }
@@ -838,9 +871,7 @@ class ChatFilter {
 		let normalizedIndex = 0
 
 		for (let i = 0; i < arrLen; i++) {
-			if (normalizeMap.has(arr[i])) {
-				arr[i] = normalizeMap.get(arr[i])
-			}
+			arr[i] = this._applyNormalizeMapChar(arr[i], normalizeMap, includeAsciiDigitLeet)
 			// Map original position to normalized position (1:1 since we're replacing in place)
 			mapping.push(normalizedIndex)
 			normalizedIndex++
@@ -1122,9 +1153,10 @@ class ChatFilter {
 	 * @private
 	 * @param {string} str - The string to normalize
 	 * @param {string} language - The language code (affects which normalization types are used)
+	 * @param {boolean} [includeAsciiDigitLeet=true] - When false, plain ASCII digits are not mapped to letters
 	 * @returns {string} The normalized string, or the original value if not a string
 	 */
-	_normalizeText(str, language= 'en') {
+	_normalizeText(str, language = 'en', includeAsciiDigitLeet = true) {
 		const validated = this._validateStringInput(str)
 		if (!validated) {
 			return str
@@ -1136,7 +1168,7 @@ class ChatFilter {
 
 		// 2. Normalize Unicode characters
 		const normalize_types = language !== 'en' ? this.NORMALIZE_TYPES_NO_DIACRITICS : this.NORMALIZE_TYPES
-		str = this.normalize(str, normalize_types)
+		str = this.normalize(str, normalize_types, includeAsciiDigitLeet)
 
 		// 3. Remove combining marks and invisible characters
 		str = this.remove_combining(this.remove_invisible_before(str))
@@ -1338,9 +1370,10 @@ class ChatFilter {
 	 * @private
 	 * @param {*} str - The text to check
 	 * @param {string} [language] - The language code (optional, will be validated)
+	 * @param {boolean} [includeAsciiDigitLeet=true] - When false, plain ASCII digits are not mapped to letters
 	 * @returns {{enabled: boolean, str: string, language: string, blacklistData: Object}} An object with enabled status, normalized string, language code, and blacklist data
 	 */
-	_checkProfanityCommon(str, language) {
+	_checkProfanityCommon(str, language, includeAsciiDigitLeet = true) {
 		if (!this._isBlacklistEnabled()) {
 			return this._DISABLED_RESULT
 		}
@@ -1352,7 +1385,7 @@ class ChatFilter {
 		}
 
 		// Apply normalization pipeline
-		const normalizedStr = this._normalizeText(validation.str, validation.language)
+		const normalizedStr = this._normalizeText(validation.str, validation.language, includeAsciiDigitLeet)
 
 		return {
 			enabled: true,
@@ -1363,6 +1396,37 @@ class ChatFilter {
 	}
 
 	/**
+	 * Checks if an already-normalized string matches the blacklist (exact, regex, swear).
+	 * @private
+	 * @param {string} normalizedStr - Normalized text to test
+	 * @param {string} language - Language code
+	 * @returns {boolean} True if profanity is found
+	 */
+	_hasProfanityInNormalizedString(normalizedStr, language) {
+		if (!this._isBlacklistEnabled() || !this._isString(normalizedStr)) {
+			return false
+		}
+
+		const lang = this._validateLanguage(language)
+		const blacklistData = this.blacklist_data
+
+		if (this._checkExactMatch(normalizedStr, lang, blacklistData)) {
+			return true
+		}
+
+		if (this._testRegexObject(this.blacklist_search_regex[lang], normalizedStr)) {
+			return true
+		}
+
+		const languageMapping = this._getLanguageMapping(blacklistData, lang)
+		if (languageMapping && languageMapping.swear) {
+			return this._processSwearWords(normalizedStr, languageMapping.swear, false)
+		}
+
+		return false
+	}
+
+	/**
 	 * Checks if a string contains profanity.
 	 * Checks exact matches, regex matches, and swear words.
 	 * @param {*} str - The text to check (will be converted to string if needed)
@@ -1370,31 +1434,12 @@ class ChatFilter {
 	 * @returns {boolean} True if profanity is found, false otherwise
 	 */
 	has_profanity(str, language) {
-		const common = this._checkProfanityCommon(str, language)
+		const common = this._checkProfanityCommon(str, language, true)
 		if (!common.enabled) {
 			return false
 		}
 
-		const lang = common.language
-
-		// Check exact matches first
-		const exactMatch = this._checkExactMatch(common.str, lang, common.blacklistData)
-		if (exactMatch) {
-			return true
-		}
-
-		// Check regex matches (dynamic language support)
-		if (this._testRegexObject(this.blacklist_search_regex[lang], common.str)) {
-			return true
-		}
-
-		// Check swear words (generic for any language)
-		const languageMapping = this._getLanguageMapping(common.blacklistData, lang)
-		if (languageMapping && languageMapping.swear) {
-			return this._processSwearWords(common.str, languageMapping.swear, false)
-		}
-
-		return false
+		return this._hasProfanityInNormalizedString(common.str, common.language)
 	}
 
 	/**
@@ -1417,9 +1462,10 @@ class ChatFilter {
 			return false
 		}
 
-		// Prepare normalized version for detection
+		// Prepare normalized version for detection (include ASCII digit leet, e.g. 4->a)
 		const zalgoRemovedStr = this.remove_zalgo(originalStr)
-		const normalized = this._normalizeWithMapping(zalgoRemovedStr, this.NORMALIZE_TYPES)
+		const normalize_types = language !== 'en' ? this.NORMALIZE_TYPES_NO_DIACRITICS : this.NORMALIZE_TYPES
+		const normalized = this._normalizeWithMapping(zalgoRemovedStr, normalize_types, true)
 		const normalizedStr = normalized.normalized
 
 		// Check if profanity exists using normalized version
@@ -1448,31 +1494,25 @@ class ChatFilter {
 	}
 
 	/**
-	 * Removes profanity from a string by replacing it with replacement strings or category names.
-	 * Checks exact matches first, then applies regex replacements, then checks swear words.
-	 * @param {*} str - The text to process (will be converted to string if needed)
-	 * @param {string} [language='en'] - The language code for filtering (defaults to 'en')
-	 * @returns {string} The text with profanity removed/replaced, or the original string if blacklist is disabled
+	 * Removes profanity from an already-normalized string.
+	 * @private
+	 * @param {string} normalizedStr - Normalized text with profanity to replace
+	 * @param {string} language - Language code
+	 * @returns {string} Filtered text
 	 */
-	remove_profanity(str, language) {
-		const common = this._checkProfanityCommon(str, language)
-		if (!common.enabled) {
-			return str
-		}
-
-		const lang = common.language
-		const languageMapping = this._getLanguageMapping(common.blacklistData, lang)
+	_removeProfanityFromNormalized(normalizedStr, language) {
+		const lang = this._validateLanguage(language)
+		const blacklistData = this.blacklist_data
+		const languageMapping = this._getLanguageMapping(blacklistData, lang)
 		if (!languageMapping) {
-			return common.str
+			return normalizedStr
 		}
 
-		// Cache constants to avoid repeated property access
 		const prefix = this.REPLACEMENT_PREFIX
 		const suffix = this.REPLACEMENT_SUFFIX
 		const replacementStr = this.REPLACEMENT_STRING
 
-		// Check exact matches first
-		const exactMatch = this._checkExactMatch(common.str, lang, common.blacklistData)
+		const exactMatch = this._checkExactMatch(normalizedStr, lang, blacklistData)
 		if (exactMatch) {
 			const isEnglish = lang === 'en'
 			if (exactMatch.replacement) {
@@ -1481,24 +1521,35 @@ class ChatFilter {
 			return isEnglish ? exactMatch.category : replacementStr
 		}
 
-		// Cache regex objects to avoid repeated property access
 		const searchRegex = this.blacklist_search_regex[lang]
 		const replaceRegex = this.blacklist_replace_regex[lang]
 
-		// Apply regex replacements (dynamic language support)
-		let result = this._applyRegexReplacements(searchRegex, common.str, this._searchReplacementFn)
-
-		// Apply replace regex (dynamic language support)
+		let result = this._applyRegexReplacements(searchRegex, normalizedStr, this._searchReplacementFn)
 		result = this._applyRegexReplacements(replaceRegex, result, function(category) {
 			return ' ' + prefix + category + suffix + ' '
 		})
 
-		// Check swear words (generic for any language)
 		if (languageMapping.swear) {
 			result = this._processSwearWords(result, languageMapping.swear, true)
 		}
 
 		return this._cleanWhitespace(result)
+	}
+
+	/**
+	 * Removes profanity from a string by replacing it with replacement strings or category names.
+	 * Checks exact matches first, then applies regex replacements, then checks swear words.
+	 * @param {*} str - The text to process (will be converted to string if needed)
+	 * @param {string} [language='en'] - The language code for filtering (defaults to 'en')
+	 * @returns {string} The text with profanity removed/replaced, or the original string if blacklist is disabled
+	 */
+	remove_profanity(str, language) {
+		const common = this._checkProfanityCommon(str, language, true)
+		if (!common.enabled) {
+			return str
+		}
+
+		return this._removeProfanityFromNormalized(common.str, common.language)
 	}
 
 	/**
@@ -1517,23 +1568,25 @@ class ChatFilter {
 		str = validation.str
 		language = validation.language
 
-		// Apply filtering pipeline
-		// 1-2. Remove zalgo and normalize (using _normalizeText which handles both)
-		str = this._normalizeText(str, language)
+		// Two-pass normalization: full ASCII digit leet only when blacklist matches
+		// Pass 1 — detection (e.g. "24 in" -> "2a in", "f4ck" -> "fack") to catch leet profanity
+		const detectionStr = this._normalizeText(str, language, true)
+		const hasProfanity = this._hasProfanityInNormalizedString(detectionStr, language)
 
-		// 3. Remove numbers (only if option is enabled)
+		// Pass 2 — output: keep plain digits unless profanity was detected on pass 1
+		str = this._normalizeText(str, language, hasProfanity)
+
+		// Remove numbers (only if option is enabled)
 		if (this.removeNumbers) {
 			str = this.remove_numbers(str)
 		}
 
-		// 4. Remove spam
 		str = this.remove_spam(str)
-
-		// 5. Remove duplicates
 		str = this.remove_duplicates(str)
 
-		// 6. Remove profanity
-		str = this.remove_profanity(str, language)
+		if (hasProfanity) {
+			str = this._removeProfanityFromNormalized(str, language)
+		}
 
 		return str
 	}
