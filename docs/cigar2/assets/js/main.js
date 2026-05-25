@@ -8130,6 +8130,14 @@
 		escape: false
 	};
 
+	function releaseAllKeysOnBackground() {
+		clearInterval(feedMacroIntervalID);
+		clearInterval(splitMacroIntervalID);
+		for (const key in pressed) {
+			pressed[key] = false;
+		}
+	}
+
 	const eatSound = new Sound('./assets/sound/eat.mp3', 0.5, 10);
 	const pelletSound = new Sound('./assets/sound/pellet.mp3', 0.5, 10);
 
@@ -11116,8 +11124,12 @@
 		document.addEventListener('visibilitychange', () => {
 			if (!document.hidden) {
 				tempShowSkins = settings.showSkins;
+				if (!isTyping && !escOverlayShown && mainCanvas) {
+					mainCanvas.focus();
+				}
 			} else {
 				tempShowSkins = false;
+				releaseAllKeysOnBackground();
 			}
 		});
 
@@ -11172,10 +11184,7 @@
 		window.onkeydown = keydown;
 		window.onkeyup = keyup;
 
-		window.onblur = () => {
-			clearInterval(feedMacroIntervalID);
-			clearInterval(splitMacroIntervalID);
-		}
+		window.onblur = releaseAllKeysOnBackground;
 
 		chatBox.onblur = () => {
 			isTyping = false;
