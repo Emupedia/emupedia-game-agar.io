@@ -40,6 +40,9 @@
 
 	const WARMUP_TRANSLATOR_SOURCES = ['en', 'es', 'de', 'fr', 'ru', 'tr', 'pl', 'uk', 'ar', 'pt'];
 
+	/** Minimum LanguageDetector confidence (0–1); scales up for very short chat lines. */
+	const MIN_DETECT_CONFIDENCE_DEFAULT = 0.5;
+
 	const cache = new Map();
 	const queue = [];
 	let processing = false;
@@ -164,6 +167,21 @@
 
 	function cacheKey(source, target, text) {
 		return `${source}|${target}|${text}`;
+	}
+
+	function normalizedText(text) {
+		return String(text || '').normalize('NFKC').trim().replace(/\s+/g, ' ');
+	}
+
+	function isEffectivelySameText(a, b) {
+		return normalizedText(a) === normalizedText(b);
+	}
+
+	function minConfidenceForText(text) {
+		const len = normalizedText(text).length;
+		if (len <= 2) return 0.85;
+		if (len <= 6) return 0.65;
+		return MIN_DETECT_CONFIDENCE_DEFAULT;
 	}
 
 	function destroyDetector() {
@@ -350,88 +368,170 @@
 		}
 	}
 
-	async function detectSourceLanguage(text, targetLocale) {
-		const trimmed = (text || '').trim();
+	async function detectLanguageResults(text, targetLocale) {
+		const trimmed = normalizedText(text);
 		const target = toTranslatorLang(targetLocale);
 		if (!trimmed || !target) {
 			debugLog('detect skipped', { reason: !trimmed ? 'empty text' : 'unsupported UI locale', targetLocale, target });
-			return null;
+			return { trimmed, target, ranked: [] };
 		}
 
-		if (needsUserGesture) return null;
+		if (needsUserGesture) return { trimmed, target, ranked: [] };
 
 		const det = await ensureDetector(targetLocale);
-		if (!det) return null;
+		if (!det) return { trimmed, target, ranked: [] };
 
 		let results;
 		try {
 			results = await det.detect(trimmed);
 		} catch (err) {
 			debugLog('detect() failed', { error: err, text: truncateForLog(trimmed) });
-			return null;
+			return { trimmed, target, ranked: [] };
 		}
 
 		if (!results || !results.length) {
 			debugLog('detect() returned no languages', { text: truncateForLog(trimmed) });
-			return null;
+			return { trimmed, target, ranked: [] };
 		}
 
 		const ranked = [...results].sort((a, b) => (b.confidence || 0) - (a.confidence || 0));
+		const minConfidence = minConfidenceForText(trimmed);
 
 		debugLog('detect() results', {
 			text: truncateForLog(trimmed),
 			uiLocale: targetLocale,
 			targetLang: target,
+			minConfidence,
 			candidates: ranked.map(r => ({
 				tag: r.detectedLanguage,
 				normalized: normalizeLangCode(r.detectedLanguage),
-				confidence: r.confidence
+				confidence: r.confidence,
+				meetsThreshold: (r.confidence || 0) >= minConfidence
 			}))
 		});
 
+		return { trimmed, target, ranked, minConfidence };
+	}
+
+	async function getDetectionCandidates(text, targetLocale) {
+		const { trimmed, target, ranked, minConfidence } = await detectLanguageResults(text, targetLocale);
+		if (!trimmed || !target || !ranked.length) return { trimmed, target, candidates: [] };
+
+		const candidates = [];
+		const threshold = minConfidence != null ? minConfidence : minConfidenceForText(trimmed);
+
 		for (let i = 0; i < ranked.length; i++) {
+			const confidence = ranked[i].confidence || 0;
 			const source = normalizeLangCode(ranked[i].detectedLanguage);
 			if (!source || source === target) continue;
+			if (confidence < threshold) {
+				debugLog('detect candidate below confidence threshold', {
+					source,
+					confidence,
+					threshold,
+					tag: ranked[i].detectedLanguage
+				});
+				continue;
+			}
 
 			try {
 				const pairAvail = await Translator.availability({
 					sourceLanguage: source,
 					targetLanguage: target
 				});
-				debugLog('Translator.availability', { source, target, availability: pairAvail });
+				debugLog('Translator.availability', { source, target, availability: pairAvail, confidence });
 				if (pairAvail === 'unavailable') continue;
 			} catch (err) {
 				debugLog('Translator.availability failed', { source, target, error: err });
 				continue;
 			}
 
-			debugLog('detected source language', { source, target, pickedFrom: ranked[i].detectedLanguage, confidence: ranked[i].confidence });
-			return source;
+			candidates.push({
+				source,
+				confidence,
+				detectedTag: ranked[i].detectedLanguage
+			});
 		}
 
-		debugLog('no usable source language', { target, text: truncateForLog(trimmed) });
+		if (!candidates.length) {
+			debugLog('no usable source language', { target, text: truncateForLog(trimmed), threshold });
+		}
+
+		return { trimmed, target, candidates };
+	}
+
+	async function detectSourceLanguage(text, targetLocale) {
+		const { candidates } = await getDetectionCandidates(text, targetLocale);
+		return candidates.length ? candidates[0].source : null;
+	}
+
+	async function translateWithCandidates(trimmed, targetLocale) {
+		const { trimmed: text, target, candidates } = await getDetectionCandidates(trimmed, targetLocale);
+		if (!text || !target || !candidates.length) return null;
+
+		for (let i = 0; i < candidates.length; i++) {
+			const { source, confidence, detectedTag } = candidates[i];
+			const key = cacheKey(source, target, text);
+			let translated;
+
+			if (cache.has(key)) {
+				translated = cache.get(key);
+				debugLog('cache hit', { source, target, text: truncateForLog(text) });
+			} else {
+				debugLog('calling Translator.translate', {
+					source,
+					target,
+					confidence,
+					detectedTag,
+					attempt: i + 1,
+					candidateCount: candidates.length,
+					text: truncateForLog(text)
+				});
+				const tr = await ensureTranslator(source, target);
+				if (!tr) continue;
+				translated = await tr.translate(text);
+				if (translated && !isEffectivelySameText(text, translated)) {
+					cache.set(key, translated);
+				}
+			}
+
+			if (translated && !isEffectivelySameText(text, translated)) {
+				debugLog('translation accepted', {
+					source,
+					target,
+					confidence,
+					detectedTag,
+					attempt: i + 1,
+					original: truncateForLog(text),
+					translated: truncateForLog(translated)
+				});
+				return { source, translated };
+			}
+
+			debugLog('translation rejected — same as original (likely wrong source language)', {
+				source,
+				target,
+				confidence,
+				detectedTag,
+				attempt: i + 1,
+				text: truncateForLog(text)
+			});
+		}
+
+		debugLog('all detection candidates failed or matched original', {
+			target,
+			text: truncateForLog(text),
+			tried: candidates.map(c => c.source)
+		});
 		return null;
 	}
 
 	async function translate(text, targetLocale) {
-		const trimmed = (text || '').trim();
+		const trimmed = normalizedText(text);
 		if (!trimmed || !isSupported() || needsUserGesture) return null;
 
-		const target = toTranslatorLang(targetLocale);
-		if (!target) return null;
-
-		const source = await detectSourceLanguage(trimmed, targetLocale);
-		if (!source) return null;
-
-		const key = cacheKey(source, target, trimmed);
-		if (cache.has(key)) return cache.get(key);
-
-		const tr = await ensureTranslator(source, target);
-		if (!tr) return null;
-
-		const out = await tr.translate(trimmed);
-		if (out && out !== trimmed) cache.set(key, out);
-		return out && out !== trimmed ? out : null;
+		const result = await translateWithCandidates(trimmed, targetLocale);
+		return result ? result.translated : null;
 	}
 
 	function clearTranslationCache() {
@@ -496,7 +596,7 @@
 			msg.detectedLanguage = null;
 			msg.messageTranslated = null;
 
-			const trimmed = trimmedMessage(msg);
+			const trimmed = normalizedText(trimmedMessage(msg));
 			debugLog('translating message', {
 				from: msg.name,
 				text: truncateForLog(trimmed),
@@ -504,51 +604,22 @@
 			});
 
 			try {
-				const source = await detectSourceLanguage(trimmed, targetLocale);
-				msg.detectedLanguage = source;
+				const result = await translateWithCandidates(trimmed, targetLocale);
+				msg.detectedLanguage = result ? result.source : null;
+				msg.messageTranslated = result ? result.translated : null;
 
-				if (source) {
-					const target = toTranslatorLang(targetLocale);
-					const key = cacheKey(source, target, trimmed);
-					let translated = cache.get(key);
-
-					if (translated !== undefined) {
-						debugLog('cache hit', { source, target, text: truncateForLog(trimmed) });
-					} else {
-						debugLog('calling Translator.translate', { source, target, text: truncateForLog(trimmed) });
-						const tr = await ensureTranslator(source, target);
-						if (tr) {
-							translated = await tr.translate(trimmed);
-							if (translated && translated !== trimmed) {
-								cache.set(key, translated);
-							} else {
-								translated = null;
-							}
-						} else {
-							translated = null;
-						}
-					}
-
-					msg.messageTranslated = translated && translated !== trimmed ? translated : null;
-
-					if (msg.messageTranslated) {
-						debugLog('translation done', {
-							source,
-							target,
-							original: truncateForLog(trimmed),
-							translated: truncateForLog(msg.messageTranslated)
-						});
-					} else {
-						debugLog('translation produced no output', {
-							source,
-							target,
-							text: truncateForLog(trimmed),
-							reason: translated === trimmed ? 'same as original' : 'translator returned empty'
-						});
-					}
+				if (msg.messageTranslated) {
+					debugLog('translation done', {
+						source: result.source,
+						target: toTranslatorLang(targetLocale),
+						original: truncateForLog(trimmed),
+						translated: truncateForLog(msg.messageTranslated)
+					});
 				} else {
 					debugLog('translation skipped', {
-						reason: 'could not detect a translatable source language',
+						reason: result
+							? 'unexpected empty translation'
+							: 'no confident source language or every candidate matched the original',
 						text: truncateForLog(trimmed),
 						uiLocale: targetLocale
 					});
