@@ -1,0 +1,353 @@
+{
+  "meta": {
+    "title": "Agar.io v2.0",
+    "description": "Sööge endast väiksemaid rakke ja ärge laske end suuremate poolt ära süüa MMO-na"
+  },
+  "chat": {
+    "general": "Kindral",
+    "clan": "Klann",
+    "placeholder": "Vestlemiseks vajutage sisestusklahvi",
+    "clearTitle": "Tühjenda vestlus",
+    "zoom": "Suumi"
+  },
+  "gallery": {
+    "skins": "Nahad"
+  },
+  "lobby": {
+    "title": "Agar.io v2.0",
+    "discordSuggestions": "Kui teil on ettepanekuid, liituge meiega Discordis",
+    "nickname": "Hüüdnimi",
+    "skin": "Nahk",
+    "skinPlaceholder": "Naha nimi",
+    "copy": "Kopeeri",
+    "clanName": "Klanni nimi",
+    "clanPlaceholder": "5 tähte max",
+    "createClan": "Loo klann",
+    "leaveClan": "Lahku klannist",
+    "copyInvite": "Kopeeri kutse",
+    "gameMode": "Mängurežiim",
+    "play": "Mängi",
+    "chooseSkin": "Valige Nahk",
+    "uploadSkin": "Laadige nahk üles",
+    "unban": "Tühista keelamine",
+    "skinCopied": "Skini URL on lõikelauale kopeeritud!"
+  },
+  "settings": {
+    "language": "Keel",
+    "mutedPlayers": "Vaigistatud mängijad",
+    "mutePlaceholder": "Sisestage vaigistamiseks hüüdnimi",
+    "mute": "Vaigista",
+    "keyboardBindings": "Klaviatuuri nuppude sidemed",
+    "feed": "Sööt:",
+    "split": "Jagamine:",
+    "doubleSplit": "Topeltjaotus:",
+    "multiSplit": "Mitu jaotust:",
+    "zoomIn": "Suumi sisse:",
+    "zoomOut": "Suumi välja:",
+    "minion": "Tasuta pealtvaataja kaamera / minioni juhtimine:",
+    "resetKeys": "Lähtestage vaikeseadetele",
+    "keyRebindHint": "Uuesti sidumiseks klõpsake nuppu ja vajutage klahvi",
+    "mouseBindings": "Hiirenuppude sidemed",
+    "leftClick": "Vasak klõps:",
+    "middleClick": "Keskmine klõps:",
+    "rightClick": "Paremklõps:",
+    "resetMouse": "Lähtestage vaikeseadetele",
+    "mouseHint": "Konfigureerige, milliseid toiminguid iga hiirenupp teeb",
+    "toggleFullscreen": "Lülitab täisekraani sisse",
+    "darkTheme": "Tume teema",
+    "cameraSmoothing": "Kaamera silumine",
+    "cellAnimationSpeed": "Lahtri animatsioonide kiirus",
+    "showSkins": "Rakkude nahad",
+    "showNames": "Lahtrite nimed",
+    "showColor": "Lahtri värvid",
+    "showMass": "Rakkude mass",
+    "slowMassUpdates": "Aeglasemad massivärskendused",
+    "jellyPhysics": "Raku tarretise füüsika",
+    "showIdenticon": "Lahtri identifikaatorid",
+    "fillSkin": "Rakuvärv naha all",
+    "showTransparent": "Lahtri läbipaistvus",
+    "showChat": "Kuva vestlus",
+    "showMinimap": "Kuva minikaart",
+    "showPosition": "Näita positsiooni",
+    "showBorder": "Kuva kaardi ääris",
+    "showGrid": "Kuva kaardiruudustik",
+    "backgroundSectors": "Näita kaardi sektoreid",
+    "moreZoom": "Väljasuumi suurendamine",
+    "showZoom": "Kuva suumiliugur",
+    "playSounds": "Helid",
+    "feedMacro": "Sööda makro",
+    "splitMacro": "Tükeldatud makro",
+    "leftClickToggle": "Vasak klõps",
+    "middleClickToggle": "Keskmine klõps",
+    "rightClickToggle": "Paremklõps",
+    "disableTouchControls": "Keela puutetundlikud juhtnupud",
+    "useJoystick": "Puudutage Juhtkangi",
+    "lockMobileButtons": "Lukusta mobiilinupud",
+    "resetButtonPositions": "Lähtestage mobiilinuppude positsioonid",
+    "useWordFilters": "Sõnade tsensuur",
+    "autoRespawn": "Lülitage automaatne taaselus"
+  },
+  "colors": {
+    "background": "Taust",
+    "name": "Nimi",
+    "color": "Värv",
+    "border": "Piir"
+  },
+  "mouseActions": {
+    "none": "Mitte ühtegi",
+    "feed": "Sööt (mass väljutamine)",
+    "split": "Lõhestatud",
+    "doubleSplit": "Kahekordne poolitus",
+    "multiSplit": "Multi Split"
+  },
+  "connecting": {
+    "trying": "Ühenduse loomine ...",
+    "discord": "Liitu meiega Discordis!",
+    "firewall": "Kui te ei saa serveritega ühendust luua, kontrollige, kas mõni viirusetõrje või tulemüür ei blokeeri ühendust.",
+    "multisessionTitle": "Mitmeseansi hoiatus",
+    "multisessionBody": "Mitu mängu eksemplari pole lubatud.<br />Sulgege kõik muud mängu eksemplarid ja laadige uuesti.",
+    "oldBrowserTitle": "Teie brauser on väga vana",
+    "oldBrowserLink": "Palun klõpsake siin, et värskendada oma brauseri uuemale versioonile.",
+    "bannedTitle": "Oled keelatud 😭",
+    "bannedBody": "Olete mängust keelatud, kuna rikkusite reegleid kas vestluses rämpsposti saatmise või kohandatud skinnide üleslaadimise ajal.",
+    "bannedBodyBots": "Teid keelatakse mängust, kuna rikkusite reegleid kas vestluses rämpsposti saatmise või kohandatud skinnide üleslaadimise ajal või seetõttu, et kasutate roboteid.",
+    "unbanCode": "Teie blokeerimise tühistamise kood on"
+  },
+  "errors": {
+    "browserUnsupported": "Teie brauser ei toeta nõutavaid funktsioone, palun värskendage oma brauserit.",
+    "nicknameRequired": "Sisesta mängimiseks hüüdnimi.",
+    "nicknameMinLength": "Hüüdnimi vajab vähemalt {min} tähemärki",
+    "nicknameDisallowed": "See hüüdnimi pole lubatud. Valige mõni muu hüüdnimi."
+  },
+  "muted": {
+    "empty": "Vaigistatud mängijaid pole",
+    "unmute": "Tühista vaigistus"
+  },
+  "keys": {
+    "pressKey": "Vajutage klahvi..."
+  },
+  "gameplay": {
+    "rulesTitle": "Reeglid",
+    "rule1": "Ärge laadige üles keelatud kohandatud nahku, eriti kui see on kellegi nägu, võite saada oma naha või teie enda mängust keelu.",
+    "rule2": "Ärge kasutage vestluses ega oma nimena teiste inimeste hüüdnimesid halvustavalt, sest võite mängu vaigistada või mängust blokeerida.",
+    "gameplayTitle": "Mängu käik",
+    "controlsIntro": "Liigutage oma <kbd>HIIRT</kbd> / <kbd>PUUDETT</kbd>, et juhtida oma lahtrit<br /><kbd></kbd>hiireratast<kbd id=\"key-zoomin-display\"> või </kbd>F<kbd id=\"key-zoomout-display\"> ja </kbd><br />sisse- ja väljasuumimiseks <kbd id=\"key-feed-display\"></kbd> id=\"key-feed-display\">W<kbd> või </kbd>vasakklõps<br /> massi väljutamiseks<kbd id=\"key-split-display\">Vajutage </kbd>TÜHIK<br />, et lahter üks kord poolitada.<kbd id=\"key-doublesplit-display\">Vajutage </kbd>R või <kbd>X</kbd> tehke topeltjagamine<br />mitme jagamise tegemiseks vajutage <kbd id=\"key-multisplit-display\">C</kbd> või <kbd>keskmine klõps</kbd>",
+    "objective": "<b>Eesmärk:</b> Agar.io eesmärk on teie rakku kasvatada, tarbides väiksemaid rakke ja vältides suuremaid. Kasvades muutute hirmuäratavamaks ja suudate tarbida veelgi suuremaid rakke.",
+    "startingOut": "<b>Alustades:</b> kui esimest korda mänguga liitute, alustate väikese lahtrina. Liikuge hiirega ringi, et koguda kaardil hajutatud värvilisi graanuleid. Pelletite söömine suurendab teie suurust ja massi.",
+    "movement": "<b>Liikumine:</b> lahtri liigutamiseks liigutage lihtsalt hiirekursorit või kasutage puuteekraani, liikudes soovitud suunas. Teie lahter jälgib hiirekursori liikumist ekraanil.",
+    "consumeSmaller": "<b>Kasutage väiksemaid rakke:</b> jälgige, et läheduses ei rändleks väiksemad rakud. Suuremaks kasvades saate need väiksemad rakud oma massi suurendamiseks endasse neelata. Lähenege neile strateegiliselt, et vältida suuremate rakkude söömist.",
+    "avoidLarger": "<b>Vältige suuremaid rakke:</b> olge suuremate rakkudega ettevaatlik, kuna need võivad teid ära tarbida, kui olete neist väiksem. Jälgige mängijaid, kes väiksemate rakkude hõivamiseks lahku lähevad, ja proovige nende liikumist turvalisuse tagamiseks ennetada.",
+    "splitting": "<b>Jagamine:</b> saate jagada lahtri mitmeks väiksemaks tükiks, vajutades <kbd>TÜHIKKU</kbd>. Kasutage seda taktikat väiksemate rakkude hõivamiseks või suuremate rakkude eest põgenemiseks. Samuti saate teha mitu jaotust, vajutades <kbd>X</kbd> või <kbd>Z</kbd>. Pidage meeles, et lahkuminek muudab teid ka haavatavamaks, seega kasutage seda targalt.",
+    "ejectingMass": "<b>Massi väljutamine:</b> Massi väljutamine <kbd>W</kbd> või <kbd>vasakklõpsu</kbd> vajutamisega võib olla kasulik, kuid sellega kaasnevad ka riskid. Väljavisatud massi võivad tarbida teised mängijad, sealhulgas potentsiaalsed rivaalid. Lisaks vähendab massi väljutamine teie raku üldist suurust, mis võib muuta teid suuremate rakkude tarbimise suhtes haavatavamaks.",
+    "teamPlay": "<b>Meeskonnamäng (valikuline):</b> meeskonnarežiimis saate teha koostööd teiste mängijatega, et edetabelis domineerida. Tehke koostööd sõprade või teiste mängijatega, et oma vastastest üle saada ja mäng üheskoos vallutada.",
+    "growDominate": "<b>Kasva ja domineeri:</b> kui tarbite väiksemaid rakke ja väldite söömist, kasvab teie raku suurus jätkuvalt. Eesmärk on saada serveri suurimaks rakuks ja domineerida edetabelis.",
+    "viruses": "<b>Olge viiruste eest:</b> kogu kaardil kohtate rohelisi teravaid ringe, mida nimetatakse viirusteks. Vältige nendega kokkupõrget, kuna need võivad teie raku väiksemateks tükkideks jagada, kui olete neist suurem. Viiruste söötmine oma massiga ühest suunast põhjustab nende paljunemist vastupidises suunas.",
+    "beStrategic": "<b>Ole strateegiline:</b> Agar.io puudutab nii strateegiat kui ka oskusi. Pöörake tähelepanu ümbritsevale, oodake vastaste käike ja kasutage selliseid taktikaid nagu lahknemine ja liitmine, et konkurente üle kavaldada.<hr />",
+    "closing": "See on kõik Agar.io põhitõdede jaoks! Nüüd on aeg mängu hüpata ja hakata oma rakku kasvatama, et saada serveri suurimaks ja domineerivamaks mängijaks.",
+    "goodLuck": "Palju õnne ja nautige!"
+  },
+  "news": {
+    "title": "Uudised",
+    "entries": [
+      {
+        "date": "21/05/2026",
+        "items": [
+          "Täiustatud <b>lahtrinimede</b>, <b>raku massi</b> ja <b>raku tarretisefüüsika</b> renderdamise jõudlus, kui need on jaotises <b>Seaded</b> lubatud",
+          "Lisati jaotisesse <b>Seaded</b> <b>Aeglasemad massivärskendused</b> koos liuguriga, et juhtida massinumbrite värskendamise sagedust (liuguri paremale lohistamine tähendab väiksemaid värskendusi)"
+        ]
+      },
+      {
+        "date": "01.05.2026",
+        "items": [
+          "<b>Hüüdnimed</b> peavad nüüd koosnema vähemalt <b>3 tähemärgist</b>",
+          "Lisati valikuline <b>sõnade tsensuur</b> <b>vestluse</b> ja <b>hüüdnimede</b> jaoks, see on vaikimisi lubatud, <u>saate selle keelata, kuid ärge kurdage <a style=\"font-weight: bolder;\" href=\"https://discord.gg/emupedia-510149138491506688\" target=\"_blank\">lahkarvamused</a> inimeste mürgisuse kohta</u>",
+          "Parandatud <b>Vaatavaatajate vaba kaamera lülitus</b>, nüüd saate pealtvaatajarežiimis lülituda mängijate automaatse jälgimise asemel vaba kaamera režiimile"
+        ]
+      },
+      {
+        "date": "19/11/2025",
+        "items": [
+          "<b>Hüüdnimed</b> on nüüd <b>nõutavad</b>, teil ei saa enam olla tühjasid <b>hüüdnimesid</b>",
+          "<b>Täiustatud pleieri vaigistamise funktsioon</b> proovib nüüd <b>Vaigista</b> eristada <b>mängijaid</b>, kellel on sama <b>hüüdnimi</b> ja proovib <b>vaigistada</b> just seda, mida soovisite"
+        ]
+      },
+      {
+        "date": "18/11/2025",
+        "items": [
+          "Lisatud mobiilinupud <b>Sissesuumimine</b> ja <b>Väljasuumimine</b> saate <b>Seadetes</b> valida <b>Näita suumiliugurit</b> valikule <b>Kuva</b> või <b>Peida</b>.",
+          "<b>Täiustatud mobiilinuppude asukoha kohandamine</b>, nüüd saate mis tahes nuppu <b>puudutada</b> 3 sekundit, et seda liigutada",
+          "Lisati <b>Mobiilinuppude positsioonide lähtestamine</b> jaotisesse <b>Seaded</b>, kui soovite lähtestada <b>mobiilinuppude</b> <b>vaikeasendisse</b>",
+          "<b>Seadetes</b> lisati <b>Mobiili nuppude lukustamine</b>. Kui märgite selle, ei saa te nuppe liigutada",
+          "Eemaldati <b>Puutetundlikud juhtnupud</b> jaotisest <b>Seaded</b> (pole enam vaja, nüüd saate nuppe liigutada kuhu iganes soovite)"
+        ]
+      },
+      {
+        "date": "28/10/2025",
+        "items": [
+          "Lisati jaotisesse <b>Seaded</b> kohandatavad <b>klaviatuurinupud</b> ja <b>hiirenupud</b>",
+          "Lisati <b>Seadetes</b> <b>Kaamera silumine</b> ja <b>Kärganimatsioonide kiirus</b>"
+        ]
+      },
+      {
+        "date": "07.07.2025",
+        "items": [
+          "Täiustatud <b>Skinide</b> laadimist, et muuta nende kopeerimine raskemaks"
+        ]
+      },
+      {
+        "date": "28/06/2025",
+        "items": [
+          "Täiustatud <b>identiteedid</b>, et mitte nii sageli muutuda"
+        ]
+      },
+      {
+        "date": "03.08.2025",
+        "items": [
+          "Lisatud on <b>mängija vaigistamise/vaigistuse tühistamise nupp</b>. Saate nüüd <b>vestlusest</b> <b>summutada/tühistada</b> konkreetseid <b>mängijaid</b>, vajutades nende sõnumi kõrval olevat <b>vaigistamise/vaigistuse tühistamise ikooni</b> või kasutades menüüs <b>Seaded</b> loendit <b>Vaigistatud mängijad</b>"
+        ]
+      },
+      {
+        "date": "03.02.2025",
+        "items": [
+          "Lisatud on <b>Vestluskerimine</b>, saate nüüd kerimisriba lohistades <kbd>hiirega</kbd> või kasutada klahve <kbd>↑ Nool üles</kbd> ja <kbd>↓ Nool alla</kbd>"
+        ]
+      },
+      {
+        "date": "01.11.2025",
+        "items": [
+          "Lisatud <b>PVP-mängurežiim</b>, mis on endiselt beetaversioonis",
+          "Lisati jaotisesse <b>Seaded</b> märkeruut <b>Cell Transparency</b>"
+        ]
+      },
+      {
+        "date": "13.10.2024",
+        "items": [
+          "Sisse- ja väljasuumimiseks on lisatud klahvid <kbd>F</kbd> ja <kbd>V</kbd>",
+          "Sisse- ja väljasuumimiseks lisati <b>suumiliugur</b>",
+          "Lisati jaotisesse <b>Seaded</b> märkeruut <b>Kuva suumiliugur</b>"
+        ]
+      },
+      {
+        "date": "10.10.2024",
+        "items": [
+          "Lisatud on nupp <b>Kustuta vestlus</b>, et saaksite vestluse käsitsi tühjendada"
+        ]
+      },
+      {
+        "date": "10.01.2024",
+        "items": [
+          "Sõprade või vaenlaste paremaks tuvastamiseks on lisatud <b>identikoonid</b>, igal seadmel on konkreetne unikaalne <b>ikoon</b>",
+          "Lisati jaotisesse <b>Seaded</b> märkeruut <b>Kuva identiteedid</b>",
+          "Eemaldatud nipid, mis võimaldavad hõlpsalt kopeerida <b>Nicke</b> või <b>Skins</b>"
+        ]
+      },
+      {
+        "date": "16/05/2024",
+        "items": [
+          "Parandatud <b>AZERTY</b> klaviatuuri vastendamine nüüd <kbd>W</kbd> ja <kbd>Z</kbd>, mõlemad <b>voog</b>",
+          "<b>Muti Split</b> muudeti võtmeks <kbd>C</kbd>, mitte <kbd>Z</kbd>",
+          "Lisati jaotisesse <b>Seaded</b> märkeruut <b>Keela puutetundlikud juhtnupud</b>"
+        ]
+      },
+      {
+        "date": "15/05/2024",
+        "items": [
+          "Parandatud pikaajaline viga rakenduses <b>Vestlus</b>, mis takistas mõnikord mõne sõnumi kuvamist",
+          "Nüüd näete <b>Pealtvaatajate</b> hüüdnimesid, kui neil on üks komplekt",
+          "Nüüd saate <b>Viirused</b> lükata, väljutades oma <b>raku</b> massi <b>viiruste</b> suunas.",
+          "Kohandatud <b>AntiSpam</b> on <b>vestluses</b> andestavam, samuti on uuesti lubatud kirjade <b>kleepimine</b>",
+          "Lisati jaotisesse <b>Seaded</b> märkeruut <b>Lülita täisekraan sisse</b>",
+          "Rakendatud <b>AutoRespawn</b>, nüüd luuakse automaatselt uuesti, ilma et peaksite uuesti nuppu <b>Esita</b> vajutama",
+          "Lisati jaotisesse <b>Seaded</b> märkeruut <b>Lülita automaatset taastamist</b>",
+          "Täiustatud <b>puutetundlikud juhtnupud</b> mobiilseadmete jaoks (lisatud <b>nupp Kuva menüü</b>, <b>täisekraani nupp</b>, fikseeritud <b>jagamisnupu</b> kaugus, takistab nuppude lohistamist)"
+        ]
+      },
+      {
+        "date": "14/05/2024",
+        "items": [
+          "Puutetundlike juhtnuppude kasutamise ajal poolitamine väljutas veidi massi, see viga on nüüd parandatud",
+          "Eject Macro töötab nüüd puutetundlike juhtnuppude kasutamise ajal",
+          "Mobiili jaoks täiustatud puutetundlikud juhtnupud"
+        ]
+      },
+      {
+        "date": "05.10.2024",
+        "items": [
+          "Lisati vestlusele rämpspostitõrjemeetmed, keelati sõnumite kleepimine",
+          "Taaslubamine paremklõpsuga menüüdel ja vestluskastis",
+          "Lisatud on võimalus <b>Puutetundlike juhtnuppude</b> paremalt küljelt vasakule pöörata <b>Seadetes</b>"
+        ]
+      },
+      {
+        "date": "01.05.2024",
+        "items": [
+          "Lisati reCaptcha v3, et takistada robotite ühendamist <a href=\"https://discord.gg/emupedia-510149138491506688\" target=\"_blank\">(kui see ei tööta korralikult, saate Discordi kohta tagasisidet anda)</a>",
+          "Lubatud automaatne taasühendamine serveriga pärast serveri taaskäivitamist",
+          "Mobiili jaoks täiustatud puutetundlikud juhtnupud"
+        ]
+      },
+      {
+        "date": "09.03.2024",
+        "items": [
+          "Lisatud nupp <b>Kopeeri lõikelauale</b> <b>Praegu valitud naha</b> jaoks",
+          "Suurenenud <b>vestlusala suurus</b>, et mahutada rohkem sõnumeid",
+          "Vähendatud <b>üleslaadimisnaha</b> <b>ooteaeg</b> 30 sekundini"
+        ]
+      },
+      {
+        "date": "28/02/2024",
+        "items": [
+          "Rakendatud <b>Touch Joystick</b> mobiili jaoks",
+          "Lisati jaotisesse <b>Seaded</b> märkeruut <b>Puute juhtkangi</b>",
+          "<kbd>gif</kbd> failide üleslaadimine ei ole enam lubatud, animatsioon niikuinii ei töötanud, näidati lihtsalt esimest kaadrit"
+        ]
+      },
+      {
+        "date": "24/02/2024",
+        "items": [
+          "Rakendatud <b>naha üleslaadimise</b> funktsioon"
+        ]
+      },
+      {
+        "date": "20/02/2024",
+        "items": [
+          "Lisati jaotisesse <b>Seaded</b> lülitusruudud <b>Individuaalsed hiireklikid</b>",
+          "Lisatud kohandatud <b>taustavärvi</b> valija"
+        ]
+      },
+      {
+        "date": "17/02/2024",
+        "items": [
+          "Lisatud on <b>topeltjagamine</b>, saate kasutada <b>topeltjaotust</b>, vajutades <kbd>X</kbd> või <kbd>paremklõps</kbd>",
+          "Lisatud <b>Mitme jaotusega makro</b>, saate kasutada <b>Mitme jaotusega makrot</b>, vajutades <kbd>C</kbd> või <kbd>keskmist klõpsamist</kbd>",
+          "<b>Mitme jagatud makro</b> jaoks lisati lüliti märkeruut jaotises <b>Seaded</b>",
+          "Lisatud <b>hüüdnime</b> valija",
+          "Lisatud <b>naha nime</b> valija",
+          "Lisatud kohandatud <b>lahtri nime värvi</b> valija",
+          "Lisatud kohandatud <b>lahtri taustavärvi</b> valija",
+          "Lisatud kohandatud <b>lahtri äärise värvi</b> valija",
+          "Menüüde jaoks on lisatud <b>tume teema</b>"
+        ]
+      },
+      {
+        "date": "16/02/2024",
+        "items": [
+          "Parandatud juhuslikud taustavärvid <b>Jelly Physics</b> kasutamisel",
+          "Lisatud on <b>voo makro</b>, saate kasutada <b>voo makrot</b>, vajutades nuppu <kbd>W</kbd> või <kbd>vasakklõpsu</kbd> ja märkige ruut <b>Voo makro</b> jaotises <b>Seaded</b>",
+          "<b>Voo makro</b> jaotises <b>Seaded</b> lisati lülituskast",
+          "Lisatud jaotis <b>Uudised</b>",
+          "Lisatud jaotis <b>Mängumäng</b>",
+          "Rakendatud nahad, mis algavad tähega <kbd>$</kbd>",
+          "Takistatud sünteetilised sündmused, mis on loodud sisestatud skriptide poolt",
+          "Kõik muud kohandatud kliendid on keelatud"
+        ]
+      },
+      {
+        "date": "13.06.2023",
+        "items": [
+          "Lisatud 1195 puuduvat nahka"
+        ]
+      }
+    ]
+  }
+}

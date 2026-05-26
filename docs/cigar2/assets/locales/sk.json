@@ -1,0 +1,353 @@
+{
+  "meta": {
+    "title": "Agar.io v2.0",
+    "description": "Jedzte bunky menšie ako vy a nenechajte sa zožrať väčšími, ako MMO"
+  },
+  "chat": {
+    "general": "generál",
+    "clan": "Klan",
+    "placeholder": "Ak chcete chatovať, stlačte kláves Enter",
+    "clearTitle": "Vymazať chat",
+    "zoom": "Zoom"
+  },
+  "gallery": {
+    "skins": "Kože"
+  },
+  "lobby": {
+    "title": "Agar.io v2.0",
+    "discordSuggestions": "Pridajte sa k nám na Discord, ak máte návrhy",
+    "nickname": "prezývka",
+    "skin": "Koža",
+    "skinPlaceholder": "Názov kože",
+    "copy": "Kopírovať",
+    "clanName": "Názov klanu",
+    "clanPlaceholder": "5 písmen max",
+    "createClan": "Vytvoriť klan",
+    "leaveClan": "Opustiť klan",
+    "copyInvite": "Kopírovať pozvánku",
+    "gameMode": "Herný režim",
+    "play": "Hrať",
+    "chooseSkin": "Vyberte položku Koža",
+    "uploadSkin": "Nahrajte vzhľad",
+    "unban": "Zrušiť zákaz",
+    "skinCopied": "Adresa URL vzhľadu bola skopírovaná do schránky!"
+  },
+  "settings": {
+    "language": "Jazyk",
+    "mutedPlayers": "Stlmení hráči",
+    "mutePlaceholder": "Ak chcete stlmiť, zadajte prezývku",
+    "mute": "Stlmiť",
+    "keyboardBindings": "Väzby tlačidiel klávesnice",
+    "feed": "Informačný kanál:",
+    "split": "Rozdelenie:",
+    "doubleSplit": "Dvojité rozdelenie:",
+    "multiSplit": "Viacnásobné rozdelenie:",
+    "zoomIn": "Priblížiť:",
+    "zoomOut": "Oddialiť:",
+    "minion": "Bezplatná divácka kamera / kontrola prisluhovača:",
+    "resetKeys": "Obnoviť predvolené nastavenia",
+    "keyRebindHint": "Kliknite na tlačidlo a stlačte kláves pre opätovné spojenie",
+    "mouseBindings": "Väzby tlačidiel myši",
+    "leftClick": "Kliknutie ľavým tlačidlom:",
+    "middleClick": "Kliknutie stredom:",
+    "rightClick": "Kliknite pravým tlačidlom myši:",
+    "resetMouse": "Obnoviť predvolené nastavenia",
+    "mouseHint": "Nakonfigurujte, akú akciu vykoná každé tlačidlo myši",
+    "toggleFullscreen": "Prepnúť na celú obrazovku",
+    "darkTheme": "Temná téma",
+    "cameraSmoothing": "Vyhladenie fotoaparátu",
+    "cellAnimationSpeed": "Rýchlosť animácií buniek",
+    "showSkins": "Cell Skins",
+    "showNames": "Názvy buniek",
+    "showColor": "Bunkové farby",
+    "showMass": "Cell Mass",
+    "slowMassUpdates": "Pomalšie hromadné aktualizácie",
+    "jellyPhysics": "Cell Jelly Physics",
+    "showIdenticon": "Identikony buniek",
+    "fillSkin": "Farba buniek pod kožou",
+    "showTransparent": "Priehľadnosť buniek",
+    "showChat": "Zobraziť chat",
+    "showMinimap": "Zobraziť minimapu",
+    "showPosition": "Zobraziť pozíciu",
+    "showBorder": "Zobraziť hranicu mapy",
+    "showGrid": "Zobraziť mriežku mapy",
+    "backgroundSectors": "Zobraziť sektory mapy",
+    "moreZoom": "Oddialiť Zvýšiť",
+    "showZoom": "Zobraziť posúvač priblíženia",
+    "playSounds": "Zvuky",
+    "feedMacro": "Makro krmiva",
+    "splitMacro": "Rozdeliť makro",
+    "leftClickToggle": "Kliknite ľavým tlačidlom myši",
+    "middleClickToggle": "Stredné kliknutie",
+    "rightClickToggle": "Kliknite pravým tlačidlom myši",
+    "disableTouchControls": "Zakázať dotykové ovládanie",
+    "useJoystick": "Dotknite sa joysticku",
+    "lockMobileButtons": "Zamknúť tlačidlá mobilu",
+    "resetButtonPositions": "Obnovte polohy tlačidiel mobilného telefónu",
+    "useWordFilters": "Cenzúra slov",
+    "autoRespawn": "Prepnúť AutoRespawn"
+  },
+  "colors": {
+    "background": "Pozadie",
+    "name": "Meno",
+    "color": "Farba",
+    "border": "Hranica"
+  },
+  "mouseActions": {
+    "none": "žiadne",
+    "feed": "Feed (Eject Mass)",
+    "split": "Rozdeliť",
+    "doubleSplit": "Dvojité rozdelenie",
+    "multiSplit": "Viacnásobné rozdelenie"
+  },
+  "connecting": {
+    "trying": "Prebieha pokus o pripojenie...",
+    "discord": "Pridajte sa k nám na Discord!",
+    "firewall": "Ak sa nemôžete pripojiť k serverom, skontrolujte, či pripojenie neblokuje nejaký antivírus alebo firewall.",
+    "multisessionTitle": "Upozornenie na viac relácií",
+    "multisessionBody": "Viaceré inštancie hry nie sú povolené.<br />Zatvorte všetky ostatné inštancie hry a znova načítajte.",
+    "oldBrowserTitle": "Váš prehliadač je veľmi starý",
+    "oldBrowserLink": "Ak chcete aktualizovať svoj prehliadač na novšiu verziu, kliknite sem.",
+    "bannedTitle": "Máš zákaz 😭",
+    "bannedBody": "Máte zakázaný vstup do hry, pretože ste porušili pravidlá buď spamovaním chatu alebo pri nahrávaní vlastných vzhľadov.",
+    "bannedBodyBots": "Máte zakázaný vstup do hry, pretože ste porušili pravidlá buď spamovaním chatu alebo pri nahrávaní vlastných vzhľadov, alebo preto, že používate roboty.",
+    "unbanCode": "Váš odblokovací kód je"
+  },
+  "errors": {
+    "browserUnsupported": "Váš prehliadač nepodporuje požadované funkcie, aktualizujte svoj prehliadač.",
+    "nicknameRequired": "Ak chcete hrať, zadajte prezývku.",
+    "nicknameMinLength": "Prezývka potrebuje aspoň {min} znakov",
+    "nicknameDisallowed": "Táto prezývka nie je povolená. Vyberte si inú prezývku."
+  },
+  "muted": {
+    "empty": "Žiadni stlmení hráči",
+    "unmute": "Zapnúť zvuk"
+  },
+  "keys": {
+    "pressKey": "Stlačte kláves..."
+  },
+  "gameplay": {
+    "rulesTitle": "pravidlá",
+    "rule1": "Nenahrávajte zakázané vlastné vzhľady, najmä ak ide o niekoho tvár, môže vám byť zakázaný váš vzhľad alebo vám bude zakázaná účasť v hre.",
+    "rule2": "Nepoužívajte prezývky iných ľudí v rozhovore ani ako svoje meno hanlivým spôsobom, mohli by ste byť stlmení alebo by vám bolo zakázané hrať.",
+    "gameplayTitle": "Hrateľnosť",
+    "controlsIntro": "Pohybom <kbd>MYŠI</kbd> / <kbd>TOUCH</kbd> ovládajte mobil<br /><kbd></kbd>Koleso myši<kbd id=\"key-zoomin-display\"> alebo </kbd>F<kbd id=\"key-zoomout-display\"> a </kbd>V<br /> Pre priblíženie <kbd id=\"key-feed-display\">W</kbd> alebo <kbd>Kliknutie ľavým tlačidlom</kbd> na vysunutie hmoty<br />Stlačením <kbd id=\"key-split-display\">SPACE</kbd> raz rozdelíte bunku<br />Stlačte <kbd id=\"key-doublesplit-display\"> Dvojité kliknutie\">db>Kliknutie vpravo </kbd> Rozdelenie<kbd>Stlačením </kbd>C<br /> alebo <kbd id=\"key-multisplit-display\">Kliknutie stredným tlačidlom</kbd> vykonáte viacnásobné rozdelenie<kbd></kbd>",
+    "objective": "<b>Cieľ:</b> Cieľom Agar.io je pestovať vašu bunku konzumáciou menších buniek a vyhýbaním sa väčším. Ako budete rásť, stanete sa impozantnejšími a budete môcť konzumovať ešte väčšie bunky.",
+    "startingOut": "<b>Začiatok:</b> Keď sa prvýkrát zapojíte do hry, začnete ako malá bunka. Pohybujte sa pomocou myši a zbierajte farebné pelety roztrúsené po mape. Jedenie peliet zvyšuje vašu veľkosť a hmotnosť.",
+    "movement": "<b>Pohyb:</b> Ak chcete presunúť svoju bunku, jednoducho pohnite kurzorom myši alebo použite dotykovú obrazovku pohybom v smere, ktorým chcete, aby sa vaša bunka pohybovala. Vaša bunka bude sledovať pohyb kurzora myši na obrazovke.",
+    "consumeSmaller": "<b>Spotrebujte menšie bunky:</b> Dávajte pozor na menšie bunky v okolí. Keď sa zväčšíte, budete môcť pohltiť tieto menšie bunky, aby ste zvýšili svoju hmotu. Pristupujte k nim strategicky, aby ste sa vyhli tomu, že ich zožerú väčšie bunky.",
+    "avoidLarger": "<b>Vyhnite sa väčším bunkám:</b> Dávajte si pozor na väčšie bunky, pretože vás môžu pohltiť, ak ste menší ako oni. Dávajte si pozor na hráčov, ktorí sa rozdelia, aby zachytili menšie bunky, a snažte sa predvídať ich pohyby, aby zostali v bezpečí.",
+    "splitting": "<b>Rozdelenie:</b> Bunku môžete rozdeliť na viacero menších častí stlačením <kbd>SPACE</kbd>. Použite túto taktiku na zajatie menších buniek alebo na únik z väčších. Môžete tiež urobiť viacnásobné rozdelenie stlačením <kbd>X</kbd> alebo <kbd>Z</kbd>. Pamätajte, že rozdelenie vás robí zraniteľnejšími, takže ho používajte rozumne.",
+    "ejectingMass": "<b>Vysunutie hmoty:</b> Zatiaľ čo vysunutie hmoty stlačením <kbd>W</kbd> alebo <kbd>ľavým kliknutím</kbd> môže byť prospešné, prináša so sebou aj riziká. Vymrštenú hmotu môžu spotrebovať iní hráči, vrátane potenciálnych súperov. Vysunutie hmoty navyše znižuje celkovú veľkosť vašej bunky, čo môže spôsobiť, že budete náchylnejší na pohltenie väčšími bunkami.",
+    "teamPlay": "<b>Tímová hra (voliteľné):</b> V tímovom režime môžete spolupracovať s ostatnými hráčmi a ovládnuť tabuľku výsledkov. Spojte sa s priateľmi alebo inými hráčmi, aby ste vymanévrovali svojich protivníkov a spoločne dobyli hru.",
+    "growDominate": "<b>Rast a dominuj:</b> Keď budete konzumovať menšie bunky a vyhýbať sa jedeniu, vaša bunka bude naďalej rásť. Snažte sa stať sa najväčšou bunkou na serveri a dominovať v rebríčku.",
+    "viruses": "<b>Pozor na vírusy:</b> Na celej mape narazíte na zelené špicaté kruhy známe ako vírusy. Vyhnite sa zrážke s týmito, pretože môžu rozdeliť vašu bunku na menšie časti, ak ste väčší ako oni. Kŕmenie vírusov z určitého smeru spôsobí, že sa budú množiť v opačnom smere.",
+    "beStrategic": "<b>Buďte strategickí:</b> Agar.io je rovnako o stratégii ako o zručnostiach. Venujte pozornosť svojmu okoliu, predvídajte pohyby svojich súperov a používajte múdre taktiky, ako je rozdelenie a spájanie, aby ste prekabátili svojich súperov.<hr />",
+    "closing": "To je všetko pre základy Agar.io! Teraz je čas skočiť do hry a začať pestovať svoju bunku, aby ste sa stali najväčším a najdominantnejším hráčom na serveri.",
+    "goodLuck": "Veľa šťastia a bavte sa!"
+  },
+  "news": {
+    "title": "Správy",
+    "entries": [
+      {
+        "date": "21.05.2026",
+        "items": [
+          "Vylepšený výkon vykresľovania <b>Cell Names</b>, <b>Cell Mass</b> a <b>Cell Jelly Physics</b>, keď sú povolené v <b>Nastaveniach</b>",
+          "Pridané <b>Pomalšie hromadné aktualizácie</b> v <b>Nastaveniach</b> s posúvačom na ovládanie frekvencie obnovovania hromadných čísel (potiahnutie posúvača doprava znamená nižšie aktualizácie)"
+        ]
+      },
+      {
+        "date": "5. 1. 2026",
+        "items": [
+          "<b>Prezývky</b> teraz musia mať aspoň <b>3 znaky</b>",
+          "Pridaná voliteľná <b>cenzúra slov</b> pre <b>rozhovor</b> a <b>prezývky</b>, v predvolenom nastavení je povolená, <u>môžete ju zakázať, ale potom sa nesťažujte na <a style=\"font-weight: bolder;\" href=\"https://discord.gg/emupedia-510149138491506688\" target=\"_blank\">Rozpory</a> o toxických ľuďoch</u>",
+          "Opravené <b>prepínanie voľnej kamery na diváka</b>, teraz môžete v režime diváka správne prepínať medzi hráčmi s automatickým sledovaním a voľnou kamerou"
+        ]
+      },
+      {
+        "date": "19. 11. 2025",
+        "items": [
+          "<b>Prezývky</b> sú teraz <b>povinné</b>, <b>prezývky</b> už nemôžete mať prázdne",
+          "<b>Vylepšená funkcia stlmenia prehrávača</b> teraz <b>Stlmiť</b> sa pokúsi rozlíšiť medzi <b>hráčmi</b> s rovnakou <b>prezývkou</b> a pokúsi sa <b>stlmiť</b> len toho, ktorého chcete"
+        ]
+      },
+      {
+        "date": "18. 11. 2025",
+        "items": [
+          "Pridané mobilné tlačidlá <b>Priblížiť</b> a <b>Oddialiť</b>, v <b>Nastaveniach</b> môžete prepínať <b>Zobraziť posúvač priblíženia</b> na <b>Zobraziť</b> alebo <b>Skryť</b>",
+          "<b>Vylepšené prispôsobenie polohy tlačidiel pre mobilné zariadenia</b>, teraz môžete <b>klepnúť</b> na 3 sekundy na ľubovoľné tlačidlo a pohybovať sa ním",
+          "Pridané <b>Obnovenie pozícií tlačidiel mobilného telefónu</b> v <b>Nastaveniach</b>, ak chcete <b>Tlačidlá mobilného telefónu</b> resetovať na <b>predvolené</b> pozície",
+          "Pridané <b>Uzamknúť tlačidlá mobilu</b> v <b>Nastaveniach</b>, ak začiarknete túto možnosť, nebudete môcť presúvať tlačidlá",
+          "Z <b>Nastavenia</b> boli odstránené <b>Flip Touch Controls</b> (už nie sú potrebné, teraz môžete presúvať tlačidlá kamkoľvek chcete)"
+        ]
+      },
+      {
+        "date": "28.10.2025",
+        "items": [
+          "Pridané prispôsobiteľné <b>tlačidlá klávesnice</b> a <b>tlačidlá myši</b> v <b>Nastaveniach</b>",
+          "Pridané <b>Vyhladzovanie kamery</b> a <b>Rýchlosť animácií buniek</b> v <b>Nastaveniach</b>"
+        ]
+      },
+      {
+        "date": "7. 7. 2025",
+        "items": [
+          "Vylepšený spôsob načítania <b>vzhľadov</b>, aby sa sťažilo ich kopírovanie"
+        ]
+      },
+      {
+        "date": "28/06/2025",
+        "items": [
+          "Vylepšené <b>Identikony</b>, aby sa nemenili tak často"
+        ]
+      },
+      {
+        "date": "8. 3. 2025",
+        "items": [
+          "Pridané <b>Tlačidlo na stlmenie/zrušenie stlmenia hráča</b>, ktorým teraz môžete <b>Stlmiť/zrušiť stlmenie</b> konkrétnych <b>hráčov</b> z <b>Rozhovoru</b> stlačením <b>ikony stlmiť/zrušiť stlmenie</b> vedľa ich správy alebo pomocou zoznamu <b>Stlmení hráči</b> v <b>Nastaveniach</b>"
+        ]
+      },
+      {
+        "date": "3.2.2025",
+        "items": [
+          "Pridané <b>Posúvanie chatu</b>, teraz môžete posúvať buď ťahaním posúvača pomocou <kbd>myši</kbd> alebo pomocou kláves <kbd>↑ šípka hore</kbd> a <kbd>↓ šípka dole</kbd>"
+        ]
+      },
+      {
+        "date": "11/01/2025",
+        "items": [
+          "Pridaný <b>herný režim PVP</b> je stále vo verzii beta",
+          "Pridané začiarkavacie políčko <b>Cell Transparency</b> v <b>Nastaveniach</b>"
+        ]
+      },
+      {
+        "date": "13.10.2024",
+        "items": [
+          "Pridané klávesy <kbd>F</kbd> a <kbd>V</kbd> na priblíženie a oddialenie",
+          "Pridaný <b>Posúvač priblíženia</b> na priblíženie a oddialenie",
+          "Pridané začiarkavacie políčko <b>Zobraziť posúvač priblíženia</b> v <b>Nastaveniach</b>"
+        ]
+      },
+      {
+        "date": "10. 10. 2024",
+        "items": [
+          "Pridané tlačidlo <b>Vymazať rozhovor</b>, takže rozhovor môžete vymazať manuálne"
+        ]
+      },
+      {
+        "date": "1. 10. 2024",
+        "items": [
+          "Pridané <b>Identikony</b> na lepšiu identifikáciu priateľov alebo nepriateľov, každé zariadenie má špecifickú jedinečnú <b>ikonu</b>",
+          "Pridané začiarkavacie políčko <b>Zobraziť identické znaky</b> v <b>Nastaveniach</b>",
+          "Odstránené triky, ktoré umožňujú ľahko duplikovať <b>prezývky</b> alebo <b>vzhľady</b>"
+        ]
+      },
+      {
+        "date": "16.05.2024",
+        "items": [
+          "Opravené mapovanie klávesnice <b>AZERTY</b> teraz <kbd>W</kbd> a <kbd>Z</kbd> <b>Kanál</b>",
+          "Zmenené <b>Muti Split</b> na kľúč <kbd>C</kbd> namiesto <kbd>Z</kbd>",
+          "Pridané začiarkavacie políčko <b>Zakázať dotykové ovládanie</b> v <b>Nastaveniach</b>"
+        ]
+      },
+      {
+        "date": "15.05.2024",
+        "items": [
+          "Opravená dlhotrvajúca chyba v <b>Rozhovore</b>, ktorá občas bránila zobrazovaniu niektorých správ",
+          "Teraz môžete vidieť prezývky <b>diváka</b>, ak majú jednu nastavenú",
+          "Teraz môžete tlačiť <b>vírusy</b> vysunutím hmoty svojej <b>bunky</b> smerom k <b>vírusom</b>",
+          "Upravené opatrenia <b>AntiSpam</b> tak, aby boli v <b>Rozhovore</b> zhovievavejšie, tiež znova povolili <b>Vkladanie</b> správ",
+          "Pridané začiarkavacie políčko <b>Prepnúť na celú obrazovku</b> v <b>Nastaveniach</b>",
+          "Implementované <b>AutoRespawn</b>, teraz sa automaticky obnovíte bez toho, aby ste museli znova stlačiť tlačidlo <b>Prehrať</b>",
+          "Pridané začiarkavacie políčko <b>Prepnúť automatické obnovenie</b> v <b>Nastaveniach</b>",
+          "Vylepšené <b>Dotykové ovládanie</b> pre mobilné zariadenia (pridané <b>tlačidlo zobrazenia ponuky</b>, <b>tlačidlo na celú obrazovku</b>, pevná vzdialenosť <b>tlačidla na rozdelenie</b>, zabránenie presúvaniu tlačidiel)"
+        ]
+      },
+      {
+        "date": "14.05.2024",
+        "items": [
+          "Rozdelenie pri používaní dotykových ovládacích prvkov vyvrhlo trochu hmoty, táto chyba je už opravená",
+          "Vysunúť makro teraz funguje pri používaní dotykových ovládacích prvkov",
+          "Vylepšené dotykové ovládanie pre mobil"
+        ]
+      },
+      {
+        "date": "10/05/2024",
+        "items": [
+          "Do Chatu boli pridané opatrenia AntiSpam, deaktivované Vkladanie správ",
+          "Znova sa aktivuje kliknutím pravým tlačidlom myši na ponuky a v okne rozhovoru",
+          "Pridaná možnosť <b>preklápania dotykových ovládacích prvkov</b> z pravej strany na ľavú stranu v <b>Nastaveniach</b>"
+        ]
+      },
+      {
+        "date": "01/05/2024",
+        "items": [
+          "Pridaná funkcia reCaptcha v3, aby sa zabránilo pripájaniu robotov <a href=\"https://discord.gg/emupedia-510149138491506688\" target=\"_blank\">(ak nefunguje správne, môžete poskytnúť spätnú väzbu na Discord)</a>",
+          "Povolené automatické opätovné pripojenie k serveru po reštarte servera",
+          "Vylepšené dotykové ovládanie pre mobil"
+        ]
+      },
+      {
+        "date": "09.03.2024",
+        "items": [
+          "Pridané tlačidlo <b>Kopírovať do schránky</b> pre <b>Aktuálne vybratý vzhľad</b>",
+          "Zväčšená <b>veľkosť oblasti rozhovoru</b>, aby sa do nej zmestilo viac správ",
+          "Skrátený <b>Čakací čas</b> na <b>Odovzdanie vzhľadu</b> na 30 sekúnd"
+        ]
+      },
+      {
+        "date": "28/02/2024",
+        "items": [
+          "Implementovaný <b>dotykový joystick</b> pre mobilné zariadenia",
+          "Pridané začiarkavacie políčko <b>Dotknite sa joysticku</b> v <b>Nastaveniach</b>",
+          "Nahrávanie súborov <kbd>gif</kbd> už nie je povolené, animácia aj tak nefungovala, zobrazila sa iba prvá snímka"
+        ]
+      },
+      {
+        "date": "24/02/2024",
+        "items": [
+          "Implementovaná funkcia <b>Odovzdať vzhľad</b>"
+        ]
+      },
+      {
+        "date": "20/02/2024",
+        "items": [
+          "Pridané prepínacie políčka <b>Jednotlivé kliknutia myšou</b> v <b>Nastaveniach</b>",
+          "Pridaný vlastný výber <b>Farby pozadia</b>"
+        ]
+      },
+      {
+        "date": "17.02.2024",
+        "items": [
+          "Pridané <b>Dvojité rozdelenie</b>, môžete použiť <b>Dvojité rozdelenie</b> stlačením <kbd>X</kbd> alebo <kbd>Kliknutím pravým tlačidlom</kbd>",
+          "Pridané <b>Makro na viacnásobné rozdelenie</b>, môžete použiť <b>Makro na viacnásobné rozdelenie</b> stlačením <kbd>C</kbd> alebo <kbd>Kliknutie stredným tlačidlom</kbd>",
+          "Pridané začiarkavacie políčko v <b>Nastaveniach</b> pre <b>Makro na viacnásobné rozdelenie</b>",
+          "Bol pridaný výber <b>prezývky</b>",
+          "Pridaný výber <b>Názov pleti</b>",
+          "Pridaný vlastný výber <b>Farby názvu bunky</b>",
+          "Pridaný vlastný výber <b>Farby pozadia bunky</b>",
+          "Pridaný vlastný výber <b>Farby orámovania bunky</b>",
+          "Pridaný <b>Tmavý motív</b> pre ponuky"
+        ]
+      },
+      {
+        "date": "16.02.2024",
+        "items": [
+          "Opravené náhodné farby pozadia pri používaní <b>Jelly Physics</b>",
+          "Pridané <b>Makro informačného kanála</b>, môžete použiť <b>Makro informačného kanála</b> stlačením <kbd>W</kbd> alebo <kbd>ľavým kliknutím</kbd> a začiarknutím políčka <b>Makro informačného kanála</b> v <b>Nastaveniach</b>",
+          "Pridané začiarkavacie políčko v <b>Nastaveniach</b> pre <b>Makro informačného kanála</b>",
+          "Pridaná sekcia <b>Novinky</b>",
+          "Pridaná sekcia <b>Hra</b>",
+          "Implementované vzhľady, ktoré začínajú <kbd>$</kbd>",
+          "Zabránené syntetickým udalostiam generovaným vloženými skriptmi",
+          "Zakázaní všetci ostatní vlastní klienti"
+        ]
+      },
+      {
+        "date": "13. 6. 2023",
+        "items": [
+          "Pridaných 1195 chýbajúcich skinov"
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,353 @@
+{
+  "meta": {
+    "title": "Agar.io v2.0",
+    "description": "Bir MMO olarak sizden küçük hücreleri yiyin ve büyük hücreler tarafından yenilmeyin"
+  },
+  "chat": {
+    "general": "Genel",
+    "clan": "Klan",
+    "placeholder": "Sohbet etmek için enter tuşuna basın",
+    "clearTitle": "Sohbeti temizle",
+    "zoom": "Yakınlaştır"
+  },
+  "gallery": {
+    "skins": "Kaplamalar"
+  },
+  "lobby": {
+    "title": "Agar.io v2.0",
+    "discordSuggestions": "Önerileriniz varsa Discord'da bize katılın",
+    "nickname": "Takma ad",
+    "skin": "Cilt",
+    "skinPlaceholder": "Cilt Adı",
+    "copy": "Kopyala",
+    "clanName": "Klan Adı",
+    "clanPlaceholder": "maksimum 5 harf",
+    "createClan": "Klan Oluştur",
+    "leaveClan": "Klandan Ayrıl",
+    "copyInvite": "Daveti Kopyala",
+    "gameMode": "Oyun Modu",
+    "play": "Oyna",
+    "chooseSkin": "Cilt Seç",
+    "uploadSkin": "Görünüm Yükle",
+    "unban": "Yasağı kaldır",
+    "skinCopied": "Görünüm URL'si Panoya Kopyalandı!"
+  },
+  "settings": {
+    "language": "Dil",
+    "mutedPlayers": "Sessiz Oyuncular",
+    "mutePlaceholder": "Sessize alınacak takma adı girin",
+    "mute": "Sessiz",
+    "keyboardBindings": "Klavye Düğme Bağlantıları",
+    "feed": "Besleme:",
+    "split": "Bölünmüş:",
+    "doubleSplit": "Çift Bölünmüş:",
+    "multiSplit": "Çoklu Bölme:",
+    "zoomIn": "Yakınlaştır:",
+    "zoomOut": "Uzaklaştır:",
+    "minion": "Ücretsiz Seyirci Kamerası / Minion Kontrolü:",
+    "resetKeys": "Varsayılanlara Sıfırla",
+    "keyRebindHint": "Yeniden bağlamak için bir düğmeye tıklayın ve bir tuşa basın",
+    "mouseBindings": "Fare Düğmesi Bağlantıları",
+    "leftClick": "Sol Tıklama:",
+    "middleClick": "Orta Tıklama:",
+    "rightClick": "Sağ Tıklama:",
+    "resetMouse": "Varsayılanlara Sıfırla",
+    "mouseHint": "Her fare düğmesinin hangi eylemi gerçekleştireceğini yapılandırın",
+    "toggleFullscreen": "Tam Ekrana Geçiş Yap",
+    "darkTheme": "Koyu Tema",
+    "cameraSmoothing": "Kamera Yumuşatma",
+    "cellAnimationSpeed": "Hücre Animasyon Hızı",
+    "showSkins": "Hücre Kaplamaları",
+    "showNames": "Hücre Adları",
+    "showColor": "H��cre Renkleri",
+    "showMass": "Hücre Kütlesi",
+    "slowMassUpdates": "Daha Yavaş Toplu Güncellemeler",
+    "jellyPhysics": "Hücre Jöle Fiziği",
+    "showIdenticon": "Hücre Kimlikleri",
+    "fillSkin": "Deri Altındaki Hücre Rengi",
+    "showTransparent": "Hücre Şeffaflığı",
+    "showChat": "Sohbeti Göster",
+    "showMinimap": "Mini Haritayı Göster",
+    "showPosition": "Pozisyonu Göster",
+    "showBorder": "Harita Kenarlığını Göster",
+    "showGrid": "Harita Izgarasını Göster",
+    "backgroundSectors": "Harita Sektörlerini Göster",
+    "moreZoom": "Uzaklaştır Arttır",
+    "showZoom": "Yakınlaştırma Kaydırıcısını Göster",
+    "playSounds": "Sesler",
+    "feedMacro": "Yem Makrosu",
+    "splitMacro": "Makroyu Böl",
+    "leftClickToggle": "Sol Tıklama",
+    "middleClickToggle": "Orta Tıklama",
+    "rightClickToggle": "Sağ Tıklama",
+    "disableTouchControls": "Dokunmatik Kontrolleri Devre Dışı Bırak",
+    "useJoystick": "Dokunmatik Kumanda Çubuğu",
+    "lockMobileButtons": "Mobil Düğmeleri Kilitle",
+    "resetButtonPositions": "Mobil Düğme Konumlarını Sıfırla",
+    "useWordFilters": "Kelimeler Sansür",
+    "autoRespawn": "Otomatik Yeniden Doğmayı Değiştir"
+  },
+  "colors": {
+    "background": "Arka plan",
+    "name": "İsim",
+    "color": "Renk",
+    "border": "Sınır"
+  },
+  "mouseActions": {
+    "none": "Yok",
+    "feed": "Besleme (Kütle Çıkarma)",
+    "split": "Bölünmüş",
+    "doubleSplit": "Çift Bölünmüş",
+    "multiSplit": "Çoklu Bölme"
+  },
+  "connecting": {
+    "trying": "Bağlanmaya çalışıyorum...",
+    "discord": "Discord'da bize katılın!",
+    "firewall": "Sunuculara bağlanamıyorsanız, bağlantıyı engelleyen bir antivirüs veya güvenlik duvarı olup olmadığını kontrol edin.",
+    "multisessionTitle": "Çoklu Oturum Uyarısı",
+    "multisessionBody": "Birden fazla oyun örneğine izin verilmez.<br />Diğer tüm oyun örneklerini kapatın ve yeniden yükleyin.",
+    "oldBrowserTitle": "Tarayıcınız Çok Eski",
+    "oldBrowserLink": "Tarayıcınızı daha yeni bir sürüme güncellemek için lütfen burayı tıklayın.",
+    "bannedTitle": "Yasaklandın 😭",
+    "bannedBody": "Sohbete spam göndererek veya özel kaplamalar yüklerken kuralları ihlal ettiğiniz için oyundan yasaklandınız.",
+    "bannedBodyBots": "Sohbete spam göndererek, özel görünümler yüklerken veya bot kullandığınız için kuralları ihlal ettiğiniz için oyundan yasaklandınız.",
+    "unbanCode": "Yasağı kaldırma kodunuz:"
+  },
+  "errors": {
+    "browserUnsupported": "Tarayıcınız gerekli özellikleri desteklemiyor, lütfen tarayıcınızı güncelleyin.",
+    "nicknameRequired": "Lütfen oynamak için bir takma ad girin.",
+    "nicknameMinLength": "Takma adın en az {min} karakter içermesi gerekiyor",
+    "nicknameDisallowed": "Bu takma isme izin verilmiyor. Lütfen farklı bir takma ad seçin."
+  },
+  "muted": {
+    "empty": "Sessize Alınan Oyuncu Yok",
+    "unmute": "Sesi aç"
+  },
+  "keys": {
+    "pressKey": "Bir tuşa basın..."
+  },
+  "gameplay": {
+    "rulesTitle": "Kurallar",
+    "rule1": "Yasaklanmış özel görünümler yüklemeyin, özellikle de birisinin yüzüyse, görünümünüzün yasaklanmasına veya kendinizin oyundan men edilmesine neden olabilirsiniz.",
+    "rule2": "Sohbette başkalarının takma adlarını veya adınız olarak aşağılayıcı bir şekilde kullanmayın; sessize alınabilirsiniz veya oyundan yasaklanabilirsiniz.",
+    "gameplayTitle": "oynanış",
+    "controlsIntro": "Hücrenizi kontrol etmek için <kbd>MOUSE</kbd> / <kbd>TOUCH</kbd>'unuzu hareket ettirin<br /><kbd>Fare Tekerleğini</kbd> veya <kbd id=\"key-zoomin-display\">F</kbd> ve Yakınlaştırmak ve uzaklaştırmak için <kbd id=\"key-zoomout-display\">V</kbd>'yi hareket ettirin<br /><kbd id=\"key-feed-display\">W</kbd> veya Kütleyi Çıkarmak için <kbd>Sol Tıklama</kbd><br />Hücrenizi Bir Kez Bölmek için <kbd id=\"key-split-display\">SPACE</kbd> tuşuna basın<br />Hücrenizi bir kez Bölmek için <kbd id=\"key-doublesplit-display\">X</kbd> veya <kbd>Sağ Tık</kbd> tuşuna basın Çift Bölme yapın<br />Çoklu Bölme yapmak için <kbd id=\"key-multisplit-display\">C</kbd> tuşuna basın veya <kbd>Orta Tıklama</kbd>'ya basın",
+    "objective": "<b>Hedef:</b> Agar.io'nun amacı, daha küçük hücreleri t��keterek ve daha büyük olanlardan kaçınarak hücrenizi büyütmektir. Büyüdükçe daha zorlu hale gelecek ve daha da büyük hücreleri tüketebileceksiniz.",
+    "startingOut": "<b>Başlangıç:</b> Oyuna ilk katıldığınızda küçük bir hücre olarak başlayacaksınız. Haritaya dağılmış renkli parçacıkları toplamak için farenizi kullanarak dolaşın. Pelet yemek bedeninizi ve kütlenizi artırır.",
+    "movement": "<b>Hareket:</b> Hücrenizi hareket ettirmek için fare imlecinizi hareket ettirmeniz veya hücrenizin gitmesini istediğiniz yönde hareket ederek dokunmatik ekranınızı kullanmanız yeterlidir. Hücreniz fare imlecinizin ekrandaki hareketini takip edecektir.",
+    "consumeSmaller": "<b>Daha Küçük Hücreleri Tüketin:</b> Yakınlarda dolaşan daha küçük hücrelere dikkat edin. Büyüdükçe, kütlenizi artırmak için bu küçük hücreleri yutabileceksiniz. Daha büyük hücreler tarafından yenilmemek için onlara stratejik olarak yaklaşın.",
+    "avoidLarger": "<b>Daha Büyük Hücrelerden Kaçının:</b> Daha büyük hücrelere karşı dikkatli olun çünkü onlardan daha küçükseniz sizi tüketebilirler. Daha küçük hücreleri ele geçirmek için ayrılan oyunculara dikkat edin ve güvende kalmak için hareketlerini önceden tahmin etmeye çalışın.",
+    "splitting": "<b>Bölme:</b> <kbd>SPACE</kbd> tuşuna basarak hücrenizi birden fazla küçük parçaya bölebilirsiniz. Daha küçük hücreleri yakalamak veya daha büyük olanlardan kaçmak için bu taktiği kullanın. Ayrıca <kbd>X</kbd> veya <kbd>Z</kbd> tuşuna basarak da birden fazla bölme yapabilirsiniz. Unutmayın, bölünmek aynı zamanda sizi daha savunmasız hale getirir, bu yüzden bunu akıllıca kullanın.",
+    "ejectingMass": "<b>Kütleyi Çıkarma:</b> <kbd>W</kbd> veya <kbd>Sol Tıklama</kbd>'ye basarak kütleyi çıkarmak faydalı olabilir, ancak aynı zamanda riskleri de beraberinde getirir. Fırlatılan kütle, potansiyel rakipler de dahil olmak üzere diğer oyuncular tarafından tüketilebilir. Ek olarak, kütlenin dışarı atılması hücrenizin genel boyutunu azaltır, bu da sizi daha büyük hücreler tarafından tüketilmeye karşı daha savunmasız hale getirebilir.",
+    "teamPlay": "<b>Takım Oyunu (İsteğe bağlı):</b> Takım modunda, liderlik tablosunda üstünlük sağlamak için diğer oyuncularla işbirliği yapabilirsiniz. Rakiplerinizi alt etmek ve oyunu birlikte fethetmek için arkadaşlarınızla veya diğer oyuncularla takım kurun.",
+    "growDominate": "<b>Büyüyün ve Hakim Olun:</b> Daha küçük hücreleri tüketip yenilmekten kaçındıkça, hücreniz boyut olarak büyümeye devam edecektir. Sunucudaki en büyük hücre olmayı ve skor tablosuna hakim olmayı hedefleyin.",
+    "viruses": "<b>Virüslere Dikkat Edin:</b> Harita boyunca virüs olarak bilinen yeşil dikenli dairelerle karşılaşacaksınız. Bunlarla çarpışmaktan kaçının çünkü onlardan daha büyükseniz hücrenizi daha küçük parçalara bölebilirler. Virüslerin kütlenizi bir yönden beslemesi, onların ters yönde çoğalmasına neden olacaktır.",
+    "beStrategic": "<b>Stratejik Olun:</b> Agar.io beceriyle olduğu kadar stratejiyle de ilgilidir. Çevrenize dikkat edin, rakiplerinizin hareketlerini tahmin edin ve rakiplerinizi alt etmek için bölünme ve birleşme gibi taktikleri akıllıca kullanın.<hr />",
+    "closing": "Agar.io'nun temelleri bu kadar! Artık oyuna girmenin ve sunucudaki en büyük ve en baskın oyuncu olmak için hücrenizi büyütmeye başlamanın zamanı geldi.",
+    "goodLuck": "İyi şanslar ve iyi eğlenceler!"
+  },
+  "news": {
+    "title": "Haberler",
+    "entries": [
+      {
+        "date": "21/05/2026",
+        "items": [
+          "<b>Ayarlar</b>'da etkinleştirildiğinde <b>Hücre Adları</b>, <b>Hücre Kütlesi</b> ve <b>Hücre Jöle Fiziği</b> oluşturma performansı iyileştirildi",
+          "Toplu sayıların ne sıklıkta yenileneceğini kontrol etmek için bir kaydırıcıyla birlikte <b>Ayarlar</b>'a <b>Daha Yavaş Toplu Güncellemeler</b> eklendi (kaydırıcıyı sağa sürüklemek daha az güncelleme anlamına gelir)"
+        ]
+      },
+      {
+        "date": "05/01/2026",
+        "items": [
+          "<b>Takma adların</b> artık en az <b>3 karakter</b> olması gerekiyor",
+          "<b>Sohbet</b> ve <b>Takma Adlar</b> için isteğe bağlı <b>Kelime Sansürü</b> eklendi, varsayılan olarak etkindir, <u>devre dışı bırakabilirsiniz, ancak bu durumda <a style=\"font-weight: bolder;\" href=\"https://discord.gg/emupedia-510149138491506688\" target=\"_blank\">İnsanların zehirli olduğu konusunda anlaşmazlık</a></u>",
+          "<b>İzleyici Serbest Kamera Geçişi</b> düzeltildi, artık İzleyici modunda Otomatik Takip oyuncularından Serbest Kameraya doğru şekilde geçiş yapabilirsiniz"
+        ]
+      },
+      {
+        "date": "19/11/2025",
+        "items": [
+          "<b>Takma adlar</b> artık <b>Zorunlu</b>, artık boş <b>Takma adlar</b> kullanamazsınız",
+          "<b>Geliştirilmiş Oyuncunun Sesini Kapatma İşlevi</b> artık <b>Sessizleştirme</b> aynı <b>Takma ada</b> sahip <b>Oyuncuları</b> ayırt etmeye çalışacak ve yalnızca istediğiniz oyuncuyu <b>Sessizleştirme</b> işlemini gerçekleştirecek"
+        ]
+      },
+      {
+        "date": "18/11/2025",
+        "items": [
+          "<b>Yakınlaştır</b> ve <b>Uzaklaştır</b> Mobil Düğmeleri eklendi; <b>Ayarlar</b>'da <b>Yakınlaştırma Kaydırıcısını Göster</b> seçeneğini <b>Göster</b> veya <b>Gizle</b> olarak değiştirebilirsiniz.",
+          "<b>Geliştirilmiş Mobil Düğme Konumu Özelleştirmesi</b>, artık herhangi bir Düğmeyi hareket ettirmek için ona 3 saniye boyunca <b>dokunabilirsiniz</b>",
+          "<b>Mobil Düğmeleri</b> <b>Varsayılan</b> konumlarına sıfırlamak istiyorsanız <b>Ayarlar</b>'a <b>Mobil Düğme Konumlarını Sıfırla</b> eklendi",
+          "<b>Ayarlar</b>'a <b>Mobil Düğmeleri Kilitle</b> eklendi. Bunu işaretlerseniz düğmeleri hareket ettiremezsiniz",
+          "<b>Ayarlar</b>'dan <b>Dokunmatik Çevirme Kontrolleri</b> kaldırıldı (artık gerekli değil, artık Düğmeleri istediğiniz yere taşıyabilirsiniz)"
+        ]
+      },
+      {
+        "date": "28/10/2025",
+        "items": [
+          "<b>Ayarlar</b>'a Özelleştirilebilir <b>Klavye Düğmeleri</b> ve <b>Fare Düğmeleri</b> eklendi",
+          "<b>Ayarlar</b>'a <b>Kamera Yumuşatma</b> ve <b>Hücre Animasyon Hızı</b> eklendi"
+        ]
+      },
+      {
+        "date": "07/07/2025",
+        "items": [
+          "Kopyalamayı zorlaştırmak için <b>Dış Görünümlerin</b> yüklenme şekli iyileştirildi"
+        ]
+      },
+      {
+        "date": "28/06/2025",
+        "items": [
+          "<b>Kimliklerin</b> çok sık değişmemesi için iyileştirildi"
+        ]
+      },
+      {
+        "date": "08/03/2025",
+        "items": [
+          "<b>Oyuncuyu Sessize Alma/Sesi Açma Düğmesi</b> eklendi; artık <b>Sohbet</b>'ten belirli <b>Oyuncuları Sessize Alma/Sesi Açma</b> işlemini, mesajlarının yanındaki <b>Sesi Kapatma/Sesi Açma Simgesine</b> basarak veya <b>Ayarlar</b>'daki <b>Sessizleştirilmiş Oyuncular</b> listesini kullanarak yapabilirsiniz.<b></b>"
+        ]
+      },
+      {
+        "date": "03/02/2025",
+        "items": [
+          "<b>Sohbet Kaydırma</b> eklendi, artık <kbd>Fare</kbd> ile kaydırma çubuğunu sürükleyerek veya <kbd>↑ Yukarı Ok</kbd> ve <kbd>↓ Aşağı Ok</kbd> tuşlarını kullanarak kaydırma yapabilirsiniz"
+        ]
+      },
+      {
+        "date": "11/01/2025",
+        "items": [
+          "Hala Beta'da <b>PVP Oyun Modu</b> eklendi",
+          "<b>Ayarlar</b>'a <b>Hücre Şeffaflığı</b> onay kutusu eklendi"
+        ]
+      },
+      {
+        "date": "13/10/2024",
+        "items": [
+          "Yakınlaştırma ve uzaklaştırmaya <kbd>F</kbd> ve <kbd>V</kbd> tuşları eklendi",
+          "Yakınlaştırma ve uzaklaştırma için <b>Yakınlaştırma Kaydırıcısı</b> eklendi",
+          "<b>Ayarlar</b>'a <b>Yakınlaştırma Kaydırıcısını Göster</b> onay kutusu eklendi"
+        ]
+      },
+      {
+        "date": "10/10/2024",
+        "items": [
+          "<b>Sohbeti Temizle</b> düğmesi eklendi, böylece sohbeti manuel olarak temizleyebilirsiniz"
+        ]
+      },
+      {
+        "date": "01/10/2024",
+        "items": [
+          "Dostları veya düşmanları daha iyi tanımlamak için <b>Kimlikler</b> eklendi; her cihazın kendine özgü benzersiz bir <b>Simgesi</b> vardır",
+          "<b>Ayarlar</b>'a <b>Kimlikleri Göster</b> onay kutusu eklendi",
+          "<b>Rumuz</b> veya <b>Dış Görünümler</b>'in kolayca kopyalanmasına olanak tanıyan hileler kaldırıldı"
+        ]
+      },
+      {
+        "date": "16/05/2024",
+        "items": [
+          "<b>AZERTY</b> klavye eşlemesi artık <kbd>W</kbd> ve <kbd>Z</kbd> <b>Feed</b>'de düzeltildi",
+          "<b>Muti Split</b>, <kbd>Z</kbd> yerine <kbd>C</kbd> tuşuyla değiştirildi",
+          "<b>Ayarlar</b>'a <b>Dokunmatik Kontrolleri Devre Dışı Bırak</b> onay kutusu eklendi"
+        ]
+      },
+      {
+        "date": "15/05/2024",
+        "items": [
+          "<b>Sohbet</b>'te, bazen bazı mesajların gösterilmesini engelleyen, uzun süredir devam eden bir hata düzeltildi",
+          "Artık <b>İzleyici</b>'nin takma adlarını, eğer tek bir grup varsa görebilirsiniz",
+          "Artık <b>Hücrenizin</b> kütlesini <b>Virüslere</b> doğru fırlatarak <b>Virüsleri</b> itebilirsiniz.",
+          "<b>AntiSpam</b> önlemleri <b>Sohbet</b>'te daha bağışlayıcı olacak şekilde ayarlandı ve ayrıca <b>Yapıştırma</b> mesajları yeniden etkinleştirildi",
+          "<b>Ayarlar</b>'a <b>Tam Ekranı Değiştir</b> onay kutusu eklendi",
+          "<b>Otomatik Yeniden Doğma</b> uygulandı; artık <b>Oynat</b>'a tekrar basmanıza gerek kalmadan otomatik olarak yeniden doğacaksınız.",
+          "<b>Ayarlar</b>'a <b>Otomatik Yeniden Doğuşu Aç/Kapat</b> onay kutusu eklendi",
+          "Mobil cihazlar için iyileştirilmiş <b>Dokunmatik Kontroller</b> (<b>Menü Düğmesini Göster</b>, <b>Tam Ekran Düğmesi</b> eklendi, <b>Bölme Düğmesi</b> mesafesi sabitlendi, Düğmelerin sürüklenmesi önlendi)"
+        ]
+      },
+      {
+        "date": "14/05/2024",
+        "items": [
+          "Dokunmatik kontrolleri kullanırken bölmek bir miktar kütlenin dışarı atılmasına neden oldu; bu hata artık düzeltildi",
+          "Makroyu Çıkar artık Dokunmatik kontrolleri kullanırken çalışıyor",
+          "Mobil cihazlar için geliştirilmiş Dokunmatik kontroller"
+        ]
+      },
+      {
+        "date": "10/05/2024",
+        "items": [
+          "Sohbete AntiSpam önlemleri eklendi, mesaj yapıştırma devre dışı bırakıldı",
+          "Menülerde ve Sohbet Kutusunda Sağ Tıklama kullanılarak yeniden etkinleştirildi",
+          "<b>Ayarlar</b>'da <b>Dokunmatik Kontrolleri sağ taraftan sola çevirme</b> olanağı eklendi"
+        ]
+      },
+      {
+        "date": "01/05/2024",
+        "items": [
+          "Botların bağlanmasını önlemek için reCaptcha v3 eklendi <a href=\"https://discord.gg/emupedia-510149138491506688\" target=\"_blank\">(düzgün çalışmıyorsa Discord'a geri bildirimde bulunabilirsiniz)</a>",
+          "Sunucu yeniden başlatıldıktan sonra sunucuya otomatik olarak yeniden bağlanma etkinleştirildi",
+          "Mobil cihazlar için geliştirilmiş Dokunmatik kontroller"
+        ]
+      },
+      {
+        "date": "09/03/2024",
+        "items": [
+          "<b>Geçerli Seçilen Görünüm</b> için <b>Panoya Kopyala</b> düğmesi eklendi",
+          "Daha fazla mesaj sığdırmak için <b>Sohbet Alanı Boyutu</b> artırıldı",
+          "<b>Dış Görünüm Yükleme</b> için <b>Bekleme Süresi</b> 30 saniyeye düşürüldü"
+        ]
+      },
+      {
+        "date": "28/02/2024",
+        "items": [
+          "Mobil cihazlar için <b>Dokunmatik Kumanda Çubuğu</b> uygulandı",
+          "<b>Ayarlar</b>'a <b>Dokunma Kumanda Çubuğu</b> onay kutusu eklendi",
+          "<kbd>gif</kbd> dosyalarının yüklenmesine artık izin verilmiyor, animasyon yine de çalışmadı, yalnızca ilk kare gösterildi"
+        ]
+      },
+      {
+        "date": "24/02/2024",
+        "items": [
+          "<b>Dış Görünüm Yükleme</b> özelliği uygulandı"
+        ]
+      },
+      {
+        "date": "20/02/2024",
+        "items": [
+          "<b>Ayarlar</b>'a <b>Bireysel Fare Tıklamaları</b> geçiş onay kutuları eklendi",
+          "Özel <b>Arka Plan Rengi</b> seçici eklendi"
+        ]
+      },
+      {
+        "date": "17/02/2024",
+        "items": [
+          "<b>Çift Bölme</b> eklendi, <b>X</b> tuşuna basarak veya <kbd>Sağ Tık</kbd>'ye basarak <kbd>Çift Bölme</kbd>'yi kullanabilirsiniz.",
+          "<b>Çoklu Bölme Makro</b> eklendi, <b>C</b> veya <kbd>Orta Tıklama</kbd> tuşuna basarak <kbd>Çoklu Bölme Makro</kbd>'yu kullanabilirsiniz.",
+          "<b>Çoklu Bölünmüş Makro</b> için <b>Ayarlar</b>'a geçiş onay kutusu eklendi",
+          "<b>Takma ad</b> seçici eklendi",
+          "<b>Dış Görünüm Adı</b> seçici eklendi",
+          "Özel <b>Hücre Adı Rengi</b> seçici eklendi",
+          "Özel <b>Hücre Arka Planı Rengi</b> seçici eklendi",
+          "Özel <b>Hücre Kenarlığı Rengi</b> seçici eklendi",
+          "Menülere <b>Koyu Tema</b> eklendi"
+        ]
+      },
+      {
+        "date": "16/02/2024",
+        "items": [
+          "<b>Jelly Physics</b> kullanılırken rastgele arka plan renkleri düzeltildi",
+          "<b>Yayın Makrosu</b> eklendi, <b>W</b> tuşuna basarak veya <kbd>Sol Tıkla</kbd>'ya basarak ve <kbd>Ayarlar</kbd>'da <b>Yayın Makrosu</b> onay kutusunu işaretleyerek <b>Yayın Makrosu</b>'nu kullanabilirsiniz.",
+          "<b>Yayın Makrosu</b> için <b>Ayarlar</b>'a geçiş onay kutusu eklendi",
+          "<b>Haberler</b> bölümü eklendi",
+          "<b>Oyun</b> bölümü eklendi",
+          "<kbd>$</kbd> ile başlayan dış görünümler uygulandı",
+          "Enjekte edilen komut dosyaları tarafından oluşturulan sentetik olayların önlenmesi",
+          "Diğer tüm özel istemcilere izin verilmedi"
+        ]
+      },
+      {
+        "date": "6/13/2023",
+        "items": [
+          "1195 eksik Görünüm eklendi"
+        ]
+      }
+    ]
+  }
+}

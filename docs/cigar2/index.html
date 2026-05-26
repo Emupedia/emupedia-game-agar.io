@@ -58,19 +58,19 @@
 		</div>
 
 		<div id="chat-tabs" style="display: none; position: fixed; left: 10px; z-index: 1000; background: rgba(0,0,0,0.7); padding: 5px; border-radius: 4px;">
-			<button id="chat-tab-general" class="chat-tab-btn active" style="padding: 5px 10px; margin-right: 5px; background: #337ab7; color: white; border: none; cursor: pointer; border-radius: 3px;">General</button>
-			<button id="chat-tab-clan" class="chat-tab-btn" style="padding: 5px 10px; background: #555; color: white; border: none; cursor: pointer; border-radius: 3px;">Clan</button>
+			<button id="chat-tab-general" class="chat-tab-btn active" style="padding: 5px 10px; margin-right: 5px; background: #337ab7; color: white; border: none; cursor: pointer; border-radius: 3px;" data-i18n="chat.general">General</button>
+			<button id="chat-tab-clan" class="chat-tab-btn" style="padding: 5px 10px; background: #555; color: white; border: none; cursor: pointer; border-radius: 3px;" data-i18n="chat.clan">Clan</button>
 		</div>
-		<input type="text" id="chat_textbox" placeholder="Press enter to chat" maxlength="100" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
-		<input type="button" id="chat_clear" value="✖" title="Clear chat" />
+		<input type="text" id="chat_textbox" data-i18n-placeholder="chat.placeholder" placeholder="Press enter to chat" maxlength="100" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+		<input type="button" id="chat_clear" value="✖" data-i18n-title="chat.clearTitle" title="Clear chat" />
 		<div id="zoom_container" style="display: none;">
-			<label for="zoom">Zoom</label>
+			<label for="zoom" data-i18n="chat.zoom">Zoom</label>
 			<input type="range" id="zoom" min="1" max="4" step="any" />
 		</div>
 
 		<div id="gallery" onclick="if (event.target === this) this.hide()" style="display: none;">
 			<div id="gallery-content">
-				<div id="gallery-header">Skins</div>
+				<div id="gallery-header" data-i18n="gallery.skins">Skins</div>
 				<div id="gallery-body"></div>
 			</div>
 		</div>
@@ -79,188 +79,193 @@
 			<div id="helloDialog">
 				<div id="helloDialogContent">
 					<div>
-						<h2 class="title">Agar.io v2.0</h2>
+						<h2 class="title" data-i18n="lobby.title">Agar.io v2.0</h2>
 						<hr class="top" />
-						<a class="text-center" style="display: block; color: red;" href="https://discord.gg/emupedia-510149138491506688" target="_blank">Join us on Discord if you have suggestions</a>
+						<a class="text-center" style="display: block; color: red;" href="https://discord.gg/emupedia-510149138491506688" target="_blank" data-i18n="lobby.discordSuggestions">Join us on Discord if you have suggestions</a>
 					</div>
 
 					<div class="form-wrapper">
 						<div class="form-label-wrapper">
-							<label id="nick-list"><span>Nickname</span><input id="nick" list="nicknames" class="form-control" onfocus="this.oldvalue=this.value;this.value=''" onblur="if(this.value==='')this.value=this.oldvalue || ''" placeholder="Nickname" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" minlength="3" maxlength="16" required></label>
+							<label id="nick-list"><span data-i18n="lobby.nickname">Nickname</span><input id="nick" list="nicknames" class="form-control" onfocus="this.oldvalue=this.value;this.value=''" onblur="if(this.value==='')this.value=this.oldvalue || ''" data-i18n-placeholder="lobby.nickname" placeholder="Nickname" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" minlength="3" maxlength="16" required></label>
 							<datalist id="nicknames">
 								<option value=""> </option>
 							</datalist>
 						</div>
 						<div class="form-label-wrapper">
-							<label id="skin-list"><span>Skin</span><input id="skin" list="skinnames" class="form-control pull-right" onfocus="this.oldvalue=this.value;this.value=''" onblur="if(this.value==='')this.value=this.oldvalue || ''" placeholder="Skin Name" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></label>
+							<label id="skin-list"><span data-i18n="lobby.skin">Skin</span><input id="skin" list="skinnames" class="form-control pull-right" onfocus="this.oldvalue=this.value;this.value=''" onblur="if(this.value==='')this.value=this.oldvalue || ''" data-i18n-placeholder="lobby.skinPlaceholder" placeholder="Skin Name" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></label>
 							<datalist id="skinnames">
 								<option value=""> </option>
 							</datalist>
 						</div>
 						<div class="form-label-wrapper">
-							<label><span>Copy</span><button id="copy-btn" class="btn btn-success pull-right" onclick="copyToClipboard(document.getElementById('skin').value, this)"><i class="glyphicon glyphicon-copy"></i></button></label>
+							<label><span data-i18n="lobby.copy">Copy</span><button id="copy-btn" class="btn btn-success pull-right" onclick="copyToClipboard(document.getElementById('skin').value, this)"><i class="glyphicon glyphicon-copy"></i></button></label>
 						</div>
 					</div>
 
 					<div class="form-wrapper" id="clan-wrapper" style="display: none;">
 						<div class="form-label-wrapper">
-							<label id="clan-list"><span>Clan Name</span><input id="clanName" class="form-control" placeholder="5 letters max" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" maxlength="5" style="text-transform: uppercase;"></label>
+							<label id="clan-list"><span data-i18n="lobby.clanName">Clan Name</span><input id="clanName" class="form-control" data-i18n-placeholder="lobby.clanPlaceholder" placeholder="5 letters max" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" maxlength="5" style="text-transform: uppercase;"></label>
 						</div>
-						<button id="create-clan-btn" class="btn btn-play btn-primary pull-left"><i class="glyphicon glyphicon-plus"></i>&nbsp;Create Clan</button>
-						<button id="leave-clan-btn" class="btn btn-play btn-danger pull-left" style="display: none;"><i class="glyphicon glyphicon-remove"></i>&nbsp;Leave Clan</button>
-						<button id="copy-invite-btn" class="btn btn-play btn-success pull-left" style="display: none;"><i class="glyphicon glyphicon-link"></i>&nbsp;Copy Invite</button>
+						<button id="create-clan-btn" class="btn btn-play btn-primary pull-left"><i class="glyphicon glyphicon-plus"></i>&nbsp;<span data-i18n="lobby.createClan">Create Clan</span></button>
+						<button id="leave-clan-btn" class="btn btn-play btn-danger pull-left" style="display: none;"><i class="glyphicon glyphicon-remove"></i>&nbsp;<span data-i18n="lobby.leaveClan">Leave Clan</span></button>
+						<button id="copy-invite-btn" class="btn btn-play btn-success pull-left" style="display: none;"><i class="glyphicon glyphicon-link"></i>&nbsp;<span data-i18n="lobby.copyInvite">Copy Invite</span></button>
 					</div>
 
 					<div class="form-wrapper">
 						<div class="form-label-wrapper" style="width: 100%;">
-							<label id="server-list"><span>Game Mode</span>
+							<label id="server-list"><span data-i18n="lobby.gameMode">Game Mode</span>
 								<select id="server" class="form-control" style="width: 134px;" onchange="setserver(this.value)" required>
 									<option value="eu-ffa" selected>FFA</option>
 									<option value="eu-pvp">PVP</option>
 								</select>
 							</label>
 						</div>
-						<button id="play-btn" class="btn btn-play btn-primary btn-needs-server pull-left"><i class="glyphicon glyphicon-play"></i>&nbsp;Play</button>
+						<button id="play-btn" class="btn btn-play btn-primary btn-needs-server pull-left"><i class="glyphicon glyphicon-play"></i>&nbsp;<span data-i18n="lobby.play">Play</span></button>
 						<button id="spectate-btn" onclick="spectate()" class="btn btn-warning btn-spectate btn-needs-server pull-left"><i class="glyphicon glyphicon-eye-open"></i></button>
 					</div>
 
 					<div class="form-wrapper">
-						<button id="gallery-btn" onclick="openSkinsList()" class="btn btn-play btn-primary btn-needs-server btn-info"><i class="glyphicon glyphicon-folder-open"></i>&nbsp;&nbsp;Choose Skin</button>
-						<button id="show-upload-btn" onclick="openUpload()" class="btn btn-play btn-primary btn-needs-server btn-info"><i class="glyphicon glyphicon-cloud-upload"></i>&nbsp;&nbsp;Upload Skin</button>
-						<button id="unban-btn" onclick="openUnban()" class="btn btn-play btn-primary btn-needs-server btn-info" style="display: none;"><i class="glyphicon glyphicon-log-in"></i>&nbsp;Unban</button>
+						<button id="gallery-btn" onclick="openSkinsList()" class="btn btn-play btn-primary btn-needs-server btn-info"><i class="glyphicon glyphicon-folder-open"></i>&nbsp;&nbsp;<span data-i18n="lobby.chooseSkin">Choose Skin</span></button>
+						<button id="show-upload-btn" onclick="openUpload()" class="btn btn-play btn-primary btn-needs-server btn-info"><i class="glyphicon glyphicon-cloud-upload"></i>&nbsp;&nbsp;<span data-i18n="lobby.uploadSkin">Upload Skin</span></button>
+						<button id="unban-btn" onclick="openUnban()" class="btn btn-play btn-primary btn-needs-server btn-info" style="display: none;"><i class="glyphicon glyphicon-log-in"></i>&nbsp;<span data-i18n="lobby.unban">Unban</span></button>
 						<button class="btn btn-success btn-settings pull-right" onclick="document.getElementById('settings').style.display = document.getElementById('settings').style.display === 'none' ? 'block' : 'none'" ><i class="glyphicon glyphicon-cog"></i></button>
 					</div>
 
 					<div id="settings" class="checkbox" style="display: none;">
 						<div style="margin: 6px;">
-							<h4>Muted Players</h4>
+							<h4 data-i18n="settings.language">Language</h4>
+							<select id="locale" class="form-control" style="margin-bottom: 8px;"></select>
+						</div>
+						<hr />
+						<div style="margin: 6px;">
+							<h4 data-i18n="settings.mutedPlayers">Muted Players</h4>
 							<hr />
 							<div id="muted-users-list" style="margin-bottom: 10px;"></div>
 							<div style="display: flex;">
-								<input id="mute-user-input" type="text" placeholder="Enter nickname to mute" style="flex: 1; margin-right: 5px; color: #000;" />
-								<button id="mute-user-btn" class="btn btn-danger btn-sm">Mute</button>
+								<input id="mute-user-input" type="text" data-i18n-placeholder="settings.mutePlaceholder" placeholder="Enter nickname to mute" style="flex: 1; margin-right: 5px; color: #000;" />
+								<button id="mute-user-btn" class="btn btn-danger btn-sm" data-i18n="settings.mute">Mute</button>
 							</div>
 						</div>
 						<hr />
 						<div style="margin: 6px;">
-							<h4>Keyboard Button Bindings</h4>
+							<h4 data-i18n="settings.keyboardBindings">Keyboard Button Bindings</h4>
 							<hr />
 							<div style="display: grid; grid-template-columns: auto 1fr; gap: 8px; align-items: center;">
-								<label style="margin: 0;">Feed:</label>
+								<label style="margin: 0;" data-i18n="settings.feed">Feed:</label>
 								<button id="keyFeed-btn" class="btn btn-sm btn-info key-binding-btn" data-action="keyFeed" style="text-align: left; font-family: monospace;">W</button>
 
-								<label style="margin: 0;">Split:</label>
+								<label style="margin: 0;" data-i18n="settings.split">Split:</label>
 								<button id="keySplit-btn" class="btn btn-sm btn-info key-binding-btn" data-action="keySplit" style="text-align: left; font-family: monospace;">SPACE</button>
 
-								<label style="margin: 0;">Double Split:</label>
+								<label style="margin: 0;" data-i18n="settings.doubleSplit">Double Split:</label>
 								<button id="keyDoubleSplit-btn" class="btn btn-sm btn-info key-binding-btn" data-action="keyDoubleSplit" style="text-align: left; font-family: monospace;">X</button>
 
-								<label style="margin: 0;">Multi Split:</label>
+								<label style="margin: 0;" data-i18n="settings.multiSplit">Multi Split:</label>
 								<button id="keyMultiSplit-btn" class="btn btn-sm btn-info key-binding-btn" data-action="keyMultiSplit" style="text-align: left; font-family: monospace;">C</button>
 
-								<label style="margin: 0;">Zoom In:</label>
+								<label style="margin: 0;" data-i18n="settings.zoomIn">Zoom In:</label>
 								<button id="keyZoomIn-btn" class="btn btn-sm btn-info key-binding-btn" data-action="keyZoomIn" style="text-align: left; font-family: monospace;">F</button>
 
-								<label style="margin: 0;">Zoom Out:</label>
+								<label style="margin: 0;" data-i18n="settings.zoomOut">Zoom Out:</label>
 								<button id="keyZoomOut-btn" class="btn btn-sm btn-info key-binding-btn" data-action="keyZoomOut" style="text-align: left; font-family: monospace;">V</button>
 
-								<label style="margin: 0;">Free Spectator Camera / Minion Control:</label>
+								<label style="margin: 0;" data-i18n="settings.minion">Free Spectator Camera / Minion Control:</label>
 								<button id="keyMinion-btn" class="btn btn-sm btn-info key-binding-btn" data-action="keyMinion" style="text-align: left; font-family: monospace;">Q</button>
 							</div>
 							<div style="margin-top: 10px;">
-								<button id="reset-keybindings-btn" class="btn btn-sm btn-warning" style="width: 100%;">Reset to Defaults</button>
+								<button id="reset-keybindings-btn" class="btn btn-sm btn-warning" style="width: 100%;" data-i18n="settings.resetKeys">Reset to Defaults</button>
 							</div>
-							<p style="margin-top: 10px; font-size: 12px; color: #888;">Click a button and press a key to rebind</p>
+							<p style="margin-top: 10px; font-size: 12px; color: #888;" data-i18n="settings.keyRebindHint">Click a button and press a key to rebind</p>
 						</div>
 						<hr />
 						<div style="margin: 6px;">
-							<h4>Mouse Button Bindings</h4>
+							<h4 data-i18n="settings.mouseBindings">Mouse Button Bindings</h4>
 							<hr />
 							<div style="display: grid; grid-template-columns: auto 1fr; gap: 8px; align-items: center;">
-								<label style="margin: 0;">Left Click:</label>
+								<label style="margin: 0;" data-i18n="settings.leftClick">Left Click:</label>
 								<select id="mouseLeftAction" class="form-control" style="font-size: 14px;">
-									<option value="none">None</option>
-									<option value="feed" selected>Feed (Eject Mass)</option>
-									<option value="split">Split</option>
-									<option value="doubleSplit">Double Split</option>
-									<option value="multiSplit">Multi Split</option>
+									<option value="none" data-i18n="mouseActions.none">None</option>
+									<option value="feed" selected data-i18n="mouseActions.feed">Feed (Eject Mass)</option>
+									<option value="split" data-i18n="mouseActions.split">Split</option>
+									<option value="doubleSplit" data-i18n="mouseActions.doubleSplit">Double Split</option>
+									<option value="multiSplit" data-i18n="mouseActions.multiSplit">Multi Split</option>
 								</select>
 
-								<label style="margin: 0;">Middle Click:</label>
+								<label style="margin: 0;" data-i18n="settings.middleClick">Middle Click:</label>
 								<select id="mouseMiddleAction" class="form-control" style="font-size: 14px;">
-									<option value="none">None</option>
-									<option value="feed">Feed (Eject Mass)</option>
-									<option value="split">Split</option>
-									<option value="doubleSplit">Double Split</option>
-									<option value="multiSplit" selected>Multi Split</option>
+									<option value="none" data-i18n="mouseActions.none">None</option>
+									<option value="feed" data-i18n="mouseActions.feed">Feed (Eject Mass)</option>
+									<option value="split" data-i18n="mouseActions.split">Split</option>
+									<option value="doubleSplit" data-i18n="mouseActions.doubleSplit">Double Split</option>
+									<option value="multiSplit" selected data-i18n="mouseActions.multiSplit">Multi Split</option>
 								</select>
 
-								<label style="margin: 0;">Right Click:</label>
+								<label style="margin: 0;" data-i18n="settings.rightClick">Right Click:</label>
 								<select id="mouseRightAction" class="form-control" style="font-size: 14px;">
-									<option value="none">None</option>
-									<option value="feed">Feed (Eject Mass)</option>
-									<option value="split">Split</option>
-									<option value="doubleSplit" selected>Double Split</option>
-									<option value="multiSplit">Multi Split</option>
+									<option value="none" data-i18n="mouseActions.none">None</option>
+									<option value="feed" data-i18n="mouseActions.feed">Feed (Eject Mass)</option>
+									<option value="split" data-i18n="mouseActions.split">Split</option>
+									<option value="doubleSplit" selected data-i18n="mouseActions.doubleSplit">Double Split</option>
+									<option value="multiSplit" data-i18n="mouseActions.multiSplit">Multi Split</option>
 								</select>
 							</div>
 							<div style="margin-top: 10px;">
-								<button id="reset-mousebindings-btn" class="btn btn-sm btn-warning" style="width: 100%;">Reset to Defaults</button>
+								<button id="reset-mousebindings-btn" class="btn btn-sm btn-warning" style="width: 100%;" data-i18n="settings.resetMouse">Reset to Defaults</button>
 							</div>
-							<p style="margin-top: 10px; font-size: 12px; color: #888;">Configure what action each mouse button performs</p>
+							<p style="margin-top: 10px; font-size: 12px; color: #888;" data-i18n="settings.mouseHint">Configure what action each mouse button performs</p>
 						</div>
 						<hr />
 						<div style="margin: 6px;">
-							<label><input id="toggleFullscreen" type="checkbox" />Toggle Fullscreen</label>
-							<label><input id="darkTheme" type="checkbox" />Dark Theme</label>
+							<label><input id="toggleFullscreen" type="checkbox" /><span data-i18n="settings.toggleFullscreen">Toggle Fullscreen</span></label>
+							<label><input id="darkTheme" type="checkbox" /><span data-i18n="settings.darkTheme">Dark Theme</span></label>
 							<label>
-								<input id="cameraSmoothing" type="checkbox" />Camera Smoothing
+								<input id="cameraSmoothing" type="checkbox" /><span data-i18n="settings.cameraSmoothing">Camera Smoothing</span>
 								<input id="cameraAnimationSpeed" type="range" min="1" max="20" step="1" value="9">
 							</label>
 							<label>
-								<input id="cellAnimationSpeed" type="checkbox" />Cell Animations Speed
+								<input id="cellAnimationSpeed" type="checkbox" /><span data-i18n="settings.cellAnimationSpeed">Cell Animations Speed</span>
 								<input id="animationSpeed" type="range" min="1" max="250" step="1" value="120">
 							</label>
-							<label><input id="showSkins" type="checkbox" />Cell Skins</label>
-							<label><input id="showNames" type="checkbox" />Cell Names</label>
-							<label><input id="showColor" type="checkbox" />Cell Colors</label>
-							<label><input id="showMass" type="checkbox" />Cell Mass</label>
+							<label><input id="showSkins" type="checkbox" /><span data-i18n="settings.showSkins">Cell Skins</span></label>
+							<label><input id="showNames" type="checkbox" /><span data-i18n="settings.showNames">Cell Names</span></label>
+							<label><input id="showColor" type="checkbox" /><span data-i18n="settings.showColor">Cell Colors</span></label>
+							<label><input id="showMass" type="checkbox" /><span data-i18n="settings.showMass">Cell Mass</span></label>
 							<label>
-								<input id="slowMassUpdates" type="checkbox" checked />Slower Mass Updates
+								<input id="slowMassUpdates" type="checkbox" checked /><span data-i18n="settings.slowMassUpdates">Slower Mass Updates</span>
 								<input id="massUpdateInterval" type="range" min="0" max="3000" step="50" value="300">
 							</label>
-							<label><input id="jellyPhysics" type="checkbox" />Cell Jelly Physics</label>
-							<label><input id="showIdenticon" type="checkbox" />Cell Identicons</label>
-							<label><input id="fillSkin" type="checkbox" />Cell Color Under Skin</label>
+							<label><input id="jellyPhysics" type="checkbox" /><span data-i18n="settings.jellyPhysics">Cell Jelly Physics</span></label>
+							<label><input id="showIdenticon" type="checkbox" /><span data-i18n="settings.showIdenticon">Cell Identicons</span></label>
+							<label><input id="fillSkin" type="checkbox" /><span data-i18n="settings.fillSkin">Cell Color Under Skin</span></label>
 							<label>
-								<input id="showTransparent" type="checkbox" />Cell Transparency
+								<input id="showTransparent" type="checkbox" /><span data-i18n="settings.showTransparent">Cell Transparency</span>
 								<input id="transparentAlpha" type="range" min="0" max="0.9" step="any">
 							</label>
-							<label><input id="showChat" type="checkbox" />Show Chat</label>
-							<label><input id="showMinimap" type="checkbox" />Show Minimap</label>
-							<label><input id="showPosition" type="checkbox" />Show Position</label>
-							<label><input id="showBorder" type="checkbox" />Show Map Border</label>
-							<label><input id="showGrid" type="checkbox" />Show Map Grid</label>
-							<label><input id="backgroundSectors" type="checkbox" />Show Map Sectors</label>
-							<label><input id="moreZoom" type="checkbox" />Zoom Out Increase</label>
-							<label><input id="showZoom" type="checkbox" />Show Zoom Slider</label>
+							<label><input id="showChat" type="checkbox" /><span data-i18n="settings.showChat">Show Chat</span></label>
+							<label><input id="showMinimap" type="checkbox" /><span data-i18n="settings.showMinimap">Show Minimap</span></label>
+							<label><input id="showPosition" type="checkbox" /><span data-i18n="settings.showPosition">Show Position</span></label>
+							<label><input id="showBorder" type="checkbox" /><span data-i18n="settings.showBorder">Show Map Border</span></label>
+							<label><input id="showGrid" type="checkbox" /><span data-i18n="settings.showGrid">Show Map Grid</span></label>
+							<label><input id="backgroundSectors" type="checkbox" /><span data-i18n="settings.backgroundSectors">Show Map Sectors</span></label>
+							<label><input id="moreZoom" type="checkbox" /><span data-i18n="settings.moreZoom">Zoom Out Increase</span></label>
+							<label><input id="showZoom" type="checkbox" /><span data-i18n="settings.showZoom">Show Zoom Slider</span></label>
 							<label>
-								<input id="playSounds" type="checkbox" />Sounds
+								<input id="playSounds" type="checkbox" /><span data-i18n="settings.playSounds">Sounds</span>
 								<input id="soundsVolume" type="range" min="0" max="1" step="any">
 							</label>
-							<label><input id="feedMacro" type="checkbox" />Feed Macro</label>
-							<label><input id="splitMacro" type="checkbox" />Split Macro</label>
-							<label><input id="leftClick" type="checkbox" />Left Click</label>
-							<label><input id="middleClick" type="checkbox" />Middle Click</label>
-							<label><input id="rightClick" type="checkbox" />Right Click</label>
-							<label><input id="disableTouchControls" type="checkbox" />Disable Touch Controls</label>
-							<label><input id="useJoystick" type="checkbox" />Touch Joystick</label>
-							<label><input id="lockMobileButtons" type="checkbox" />Lock Mobile Buttons</label>
+							<label><input id="feedMacro" type="checkbox" /><span data-i18n="settings.feedMacro">Feed Macro</span></label>
+							<label><input id="splitMacro" type="checkbox" /><span data-i18n="settings.splitMacro">Split Macro</span></label>
+							<label><input id="leftClick" type="checkbox" /><span data-i18n="settings.leftClickToggle">Left Click</span></label>
+							<label><input id="middleClick" type="checkbox" /><span data-i18n="settings.middleClickToggle">Middle Click</span></label>
+							<label><input id="rightClick" type="checkbox" /><span data-i18n="settings.rightClickToggle">Right Click</span></label>
+							<label><input id="disableTouchControls" type="checkbox" /><span data-i18n="settings.disableTouchControls">Disable Touch Controls</span></label>
+							<label><input id="useJoystick" type="checkbox" /><span data-i18n="settings.useJoystick">Touch Joystick</span></label>
+							<label><input id="lockMobileButtons" type="checkbox" /><span data-i18n="settings.lockMobileButtons">Lock Mobile Buttons</span></label>
 							<div style="margin-top: 10px;">
-								<button id="reset-button-positions-btn" class="btn btn-sm btn-warning" style="width: 100%;">Reset Mobile Buttons Positions</button>
+								<button id="reset-button-positions-btn" class="btn btn-sm btn-warning" style="width: 100%;" data-i18n="settings.resetButtonPositions">Reset Mobile Buttons Positions</button>
 							</div>
-							<label><input id="useWordFilters" type="checkbox" />Words Censorship</label>
-							<label><input id="autoRespawn" type="checkbox" />Toggle AutoRespawn</label>
+							<label><input id="useWordFilters" type="checkbox" /><span data-i18n="settings.useWordFilters">Words Censorship</span></label>
+							<label><input id="autoRespawn" type="checkbox" /><span data-i18n="settings.autoRespawn">Toggle AutoRespawn</span></label>
 						</div>
 					</div>
 
@@ -270,205 +275,30 @@
 					</div>
 
 					<div id="colors">
-						<label class="form-label-wrapper"><input id="bgColor" type="color" value="#ffffff" /><span>Background</span></label>
-						<label class="form-label-wrapper"><input id="nameColor" type="color" value="#ffffff" /><span>Name</span></label>
-						<label class="form-label-wrapper"><input id="cellColor" type="color" value="#ffffff" /><span>Color</span></label>
-						<label class="form-label-wrapper"><input id="borderColor" type="color" value="#ffffff" /><span>Border</span></label>
+						<label class="form-label-wrapper"><input id="bgColor" type="color" value="#ffffff" /><span data-i18n="colors.background">Background</span></label>
+						<label class="form-label-wrapper"><input id="nameColor" type="color" value="#ffffff" /><span data-i18n="colors.name">Name</span></label>
+						<label class="form-label-wrapper"><input id="cellColor" type="color" value="#ffffff" /><span data-i18n="colors.color">Color</span></label>
+						<label class="form-label-wrapper"><input id="borderColor" type="color" value="#ffffff" /><span data-i18n="colors.border">Border</span></label>
 					</div>
 				</div>
 
 				<div id="gameplay">
 					<div>
-						<h2 class="title">Rules</h2>
+						<h2 class="title" data-i18n="gameplay.rulesTitle">Rules</h2>
 						<hr class="top" />
-						<p>Don't upload forbbiden custom skins, especially if it's someone's face, you might get your skin banned or yourself banned from the game.</p>
-						<p>Don't use other people's nicknames in chat or as your name in a derogatory way, you might get muted or banned from the game.</p>
-						<h2 class="title">Gameplay</h2>
+						<p data-i18n="gameplay.rule1">Don't upload forbbiden custom skins, especially if it's someone's face, you might get your skin banned or yourself banned from the game.</p>
+						<p data-i18n="gameplay.rule2">Don't use other people's nicknames in chat or as your name in a derogatory way, you might get muted or banned from the game.</p>
+						<h2 class="title" data-i18n="gameplay.gameplayTitle">Gameplay</h2>
 						<hr class="top" />
-						<div class="text">
-							<p class="text-center">
-								Move your <kbd>MOUSE</kbd> / <kbd>TOUCH</kbd> to control your Cell<br />
-								<kbd>Mouse Wheel</kbd> or <kbd id="key-zoomin-display">F</kbd> and <kbd id="key-zoomout-display">V</kbd> to Zoom in and out<br />
-								Press <kbd id="key-feed-display">W</kbd> or <kbd>Left Click</kbd> to Eject Mass<br />
-								<!--Press <kbd>Q</kbd> to control Minion<br />-->
-								Press <kbd id="key-split-display">SPACE</kbd> to Split your Cell once<br />
-								Press <kbd id="key-doublesplit-display">X</kbd> or <kbd>Right Click</kbd> to do a Double Split<br />
-								Press <kbd id="key-multisplit-display">C</kbd> or <kbd>Middle Click</kbd> to do a Multi Split<br />
-							</p>
-							<hr />
-							<b>Objective:</b> The objective of Agar.io is to grow your cell by consuming smaller cells and avoiding larger ones. As you grow, you'll become more formidable and be able to consume even larger cells.<br /><br />
-							<b>Starting Out:</b> When you first join the game, you'll start as a small cell. Move around using your mouse to collect the colorful pellets scattered across the map. Eating pellets increases your size and mass.<br /><br />
-							<b>Movement:</b> To move your cell, you simply move your mouse cursor or use your touch screen by moving in the direction you want your cell to go. Your cell will follow the movement of your mouse cursor on the screen.<br /><br />
-							<b>Consume Smaller Cells:</b> Keep an eye out for smaller cells roaming nearby. As you grow larger, you'll be able to engulf these smaller cells to increase your mass. Approach them strategically to avoid being eaten by larger cells.<br /><br />
-							<b>Avoid Larger Cells:</b> Be cautious of larger cells, as they can consume you if you're smaller than they. Watch out for players who split to capture smaller cells, and try to anticipate their movements to stay safe.<br /><br />
-							<b>Splitting:</b> You can split your cell into multiple smaller pieces by pressing <kbd>SPACE</kbd>. Use this tactic to capture smaller cells or to escape from larger ones. You can also do a multiple splits by pressing <kbd>X</kbd> or <kbd>Z</kbd>. Remember, splitting also makes you more vulnerable, so use it wisely.<br /><br />
-							<b>Ejecting Mass:</b> While ejecting mass by pressing the <kbd>W</kbd> or <kbd>Left Click</kbd> can be beneficial, it also comes with risks. Ejected mass can be consumed by other players, including potential rivals. Additionally, ejecting mass reduces your cell's overall size, which may make you more vulnerable to being consumed by larger cells.<br /><br />
-							<b>Team Play (Optional):</b> In team mode, you can collaborate with other players to dominate the leaderboard. Team up with friends or other players to outmaneuver your opponents and conquer the game together.<br /><br />
-							<b>Grow and Dominate:</b> As you consume smaller cells and avoid being eaten, your cell will continue to grow in size. Aim to become the largest cell on the server and dominate the leaderboard.<br /><br />
-							<b>Watch Out for Viruses:</b> Throughout the map, you'll encounter green spiky circles known as viruses. Avoid colliding with these, as they can split your cell into smaller pieces if you're larger than they. Feeding viruses your mass from a direction will cause them to multiply in the opposite direction.<br /><br />
-							<b>Be Strategic:</b> Agar.io is as much about strategy as it is about skill. Pay attention to your surroundings, anticipate your opponents' moves, and use tactics like splitting and merging wisely to outsmart your rivals.<hr />
-							<p class="text-center">That's it for the basics of Agar.io! Now it's time to jump into the game and start growing your cell to become the biggest and most dominant player on the server.</p>
-							<hr />
-							<h5 class="text-center">Good luck, and have fun!</h5>
-						</div>
+						<div class="text"></div>
 					</div>
 				</div>
 
 				<div id="news">
 					<div>
-						<h2 class="title">News</h2>
+						<h2 class="title" data-i18n="news.title">News</h2>
 						<hr class="top" />
-						<div class="text">
-							<b>21/05/2026</b>
-							<ul>
-								<li>Improved <b>Cell Names</b>, <b>Cell Mass</b> and <b>Cell Jelly Physics</b> rendering performance when they are enabled in <b>Settings</b></li>
-								<li>Added <b>Slower Mass Updates</b> in <b>Settings</b> with a slider to control how often mass numbers refresh (dragging slider to the right means lower updates)</li>
-							</ul>
-							<hr /><b>05/01/2026</b>
-							<ul>
-								<li><b>Nicknames</b> now need to be at least <b>3 characters</b></li>
-								<li>Added optional <b>Words Censorship</b> for <b>Chat</b> and <b>Nicknames</b>, it's enabled by default, <u>you can disable it, but then don't complain on <a style="font-weight: bolder;" href="https://discord.gg/emupedia-510149138491506688" target="_blank">Discord</a> about people being toxic</u></li>
-								<li>Fixed <b>Spectator Free-Camera Toggle</b>, now you can toggle from Auto Follow players to Free-Camera properly in Spectator mode</li>
-							</ul>
-							<hr /><b>19/11/2025</b>
-							<ul>
-								<li><b>Nicknames</b> are now <b>Required</b> you can't have empty <b>Nicknames</b> anymore</li>
-								<li><b>Improved Mute Player Function</b> now <b>Mute</b> will try to differentiate between <b>Players</b> with same <b>Nickname</b> and try to <b>Mute</b> just the one you wanted</li>
-							</ul>
-							<b>18/11/2025</b>
-							<ul>
-								<li>Added <b>Zoom In</b> and <b>Zoom Out</b> Mobile Buttons, you can toggle <b>Show Zoom Slider</b> to <b>Show</b> or <b>Hide</b> them in <b>Settings</b></li>
-								<li><b>Improved Mobile Buttons Position Customization</b>, now you can <b>Tap</b> for 3 seconds on any Button to move it around</li>
-								<li>Added <b>Reset Mobile Buttons Positions</b> in <b>Settings</b> if you want to reset the <b>Mobile Buttons</b> to the <b>Default</b> positions</li>
-								<li>Added <b>Lock Mobile Buttons</b> in <b>Settings</b> if you check this you cannot move the buttons</li>
-								<li>Removed <b>Flip Touch Controls</b> from <b>Settings</b> (no longer needed, you can now move the Buttons wherever you want)</li>
-							</ul>
-							<b>28/10/2025</b>
-							<ul>
-								<li>Added Customizable <b>Keyboard Buttons</b> and <b>Mouse Buttons</b> in <b>Settings</b></li>
-								<li>Added <b>Camera Smoothing</b> and <b>Cell Animations Speed</b> in <b>Settings</b></li>
-							</ul>
-							<b>07/07/2025</b>
-							<ul>
-								<li>Improved how <b>Skins</b> are loaded to make it harder to copy them</li>
-							</ul>
-							<hr /><b>28/06/2025</b>
-							<ul>
-								<li>Improved <b>Identicons</b> to not change so often</li>
-							</ul>
-							<hr /><b>08/03/2025</b>
-							<ul>
-								<li>Added <b>Player Mute/Unmute Button</b> you can now <b>Mute/Unmute</b> specific <b>Players</b> from <b>Chat</b> by pressing the <b>Mute/Unmute Icon</b> next to their message or using the <b>Muted Players</b> list in <b>Settings</b></li>
-							</ul>
-							<hr /><b>03/02/2025</b>
-							<ul>
-								<li>Added <b>Chat Scroll</b>, you can scroll now either by with dragging scrollbar with the <kbd>Mouse</kbd> or using <kbd>↑ Arrow Up</kbd> and <kbd>↓ Arrow Down</kbd> keys</li>
-							</ul>
-							<hr /><b>11/01/2025</b>
-							<ul>
-								<li>Added <b>PVP Game Mode</b> still in Beta</li>
-								<li>Added <b>Cell Transparency</b> checkbox in <b>Settings</b></li>
-							</ul>
-							<hr /><b>13/10/2024</b>
-							<ul>
-								<li>Added <kbd>F</kbd> and <kbd>V</kbd> keys to Zoom in and out</li>
-								<li>Added <b>Zoom Slider</b> to Zoom in and out</li>
-								<li>Added <b>Show Zoom Slider</b> checkbox in <b>Settings</b></li>
-							</ul>
-							<hr /><b>10/10/2024</b>
-							<ul>
-								<li>Added <b>Clear Chat</b> button, so you can clear the chat manually</li>
-							</ul>
-							<hr /><b>01/10/2024</b>
-							<ul>
-								<li>Added <b>Identicons</b> to better identify friends or enemies, each device has a specific unique <b>Icon</b></li>
-								<li>Added <b>Show Identicons</b> checkbox in <b>Settings</b></li>
-								<li>Removed tricks that allow to duplicate <b>Nicks</b> or <b>Skins</b> easily</li>
-							</ul>
-							<hr /><b>16/05/2024</b>
-							<ul>
-								<li>Fixed <b>AZERTY</b> keyboard mapping now <kbd>W</kbd> and <kbd>Z</kbd> both <b>Feed</b></li>
-								<li>Changed <b>Muti Split</b> to key <kbd>C</kbd> instead of <kbd>Z</kbd></li>
-								<li>Added <b>Disable Touch Controls</b> checkbox in <b>Settings</b></li>
-							</ul>
-							<hr /><b>15/05/2024</b>
-							<ul>
-								<li>Fixed a long-standing bug in <b>Chat</b> that prevented showing some messages sometimes</li>
-								<li>You can now see <b>Spectator</b>'s nicknames if they have one set</li>
-								<li>Now you can push <b>Viruses</b> by ejecting your <b>Cell</b>'s mass towards the <b>Viruses</b></li>
-								<li>Adjusted <b>AntiSpam</b> measures to be more forgiving in <b>Chat</b>, also re-enabled <b>Pasting</b> messages</li>
-								<li>Added <b>Toggle Fullscreen</b> checkbox in <b>Settings</b></li>
-								<li>Implemented <b>AutoRespawn</b>, now you will automatically respawn without needing to press <b>Play</b> again</li>
-								<li>Added <b>Toggle AutoRespawn</b> checkbox in <b>Settings</b></li>
-								<li>Improved <b>Touch Controls</b> for mobile (added <b>Show Menu Button</b>, <b>Fullscreen Button</b>, fixed <b>Split Button</b> distance, prevent dragging Buttons)</li>
-							</ul>
-							<hr /><b>14/05/2024</b>
-							<ul>
-								<li>Splitting while using Touch controls ejected a bit of mass, this bug has now been fixed</li>
-								<li>Eject Macro is now working while using Touch controls</li>
-								<li>Improved Touch controls for mobile</li>
-							</ul>
-							<hr /><b>10/05/2024</b>
-							<ul>
-								<li>Added AntiSpam measures to Chat, disabled Pasting messages</li>
-								<li>Re-enabled using Right Click on Menus and in Chat Box</li>
-								<li>Added possibility to <b>Flip Touch Controls</b> from right side to left side in <b>Settings</b></li>
-							</ul>
-							<hr /><b>01/05/2024</b>
-							<ul>
-								<li>Added reCaptcha v3 to prevent bots connecting <a href="https://discord.gg/emupedia-510149138491506688" target="_blank">(you can give some feedback on Discord if it's not working properly)</a></li>
-								<li>Enabled auto-reconnect to server after a server restart</li>
-								<li>Improved Touch controls for mobile</li>
-							</ul>
-							<hr /><b>09/03/2024</b>
-							<ul>
-								<li>Added <b>Copy To Clipboard</b> button for <b>Current Selected Skin</b></li>
-								<li>Increased <b>Chat Area Size</b> to fit more messages</li>
-								<li>Reduced <b>Wait Time</b> for <b>Upload Skin</b> to 30 seconds</li>
-							</ul>
-							<hr /><b>28/02/2024</b>
-							<ul>
-								<li>Implemented <b>Touch Joystick</b> for mobile</li>
-								<li>Added <b>Touch Joystick</b> checkbox in <b>Settings</b></li>
-								<li>Uploading <kbd>gif</kbd> files is no longer allowed, the animation didn't work anyway, just first frame was shown</li>
-							</ul>
-							<hr /><b>24/02/2024</b>
-							<ul>
-								<li>Implemented <b>Upload Skin</b> feature</li>
-							</ul>
-							<hr /><b>20/02/2024</b>
-							<ul>
-								<li>Added toggle <b>Individual Mouse Clicks</b> checkboxes in <b>Settings</b></li>
-								<li>Added custom <b>Background Color</b> picker</li>
-							</ul>
-							<hr /><b>17/02/2024</b>
-							<ul>
-								<li>Added <b>Double Split</b>, you can use <b>Double Split</b> by pressing <kbd>X</kbd> or <kbd>Right Click</kbd></li>
-								<li>Added <b>Multi Split Macro</b>, you can use <b>Multi Split Macro</b> by pressing <kbd>C</kbd> or <kbd>Middle Click</kbd></li>
-								<li>Added toggle checkbox in <b>Settings</b> for <b>Multi Split Macro</b></li>
-								<li>Added <b>Nickname</b> picker</li>
-								<li>Added <b>Skin Name</b> picker</li>
-								<li>Added custom <b>Cell Name Color</b> picker</li>
-								<li>Added custom <b>Cell Background Color</b> picker</li>
-								<li>Added custom <b>Cell Border Color</b> picker</li>
-								<li>Added <b>Dark Theme</b> for menus</li>
-							</ul>
-							<hr /><b>16/02/2024</b>
-							<ul>
-								<li>Fixed random background colors when using <b>Jelly Physics</b></li>
-								<li>Added <b>Feed Macro</b>, you can use <b>Feed Macro</b> by pressing <kbd>W</kbd> or <kbd>Left Click</kbd> and having <b>Feed Macro</b> checkbox checked in <b>Settings</b></li>
-								<li>Added toggle checkbox in <b>Settings</b> for <b>Feed Macro</b></li>
-								<li>Added <b>News</b> section</li>
-								<li>Added <b>Gameplay</b> section</li>
-								<li>Implemented skins that start with <kbd>$</kbd></li>
-								<li>Prevented synthetic events generated by injected scripts</li>
-								<li>Disallowed all other custom clients</li>
-							</ul>
-							<hr /><b>6/13/2023</b>
-							<ul>
-								<li>Added 1195 missing Skins</li>
-							</ul>
-						</div>
+						<div class="text"></div>
 					</div>
 				</div>
 			</div>
@@ -484,9 +314,9 @@
 
 		<div id="connecting" style="display: none;">
 			<div id="connecting-content">
-				<h3>Trying to connect...</h3><hr class="top" />
-				<a class="text-center" style="display: block; color: red;" href="https://discord.gg/emupedia-510149138491506688" target="_blank">Join us on Discord!</a>
-				<p>If you cannot connect to the servers, check if you have some antivirus or firewall blocking the connection.</p>
+				<h3 data-i18n="connecting.trying">Trying to connect...</h3><hr class="top" />
+				<a class="text-center" style="display: block; color: red;" href="https://discord.gg/emupedia-510149138491506688" target="_blank" data-i18n="connecting.discord">Join us on Discord!</a>
+				<p data-i18n="connecting.firewall">If you cannot connect to the servers, check if you have some antivirus or firewall blocking the connection.</p>
 			</div>
 		</div>
 
@@ -494,6 +324,7 @@
 		<script src="assets/js/chat-filter.js?v=2"></script>
 		<script src="assets/js/nipplejs.js"></script>
 		<script src="assets/js/quadtree.js?v=2"></script>
-		<script src="assets/js/main.js?v=217"></script>
+		<script src="assets/js/i18n.js?v=6"></script>
+		<script src="assets/js/main.js?v=218"></script>
 	</body>
 </html>

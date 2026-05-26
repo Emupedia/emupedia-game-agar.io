@@ -1,0 +1,353 @@
+{
+  "meta": {
+    "title": "Agar.io v2.0",
+    "description": "Jedite chelije manje od vas i nemojte da vas pojedu veche, kao MMO"
+  },
+  "chat": {
+    "general": "general",
+    "clan": "klan",
+    "placeholder": "Pritisnite enter za chaskanje",
+    "clearTitle": "Obrishi chaskanje",
+    "zoom": "Zoom"
+  },
+  "gallery": {
+    "skins": "Skins"
+  },
+  "lobby": {
+    "title": "Agar.io v2.0",
+    "discordSuggestions": "Pridruzhite nam se na Distsord-u ako imate predloge",
+    "nickname": "Nadimak",
+    "skin": "Kozha",
+    "skinPlaceholder": "Ime kozhe",
+    "copy": "Kopiraj",
+    "clanName": "Ime klana",
+    "clanPlaceholder": "5 slova mak",
+    "createClan": "Tsreate Tslan",
+    "leaveClan": "Napusti klan",
+    "copyInvite": "Kopiraj poziv",
+    "gameMode": "Rezhim igre",
+    "play": "Igraj",
+    "chooseSkin": "Izaberite Skin",
+    "uploadSkin": "Upload Skin",
+    "unban": "Unban",
+    "skinCopied": "URL maske je kopiran u medjuspremnik!"
+  },
+  "settings": {
+    "language": "Jezik",
+    "mutedPlayers": "Muted Plaiers",
+    "mutePlaceholder": "Unesite nadimak da biste iskljuchili zvuk",
+    "mute": "Mute",
+    "keyboardBindings": "Vezivanje dugmadi na tastaturi",
+    "feed": "Feed:",
+    "split": "Split:",
+    "doubleSplit": "Dvostruka podela:",
+    "multiSplit": "Multi Split:",
+    "zoomIn": "Uvechaj:",
+    "zoomOut": "Umanji:",
+    "minion": "Besplatna kontrola kamere za gledaotse / miniona:",
+    "resetKeys": "Resetujte na podrazumevane vrednosti",
+    "keyRebindHint": "Kliknite na dugme i pritisnite taster da biste ponovo povezali",
+    "mouseBindings": "Vezivanje dugmeta misha",
+    "leftClick": "Kliknite levim klikom:",
+    "middleClick": "Srednji klik:",
+    "rightClick": "Desni klik:",
+    "resetMouse": "Resetujte na podrazumevane vrednosti",
+    "mouseHint": "Konfigurishite koju radnju obavlja svako dugme misha",
+    "toggleFullscreen": "Prebatsi preko tselog ekrana",
+    "darkTheme": "Dark Tkheme",
+    "cameraSmoothing": "Tsamera Smootkhing",
+    "cellAnimationSpeed": "Brzina animatsije chelija",
+    "showSkins": "Tsell Skins",
+    "showNames": "Tsell Names",
+    "showColor": "Tsell Tsolors",
+    "showMass": "Tsell Mass",
+    "slowMassUpdates": "Sporije masovna azhuriranja",
+    "jellyPhysics": "Tsell Jelli Pkhisitss",
+    "showIdenticon": "Tsell Identitsons",
+    "fillSkin": "Boja chelije ispod kozhe",
+    "showTransparent": "Tsell Transparentsi",
+    "showChat": "Prikazhi chaskanje",
+    "showMinimap": "Prikazhi minimapu",
+    "showPosition": "Prikazhi pozitsiju",
+    "showBorder": "Prikazhi granitsu karte",
+    "showGrid": "Prikazhi mrezhu karte",
+    "backgroundSectors": "Prikazhi sektore karte",
+    "moreZoom": "Povechaj umanjivanje",
+    "showZoom": "Prikazhi klizach za zumiranje",
+    "playSounds": "Zvutsi",
+    "feedMacro": "Feed Matsro",
+    "splitMacro": "Split Matsro",
+    "leftClickToggle": "Kliknite levim klikom",
+    "middleClickToggle": "Srednji klik",
+    "rightClickToggle": "Desni klik",
+    "disableTouchControls": "Onemoguchite kontrole na dodir",
+    "useJoystick": "Dodirnite Joistitsk",
+    "lockMobileButtons": "Zakljuchavanje dugmadi za mobilne uredjaje",
+    "resetButtonPositions": "Resetujte polozhaje mobilnikh dugmadi",
+    "useWordFilters": "Rechi Tsenzura",
+    "autoRespawn": "Toggle AutoRespavn"
+  },
+  "colors": {
+    "background": "Pozadina",
+    "name": "Ime",
+    "color": "Boja",
+    "border": "Granitsa"
+  },
+  "mouseActions": {
+    "none": "Nijedan",
+    "feed": "Feed (Ejetst Mass)",
+    "split": "Split",
+    "doubleSplit": "Dvostruki Split",
+    "multiSplit": "Multi Split"
+  },
+  "connecting": {
+    "trying": "Pokushavam da se povezhem...",
+    "discord": "Pridruzhite nam se na Distsord-u!",
+    "firewall": "Ako ne mozhete da se povezhete sa serverima, proverite da li imate neki antivirus ili zashtitni zid koji blokira vezu.",
+    "multisessionTitle": "Upozorenje o vishe sesija",
+    "multisessionBody": "Nije dozvoljeno vishe instantsi igre.<br />Zatvorite sve ostale instantse igre i ponovo uchitajte.",
+    "oldBrowserTitle": "Vash pretrazhivach je veoma star",
+    "oldBrowserLink": "Kliknite ovde da biste azhurirali svoj pretrazhivach na noviju verziju.",
+    "bannedTitle": "Zabranjeni ste 😭",
+    "bannedBody": "Zabranjeni ste iz igre jer ste prekrshili pravila ili slanjem nezheljene poshte u chaskanje ili prilikom postavljanja prilagodjenikh skinova.",
+    "bannedBodyBots": "Zabranjeni ste iz igre jer ste prekrshili pravila ili slanjem nezheljene poshte u chaskanje ili dok postavljate prilagodjene skinove ili zato shto koristite botove.",
+    "unbanCode": "Vash kod za odbranu je"
+  },
+  "errors": {
+    "browserUnsupported": "Vash pretrazhivach ne podrzhava potrebne funktsije, azhurirajte pregledach.",
+    "nicknameRequired": "Unesite nadimak da biste igrali.",
+    "nicknameMinLength": "Za nadimak treba najmanje {min} znakova",
+    "nicknameDisallowed": "Ovaj nadimak nije dozvoljen. Molimo izaberite drugi nadimak."
+  },
+  "muted": {
+    "empty": "Nema iskljuchenikh igracha",
+    "unmute": "Ukljuchi zvuk"
+  },
+  "keys": {
+    "pressKey": "Pritisnite taster..."
+  },
+  "gameplay": {
+    "rulesTitle": "Pravila",
+    "rule1": "Ne postavljajte zabranjene prilagodjene skinove, posebno ako je u pitanju nechije litse, mozhda chete dobiti zabranu vasheg skina ili sebe iz igre.",
+    "rule2": "Ne koristite nadimke drugikh ljudi u chaskanju ili kao svoje ime na pogrdan nachin, mozhete biti iskljucheni ili izbacheni iz igre.",
+    "gameplayTitle": "Igranje",
+    "controlsIntro": "Pomeri svoje<kbd>MISh</kbd>/<kbd>TOUTsKh</kbd>da kontrolishete svoju cheliju<br /><kbd>Tochak misha</kbd>ili<kbd id=\"key-zoomin-display\">F</kbd>i<kbd id=\"key-zoomout-display\">V</kbd>da uvechate i umanjite<br />Pritisnite<kbd id=\"key-feed-display\">V</kbd>ili<kbd>Kliknite levim klikom</kbd>da izbatsi masu<br />Pritisnite<kbd id=\"key-split-display\">SPATsE</kbd>da jednom podelite svoju cheliju<br />Pritisnite<kbd id=\"key-doublesplit-display\">Ks</kbd>ili<kbd>Desni klik</kbd>da uradite dupli Split<br />Pritisnite<kbd id=\"key-multisplit-display\">Ts</kbd>ili<kbd>Srednji klik</kbd>da uradite Multi Split",
+    "objective": "<b>Tsilj:</b>Tsilj Agar.io je da povecha vashu cheliju konzumiranjem manjikh chelija i izbegavanjem vechikh. Kako rastete, postachete mochniji i mochi chete da konzumirate josh veche chelije.",
+    "startingOut": "<b>Pochetak:</b>Kada se prvi put pridruzhite igri, pochechete kao mala chelija. Krechite se pomochu misha da biste prikupili sharene kuglitse razbatsane po mapi. Jedenje peleta povechava vashu velichinu i masu.",
+    "movement": "<b>Kretanje:</b>Da biste pomerili cheliju, jednostavno pomerite kursor misha ili koristite ekran osetljiv na dodir pomerajuchi se u pravtsu u kom zhelite da vasha chelija ide. Vasha chelija che pratiti kretanje kursora misha na ekranu.",
+    "consumeSmaller": "<b>Potroshi manje chelije:</b>Pazite na manje chelije koje lutaju u blizini. Kako rastete, mochi chete da progutate ove manje chelije da biste povechali svoju masu. Pristupite im strateshki kako biste izbegli da ikh pojedu veche chelije.",
+    "avoidLarger": "<b>Izbegavajte veche chelije:</b>Budite oprezni sa vechim chelijama, jer mogu da vas progutaju ako ste manji od njikh. Pazite na igrache koji se podele da bi ukhvatili manje chelije i pokushajte da predvidite njikhove pokrete kako biste ostali bezbedni.",
+    "splitting": "<b>Podela:</b>Svoju cheliju mozhete podeliti na vishe manjikh delova pritiskom<kbd>SPATsE</kbd>. Koristite ovu taktiku da ukhvatite manje chelije ili da pobegnete od vechikh. Takodje mozhete izvrshiti vishestruke podele pritiskom na<kbd>Ks</kbd>ili<kbd>Z</kbd>. Zapamtite, razdvajanje vas takodje chini ranjivijim, pa ga koristite mudro.",
+    "ejectingMass": "<b>Masa za izbatsivanje:</b>Prilikom izbatsivanja mase pritiskom na<kbd>V</kbd>ili<kbd>Kliknite levim klikom</kbd>mozhe biti od koristi, takodje dolazi sa rizitsima. Izbachenu masu mogu potroshiti drugi igrachi, ukljuchujuchi potentsijalne rivale. Pored toga, izbatsivanje mase smanjuje ukupnu velichinu vashe chelije, shto vas mozhe uchiniti ranjivijim na konzumiranje vechikh chelija.",
+    "teamPlay": "<b>Timska igra (optsiono):</b>U timskom rezhimu, mozhete saradjivati sa drugim igrachima da biste dominirali na tabeli. Udruzhite se sa prijateljima ili drugim igrachima da nadmashite svoje protivnike i zajedno osvojite igru.",
+    "growDominate": "<b>Rastite i dominirajte:</b>Kako konzumirate manje chelije i izbegavate da budete pojedeni, vasha chelija che nastaviti da raste. Tsiljajte da postanete najvecha chelija na serveru i dominirate na tabeli.",
+    "viruses": "<b>Pazite na viruse:</b>Na tseloj mapi chete naichi na zelene shiljaste krugove poznate kao virusi. Izbegavajte sudare sa njima, jer oni mogu podeliti vashu cheliju na manje delove ako ste vechi od njikh. Khranjenje virusa vashe mase iz jednog pravtsa doveshche do njikhovog razmnozhavanja u suprotnom smeru.",
+    "beStrategic": "<b>Budite strateshki:</b>Agar.io se tiche strategije koliko i veshtine. Obratite pazhnju na svoje okruzhenje, predvidite poteze svojikh protivnika i koristite taktike kao shto su razdvajanje i spajanje kako biste nadmudrili svoje rivale.<hr />",
+    "closing": "To je to za osnove Agar.io! Sada je vreme da uskochite u igru i pochnete da razvijate svoju cheliju kako biste postali najvechi i najdominantniji igrach na serveru.",
+    "goodLuck": "Srechno i zabavite se!"
+  },
+  "news": {
+    "title": "Vesti",
+    "entries": [
+      {
+        "date": "21/05/2026",
+        "items": [
+          "Poboljshano<b>Tsell Names</b>,<b>Tsell Mass</b>i<b>Tsell Jelli Pkhisitss</b>performanse renderovanja kada su omoguchene u<b>Podeshavanja</b>",
+          "Dodato<b>Sporije masovna azhuriranja</b>in<b>Podeshavanja</b>pomochu klizacha da kontrolishete koliko chesto se masovni brojevi osvezhavaju (prevlachenje klizacha udesno znachi nizhe azhuriranje)"
+        ]
+      },
+      {
+        "date": "01.05.2026",
+        "items": [
+          "<b>Nadimtsi</b>sada treba da bude barem<b>3 znaka</b>",
+          "Dodato optsiono<b>Rechi Tsenzura</b>za<b>Chaskanje</b>i<b>Nadimtsi</b>, podrazumevano je omogucheno,<u>mozhete ga onemoguchiti, ali onda nemojte da se zhalite na<a style=\"font-weight: bolder;\" href=\"https://discord.gg/emupedia-510149138491506688\" target=\"_blank\">Distsord</a>o tome da su ljudi toksichni</u>",
+          "Fiksno<b>Prekidach slobodne kamere za gledaotsa</b>, sada mozhete pravilno da se prebatsite sa automatskog prachenja igracha na slobodnu kameru u rezhimu posmatracha"
+        ]
+      },
+      {
+        "date": "19/11/2025",
+        "items": [
+          "<b>Nadimtsi</b>su sada<b>Obavezno</b>ne mozhete imati prazno<b>Nadimtsi</b>vishe",
+          "<b>Poboljshana funktsija iskljuchivanja zvuka plejera</b>sada<b>Mute</b>pokushache da napravi razliku izmedju<b>Igrachi</b>sa istim<b>Nadimak</b>i pokushati da<b>Mute</b>samo onaj koji ste zheleli"
+        ]
+      },
+      {
+        "date": "18/11/2025",
+        "items": [
+          "Dodato<b>Uvechaj</b>i<b>Zoom Out</b>Mobilna dugmad, mozhete prebatsiti<b>Prikazhi klizach za zumiranje</b>da<b>Skhov</b>ili<b>Sakrij se</b>ikh unutra<b>Podeshavanja</b>",
+          "<b>Poboljshano prilagodjavanje polozhaja mobilnikh dugmadi</b>, sada mozhete<b>Dodirnite</b>3 sekunde na bilo kom dugmetu da biste ga pomerili",
+          "Dodato<b>Resetujte polozhaje mobilnikh dugmadi</b>in<b>Podeshavanja</b>ako zhelite da resetujete<b>Mobile Buttons</b>to tkhe<b>Podrazumevano</b>pozitsije",
+          "Dodato<b>Zakljuchavanje dugmadi za mobilne uredjaje</b>in<b>Podeshavanja</b>ako ovo oznachite, ne mozhete pomerati dugmad",
+          "Uklonjeno<b>Okrenite kontrole na dodir</b>iz<b>Podeshavanja</b>(vishe nije potrebno, sada mozhete da pomerate dugmad gde god zhelite)"
+        ]
+      },
+      {
+        "date": "28/10/2025",
+        "items": [
+          "Dodato prilagodljivo<b>Dugmad na tastaturi</b>i<b>Dugmad misha</b>in<b>Podeshavanja</b>",
+          "Dodato<b>Tsamera Smootkhing</b>i<b>Brzina animatsije chelija</b>in<b>Podeshavanja</b>"
+        ]
+      },
+      {
+        "date": "07.07.2025",
+        "items": [
+          "Poboljshano kako<b>Skins</b>se uchitavaju da bi ikh bilo tezhe kopirati"
+        ]
+      },
+      {
+        "date": "28/06/2025",
+        "items": [
+          "Poboljshano<b>Identikoni</b>da se ne menjaju tako chesto"
+        ]
+      },
+      {
+        "date": "03.08.2025",
+        "items": [
+          "Dodato<b>Dugme za iskljuchivanje/ukljuchivanje zvuka igracha</b>mozhete sada<b>Mute/Unmute</b>spetsifichnim<b>Igrachi</b>iz<b>Chaskanje</b>pritiskom na<b>Ikona Iskljuchi/Ukljuchi zvuk</b>pored njikhove poruke ili koristechi<b>Muted Plaiers</b>popis u<b>Podeshavanja</b>"
+        ]
+      },
+      {
+        "date": "02.03.2025",
+        "items": [
+          "Dodato<b>Tskhat Stsroll</b>, sada mozhete da skrolujete ili prevlachenjem trake za pomeranje pomochu<kbd>Mish</kbd>ili koristechi<kbd>↑ Strelitsa gore</kbd>i<kbd>↓ Strelitsa nadole</kbd>kljuchevi"
+        ]
+      },
+      {
+        "date": "01.11.2025",
+        "items": [
+          "Dodato<b>PVP rezhim igre</b>josh uvek u beti",
+          "Dodato<b>Tsell Transparentsi</b>polje za potvrdu u<b>Podeshavanja</b>"
+        ]
+      },
+      {
+        "date": "13/10/2024",
+        "items": [
+          "Dodato<kbd>F</kbd>i<kbd>V</kbd>tasteri za uvechanje i umanjivanje",
+          "Dodato<b>Klizach za zumiranje</b>da uvechate i umanjite",
+          "Dodato<b>Prikazhi klizach za zumiranje</b>polje za potvrdu u<b>Podeshavanja</b>"
+        ]
+      },
+      {
+        "date": "10.10.2024",
+        "items": [
+          "Dodato<b>Obrishi chaskanje</b>dugme, tako da mozhete ruchno da obrishete chaskanje"
+        ]
+      },
+      {
+        "date": "01/10/2024",
+        "items": [
+          "Dodato<b>Identikoni</b>da bi se bolje identifikovali prijatelji ili neprijatelji, svaki uredjaj ima spetsifichan unikat<b>Ikona</b>",
+          "Dodato<b>Prikazhi identitete</b>polje za potvrdu u<b>Podeshavanja</b>",
+          "Uklonjeni trikovi koji dozvoljavaju dupliranje<b>Nitsks</b>ili<b>Skins</b>lako"
+        ]
+      },
+      {
+        "date": "16/05/2024",
+        "items": [
+          "Fiksno<b>AZERTI</b>mapiranje tastature sada<kbd>V</kbd>i<kbd>Z</kbd>oboje<b>Feed</b>",
+          "Promenjeno<b>Muti Split</b>na kljuch<kbd>Ts</kbd>umesto da<kbd>Z</kbd>",
+          "Dodato<b>Onemoguchite kontrole na dodir</b>polje za potvrdu u<b>Podeshavanja</b>"
+        ]
+      },
+      {
+        "date": "15/05/2024",
+        "items": [
+          "Ispravljena je dugogodishnja greshka<b>Chaskanje</b>shto je ponekad sprechavalo prikazivanje nekikh poruka",
+          "Sada mozhete videti<b>Gledalats</b>nadimtsi ako imaju jedan skup",
+          "Sada mozhete gurati<b>Virusi</b>izbatsivanjem vasheg<b>Tsell</b>je masa prema<b>Virusi</b>",
+          "Prilagodjeno<b>AntiSpam</b>mere da se vishe oprashta u<b>Chaskanje</b>, takodje ponovo omoguchen<b>Lepljenje</b>poruke",
+          "Dodato<b>Prebatsi preko tselog ekrana</b>polje za potvrdu u<b>Podeshavanja</b>",
+          "Implementirano<b>AutoRespavn</b>, sada chete se automatski ponovo pokrenuti bez potrebe da pritisnete<b>Igraj</b>opet",
+          "Dodato<b>Toggle AutoRespavn</b>polje za potvrdu u<b>Podeshavanja</b>",
+          "Poboljshano<b>Dodirnite kontrole</b>za mobilni (dodato<b>Prikazhi dugme menija</b>,<b>Dugme za tseo ekran</b>, fiksno<b>Dugme za razdvajanje</b>udaljenost, sprechi prevlachenje dugmadi)"
+        ]
+      },
+      {
+        "date": "14/05/2024",
+        "items": [
+          "Tsepanje tokom korishchenja dodirnikh kontrola je izbatsilo malo mase, ova greshka je sada ispravljena",
+          "Ejetst Matsro sada radi dok koristite kontrole na dodir",
+          "Poboljshane kontrole dodirom za mobilne uredjaje"
+        ]
+      },
+      {
+        "date": "05.10.2024",
+        "items": [
+          "Dodate mere zashtite od nezheljene poshte u chaskanje, onemogucheno lepljenje poruka",
+          "Ponovo omogucheno desnim klikom na menije i u okviru za chaskanje",
+          "Dodata moguchnost da<b>Okrenite kontrole na dodir</b>sa desne strane na levu stranu unutra<b>Podeshavanja</b>"
+        ]
+      },
+      {
+        "date": "01/05/2024",
+        "items": [
+          "Dodat je reTsapttskha v3 da sprechi povezivanje botova<a href=\"https://discord.gg/emupedia-510149138491506688\" target=\"_blank\">(mozhete dati neke povratne informatsije o Distsord-u ako ne radi kako treba)</a>",
+          "Omogucheno automatsko ponovno povezivanje sa serverom nakon ponovnog pokretanja servera",
+          "Poboljshane kontrole dodirom za mobilne uredjaje"
+        ]
+      },
+      {
+        "date": "03.09.2024",
+        "items": [
+          "Dodato<b>Kopiraj u medjuspremnik</b>dugme za<b>Trenutno odabrana kozha</b>",
+          "Povechano<b>Velichina podruchja za chaskanje</b>da stane vishe poruka",
+          "Smanjena<b>Vreme chekanja</b>za<b>Upload Skin</b>do 30 sekundi"
+        ]
+      },
+      {
+        "date": "28/02/2024",
+        "items": [
+          "Implementirano<b>Dodirnite Joistitsk</b>za mobilni",
+          "Dodato<b>Dodirnite Joistitsk</b>polje za potvrdu u<b>Podeshavanja</b>",
+          "Uchitavanje<kbd>gif</kbd>fajlovi vishe nisu dozvoljeni, animatsija ionako nije radila, samo je prikazan prvi kadar"
+        ]
+      },
+      {
+        "date": "24/02/2024",
+        "items": [
+          "Implementirano<b>Upload Skin</b>karakteristika"
+        ]
+      },
+      {
+        "date": "20/02/2024",
+        "items": [
+          "Dodat je prekidach<b>Pojedinachni klikovi mishem</b>polja za potvrdu u<b>Podeshavanja</b>",
+          "Dodato prilagodjeno<b>Boja pozadine</b>berach"
+        ]
+      },
+      {
+        "date": "17/02/2024",
+        "items": [
+          "Dodato<b>Dvostruki Split</b>, mozhete koristiti<b>Dvostruki Split</b>pritiskom<kbd>Ks</kbd>ili<kbd>Desni klik</kbd>",
+          "Dodato<b>Multi Split Matsro</b>, mozhete koristiti<b>Multi Split Matsro</b>pritiskom<kbd>Ts</kbd>ili<kbd>Srednji klik</kbd>",
+          "Dodato je polje za potvrdu<b>Podeshavanja</b>za<b>Multi Split Matsro</b>",
+          "Dodato<b>Nadimak</b>berach",
+          "Dodato<b>Ime kozhe</b>berach",
+          "Dodato prilagodjeno<b>Boja imena chelije</b>berach",
+          "Dodato prilagodjeno<b>Boja pozadine chelije</b>berach",
+          "Dodato prilagodjeno<b>Boja ivitse chelije</b>berach",
+          "Dodato<b>Dark Tkheme</b>za menije"
+        ]
+      },
+      {
+        "date": "16/02/2024",
+        "items": [
+          "Ispravljene nasumichne boje pozadine prilikom upotrebe<b>Jelli Pkhisitss</b>",
+          "Dodato<b>Feed Matsro</b>, mozhete koristiti<b>Feed Matsro</b>pritiskom<kbd>V</kbd>ili<kbd>Kliknite levim klikom</kbd>i imajuchi<b>Feed Matsro</b>polje za potvrdu je oznacheno<b>Podeshavanja</b>",
+          "Dodato je polje za potvrdu<b>Podeshavanja</b>za<b>Feed Matsro</b>",
+          "Dodato<b>Vesti</b>odeljak",
+          "Dodato<b>Igranje</b>odeljak",
+          "Implementirani skinovi koji pochinju sa<kbd>$</kbd>",
+          "Sprecheni sintetichki dogadjaji generisani umetnutim skriptama",
+          "Zabranjeni svi drugi prilagodjeni klijenti"
+        ]
+      },
+      {
+        "date": "13/06/2023",
+        "items": [
+          "Dodato 1195 nedostajuchikh skinova"
+        ]
+      }
+    ]
+  }
+}

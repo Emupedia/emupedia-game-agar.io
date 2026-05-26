@@ -1,0 +1,353 @@
+{
+  "meta": {
+    "title": "Agar.io v2.0",
+    "description": "Spis celler mindre end dig og bliv ikke spist af de større, som en MMO"
+  },
+  "chat": {
+    "general": "Generelt",
+    "clan": "Klan",
+    "placeholder": "Tryk på enter for at chatte",
+    "clearTitle": "Ryd chat",
+    "zoom": "Zoom"
+  },
+  "gallery": {
+    "skins": "Skind"
+  },
+  "lobby": {
+    "title": "Agar.io v2.0",
+    "discordSuggestions": "Slut dig til os på Discord, hvis du har forslag",
+    "nickname": "Kaldenavn",
+    "skin": "Hud",
+    "skinPlaceholder": "Hudens navn",
+    "copy": "Kopiér",
+    "clanName": "Klan navn",
+    "clanPlaceholder": "max 5 bogstaver",
+    "createClan": "Opret klan",
+    "leaveClan": "Forlad klanen",
+    "copyInvite": "Kopiér invitationen",
+    "gameMode": "Spiltilstand",
+    "play": "Spil",
+    "chooseSkin": "Vælg Hud",
+    "uploadSkin": "Upload skin",
+    "unban": "Ophæv forbuddet",
+    "skinCopied": "Skin URL kopieret til udklipsholder!"
+  },
+  "settings": {
+    "language": "Sprog",
+    "mutedPlayers": "Dæmpede spillere",
+    "mutePlaceholder": "Indtast kaldenavn for at slå lyden fra",
+    "mute": "Lydløs",
+    "keyboardBindings": "Tastaturknapbindinger",
+    "feed": "Feed:",
+    "split": "Split:",
+    "doubleSplit": "Dobbelt split:",
+    "multiSplit": "Multi Split:",
+    "zoomIn": "Zoom ind:",
+    "zoomOut": "Zoom ud:",
+    "minion": "Gratis tilskuerkamera / Minion kontrol:",
+    "resetKeys": "Nulstil til standarder",
+    "keyRebindHint": "Klik på en knap, og tryk på en tast for at genbinde",
+    "mouseBindings": "Muse knap bindinger",
+    "leftClick": "Venstre klik:",
+    "middleClick": "Mellemklik:",
+    "rightClick": "Højreklik:",
+    "resetMouse": "Nulstil til standarder",
+    "mouseHint": "Konfigurer, hvilken handling hver museknap udfører",
+    "toggleFullscreen": "Skift fuldskærm",
+    "darkTheme": "Mørkt tema",
+    "cameraSmoothing": "Kameraudjævning",
+    "cellAnimationSpeed": "Celleanimationshastighed",
+    "showSkins": "Celleskind",
+    "showNames": "Cellenavne",
+    "showColor": "Celle farver",
+    "showMass": "Cellemasse",
+    "slowMassUpdates": "Langsommere masseopdateringer",
+    "jellyPhysics": "Cellegeléfysik",
+    "showIdenticon": "Celleidentifikationer",
+    "fillSkin": "Cellefarve under huden",
+    "showTransparent": "Cellegennemsigtighed",
+    "showChat": "Vis Chat",
+    "showMinimap": "Vis minikort",
+    "showPosition": "Vis position",
+    "showBorder": "Vis kortgrænse",
+    "showGrid": "Vis kortgitter",
+    "backgroundSectors": "Vis kortsektorer",
+    "moreZoom": "Zoom ud Forøg",
+    "showZoom": "Vis zoomskyder",
+    "playSounds": "Lyde",
+    "feedMacro": "Feed makro",
+    "splitMacro": "Split makro",
+    "leftClickToggle": "Venstre klik",
+    "middleClickToggle": "Mellemklik",
+    "rightClickToggle": "Højreklik",
+    "disableTouchControls": "Deaktiver Touch Controls",
+    "useJoystick": "Tryk på Joystick",
+    "lockMobileButtons": "Lås mobilknapper",
+    "resetButtonPositions": "Nulstil mobilknappernes positioner",
+    "useWordFilters": "Ord Censur",
+    "autoRespawn": "Slå AutoRespawn til/fra"
+  },
+  "colors": {
+    "background": "Baggrund",
+    "name": "Navn",
+    "color": "Farve",
+    "border": "Grænse"
+  },
+  "mouseActions": {
+    "none": "Ingen",
+    "feed": "Foder (udkast masse)",
+    "split": "Split",
+    "doubleSplit": "Dobbelt split",
+    "multiSplit": "Multi Split"
+  },
+  "connecting": {
+    "trying": "Forsøger at oprette forbindelse...",
+    "discord": "Slut dig til os på Discord!",
+    "firewall": "Hvis du ikke kan oprette forbindelse til serverne, skal du kontrollere, om du har en antivirus eller firewall, der blokerer forbindelsen.",
+    "multisessionTitle": "Multisession advarsel",
+    "multisessionBody": "Flere spilforekomster er ikke tilladt.<br />Luk alle andre spilforekomster og genindlæs.",
+    "oldBrowserTitle": "Din browser er meget gammel",
+    "oldBrowserLink": "Klik venligst her for at opdatere din browser til en nyere version.",
+    "bannedTitle": "Du er bandlyst 😭",
+    "bannedBody": "Du er udelukket fra spillet, fordi du brød reglerne enten ved at spamme chatten eller mens du uploadede tilpassede skins.",
+    "bannedBodyBots": "Du er udelukket fra spillet, fordi du brød reglerne, enten spamming af chatten eller mens du uploadede tilpassede skins, eller fordi du bruger bots.",
+    "unbanCode": "Din unban kode er"
+  },
+  "errors": {
+    "browserUnsupported": "Din browser understøtter ikke de nødvendige funktioner. Opdater venligst din browser.",
+    "nicknameRequired": "Indtast venligst et kaldenavn for at spille.",
+    "nicknameMinLength": "Kaldenavn kræver mindst {min} tegn",
+    "nicknameDisallowed": "Dette kaldenavn er ikke tilladt. Vælg venligst et andet kaldenavn."
+  },
+  "muted": {
+    "empty": "Ingen dæmpede spillere",
+    "unmute": "Slå lyden til"
+  },
+  "keys": {
+    "pressKey": "Tryk på en tast..."
+  },
+  "gameplay": {
+    "rulesTitle": "Regler",
+    "rule1": "Lad være med at uploade forbudte brugerdefinerede skins, især hvis det er nogens ansigt, kan du få dit skin banned eller dig selv banned fra spillet.",
+    "rule2": "Brug ikke andres kaldenavne i chat eller som dit navn på en nedsættende måde, du kan blive slået fra eller udelukket fra spillet.",
+    "gameplayTitle": "Gameplay",
+    "controlsIntro": "Flyt din <kbd>MUS</kbd> / <kbd>TOUCH</kbd> for at styre dit celle<br /><kbd></kbd>musehjul<kbd id=\"key-zoomin-display\"> eller </kbd>F<kbd id=\"key-zoomout-display\"> og </kbd>V<br /> for at zoome ind og <kbd id=\"key-feed-display\"> id=\"key-feed-display\">W</kbd> eller <kbd>Venstre klik</kbd> for at skubbe masse ud<br />Tryk på <kbd id=\"key-split-display\">MELLEMRUM</kbd> for at opdele din celle én gang<br />Tryk på <kbd id=\"key-doublesplit-display\">R til højre</kbd> eller <kbd> Split</kbd>Tryk på <br />C<kbd id=\"key-multisplit-display\"> eller </kbd>midtklik<kbd> for at lave en Multi Split</kbd>",
+    "objective": "<b>Mål:</b> Formålet med Agar.io er at dyrke din celle ved at forbruge mindre celler og undgå større. Efterhånden som du vokser, vil du blive mere formidabel og være i stand til at forbruge endnu større celler.",
+    "startingOut": "<b>Start ud:</b> Når du først deltager i spillet, starter du som en lille celle. Bevæg dig rundt med din mus for at samle de farverige piller spredt ud over kortet. At spise pellets øger din størrelse og masse.",
+    "movement": "<b>Bevægelse:</b> For at flytte din celle skal du blot flytte musemarkøren eller bruge din berøringsskærm ved at bevæge dig i den retning, du vil have din celle til at gå. Din celle vil følge bevægelsen af ​​din musemarkør på skærmen.",
+    "consumeSmaller": "<b>Forbrug mindre celler:</b> Hold øje med mindre celler, der roamer i nærheden. Når du vokser dig større, vil du være i stand til at opsluge disse mindre celler for at øge din masse. Gå til dem strategisk for at undgå at blive spist af større celler.",
+    "avoidLarger": "<b>Undgå større celler:</b> Vær forsigtig med større celler, da de kan tære dig, hvis du er mindre end dem. Pas på spillere, der deler sig for at fange mindre celler, og prøv at forudse deres bevægelser for at forblive sikre.",
+    "splitting": "<b>Opdeling:</b> Du kan opdele din celle i flere mindre stykker ved at trykke på <kbd>MELLEMRUM</kbd>. Brug denne taktik til at fange mindre celler eller til at flygte fra større celler. Du kan også lave flere opdelinger ved at trykke på <kbd>X</kbd> eller <kbd>Z</kbd>. Husk, at opdeling gør dig også mere sårbar, så brug det med omtanke.",
+    "ejectingMass": "<b>Skub masse ud:</b> Mens det kan være fordelagtigt at skubbe masse ud ved at trykke på <kbd>W</kbd> eller <kbd>venstre klik</kbd>, men det medfører også risici. Udstødt masse kan forbruges af andre spillere, inklusive potentielle rivaler. Derudover reducerer udstødning af masse din celles samlede størrelse, hvilket kan gøre dig mere sårbar over for at blive forbrugt af større celler.",
+    "teamPlay": "<b>Teamspil (valgfrit):</b> I holdtilstand kan du samarbejde med andre spillere for at dominere ranglisten. Slå dig sammen med venner eller andre spillere for at udmanøvrere dine modstandere og erobre spillet sammen.",
+    "growDominate": "<b>Voks og dominer:</b> Når du indtager mindre celler og undgår at blive spist, vil din celle fortsætte med at vokse i størrelse. Sigt efter at blive den største celle på serveren og dominer leaderboardet.",
+    "viruses": "<b>Pas på vira:</b> På hele kortet vil du støde på grønne spidse cirkler kendt som vira. Undgå at kollidere med disse, da de kan dele din celle i mindre stykker, hvis du er større end dem. At fodre virus med din masse fra en retning vil få dem til at formere sig i den modsatte retning.",
+    "beStrategic": "<b>Vær strategisk:</b> Agar.io handler lige så meget om strategi, som det handler om færdigheder. Vær opmærksom på dine omgivelser, foregribe dine modstanders træk, og brug taktikker som at splitte og fusionere klogt for at overliste dine rivaler.<hr />",
+    "closing": "Det er det for det grundlæggende i Agar.io! Nu er det tid til at springe ind i spillet og begynde at vokse din celle til at blive den største og mest dominerende spiller på serveren.",
+    "goodLuck": "Held og lykke, og god fornøjelse!"
+  },
+  "news": {
+    "title": "Nyheder",
+    "entries": [
+      {
+        "date": "21/05/2026",
+        "items": [
+          "Forbedret <b>Cell Names</b>, <b>Cell Mass</b> og <b>Cell Jelly Physics</b> gengivelsesydelse, når de er aktiveret i <b>Indstillinger</b>",
+          "Tilføjet <b>langsommere masseopdateringer</b> i <b>Indstillinger</b> med en skyder for at kontrollere, hvor ofte massetal opdateres (at trække skyderen til højre betyder lavere opdateringer)"
+        ]
+      },
+      {
+        "date": "05/01/2026",
+        "items": [
+          "<b>Kaldenavne</b> skal nu være mindst <b>3 tegn</b>",
+          "Tilføjet valgfri <b>Ordcensur</b> for <b>Chat</b> og <b>Kaldenavne</b>, det er aktiveret som standard, <u>du kan deaktivere det, men så lad være med at klage over <a style=\"font-weight: bolder;\" href=\"https://discord.gg/emupedia-510149138491506688\" target=\"_blank\">splid</a> om mennesker, der er giftige</u>",
+          "Fixed <b>Tilskuer Free-Camera Toggle</b>, nu kan du skifte fra Auto Follow-spillere til Free-Camera korrekt i Spectator-tilstand"
+        ]
+      },
+      {
+        "date": "19/11/2025",
+        "items": [
+          "<b>Kaldenavne</b> er nu <b>påkrævet</b>, du kan ikke længere have tomme <b>Kaldenavne</b>",
+          "<b>Forbedret Mute Player-funktion</b> nu vil <b>Mute</b> forsøge at skelne mellem <b>spillere</b> med samme <b>kaldenavn</b> og prøve at <b>mute</b> lige den du ønskede"
+        ]
+      },
+      {
+        "date": "18/11/2025",
+        "items": [
+          "Tilføjede <b>Zoom ind</b> og <b>Zoom ud</b> mobilknapper, du kan skifte <b>Vis Zoom-skyder</b> til <b>Vis</b> eller <b>Skjul</b> dem i <b>Indstillinger</b>",
+          "<b>Forbedret tilpasning af mobilknappernes position</b>, nu kan du <b>trykke</b> i 3 sekunder på en hvilken som helst knap for at flytte rundt på den",
+          "Tilføjet <b>Nulstil mobilknappers positioner</b> i <b>Indstillinger</b>, hvis du vil nulstille <b>Mobilknapperne</b> til <b>Standard</b> positionerne",
+          "Tilføjet <b>Lås mobilknapper</b> i <b>Indstillinger</b>. Hvis du markerer dette, kan du ikke flytte knapperne",
+          "Fjernet <b>Flip Touch Controls</b> fra <b>Indstillinger</b> (ikke længere nødvendigt, du kan nu flytte knapperne, hvorhen du vil)"
+        ]
+      },
+      {
+        "date": "28/10/2025",
+        "items": [
+          "Tilføjet tilpassede <b>tastaturknapper</b> og <b>museknapper</b> i <b>Indstillinger</b>",
+          "Tilføjet <b>Kameraudjævning</b> og <b>Celleanimationshastighed</b> i <b>Indstillinger</b>"
+        ]
+      },
+      {
+        "date": "07/07/2025",
+        "items": [
+          "Forbedret hvordan <b>Skins</b> indlæses for at gøre det sværere at kopiere dem"
+        ]
+      },
+      {
+        "date": "28/06/2025",
+        "items": [
+          "Forbedrede <b>Identicons</b> for ikke at ændre sig så ofte"
+        ]
+      },
+      {
+        "date": "08/03/2025",
+        "items": [
+          "Tilføjet <b>Afspiller Lyd til/Tænd til-knap</b>, du kan nu <b>Slå lyd fra/Tænd</b> for specifikke <b>afspillere</b> fra <b>Chat</b> ved at trykke på <b>Slå lyd fra/Tænd til-ikonet</b> ud for deres besked eller ved at bruge listen <b>Afspillere med lyd fra</b> i <b>indstillinger</b>"
+        ]
+      },
+      {
+        "date": "03/02/2025",
+        "items": [
+          "Tilføjet <b>Chat Scroll</b>, du kan rulle nu enten ved at trække rullepanelet med <kbd>musen</kbd> eller bruge <kbd>↑ Pil op</kbd> og <kbd>↓ Pil ned</kbd> tasterne"
+        ]
+      },
+      {
+        "date": "11/01/2025",
+        "items": [
+          "Tilføjet <b>PVP-spiltilstand</b> stadig i beta",
+          "Tilføjet afkrydsningsfelt <b>Cellgennemsigtighed</b> i <b>Indstillinger</b>"
+        ]
+      },
+      {
+        "date": "13/10/2024",
+        "items": [
+          "Tilføjede <kbd>F</kbd> og <kbd>V</kbd> nøgler til at zoome ind og ud",
+          "Tilføjet <b>Zoom-skyder</b> for at zoome ind og ud",
+          "Tilføjet afkrydsningsfelt <b>Vis zoomskyder</b> i <b>Indstillinger</b>"
+        ]
+      },
+      {
+        "date": "10/10/2024",
+        "items": [
+          "Tilføjet <b>Ryd chat</b>-knap, så du kan rydde chatten manuelt"
+        ]
+      },
+      {
+        "date": "01/10/2024",
+        "items": [
+          "Tilføjet <b>Identikoner</b> for bedre at identificere venner eller fjender, hver enhed har et specifikt unikt <b>ikon</b>",
+          "Tilføjet afkrydsningsfelt <b>Vis identiteter</b> i <b>Indstillinger</b>",
+          "Fjernede tricks, der gør det nemt at duplikere <b>Nicks</b> eller <b>Skins</b>"
+        ]
+      },
+      {
+        "date": "16/05/2024",
+        "items": [
+          "Rettet <b>AZERTY</b> tastaturtilknytning nu <kbd>W</kbd> og <kbd>Z</kbd> begge <b>Feed</b>",
+          "Ændrede <b>Muti Split</b> til <kbd>C</kbd> i stedet for <kbd>Z</kbd>",
+          "Tilføjet afkrydsningsfelt <b>Deaktiver Touch Controls</b> i <b>Indstillinger</b>"
+        ]
+      },
+      {
+        "date": "15/05/2024",
+        "items": [
+          "Rettede en langvarig fejl i <b>Chat</b>, der forhindrede visning af nogle meddelelser nogle gange",
+          "Du kan nu se <b>Tilskuer</b>s kaldenavne, hvis de har ét sæt",
+          "Nu kan du skubbe <b>virus</b> ved at skubbe din <b>celle</b>s masse ud mod <b>virus</b>",
+          "Justerede <b>AntiSpam</b>-foranstaltninger for at være mere tilgivende i <b>Chat</b>, også genaktiveret <b>Indsættelse</b>-meddelelser",
+          "Tilføjet afkrydsningsfelt <b>Slå fuldskærm til/fra</b> i <b>Indstillinger</b>",
+          "Implementeret <b>AutoRespawn</b>, nu vil du automatisk genstarte uden at skulle trykke på <b>Play</b> igen",
+          "Tilføjet afkrydsningsfelt <b>Slå AutoRespawn til/fra</b> i <b>Indstillinger</b>",
+          "Forbedrede <b>Touch Controls</b> til mobil (tilsat <b>Vis menuknap</b>, <b>Fuldskærmsknap</b>, fast afstand til <b>Split-knap</b>, forhindrer træk i knapper)"
+        ]
+      },
+      {
+        "date": "14/05/2024",
+        "items": [
+          "Opdeling, mens du bruger Touch-kontroller, udstødte en smule masse, denne fejl er nu blevet rettet",
+          "Eject Macro fungerer nu, mens du bruger Touch-kontroller",
+          "Forbedrede berøringsknapper til mobil"
+        ]
+      },
+      {
+        "date": "10/05/2024",
+        "items": [
+          "Tilføjet AntiSpam-foranstaltninger til Chat, deaktiveret Indsæt meddelelser",
+          "Genaktiveret ved hjælp af højreklik på menuer og i chatboks",
+          "Tilføjet mulighed for at <b>vende Touch Controls</b> fra højre side til venstre side i <b>Indstillinger</b>"
+        ]
+      },
+      {
+        "date": "01/05/2024",
+        "items": [
+          "Tilføjet reCaptcha v3 for at forhindre bots i at forbinde <a href=\"https://discord.gg/emupedia-510149138491506688\" target=\"_blank\">(du kan give feedback om Discord, hvis det ikke fungerer korrekt)</a>",
+          "Aktiveret automatisk genopret forbindelse til serveren efter en servergenstart",
+          "Forbedrede berøringsknapper til mobil"
+        ]
+      },
+      {
+        "date": "09/03/2024",
+        "items": [
+          "Tilføjet <b>Kopiér til udklipsholder</b>-knap for <b>Aktuelt valgt hud</b>",
+          "Øget <b>Chatområdestørrelse</b> for at passe til flere beskeder",
+          "Reduceret <b>ventetid</b> for <b>upload hud</b> til 30 sekunder"
+        ]
+      },
+      {
+        "date": "28/02/2024",
+        "items": [
+          "Implementeret <b>Touch Joystick</b> til mobil",
+          "Tilføjet afkrydsningsfelt <b>Touch Joystick</b> i <b>Indstillinger</b>",
+          "Det er ikke længere tilladt at uploade <kbd>gif</kbd> filer, animationen virkede alligevel ikke, kun det første billede blev vist"
+        ]
+      },
+      {
+        "date": "24/02/2024",
+        "items": [
+          "Implementeret <b>Upload skin</b>-funktion"
+        ]
+      },
+      {
+        "date": "20/02/2024",
+        "items": [
+          "Tilføjet til/fra-afkrydsningsfelter for <b>Individuelle museklik</b> i <b>Indstillinger</b>",
+          "Tilføjet brugerdefineret <b>Baggrundsfarve</b>-vælger"
+        ]
+      },
+      {
+        "date": "17/02/2024",
+        "items": [
+          "Tilføjet <b>Dobbelt Split</b>, du kan bruge <b>Double Split</b> ved at trykke på <kbd>X</kbd> eller <kbd>Højreklik</kbd>",
+          "Tilføjet <b>Multi Split Macro</b>, du kan bruge <b>Multi Split Macro</b> ved at trykke <kbd>C</kbd> eller <kbd>Mellemklik</kbd>",
+          "Tilføjet til/fra-afkrydsningsfelt i <b>Indstillinger</b> for <b>Multi Split Macro</b>",
+          "Tilføjet <b>Kaldenavn</b>-vælger",
+          "Tilføjet <b>Skin Name</b>-vælger",
+          "Tilføjet brugerdefineret <b>Cell Name Color</b> vælger",
+          "Tilføjet brugerdefineret <b>cellebaggrundsfarve</b>-vælger",
+          "Tilføjet brugerdefineret <b>Cell Border Color</b>-vælger",
+          "Tilføjet <b>Mørkt tema</b> til menuer"
+        ]
+      },
+      {
+        "date": "16/02/2024",
+        "items": [
+          "Rettede tilfældige baggrundsfarver ved brug af <b>Jelly Physics</b>",
+          "Tilføjet <b>Feedmakro</b>, du kan bruge <b>Feedmakro</b> ved at trykke på <kbd>W</kbd> eller <kbd>venstreklik</kbd> og have afkrydsningsfeltet <b>Feedmakro</b> i <b>Indstillinger</b>",
+          "Tilføjet til/fra-afkrydsningsfelt i <b>Indstillinger</b> for <b>Feedmakro</b>",
+          "Tilføjet <b>Nyheder</b> sektion",
+          "Tilføjet <b>Gameplay</b> sektion",
+          "Implementerede skins, der starter med <kbd>$</kbd>",
+          "Forebyggede syntetiske hændelser genereret af injicerede scripts",
+          "Ikke tilladt alle andre tilpassede klienter"
+        ]
+      },
+      {
+        "date": "13-06-2023",
+        "items": [
+          "Tilføjet 1195 manglende skind"
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,353 @@
+{
+  "meta": {
+    "title": "Agar.io v2.0",
+    "description": "Kot MMO jejte celice, ki so manjše od vas, in naj vas ne pojedo večje"
+  },
+  "chat": {
+    "general": "Splošno",
+    "clan": "Klan",
+    "placeholder": "Za klepet pritisnite enter",
+    "clearTitle": "Počisti klepet",
+    "zoom": "Zoom"
+  },
+  "gallery": {
+    "skins": "Preobleke"
+  },
+  "lobby": {
+    "title": "Agar.io v2.0",
+    "discordSuggestions": "Pridružite se nam na Discordu, če imate predloge",
+    "nickname": "Vzdevek",
+    "skin": "koža",
+    "skinPlaceholder": "Ime kože",
+    "copy": "Kopiraj",
+    "clanName": "Ime klana",
+    "clanPlaceholder": "največ 5 črk",
+    "createClan": "Ustvari klan",
+    "leaveClan": "Zapusti klan",
+    "copyInvite": "Kopiraj povabilo",
+    "gameMode": "Igralni način",
+    "play": "Igraj",
+    "chooseSkin": "Izberite Koža",
+    "uploadSkin": "Naloži kožo",
+    "unban": "Prekliči prepoved",
+    "skinCopied": "URL preobleke kopiran v odložišče!"
+  },
+  "settings": {
+    "language": "Jezik",
+    "mutedPlayers": "Utišani igralci",
+    "mutePlaceholder": "Vnesite vzdevek za izklop zvoka",
+    "mute": "Mute",
+    "keyboardBindings": "Vezave gumbov na tipkovnici",
+    "feed": "Vir:",
+    "split": "Razdeli:",
+    "doubleSplit": "Dvojna delitev:",
+    "multiSplit": "Multi Split:",
+    "zoomIn": "Povečaj:",
+    "zoomOut": "Pomanjšaj:",
+    "minion": "Brezplačna kamera za gledalce / nadzor minionov:",
+    "resetKeys": "Ponastavi na privzete nastavitve",
+    "keyRebindHint": "Kliknite gumb in pritisnite tipko za ponovno vezavo",
+    "mouseBindings": "Vezave gumbov miške",
+    "leftClick": "Levi klik:",
+    "middleClick": "Srednji klik:",
+    "rightClick": "Desni klik:",
+    "resetMouse": "Ponastavi na privzete nastavitve",
+    "mouseHint": "Konfigurirajte, katero dejanje izvede posamezen gumb miške",
+    "toggleFullscreen": "Preklop na celozaslonski način",
+    "darkTheme": "Temna tema",
+    "cameraSmoothing": "Kamera Glajenje",
+    "cellAnimationSpeed": "Hitrost celičnih animacij",
+    "showSkins": "Preobleke celic",
+    "showNames": "Imena celic",
+    "showColor": "Barve celic",
+    "showMass": "Celična masa",
+    "slowMassUpdates": "Počasnejše množične posodobitve",
+    "jellyPhysics": "Cell Jelly Physics",
+    "showIdenticon": "Identikoni celic",
+    "fillSkin": "Barva celic pod kožo",
+    "showTransparent": "Cell Transparentnost",
+    "showChat": "Prikaži klepet",
+    "showMinimap": "Prikaži mini zemljevid",
+    "showPosition": "Prikaži položaj",
+    "showBorder": "Pokaži obrobo zemljevida",
+    "showGrid": "Prikaži mrežo zemljevida",
+    "backgroundSectors": "Pokaži sektorje zemljevida",
+    "moreZoom": "Pomanjšaj Povečaj",
+    "showZoom": "Pokaži drsnik za povečavo",
+    "playSounds": "Zvoki",
+    "feedMacro": "Makro krme",
+    "splitMacro": "Razdeljeni makro",
+    "leftClickToggle": "Levi klik",
+    "middleClickToggle": "Srednji klik",
+    "rightClickToggle": "Desni klik",
+    "disableTouchControls": "Onemogoči upravljanje na dotik",
+    "useJoystick": "Dotaknite se igralne palice",
+    "lockMobileButtons": "Zakleni mobilne gumbe",
+    "resetButtonPositions": "Ponastavite položaje mobilnih gumbov",
+    "useWordFilters": "Cenzura besed",
+    "autoRespawn": "Preklop AutoRespawn"
+  },
+  "colors": {
+    "background": "Ozadje",
+    "name": "Ime",
+    "color": "barva",
+    "border": "Meja"
+  },
+  "mouseActions": {
+    "none": "Noben",
+    "feed": "Krma (izmetna masa)",
+    "split": "Split",
+    "doubleSplit": "Dvojni razdelek",
+    "multiSplit": "Multi Split"
+  },
+  "connecting": {
+    "trying": "Poskus vzpostavitve povezave ...",
+    "discord": "Pridružite se nam na Discordu!",
+    "firewall": "Če se ne morete povezati s strežniki, preverite, ali imate protivirusni program ali požarni zid, ki blokira povezavo.",
+    "multisessionTitle": "Opozorilo o več sejah",
+    "multisessionBody": "Več primerkov igre ni dovoljeno.<br />Zaprite vse druge primerke igre in znova naložite.",
+    "oldBrowserTitle": "Vaš brskalnik je zelo star",
+    "oldBrowserLink": "Kliknite tukaj, če želite posodobiti svoj brskalnik na novejšo različico.",
+    "bannedTitle": "Prepovedani ste 😭",
+    "bannedBody": "Izključeni ste iz igre, ker ste prekršili pravila bodisi z neželeno pošto v klepetu bodisi med nalaganjem preoblek po meri.",
+    "bannedBodyBots": "Izključeni ste iz igre, ker ste prekršili pravila bodisi s pošiljanjem neželene pošte v klepet ali med nalaganjem preoblek po meri ali ker uporabljate robote.",
+    "unbanCode": "Vaša koda za prepoved je"
+  },
+  "errors": {
+    "browserUnsupported": "Vaš brskalnik ne podpira potrebnih funkcij, posodobite brskalnik.",
+    "nicknameRequired": "Vnesite vzdevek za igranje.",
+    "nicknameMinLength": "Vzdevek mora imeti najmanj {min} znakov",
+    "nicknameDisallowed": "Ta vzdevek ni dovoljen. Prosimo izberite drug vzdevek."
+  },
+  "muted": {
+    "empty": "Brez utišanih igralcev",
+    "unmute": "Vklop zvoka"
+  },
+  "keys": {
+    "pressKey": "Pritisnite tipko ..."
+  },
+  "gameplay": {
+    "rulesTitle": "Pravila",
+    "rule1": "Ne nalagajte prepovedanih preoblek po meri, še posebej, če gre za nečiji obraz, lahko dobite prepoved vaše preobleke ali vas izključijo iz igre.",
+    "rule2": "Ne uporabljajte vzdevkov drugih ljudi v klepetu ali kot svoje ime na slabšalni način, lahko vas utišajo ali izključijo iz igre.",
+    "gameplayTitle": "Igranje",
+    "controlsIntro": "Premaknite <kbd>MIŠKO</kbd> / <kbd>DOTIK</kbd> za upravljanje celice<br /><kbd>miškino kolesce</kbd> ali <kbd id=\"key-zoomin-display\">F</kbd> in <kbd id=\"key-zoomout-display\">V</kbd> za povečavo in pomanjšanje<br />Pritisnite <kbd id=\"key-feed-display\">W</kbd> ali <kbd>levi klik</kbd> za izmet mase<br />pritisnite <kbd id=\"key-split-display\">PRESLEDNICO</kbd> za enkratno razdelitev celice<br />pritisnite <kbd id=\"key-doublesplit-display\">X</kbd> ali <kbd>Desni klik</kbd> za dvojno delitev<br />Pritisnite <kbd id=\"key-multisplit-display\">C</kbd> ali <kbd>srednji klik</kbd> za večkratno delitev",
+    "objective": "<b>Cilj:</b> Cilj Agar.io je povečati vašo celico s porabo manjših celic in izogibanjem večjim. Ko boste rasli, boste postajali mogočnejši in boste lahko zaužili še večje celice.",
+    "startingOut": "<b>Začetek:</b> Ko se prvič pridružite igri, boste začeli kot majhna celica. Z miško se premikajte in zbirajte pisane kroglice, raztresene po zemljevidu. Uživanje peletov poveča vašo velikost in maso.",
+    "movement": "<b>Premikanje:</b> Če želite premakniti svojo celico, preprosto premaknite kazalec miške ali uporabite zaslon na dotik, tako da se premaknete v smeri, v katero želite, da gre vaša celica. Vaša celica bo sledila gibanju kazalca miške na zaslonu.",
+    "consumeSmaller": "<b>Porabite manjše celice:</b> Bodite pozorni na manjše celice, ki gostujejo v bližini. Ko boste večji, boste lahko zajeli te manjše celice in tako povečali svojo maso. Približajte se jim strateško, da preprečite, da bi jih pojedle večje celice.",
+    "avoidLarger": "<b>Izogibajte se večjim celicam:</b> Bodite previdni pri večjih celicah, saj vas lahko požrejo, če ste manjši od njih. Pazite na igralce, ki se razdelijo, da bi zajeli manjše celice, in poskušajte predvideti njihova gibanja, da ostanete varni.",
+    "splitting": "<b>Razdelitev:</b> Svojo celico lahko razdelite na več manjših kosov s pritiskom <kbd>PRESLEDNICA</kbd>. Uporabite to taktiko za zajemanje manjših celic ali za pobeg iz večjih. Izvedete lahko tudi več delitev s pritiskom <kbd>X</kbd> ali <kbd>Z</kbd>. Ne pozabite, da ste zaradi ločevanja tudi bolj ranljivi, zato ga uporabite pametno.",
+    "ejectingMass": "<b>Izmet mase:</b> Medtem ko je izmet mase s pritiskom na <kbd>W</kbd> ali <kbd>levi klik</kbd> lahko koristen, prinaša tudi tveganje. Izmeteno maso lahko zaužijejo drugi igralci, vključno s potencialnimi tekmeci. Poleg tega izločanje mase zmanjša celotno velikost vaše celice, zaradi česar ste lahko bolj ranljivi, da vas požrejo večje celice.",
+    "teamPlay": "<b>Ekipna igra (neobvezno):</b> V ekipnem načinu lahko sodelujete z drugimi igralci, da prevladujete na lestvici najboljših. Povežite se s prijatelji ali drugimi igralci, da premagate svoje nasprotnike in skupaj osvojite igro.",
+    "growDominate": "<b>Rasti in prevladuj:</b> Ko zaužijete manjše celice in se izogibate, da bi vas pojedli, bo vaša celica še naprej rasla. Prizadevajte si postati največja celica na strežniku in prevladujte na lestvici najboljših.",
+    "viruses": "<b>Pazite se virusov:</b> Po celotnem zemljevidu boste naleteli na zelene koničaste kroge, znane kot virusi. Izogibajte se trčenju z njimi, saj lahko vašo celico razdelijo na manjše koščke, če ste večji od njih. Hranjenje virusov s svojo maso iz smeri bo povzročilo njihovo razmnoževanje v nasprotni smeri.",
+    "beStrategic": "<b>Bodite strateški:</b> Agar.io je toliko o strategiji kot o spretnostih. Bodite pozorni na svojo okolico, predvidite poteze svojih nasprotnikov in uporabite taktike, kot sta ločevanje in modro združevanje, da prelisičite svoje tekmece.<hr />",
+    "closing": "To je to za osnove Agar.io! Zdaj je čas, da skočite v igro in začnete razvijati svojo celico, da postanete največji in najdominantnejši igralec na strežniku.",
+    "goodLuck": "Vso srečo in lepo se imejte!"
+  },
+  "news": {
+    "title": "Novice",
+    "entries": [
+      {
+        "date": "21. 5. 2026",
+        "items": [
+          "Izboljšana zmogljivost upodabljanja <b>Cell Names</b>, <b>Cell Mass</b> in <b>Cell Jelly Physics</b>, ko so omogočeni v <b>Settings</b>",
+          "Dodane so <b>počasnejše množične posodobitve</b> v <b>nastavitvah</b> z drsnikom za nadzor pogostosti osveževanja množičnih števil (vlečenje drsnika v desno pomeni nižje posodobitve)"
+        ]
+      },
+      {
+        "date": "5. 1. 2026",
+        "items": [
+          "<b>Vzdevki</b> morajo zdaj vsebovati vsaj <b>3 znake</b>",
+          "Dodana izbirna <b>cenzura besed</b> za <b>klepet</b> in <b>vzdevke</b>, privzeto je omogočena, <u>lahko jo onemogočite, vendar se potem ne pritožujte na <a style=\"font-weight: bolder;\" href=\"https://discord.gg/emupedia-510149138491506688\" target=\"_blank\">Discord</a> o strupenosti ljudi</u>",
+          "Popravljen <b>Spectator Free-Camera Toggle</b>, zdaj lahko v načinu Spectator pravilno preklopite s samodejnega spremljanja igralcev na Free-Camera"
+        ]
+      },
+      {
+        "date": "19. 11. 2025",
+        "items": [
+          "<b>Vzdevki</b> so zdaj <b>obvezni</b>, ne morete več imeti praznih <b>vzdevkov</b>",
+          "<b>Izboljšana funkcija utišanja igralca</b> zdaj <b>Utišaj</b> bo poskušal razlikovati med <b>igralci</b> z enakim <b>vzdevkom</b> in poskušal <b>utišati</b> samo tistega, ki ste ga želeli"
+        ]
+      },
+      {
+        "date": "18. 11. 2025",
+        "items": [
+          "Dodana mobilna gumba <b>Povečaj</b> in <b>Pomanjšaj</b>, lahko <b>Pokaži drsnik za povečavo</b> preklopite na <b>Pokaži</b> ali <b>Skrij</b> ju v <b>Nastavitve</b>",
+          "<b>Izboljšana prilagoditev položaja mobilnih gumbov</b>, zdaj lahko <b>tapnete</b> 3 sekunde katerega koli gumba, da ga premikate",
+          "Dodana <b>Ponastavitev položajev mobilnih gumbov</b> v <b>Nastavitve</b>, če želite ponastaviti <b>mobilne gumbe</b> na <b>privzete</b> položaje",
+          "Dodano <b>Zakleni mobilne gumbe</b> v <b>Nastavitve</b>, če to označite, ne morete premikati gumbov",
+          "Odstranjeni <b>Flip Touch Controls</b> iz <b>Settings</b> (ni več potreben, zdaj lahko gumbe premikate, kamor koli želite)"
+        ]
+      },
+      {
+        "date": "28/10/2025",
+        "items": [
+          "Dodani prilagodljivi <b>gumbi tipkovnice</b> in <b>gumbi miške</b> v <b>nastavitvah</b>",
+          "Dodano <b>Glajenje kamere</b> in <b>Hitrost celičnih animacij</b> v <b>Nastavitve</b>"
+        ]
+      },
+      {
+        "date": "7. 7. 2025",
+        "items": [
+          "Izboljšan način nalaganja <b>preoblek</b>, da jih je težje kopirati"
+        ]
+      },
+      {
+        "date": "28/06/2025",
+        "items": [
+          "Izboljšane <b>identikone</b>, da se ne spreminjajo tako pogosto"
+        ]
+      },
+      {
+        "date": "8. 3. 2025",
+        "items": [
+          "Dodan <b>Gumb za izklop/vklop zvoka igralca</b>, zdaj lahko <b>izključite/vklopite zvok</b> določenih <b>igralcev</b> iz <b>klepeta</b> tako, da pritisnete <b>ikono za izklop/vklop zvoka</b> poleg njihovega sporočila ali uporabite seznam <b>Izklopljen zvok igralcev</b> v <b>Nastavitve</b>"
+        ]
+      },
+      {
+        "date": "02.03.2025",
+        "items": [
+          "Dodan <b>Chat Scroll</b>, zdaj se lahko pomikate bodisi z vlečenjem drsnega traku z <kbd>miško</kbd> ali s tipkama <kbd>↑ Puščica gor</kbd> in <kbd>↓ Puščica dol</kbd>"
+        ]
+      },
+      {
+        "date": "11. 1. 2025",
+        "items": [
+          "Dodan <b>Igralni način PVP</b>, ki je še vedno v različici Beta",
+          "Dodano potrditveno polje <b>Prosojnost celice</b> v <b>Nastavitve</b>"
+        ]
+      },
+      {
+        "date": "13. 10. 2024",
+        "items": [
+          "Dodani tipki <kbd>F</kbd> in <kbd>V</kbd> za povečavo in pomanjšanje",
+          "Dodan <b>drsnik za povečavo</b> za povečanje in pomanjšanje",
+          "Dodano potrditveno polje <b>Pokaži drsnik za povečavo</b> v <b>Nastavitve</b>"
+        ]
+      },
+      {
+        "date": "10. 10. 2024",
+        "items": [
+          "Dodan gumb <b>Počisti klepet</b>, tako da lahko ročno počistite klepet"
+        ]
+      },
+      {
+        "date": "01.10.2024",
+        "items": [
+          "Dodani <b>Identikoni</b> za boljše prepoznavanje prijateljev ali sovražnikov, vsaka naprava ima posebno edinstveno <b>Ikono</b>",
+          "Dodano potrditveno polje <b>Pokaži identifikone</b> v <b>Nastavitve</b>",
+          "Odstranjeni triki, ki omogočajo enostavno podvajanje <b>Nikov</b> ali <b>Preoblek</b>"
+        ]
+      },
+      {
+        "date": "16. 5. 2024",
+        "items": [
+          "Popravljeno preslikavo tipkovnice <b>AZERTY</b> zdaj <kbd>W</kbd> in <kbd>Z</kbd> oba <b>Feed</b>",
+          "<b>Muti Split</b> spremenjen v tipko <kbd>C</kbd> namesto <kbd>Z</kbd>",
+          "Dodano potrditveno polje <b>Onemogoči upravljanje na dotik</b> v <b>Nastavitve</b>"
+        ]
+      },
+      {
+        "date": "15. 5. 2024",
+        "items": [
+          "Odpravljena dolgotrajna napaka v <b>klepetu</b>, ki je včasih preprečila prikaz nekaterih sporočil",
+          "Zdaj lahko vidite vzdevke <b>Gledalca</b>, če ima en niz",
+          "Zdaj lahko <b>Viruse</b> potisnete tako, da maso svoje <b>Celice</b> izvržete proti <b>Virusom</b>",
+          "Ukrepi za <b>zaščito od neželene pošte</b> so prilagojeni tako, da so bolj prizanesljivi v <b>klepetu</b>, ponovno omogočeno tudi <b>lepljenje</b> sporočil",
+          "Dodano potrditveno polje <b>Preklopi celozaslonski način</b> v <b>Nastavitve</b>",
+          "Implementirano <b>AutoRespawn</b>, zdaj se boste samodejno ponovno pojavili, ne da bi morali ponovno pritisniti <b>Predvajaj</b>",
+          "Dodano potrditveno polje <b>Toggle AutoRespawn</b> v <b>Settings</b>",
+          "Izboljšani <b>Kontrolniki na dotik</b> za mobilne naprave (dodan <b>Gumb za prikaz menija</b>, <b>Gumb za celozaslonski način</b>, popravljena razdalja <b>Deljenega gumba</b>, preprečevanje vlečenja gumbov)"
+        ]
+      },
+      {
+        "date": "14. 5. 2024",
+        "items": [
+          "Razdelitev med uporabo nadzora na dotik je izvrgla malo mase, ta napaka je zdaj odpravljena",
+          "Eject Macro zdaj deluje med uporabo krmilnikov na dotik",
+          "Izboljšane kontrole na dotik za mobilne naprave"
+        ]
+      },
+      {
+        "date": "10/05/2024",
+        "items": [
+          "Klepetu dodani ukrepi za zaščito pred neželeno pošto, onemogočeno lepljenje sporočil",
+          "Ponovno omogočeno z desnim klikom v menijih in v polju za klepet",
+          "Dodana možnost <b>obračanja kontrolnikov na dotik</b> z desne na levo stran v <b>Nastavitve</b>"
+        ]
+      },
+      {
+        "date": "1. 5. 2024",
+        "items": [
+          "Dodana reCaptcha v3 za preprečevanje povezovanja robotov <a href=\"https://discord.gg/emupedia-510149138491506688\" target=\"_blank\">(lahko pošljete nekaj povratnih informacij o Discordu, če ne deluje pravilno)</a>",
+          "Omogočeno samodejno ponovno povezovanje s strežnikom po ponovnem zagonu strežnika",
+          "Izboljšane kontrole na dotik za mobilne naprave"
+        ]
+      },
+      {
+        "date": "09/03/2024",
+        "items": [
+          "Dodan gumb <b>Kopiraj v odložišče</b> za <b>Trenutno izbrano preobleko</b>",
+          "Povečana <b>Velikost območja za klepet</b> za več sporočil",
+          "Skrajšan <b>čakalni čas</b> za <b>preobleko za nalaganje</b> na 30 sekund"
+        ]
+      },
+      {
+        "date": "28/02/2024",
+        "items": [
+          "Implementirana <b>Touch Joystick</b> za mobilne naprave",
+          "Dodano potrditveno polje <b>Touch Joystick</b> v <b>Nastavitve</b>",
+          "Nalaganje datotek <kbd>gif</kbd> ni več dovoljeno, animacija vseeno ni delovala, prikazan je bil samo prvi okvir"
+        ]
+      },
+      {
+        "date": "24/02/2024",
+        "items": [
+          "Implementirana funkcija <b>Naloži preobleko</b>"
+        ]
+      },
+      {
+        "date": "20/02/2024",
+        "items": [
+          "Dodana preklopna potrditvena polja <b>Posameznih klikov miške</b> v <b>Nastavitve</b>",
+          "Dodan izbirnik <b>barve ozadja</b> po meri"
+        ]
+      },
+      {
+        "date": "17/02/2024",
+        "items": [
+          "Dodan <b>Double Split</b>, lahko uporabite <b>Double Split</b> s pritiskom <kbd>X</kbd> ali <kbd>desnim klikom</kbd>",
+          "Dodan <b>Makro z več delitvami</b>, <b>Makro z več delitvami</b> lahko uporabite s pritiskom <kbd>C</kbd> ali <kbd>srednjim klikom</kbd>",
+          "Dodano preklopno potrditveno polje v <b>Nastavitve</b> za <b>Makro z več delitvami</b>",
+          "Dodan izbirnik <b>vzdevka</b>",
+          "Dodan izbirnik <b>imena preobleke</b>",
+          "Dodan izbirnik <b>barve imena celice</b> po meri",
+          "Dodan izbirnik <b>barve ozadja celice</b> po meri",
+          "Dodan izbirnik <b>barve obrobe celice</b> po meri",
+          "Dodana <b>temna tema</b> za menije"
+        ]
+      },
+      {
+        "date": "16/02/2024",
+        "items": [
+          "Popravljene naključne barve ozadja pri uporabi <b>Jelly Physics</b>",
+          "Dodan <b>Makro vira</b>, <b>Makro vira</b> lahko uporabite tako, da pritisnete <kbd>W</kbd> ali <kbd>levi klik</kbd> in potrdite polje <b>Makro vira</b> v <b>Nastavitve</b>",
+          "Dodano preklopno potrditveno polje v <b>Nastavitve</b> za <b>Makro vira</b>",
+          "Dodan razdelek <b>Novice</b>",
+          "Dodan razdelek <b>Igranje</b>",
+          "Implementirane preobleke, ki se začnejo z <kbd>$</kbd>",
+          "Preprečeni sintetični dogodki, ki jih ustvarijo vstavljeni skripti",
+          "Onemogočeni vsi drugi odjemalci po meri"
+        ]
+      },
+      {
+        "date": "13. 6. 2023",
+        "items": [
+          "Dodanih 1195 manjkajočih preoblek"
+        ]
+      }
+    ]
+  }
+}

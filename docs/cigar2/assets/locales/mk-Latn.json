@@ -1,0 +1,353 @@
+{
+  "meta": {
+    "title": "Agar.io v2.0",
+    "description": "Jadete kletki pomali od vas i nemojte da ve jadat pogolemite, kako MMO"
+  },
+  "chat": {
+    "general": "Opshto",
+    "clan": "Klan",
+    "placeholder": "Pritisnete Enter za da razgovarate",
+    "clearTitle": "Ischistete go razgovorot",
+    "zoom": "Zumirajte"
+  },
+  "gallery": {
+    "skins": "Kozhi"
+  },
+  "lobby": {
+    "title": "Agar.io v2.0",
+    "discordSuggestions": "Pridruzhete ni se na Discord dokolku imate predlozi",
+    "nickname": "Prekar",
+    "skin": "Kozhata",
+    "skinPlaceholder": "Ime na kozhata",
+    "copy": "Kopiraj",
+    "clanName": "Ime na klan",
+    "clanPlaceholder": "5 bukvi maks",
+    "createClan": "Kreiraj klan",
+    "leaveClan": "Napushti go Klanot",
+    "copyInvite": "Kopiraj ja pokanata",
+    "gameMode": "Rezhim na igra",
+    "play": "Igraj",
+    "chooseSkin": "Izberete Kozha",
+    "uploadSkin": "Postavete kozha",
+    "unban": "Otstrani zabrana",
+    "skinCopied": "URL-adresata na kozhata e kopirana vo tablata so isechotsi!"
+  },
+  "settings": {
+    "language": "Jazik",
+    "mutedPlayers": "Isklucheni igrachi",
+    "mutePlaceholder": "Vnesete prekar za da go iskluchite zvukot",
+    "mute": "Iskluchi zvuk",
+    "keyboardBindings": "Vrzuvanje na kopchinjata na tastaturata",
+    "feed": "Napojuvanje:",
+    "split": "Split:",
+    "doubleSplit": "Dvojna podelba:",
+    "multiSplit": "Multi razdeluvanje:",
+    "zoomIn": "Zumirajte:",
+    "zoomOut": "Odzumiraj:",
+    "minion": "Besplatna kamera za gledachi / kontrola na minion:",
+    "resetKeys": "Resetiranje na standardni",
+    "keyRebindHint": "Kliknete na kopche i pritisnete kopche za povtorno povrzuvanje",
+    "mouseBindings": "Vrzuvanje na kopchinjata na gluvcheto",
+    "leftClick": "Lev klik:",
+    "middleClick": "Sreden klik:",
+    "rightClick": "Desen klik:",
+    "resetMouse": "Resetiranje na standardni",
+    "mouseHint": "Konfigurirajte kakva aktsija vrshi sekoe kopche na gluvcheto",
+    "toggleFullscreen": "Vkluchete go tsel ekran",
+    "darkTheme": "Temna tema",
+    "cameraSmoothing": "Izmaznuvanje na kamerata",
+    "cellAnimationSpeed": "Brzina na mobilnata animatsija",
+    "showSkins": "Kletochni kozhi",
+    "showNames": "Iminja na kjelii",
+    "showColor": "Boi na kjeliite",
+    "showMass": "Kletochna masa",
+    "slowMassUpdates": "Pobavni masovni azhuriranja",
+    "jellyPhysics": "Cell Jelly Physics",
+    "showIdenticon": "Identikoni na kjelii",
+    "fillSkin": "Boja na kletkite pod kozhata",
+    "showTransparent": "Transparentnost na kletkite",
+    "showChat": "Prikazhi razgovor",
+    "showMinimap": "Prikazhi minimapa",
+    "showPosition": "Prikazhi pozitsija",
+    "showBorder": "Prikazhi ja granitsata na kartata",
+    "showGrid": "Prikazhi mrezha na karti",
+    "backgroundSectors": "Prikazhi sektori na karti",
+    "moreZoom": "Zumiranje Zgolemuvanje",
+    "showZoom": "Prikazhi go lizgachot za zumiranje",
+    "playSounds": "Zvutsi",
+    "feedMacro": "Nakhranete makro",
+    "splitMacro": "Split makro",
+    "leftClickToggle": "Lev klik",
+    "middleClickToggle": "Sreden klik",
+    "rightClickToggle": "Desen klik",
+    "disableTouchControls": "Onevozmozhete gi kontrolite na dopir",
+    "useJoystick": "Doprete Dzhojstik",
+    "lockMobileButtons": "Zakluchi mobilni kopchinja",
+    "resetButtonPositions": "Resetirajte gi pozitsiite na mobilnite kopchinja",
+    "useWordFilters": "Zborovi tsenzura",
+    "autoRespawn": "Vkluchete go AutoRespawn"
+  },
+  "colors": {
+    "background": "Pozadina",
+    "name": "Ime",
+    "color": "Boja",
+    "border": "Granitsa"
+  },
+  "mouseActions": {
+    "none": "Nikoj",
+    "feed": "Napojuvanje (Isfrli masa)",
+    "split": "Split",
+    "doubleSplit": "Dvoen split",
+    "multiSplit": "Multi Split"
+  },
+  "connecting": {
+    "trying": "Se obiduva da se povrze...",
+    "discord": "Pridruzhete ni se na Discord!",
+    "firewall": "Ako ne mozhete da se povrzete so serverite, proverete dali imate antivirus ili zashtiten dzid shto ja blokira vrskata.",
+    "multisessionTitle": "Predupreduvanje za povekje sesii",
+    "multisessionBody": "Ne se dozvoleni povekje primeri na igri.<br />Zatvorete gi site drugi primeri na igri i vchitajte povtorno.",
+    "oldBrowserTitle": "Vashiot prelistuvach e mnogu star",
+    "oldBrowserLink": "Ve molime kliknete ovde za da go azhurirate vashiot prelistuvach na ponova verzija.",
+    "bannedTitle": "Ti si baniran 😭",
+    "bannedBody": "Vie ste zabraneti od igrata zatoa shto gi prekrshivte pravilata ili spamuvajkji go razgovorot ili dodeka prikachuvavte sopstveni skinovi.",
+    "bannedBodyBots": "Vie ste zabraneti od igrata zatoa shto gi prekrshivte pravilata ili isprakjajkji spam vo razgovorot ili dodeka prikachuvate sopstveni skinovi ili zatoa shto koristite botovi.",
+    "unbanCode": "Vashiot kod za otbaniranje e"
+  },
+  "errors": {
+    "browserUnsupported": "Vashiot prelistuvach ne gi poddrzhuva potrebnite funktsii, ve molime azhurirajte go prelistuvachot.",
+    "nicknameRequired": "Ve molime vnesete prekar za igranje.",
+    "nicknameMinLength": "Na prekarot mu trebaat najmalku {min} znaci",
+    "nicknameDisallowed": "Ovoj prekar ne e dozvolen. Izberete drug prekar."
+  },
+  "muted": {
+    "empty": "Nema isklucheni igrachi",
+    "unmute": "Vkluchi zvuk"
+  },
+  "keys": {
+    "pressKey": "Pritisnete kopche..."
+  },
+  "gameplay": {
+    "rulesTitle": "Pravila",
+    "rule1": "Ne postavuvajte zabraneti sopstveni skinovi, osobeno ako toa e nechie litse, mozhe da dobiete zabrana za vashata kozha ili vie samite da bidete zabraneti od igrata.",
+    "rule2": "Ne koristete tugji prekari vo razgovorot ili kako vasheto ime na pogrden nachin, mozhe da dobiete iskluchuvanje ili zabrana za igranje.",
+    "gameplayTitle": "Igranje",
+    "controlsIntro": "Premestete go vashiot<kbd>Gluvche</kbd>/<kbd>DOPIR</kbd>da ja kontrolirate vashata kjelija<br /><kbd>Trkalo na gluvcheto</kbd>ili<kbd id=\"key-zoomin-display\">F</kbd>i<kbd id=\"key-zoomout-display\">V</kbd>za da zumirate i odzumirate<br />Pritisnete<kbd id=\"key-feed-display\">V</kbd>ili<kbd>Lev klik</kbd>da ja isfrli masata<br />Pritisnete<kbd id=\"key-split-display\">PROSTOR</kbd>za da ja podelite vashata kjelija ednash<br />Pritisnete<kbd id=\"key-doublesplit-display\">X</kbd>ili<kbd>Desen klik</kbd>da se napravi Dvoen Split<br />Pritisnete<kbd id=\"key-multisplit-display\">V</kbd>ili<kbd>Sreden klik</kbd>da se napravi Multi Split",
+    "objective": "<b>Tsel:</b>Tselta na Agar.io e da ja zgolemi vashata kletka so konsumiranje pomali kletki i izbegnuvanje na pogolemi. Kako shto rastete, kje stanete postrashni i kje mozhete da konsumirate ushte pogolemi kletki.",
+    "startingOut": "<b>Zapochnuvanje:</b>Koga prvpat kje se prikluchite na igrata, kje zapochnete kako mala kjelija. Dvizhete se so pomosh na gluvcheto za da gi soberete sharenite peleti rasfrlani niz kartata. Jadenjeto peleti ja zgolemuva vashata golemina i masa.",
+    "movement": "<b>Dvizhenje:</b>Za da ja premestite vashata kjelija, ednostavno go pomestuvate kursorot na gluvcheto ili go koristite ekranot na dopir so dvizhenje vo nasokata vo koja sakate da odi vashata kjelija. Vashata kjelija kje go sledi dvizhenjeto na kursorot na gluvcheto na ekranot.",
+    "consumeSmaller": "<b>Konsumirajte pomali kletki:</b>Vnimavajte na pomalite kjelii koi shetaat vo blizina. Kako shto rastete, kje mozhete da gi progoltate ovie pomali kletki za da ja zgolemite vashata masa. Pristapete im strateshki za da ne ve izedat pogolemi kjelii.",
+    "avoidLarger": "<b>Izbegnuvajte pogolemi kletki:</b>Vnimavajte na pogolemite kletki, bidejkji tie mozhat da ve konsumiraat ako ste pomali od niv. Vnimavajte na igrachite koi se delat za da fatat pomali kjelii i obidete se da gi predvidite nivnite dvizhenja za da ostanat bezbedni.",
+    "splitting": "<b>Razdeluvanje:</b>Mozhete da ja podelite vashata kjelija na povekje pomali parchinja so pritiskanje<kbd>PROSTOR</kbd>. Koristete ja ovaa taktika za da fatite pomali kjelii ili da izbegate od pogolemite. Mozhete isto taka da napravite povekjekratni podelbi so pritiskanje<kbd>X</kbd>ili<kbd>Z</kbd>. Zapomnete, razdeluvanjeto ve pravi i poranlivi, zatoa koristete go pametno.",
+    "ejectingMass": "<b>Masa za isfrlanje:</b>Dodeka ja isfrlate masata so pritiskanje na<kbd>V</kbd>ili<kbd>Lev klik</kbd>mozhe da bide korisno, isto taka doagja so rizitsi. Isfrlenata masa mozhe da ja konsumiraat drugi igrachi, vkluchuvajkji gi i potentsijalnite rivali. Dopolnitelno, isfrlanjeto na masata ja namaluva vkupnata golemina na vashata kjelija, shto mozhe da ve napravi poranlivi na konsumiranje od pogolemi kjelii.",
+    "teamPlay": "<b>Timska igra (optsionalno):</b>Vo timskiot rezhim, mozhete da sorabotuvate so drugi igrachi za da dominirate na tablata so vodachi. Zdruzhete se so prijateli ili drugi igrachi za da gi nadminete vashite protivnitsi i zaedno da ja osvoite igrata.",
+    "growDominate": "<b>Rastete i dominirajte:</b>Kako shto konsumirate pomali kletki i izbegnuvate da bidete jadeni, vashata kletka kje prodolzhi da raste vo golemina. Imajte za tsel da stanete najgolema kjelija na serverot i da dominirate na tablata na vodachi.",
+    "viruses": "<b>Vnimavajte na virusite:</b>Niz kartata, kje naidete na zeleni shilesti krugovi poznati kako virusi. Izbegnuvajte sudir so niv, bidejkji tie mozhat da ja podelat vashata kjelija na pomali parchinja ako ste pogolemi od niv. Khranenjeto na virusite so vashata masa od pravets kje predizvika nivno razmnozhuvanje vo sprotivna nasoka.",
+    "beStrategic": "<b>Bidete strateshki:</b>Agar.io e isto tolku za strategija kolku shto e za veshtina. Obrnete vnimanie na okolinata, predvidete gi potezite na vashite protivnitsi i koristete taktiki kako razdeluvanje i mudro spojuvanje za da gi nadmudrite vashite rivali.<hr />",
+    "closing": "Toa e sè za osnovite na Agar.io! Sega e vreme da skoknete vo igrata i da zapochnete da ja ra��vivate vashata kjelija za da stanete najgolemiot i najdominanten igrach na serverot.",
+    "goodLuck": "Srekjno, i zabavuvaj se!"
+  },
+  "news": {
+    "title": "Vesti",
+    "entries": [
+      {
+        "date": "21.05.2026",
+        "items": [
+          "Podobrena<b>Iminja na kjelii</b>,<b>Kletochna masa</b>i<b>Cell Jelly Physics</b>prikazhuvanje na performansite koga se ovozmozheni vo<b>Postavki</b>",
+          "Dodadeno<b>Pobavni masovni azhuriranja</b>vo<b>Postavki</b>so lizgach za kontrola na toa kolku chesto se osvezhuvaat masovnite broevi (povlekuvanjeto na lizgachot nadesno znachi pomali azhuriranja)"
+        ]
+      },
+      {
+        "date": "01.05.2026",
+        "items": [
+          "<b>Prekari</b>sega treba da bide barem<b>3 karakteri</b>",
+          "Dodadeno optsionalno<b>Zborovi tsenzura</b>za<b>Razgovor</b>i<b>Prekari</b>, standardno e ovozmozheno,<u>mozhete da go onevozmozhite, no potoa ne se zhalete<a style=\"font-weight: bolder;\" href=\"https://discord.gg/emupedia-510149138491506688\" target=\"_blank\">Razdor</a>za lugjeto shto se toksichni</u>",
+          "Popraveno<b>Vkluchuvanje na kamerata od gledachite</b>, sega mozhete pravilno da prefrlite od Avtomatsko sledenje igrachi na Slobodna kamera vo rezhim na gledanje"
+        ]
+      },
+      {
+        "date": "19.11.2025",
+        "items": [
+          "<b>Prekari</b>se sega<b>Zadolzhitelno</b>ne mozhesh da imash prazno<b>Prekari</b>povekje",
+          "<b>Podobrena funktsija za iskluchuvanje na igrachot</b>sega<b>Iskluchi zvuk</b>kje se obide da napravi razlika pomegju<b>Igrachi</b>so istoto<b>Prekar</b>i obidete se da<b>Iskluchi zvuk</b>samo onoj shto go sakashe"
+        ]
+      },
+      {
+        "date": "18.11.2025",
+        "items": [
+          "Dodadeno<b>Zumirajte</b>i<b>Odzumiraj</b>Mobilni kopchinja, mozhete da vkluchite<b>Prikazhi go lizgachot za zumiranje</b>do<b>Prikazhi</b>ili<b>Skrij</b>niv vo<b>Postavki</b>",
+          "<b>Podobreno prilagoduvanje na pozitsijata na kopchinjata za mobilni telefoni</b>, sega mozhesh<b>Doprete</b>za 3 sekundi na koe bilo kopche za da se dvizhi naokolu",
+          "Dodadeno<b>Resetirajte gi pozitsiite na mobilnite kopchinja</b>vo<b>Postavki</b>ako sakate da go resetirate<b>Mobilni kopchinja</b>na<b>Standardno</b>pozitsii",
+          "Dodadeno<b>Zakluchi mobilni kopchinja</b>vo<b>Postavki</b>ako go proverite ova, ne mozhete da gi premestite kopchinjata",
+          "Otstranet<b>Prevrtete gi kontrolite na dopir</b>od<b>Postavki</b>(povekje ne e potrebno, sega mozhete da gi premestuvate kopchinjata kade shto sakate)"
+        ]
+      },
+      {
+        "date": "28.10.2025",
+        "items": [
+          "Dodadeno prisposoblivo<b>Kopchinja za tastatura</b>i<b>Kopchinja na gluvcheto</b>vo<b>Postavki</b>",
+          "Dodadeno<b>Izmaznuvanje na kamerata</b>i<b>Brzina na mobilnata animatsija</b>vo<b>Postavki</b>"
+        ]
+      },
+      {
+        "date": "07.07.2025",
+        "items": [
+          "Podobreno kako<b>Kozhi</b>se vchituvaat za da bide poteshko da se kopiraat"
+        ]
+      },
+      {
+        "date": "28.06.2025",
+        "items": [
+          "Podobrena<b>Identikoni</b>da ne se menuva tolku chesto"
+        ]
+      },
+      {
+        "date": "03.08.2025",
+        "items": [
+          "Dodadeno<b>Kopche za iskluchuvanje/vkluchi zvuk na igrachot</b>mozhesh sega<b>Iskluchi/Vkluchi zvuk</b>spetsifichen<b>Igrachi</b>od<b>Razgovor</b>so pritiskanje na<b>Ikona za iskluchuvanje/vkluchi zvuk</b>do nivnata poraka ili so koristenje na<b>Isklucheni igrachi</b>lista vo<b>Postavki</b>"
+        ]
+      },
+      {
+        "date": "02.03.2025",
+        "items": [
+          "Dodadeno<b>Skroluvajte za razgovor</b>, mozhete da skroluvate sega ili so vlechenje na lentata za lizganje so<kbd>Gluvche</kbd>ili koristenje<kbd>↑ Strelka nagore</kbd>i<kbd>↓ Strelka nadolu</kbd>kluchevi"
+        ]
+      },
+      {
+        "date": "11.01.2025",
+        "items": [
+          "Dodadeno<b>PVP rezhim na igra</b>ushte vo Beta",
+          "Dodadeno<b>Transparentnost na kletkite</b>poleto za izbor vo<b>Postavki</b>"
+        ]
+      },
+      {
+        "date": "13.10.2024",
+        "items": [
+          "Dodadeno<kbd>F</kbd>i<kbd>V</kbd>kopchinja za Zumiranje i odzumiranje",
+          "Dodadeno<b>Lizgach za zumiranje</b>za da zumirate i odzumirate",
+          "Dodadeno<b>Prikazhi go lizgachot za zumiranje</b>poleto za izbor vo<b>Postavki</b>"
+        ]
+      },
+      {
+        "date": "10.10.2024",
+        "items": [
+          "Dodadeno<b>Ischistete go razgovorot</b>kopche, za da mozhete rachno da go ischistite razgovorot"
+        ]
+      },
+      {
+        "date": "10.01.2024",
+        "items": [
+          "Dodadeno<b>Identikoni</b>za podobro da se identifikuvaat prijatelite ili neprijatelite, sekoj ured ima spetsifichen unikaten<b>Ikona</b>",
+          "Dodadeno<b>Prikazhi identikoni</b>poleto za izbor vo<b>Postavki</b>",
+          "Otstraneti trikovi koi ovozmozhuvaat dupliranje<b>Niks</b>ili<b>Kozhi</b>lesno"
+        ]
+      },
+      {
+        "date": "16.05.2024",
+        "items": [
+          "Popraveno<b>AZERTI</b>mapiranje na tastatura sega<kbd>V</kbd>i<kbd>Z</kbd>i dvete<b>Feed</b>",
+          "Promenet<b>Muti Split</b>da kluch<kbd>V</kbd>namesto<kbd>Z</kbd>",
+          "Dodadeno<b>Onevozmozhete gi kontrolite na dopir</b>poleto za izbor vo<b>Postavki</b>"
+        ]
+      },
+      {
+        "date": "15.05.2024",
+        "items": [
+          "Popravena dolgogodishna greshka<b>Razgovor</b>shto sprechuvashe ponekogash da se prikazhuvaat nekoi poraki",
+          "Sega mozhete da vidite<b>Gledach</b>prekari ako imaat eden set",
+          "Sega mozhete da turkate<b>Virusi</b>so isfrlanje na vashiot<b>Kjelija</b>'s masa kon<b>Virusi</b>",
+          "Prilagodeni<b>Antispam</b>merki za da se bide poprostliv vo<b>Razgovor</b>, isto taka povtorno ovozmozheno<b>Lepenje</b>poraki",
+          "Dodadeno<b>Vkluchete go tsel ekran</b>poleto za izbor vo<b>Postavki</b>",
+          "Implementiran<b>AutoRespawn</b>, sega avtomatski kje se reprodutsirate bez da treba da pritisnete<b>Igraj</b>povtorno",
+          "Dodadeno<b>Vkluchete go AutoRespawn</b>poleto za izbor vo<b>Postavki</b>",
+          "Podobrena<b>Doprete Kontroli</b>za mobilen (dodadeno<b>Prikazhi go kopcheto za meni</b>,<b>Kopche na tsel ekran</b>, fiksna<b>Kopche za razdeluvanje</b>rastojanie, sprechi vlechenje kopchinja)"
+        ]
+      },
+      {
+        "date": "14.05.2024",
+        "items": [
+          "Podelbata pri koristenje na kontrolite na dopir isfrli malku masa, ovaa greshka sega e popravena",
+          "Izvadete makro sega raboti dodeka koristite kontroli na dopir",
+          "Podobreni kontroli na dopir za mobilni telefoni"
+        ]
+      },
+      {
+        "date": "10.05.2024",
+        "items": [
+          "Dodadeni merki za antispam vo Chet, onevozmozheno zalepuvanje poraki",
+          "Povtorno ovozmozheno so desen klik na menijata i vo poleto za razgovor",
+          "Dodadena e mozhnost za<b>Prevrtete gi kontrolite na dopir</b>od desnata strana kon levata strana vnatre<b>Postavki</b>"
+        ]
+      },
+      {
+        "date": "05.01.2024",
+        "items": [
+          "Dodadeno e reCaptcha v3 za da se sprechi povrzuvanjeto na botovi<a href=\"https://discord.gg/emupedia-510149138491506688\" target=\"_blank\">(mozhete da dadete povratni informatsii za Discord ako ne raboti pravilno)</a>",
+          "Ovozmozheno avtomatsko povtorno povrzuvanje so serverot po restartiranje na serverot",
+          "Podobreni kontroli na dopir za mobilni telefoni"
+        ]
+      },
+      {
+        "date": "03.09.2024",
+        "items": [
+          "Dodadeno<b>Kopiraj vo tablata so isechotsi</b>kopche za<b>Tekovna izbrana kozha</b>",
+          "Zgolemen<b>Golemina na oblasta za razgovor</b>za da sobere povekje poraki",
+          "Namaleni<b>Vreme na chekanje</b>za<b>Postavete kozha</b>do 30 sekundi"
+        ]
+      },
+      {
+        "date": "28.02.2024",
+        "items": [
+          "Implementiran<b>Doprete Dzhojstik</b>za mobilen",
+          "Dodadeno<b>Doprete Dzhojstik</b>poleto za izbor vo<b>Postavki</b>",
+          "Se prikachuva<kbd>gif</kbd>datotekite povekje ne se dozvoleni, animatsijata i onaka ne funktsionirashe, samo beshe prikazhan prviot kadar"
+        ]
+      },
+      {
+        "date": "24.02.2024",
+        "items": [
+          "Implementiran<b>Postavete kozha</b>karakteristika"
+        ]
+      },
+      {
+        "date": "20.02.2024",
+        "items": [
+          "Dodadeno vkluchuvanje<b>Individualni kliknuvanja na gluvcheto</b>polinja za izbor vo<b>Postavki</b>",
+          "Dodadeno obichaj<b>Boja na pozadinata</b>berach"
+        ]
+      },
+      {
+        "date": "17.02.2024",
+        "items": [
+          "Dodadeno<b>Dvoen split</b>, mozhete da koristite<b>Dvoen split</b>so pritiskanje<kbd>X</kbd>ili<kbd>Desen klik</kbd>",
+          "Dodadeno<b>Multi podelen makro</b>, mozhete da koristite<b>Multi podelen makro</b>so pritiskanje<kbd>V</kbd>ili<kbd>Sreden klik</kbd>",
+          "Dodadeno e poleto za izbor za vkluchuvanje<b>Postavki</b>za<b>Multi podelen makro</b>",
+          "Dodadeno<b>Prekar</b>berach",
+          "Dodadeno<b>Ime na kozhata</b>berach",
+          "Dodadeno obichaj<b>Boja na imeto na kjelijata</b>berach",
+          "Dodadeno obichaj<b>Boja na pozadinata na kjelijata</b>berach",
+          "Dodadeno obichaj<b>Boja na granitsata na kjelijata</b>berach",
+          "Dodadeno<b>Temna tema</b>za menija"
+        ]
+      },
+      {
+        "date": "16.02.2024",
+        "items": [
+          "Popraveni sluchajni boi na pozadinata pri koristenje<b>Zhele fizika</b>",
+          "Dodadeno<b>Nakhranete makro</b>, mozhete da koristite<b>Nakhranete makro</b>so pritiskanje<kbd>V</kbd>ili<kbd>Lev klik</kbd>i imajkji<b>Nakhranete makro</b>oznacheno pole za izbor<b>Postavki</b>",
+          "Dodadeno e poleto za izbor za vkluchuvanje<b>Postavki</b>za<b>Nakhranete makro</b>",
+          "Dodadeno<b>Vesti</b>del",
+          "Dodadeno<b>Igranje</b>del",
+          "Implementirani skinovi koi zapochnuvaat so<kbd>$</kbd>",
+          "Sprecheni sintetichki nastani generirani od injektirani skripti",
+          "Nedozvoleni site drugi sops��veni klienti"
+        ]
+      },
+      {
+        "date": "13.6.2023",
+        "items": [
+          "Dodadeni se 1195 ischeznati kozhi"
+        ]
+      }
+    ]
+  }
+}

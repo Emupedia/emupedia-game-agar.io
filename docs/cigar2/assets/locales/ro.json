@@ -1,0 +1,353 @@
+{
+  "meta": {
+    "title": "Agar.io v2.0",
+    "description": "Mănâncă celule mai mici decât tine și nu te lăsa mâncat de cele mai mari, ca MMO"
+  },
+  "chat": {
+    "general": "general",
+    "clan": "Clan",
+    "placeholder": "Apăsați Enter pentru a conversa",
+    "clearTitle": "Ștergeți chatul",
+    "zoom": "Zoom"
+  },
+  "gallery": {
+    "skins": "Piei"
+  },
+  "lobby": {
+    "title": "Agar.io v2.0",
+    "discordSuggestions": "Alăturați-vă nouă pe Discord dacă aveți sugestii",
+    "nickname": "Pseudonim",
+    "skin": "Pielea",
+    "skinPlaceholder": "Numele pielii",
+    "copy": "Copiere",
+    "clanName": "Numele clanului",
+    "clanPlaceholder": "5 litere max",
+    "createClan": "Creați un clan",
+    "leaveClan": "Lasă Clanul",
+    "copyInvite": "Copiați invitația",
+    "gameMode": "Modul de joc",
+    "play": "Joacă",
+    "chooseSkin": "Alegeți Skin",
+    "uploadSkin": "Încărcați pielea",
+    "unban": "Unban",
+    "skinCopied": "Adresa URL a skinului a fost copiată în Clipboard!"
+  },
+  "settings": {
+    "language": "Limba",
+    "mutedPlayers": "Jucători dezactivați",
+    "mutePlaceholder": "Introduceți porecla pentru a dezactiva sunetul",
+    "mute": "Mut",
+    "keyboardBindings": "Legături pentru butoanele de la tastatură",
+    "feed": "Feed:",
+    "split": "Împărțire:",
+    "doubleSplit": "Split dublu:",
+    "multiSplit": "Multi Split:",
+    "zoomIn": "Măriți:",
+    "zoomOut": "Micșorare:",
+    "minion": "Cameră gratuită pentru spectatori / Control Minion:",
+    "resetKeys": "Resetați la valorile implicite",
+    "keyRebindHint": "Faceți clic pe un buton și apăsați o tastă pentru a relega",
+    "mouseBindings": "Legături pentru butoanele mouse-ului",
+    "leftClick": "Click stânga:",
+    "middleClick": "Click din mijloc:",
+    "rightClick": "Click dreapta:",
+    "resetMouse": "Resetați la valorile implicite",
+    "mouseHint": "Configurați ce acțiune efectuează fiecare buton al mouse-ului",
+    "toggleFullscreen": "Comutați ecranul complet",
+    "darkTheme": "Tema întunecată",
+    "cameraSmoothing": "Netezirea camerei",
+    "cellAnimationSpeed": "Viteza animațiilor celulare",
+    "showSkins": "Piele celulare",
+    "showNames": "Nume de celule",
+    "showColor": "Culorile celulelor",
+    "showMass": "Masa celulară",
+    "slowMassUpdates": "Actualizări în masă mai lente",
+    "jellyPhysics": "Cell Jelly Fizica",
+    "showIdenticon": "Identificarea celulelor",
+    "fillSkin": "Culoarea celulelor sub piele",
+    "showTransparent": "Transparența celulară",
+    "showChat": "Afișează chat",
+    "showMinimap": "Afișați harta minimă",
+    "showPosition": "Arată poziția",
+    "showBorder": "Afișați chenarul hărții",
+    "showGrid": "Afișați grila hărții",
+    "backgroundSectors": "Afișați sectoarele de hărți",
+    "moreZoom": "Micșorează Mărire",
+    "showZoom": "Afișați glisorul de zoom",
+    "playSounds": "Sunete",
+    "feedMacro": "Macro de alimentare",
+    "splitMacro": "Split Macro",
+    "leftClickToggle": "Click stânga",
+    "middleClickToggle": "Click din mijloc",
+    "rightClickToggle": "Faceți clic dreapta",
+    "disableTouchControls": "Dezactivați comenzile tactile",
+    "useJoystick": "Atingeți Joystick",
+    "lockMobileButtons": "Blocați butoanele mobile",
+    "resetButtonPositions": "Resetați pozițiile butoanelor mobile",
+    "useWordFilters": "Cenzura cuvintelor",
+    "autoRespawn": "Comutați AutoRespawn"
+  },
+  "colors": {
+    "background": "Fundal",
+    "name": "Nume",
+    "color": "Culoare",
+    "border": "Frontieră"
+  },
+  "mouseActions": {
+    "none": "Niciuna",
+    "feed": "Alimentare (masa de evacuare)",
+    "split": "Split",
+    "doubleSplit": "Split dublu",
+    "multiSplit": "Multi Split"
+  },
+  "connecting": {
+    "trying": "Încerc să se conecteze...",
+    "discord": "Alăturați-vă nouă pe Discord!",
+    "firewall": "Dacă nu vă puteți conecta la servere, verificați dacă aveți vreun antivirus sau firewall care blochează conexiunea.",
+    "multisessionTitle": "Avertisment pentru mai multe sesiuni",
+    "multisessionBody": "Nu sunt permise mai multe instanțe de joc.<br />Închideți toate celelalte instanțe de joc și reîncărcați.",
+    "oldBrowserTitle": "Browserul tău este foarte vechi",
+    "oldBrowserLink": "Vă rugăm să faceți clic aici pentru a vă actualiza browserul la o versiune mai nouă.",
+    "bannedTitle": "Ești interzis 😭",
+    "bannedBody": "Sunteți exclus din joc deoarece ați încălcat regulile fie prin spam pe chat, fie în timp ce încărcați skinuri personalizate.",
+    "bannedBodyBots": "Sunteți exclus din joc pentru că ați încălcat regulile fie prin spam pe chat, fie în timp ce încărcați skinuri personalizate sau pentru c�� utilizați roboți.",
+    "unbanCode": "Codul dvs. de deblocare este"
+  },
+  "errors": {
+    "browserUnsupported": "Browserul dvs. nu acceptă funcțiile necesare, vă rugăm să actualizați browserul.",
+    "nicknameRequired": "Vă rugăm să introduceți un pseudonim pentru a juca.",
+    "nicknameMinLength": "Porecla necesită cel puțin {min} caractere",
+    "nicknameDisallowed": "Acest pseudonim nu este permis. Vă rugăm să alegeți un alt pseudonim."
+  },
+  "muted": {
+    "empty": "Fără jucători dezactivați",
+    "unmute": "Activați sunetul"
+  },
+  "keys": {
+    "pressKey": "Apăsați o tastă..."
+  },
+  "gameplay": {
+    "rulesTitle": "Reguli",
+    "rule1": "Nu încărcați skin-uri personalizate interzise, mai ales dacă este vorba despre fața cuiva, s-ar putea să vă fie interzis skin-ul sau să vă interziceți din joc.",
+    "rule2": "Nu folosi pseudonimele altor persoane în chat sau ca nume într-un mod derogatoriu, s-ar putea să fii dezactivat sau interzis din joc.",
+    "gameplayTitle": "Gameplay-ul",
+    "controlsIntro": "Mutați <kbd>MOUSE</kbd> / <kbd>TOUCH</kbd> pentru a vă controla celula<br /><kbd></kbd>Rotița mouse-ului<kbd id=\"key-zoomin-display\"> sau </kbd>F<kbd id=\"key-zoomout-display\"> și </kbd>V<br /> pentru a mări și micșora id=\"key-feed-display\">W<kbd id=\"key-feed-display\"> sau </kbd>Clic stânga<kbd> pentru a scoate Masa</kbd>Apăsați <br />SPAȚIU<kbd id=\"key-split-display\"> pentru a vă împărți celula o dată</kbd>Apăsați <br />>Răspuns pentru a face clic pe <kbd id=\"key-doublesplit-display\">Apăsați </kbd>C<kbd> sau </kbd>Clic din mijloc<br /> pentru a face o împărțire multiplă<kbd id=\"key-multisplit-display\"></kbd><kbd></kbd>",
+    "objective": "<b>Obiectiv:</b> Obiectivul Agar.io este de a vă crește celula consumând celule mai mici și evitându-le pe cele mai mari. Pe măsură ce creșteți, veți deveni mai formidabil și veți putea consuma celule și mai mari.",
+    "startingOut": "<b>Începe:</b> când te înscrii pentru prima dată în joc, vei începe ca o celulă mică. Deplasați-vă folosind mouse-ul pentru a colecta granulele colorate împrăștiate pe hartă. Consumul de pelete vă crește dimensiunea și masa.",
+    "movement": "<b>Mișcare:</b> pentru a vă muta celula, mișcați pur și simplu cursorul mouse-ului sau utilizați ecranul tactil deplasându-vă în direcția în care doriți să meargă celula. Celula dumneavoastră va urmări mișcarea cursorului mouse-ului pe ecran.",
+    "consumeSmaller": "<b>Consumați celule mai mici:</b> fiți atenți la celulele mai mici care circulă în apropiere. Pe măsură ce creșteți, veți putea înghiți aceste celule mai mici pentru a vă crește masa. Abordați-le strategic pentru a evita să fiți mâncat de celulele mai mari.",
+    "avoidLarger": "<b>Evitați celulele mai mari:</b> fiți atenți la celulele mai mari, deoarece acestea vă pot consuma dacă sunteți mai mici decât ele. Ai grijă la jucătorii care se despart pentru a captura celule mai mici și încearcă să-și anticipeze mișcările pentru a rămâne în siguranță.",
+    "splitting": "<b>Diviziunea:</b> vă puteți împărți celula în mai multe bucăți mai mici apăsând pe <kbd>SPAȚIU</kbd>. Utilizați această tactică pentru a captura celule mai mici sau pentru a scăpa de cele mai mari. De asemenea, puteți face mai multe împărțiri apăsând <kbd>X</kbd> sau <kbd>Z</kbd>. Amintiți-vă, împărțirea vă face și mai vulnerabil, așa că folosiți-o cu înțelepciune.",
+    "ejectingMass": "<b>Ejectarea masei:</b> în timp ce ejectarea masei prin apăsarea butonului <kbd>W</kbd> sau <kbd>Clic stânga</kbd> poate fi benefică, aceasta implică și riscuri. Masa ejectată poate fi consumată de alți jucători, inclusiv de potențiali rivali. În plus, ejectarea masei reduce dimensiunea totală a celulei, ceea ce vă poate face mai vulnerabil la consumarea celulelor mai mari.",
+    "teamPlay": "<b>Joc în echipă (opțional):</b> în modul echipă, puteți colabora cu alți jucători pentru a domina clasamentul. Fă echipă cu prietenii sau alți jucători pentru a-ți depăși adversarii și a cuceri jocul împreună.",
+    "growDominate": "<b>Crește și domina:</b> pe măsură ce consumi celule mai mici și eviți să fii mâncat, celula ta va continua să crească în dimensiune. Scopul să devină cea mai mare celulă de pe server și să domine clasamentul.",
+    "viruses": "<b>Atenție la viruși:</b> de-a lungul hărții, veți întâlni cercuri verzi înțepătoare cunoscute sub numele de viruși. Evitați să vă ciocniți cu acestea, deoarece îți pot împărți celula în bucăți mai mici dacă ești mai mare decât ei. Hrănirea cu viruși cu masa ta dintr-o direcție îi va face să se înmulțească în direcția opusă.",
+    "beStrategic": "<b>Fii strategic:</b> Agar.io este atât despre strategie, cât și despre abilitate. Fii atent la împrejurimile tale, anticipează mișcările adversarilor tăi și folosește tactici precum împărțirea și fuzionarea cu înțelepciune pentru a-ți depăși rivalii.<hr />",
+    "closing": "Asta este pentru elementele de bază ale Agar.io! Acum este timpul să intri în joc și să începi să-ți crești celula pentru a deveni cel mai mare și mai dominant jucător de pe server.",
+    "goodLuck": "Succes și distracție plăcută!"
+  },
+  "news": {
+    "title": "Știri",
+    "entries": [
+      {
+        "date": "21/05/2026",
+        "items": [
+          "Performanță îmbunătățită de redare a <b>Numele celulelor</b>, <b>Masa celulară</b> și <b>Fizica celulară Jelly</b> atunci când sunt activate în <b>Setări</b>",
+          "S-au adăugat <b>Actualizări de masă mai lente</b> în <b>Setări</b> cu un glisor pentru a controla cât de des se reîmprospătează numerele de masă (trăgerea glisorului spre dreapta înseamnă actualizări mai mici)"
+        ]
+      },
+      {
+        "date": "05/01/2026",
+        "items": [
+          "<b>Poreclele</b> acum trebuie să aibă cel puțin <b>3 caractere</b>",
+          "S-a adăugat opțional <b>Cenzura cuvintelor</b> pentru <b>Chat</b> și <b>Porecle</b>, este activat în mod implicit, <u>o puteți dezactiva, dar apoi nu vă plângeți de <a style=\"font-weight: bolder;\" href=\"https://discord.gg/emupedia-510149138491506688\" target=\"_blank\">Discord</a> despre persoanele toxice</u>",
+          "S-a remediat <b>Spectator Free-Camera Toggle</b>, acum puteți comuta corect de la Urmărire automată a jucătorilor la Free-Camera în modul Spectator"
+        ]
+      },
+      {
+        "date": "19.11.2025",
+        "items": [
+          "<b>Poreclele</b> sunt acum <b>obligatorii</b>, nu mai puteți avea <b>porecle</b> goale",
+          "<b>Funcție îmbunătățită de dezactivare a sunetului</b> acum <b>Mute</b> va încerca să facă diferența între <b>Jucători</b> cu același <b>Porecla</b> și va încerca să <b>Dezactivați</b> doar pe cel dorit"
+        ]
+      },
+      {
+        "date": "18.11.2025",
+        "items": [
+          "Au fost adăugate butoanele <b>Măriți</b> și <b>Măriți</b> pentru mobil, puteți comuta <b>Afișați glisorul de zoom</b> la <b>Afișați</b> sau <b>Ascundeți</b> în <b>Setări</b>",
+          "<b>Personalizare îmbunătățită a poziției butoanelor mobile</b>, acum puteți <b>Atinge</b> timp de 3 secunde pe orice buton pentru a-l muta",
+          "S-a adăugat <b>Resetați pozițiile butoanelor mobile</b> în <b>Setări</b> dacă doriți să resetați <b>butoanele mobile</b> la pozițiile <b>implicite</b>",
+          "S-a adăugat <b>Blocare butoane mobile</b> în <b>Setări</b> dacă bifați acest lucru, nu puteți muta butoanele",
+          "Au fost eliminate <b>Flip Touch Controls</b> din <b>Setări</b> (nu mai sunt necesare, acum puteți muta butoanele oriunde doriți)"
+        ]
+      },
+      {
+        "date": "28.10.2025",
+        "items": [
+          "S-au adăugat <b>Butoane de la tastatură</b> și <b>Butoane de mouse</b> personalizabile în <b>Setări</b>",
+          "S-au adăugat <b>Netezirea camerei</b> și <b>Viteza animațiilor celulare</b> în <b>Setări</b>"
+        ]
+      },
+      {
+        "date": "07.07.2025",
+        "items": [
+          "S-a îmbunătățit modul în care sunt încărcate <b>Skins-urile</b> pentru a îngreuna copierea acestora"
+        ]
+      },
+      {
+        "date": "28.06.2025",
+        "items": [
+          "<b>Identificații</b> îmbunătățite pentru a nu se schimba atât de des"
+        ]
+      },
+      {
+        "date": "08.03.2025",
+        "items": [
+          "S-a adăugat <b>Butonul Dezactivați/Activați sunetul</b>, acum puteți <b>Dezactivați/Activați sunetul</b> anumiți <b>Jucători</b> din <b>Chat</b> apăsând pe <b>pictograma Dezactivați/Activați sunetul</b> de lângă mesajul lor sau folosind lista de <b>Jucători dezactivați</b> din <b>Setări</b>"
+        ]
+      },
+      {
+        "date": "03.02.2025",
+        "items": [
+          "Adăugat <b>Defilare prin chat</b>, puteți derula acum fie trăgând bara de defilare cu <kbd>Mouse-ul</kbd>, fie utilizând tastele <kbd>↑ Săgeată sus</kbd> și <kbd>↓ Săgeată în jos</kbd>"
+        ]
+      },
+      {
+        "date": "11.01.2025",
+        "items": [
+          "S-a adăugat <b>Modul de joc PVP</b> încă în versiune beta",
+          "S-a adăugat caseta de selectare <b>Transparența celulei</b> în <b>Setări</b>"
+        ]
+      },
+      {
+        "date": "13.10.2024",
+        "items": [
+          "S-au adăugat tastele <kbd>F</kbd> și <kbd>V</kbd> pentru a mări și micșora",
+          "S-a adăugat <b>Slider de mărire</b> pentru a mări și micșora",
+          "S-a adăugat caseta de selectare <b>Afișați glisorul de zoom</b> în <b>Setări</b>"
+        ]
+      },
+      {
+        "date": "10.10.2024",
+        "items": [
+          "S-a adăugat butonul <b>Șterge chatul</b>, astfel încât să poți șterge chatul manual"
+        ]
+      },
+      {
+        "date": "01.10.2024",
+        "items": [
+          "Au fost adăugate <b>Identificații</b> pentru a identifica mai bine prietenii sau inamicii, fiecare dispozitiv are o <b>pictogramă</b> unică.",
+          "S-a adăugat caseta de selectare <b>Afișează Identicons</b> în <b>Setări</b>",
+          "S-au eliminat trucurile care permit duplicarea cu ușurinț�� a <b>Nicks</b> sau <b>Skins</b>"
+        ]
+      },
+      {
+        "date": "16/05/2024",
+        "items": [
+          "S-a corectat maparea tastaturii <b>AZERTY</b> acum <kbd>W</kbd> și <kbd>Z</kbd> ambele <b>Feed</b>",
+          "S-a schimbat <b>Muti Split</b> la tasta <kbd>C</kbd> în loc de <kbd>Z</kbd>",
+          "S-a adăugat caseta de selectare <b>Dezactivați comenzile tactile</b> în <b>Setări</b>"
+        ]
+      },
+      {
+        "date": "15/05/2024",
+        "items": [
+          "S-a remediat o eroare de lungă durată în <b>Chat</b> care împiedica afișarea unor mesaje uneori",
+          "Acum puteți vedea poreclele lui <b>Spectator</b> dacă au un set",
+          "Acum puteți împinge <b>Viruși</b> prin ejectarea masei <b>Celulei</b> către <b>Viruși</b>",
+          "Măsurile <b>AntiSpam</b> ajustate pentru a fi mai îngăduitoare în <b>Chat</b>, de asemenea, reactivată <b>Inserarea</b> a mesajelor",
+          "S-a adăugat caseta de selectare <b>Comutare ecran complet</b> în <b>Setări</b>",
+          "Implementat <b>AutoRespawn</b>, acum veți reapari automat fără a fi nevoie să apăsați din nou <b>Play</b>",
+          "S-a adăugat caseta de selectare <b>Activați/dezactivați revenirea automată</b> în <b>Setări</b>",
+          "<b>Comenzile tactile</b> îmbunătățite pentru dispozitive mobile (a fost adăugată <b>Butonul Afișați meniu</b>, <b>Butonul pe ecran complet</b>, distanța fixă a <b>Butonul de împărțire</b>, împiedică tragerea butoanelor)"
+        ]
+      },
+      {
+        "date": "14/05/2024",
+        "items": [
+          "Divizarea în timpul utilizării comenzilor tactile a scos un pic de masă, această eroare a fost acum remediată",
+          "Eject Macro funcționează acum în timp ce utilizați comenzile tactile",
+          "Comenzi tactile îmbunătățite pentru mobil"
+        ]
+      },
+      {
+        "date": "10.05.2024",
+        "items": [
+          "S-au adăugat măsuri AntiSpam la Chat, s-a dezactivat Lipirea mesajelor",
+          "Reactivat folosind clic dreapta pe meniuri și în caseta de chat",
+          "S-a adăugat posibilitatea de a <b>Întoarce comenzile tactile</b> din partea dreaptă în partea stângă în <b>Setări</b>"
+        ]
+      },
+      {
+        "date": "01/05/2024",
+        "items": [
+          "S-a adăugat reCaptcha v3 pentru a preveni conectarea roboților <a href=\"https://discord.gg/emupedia-510149138491506688\" target=\"_blank\">(puteți oferi feedback despre Discord dacă nu funcționează corect)</a>",
+          "Reconectarea automată la server a fost activată după repornirea unui server",
+          "Comenzi tactile îmbunătățite pentru mobil"
+        ]
+      },
+      {
+        "date": "09.03.2024",
+        "items": [
+          "S-a adăugat butonul <b>Copiere în Clipboard</b> pentru <b>Aspectul selectat curent</b>",
+          "S-a mărit <b>Dimensiunea zonei de chat</b> pentru a se potrivi mai multor mesaje",
+          "<b>Timpul de așteptare</b> redus pentru <b>Încărcarea aspectului</b> la 30 de secunde"
+        ]
+      },
+      {
+        "date": "28.02.2024",
+        "items": [
+          "Implementat <b>Touch Joystick</b> pentru mobil",
+          "S-a adăugat caseta de selectare <b>Touch Joystick</b> în <b>Setări</b>",
+          "Încărcarea fișierelor <kbd>gif</kbd> nu mai este permisă, animația oricum nu a funcționat, a fost afișat doar primul cadru"
+        ]
+      },
+      {
+        "date": "24/02/2024",
+        "items": [
+          "Funcția <b>Încărcați skin</b> a fost implementată"
+        ]
+      },
+      {
+        "date": "20/02/2024",
+        "items": [
+          "S-au adăugat casetele de selectare <b>Clicuri individuale de mouse</b> în <b>Setări</b>",
+          "S-a adăugat un selector personalizat de <b>Culoare de fundal</b>"
+        ]
+      },
+      {
+        "date": "17.02.2024",
+        "items": [
+          "Adăugată <b>Dubla Split</b>, puteți utiliza <b>Dubla Split</b> apăsând pe <kbd>X</kbd> sau pe <kbd>Clic dreapta</kbd>",
+          "Adăugată <b>Multi Split Macro</b>, puteți utiliza <b>Multi Split Macro</b> apăsând <kbd>C</kbd> sau <kbd>Clic mijloc</kbd>",
+          "S-a adăugat caseta de selectare de comutare în <b>Setări</b> pentru <b>Macrocomandă multiplă</b>",
+          "S-a adăugat selectorul de <b>porecle</b>",
+          "S-a adăugat selectorul <b>Numele pielii</b>",
+          "S-a adăugat un selector personalizat de <b>Culoare nume de celulă</b>",
+          "S-a adăugat un selector personalizat de <b>Culoare de fundal pentru celule</b>",
+          "S-a adăugat un selector personalizat de <b>Culoare chenar al celulei</b>",
+          "S-a adăugat <b>Temă întunecată</b> pentru meniuri"
+        ]
+      },
+      {
+        "date": "16.02.2024",
+        "items": [
+          "S-au remediat culori aleatorii de fundal când utilizați <b>Jelly Physics</b>",
+          "Adăugată <b>Macrocomandă feed</b>, puteți utiliza <b>Macrocomandă feed</b> apăsând pe <kbd>W</kbd> sau pe <kbd>Clic stânga</kbd> și bifați caseta de selectare <b>Macrocomandă feed</b> în <b>Setări</b>",
+          "S-a adăugat caseta de selectare de comutare în <b>Setări</b> pentru <b>Macrocomandă de feed</b>",
+          "S-a adăugat secțiunea <b>Știri</b>",
+          "S-a adăugat secțiunea <b>Gameplay</b>",
+          "S-au implementat skinuri care încep cu <kbd>$</kbd>",
+          "Evenimente sintetice prevenite generate de scripturi injectate",
+          "S-au interzis toți ceilalți clienți personalizați"
+        ]
+      },
+      {
+        "date": "13.06.2023",
+        "items": [
+          "S-au adăugat 1195 de skinuri lipsă"
+        ]
+      }
+    ]
+  }
+}

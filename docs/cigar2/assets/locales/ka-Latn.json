@@ -1,0 +1,353 @@
+{
+  "meta": {
+    "title": "Agar.io v2.0",
+    "description": "miirtvit tkvenze patara ujredebi da nu shechamt ufro didebs, rogorts MMO"
+  },
+  "chat": {
+    "general": "generali",
+    "clan": "klani",
+    "placeholder": "daachiret Enter chatistvis",
+    "clearTitle": "chatis gasuftaveba",
+    "zoom": "masshtabireba"
+  },
+  "gallery": {
+    "skins": "tqavi"
+  },
+  "lobby": {
+    "title": "Agar.io v2.0",
+    "discordSuggestions": "shemogviertdit Discord-ze, tu gakvt shemotavazebebi",
+    "nickname": "metsakheli",
+    "skin": "kani",
+    "skinPlaceholder": "kanis sakheli",
+    "copy": "kopireba",
+    "clanName": "klanis sakheli",
+    "clanPlaceholder": "maksimum 5 aso",
+    "createClan": "shekmenit klani",
+    "leaveClan": "datove klani",
+    "copyInvite": "daakopiret motsveva",
+    "gameMode": "tamashis rezhimi",
+    "play": "itamashet",
+    "chooseSkin": "airchiet kani",
+    "uploadSkin": "atvirtet kani",
+    "unban": "gaukmeba",
+    "skinCopied": "kanis URL kopirebulia bufershi!"
+  },
+  "settings": {
+    "language": "ena",
+    "mutedPlayers": "dadumebuli motamasheebi",
+    "mutePlaceholder": "sheiqvanet metsakheli dasadumeblad",
+    "mute": "dadumeba",
+    "keyboardBindings": "klaviaturis ghilakebis sakindzebi",
+    "feed": "arkhi:",
+    "split": "gaqofa:",
+    "doubleSplit": "ormagi gaqofa:",
+    "multiSplit": "mravaljeradi gaqofa:",
+    "zoomIn": "masshtabireba:",
+    "zoomOut": "masshtabireba:",
+    "minion": "ufaso maqureblis kamera / Minion Control:",
+    "resetKeys": "gadatvirtet naguliskhmevad",
+    "keyRebindHint": "daatskapunet ghilaks da daachiret ghilaks khelakhla dasakavshireblad",
+    "mouseBindings": "mausis ghilakebis shekvra",
+    "leftClick": "martskhena datskapuneba:",
+    "middleClick": "shua datskapuneba:",
+    "rightClick": "daatskapunet marjvena ghilakit:",
+    "resetMouse": "gadatvirtet naguliskhmevad",
+    "mouseHint": "daakonfiguriret ra mokmedebas asrulebs mausis titoeuli ghilaki",
+    "toggleFullscreen": "sruli ekranis gadartva",
+    "darkTheme": "muki tema",
+    "cameraSmoothing": "kameris gluvi",
+    "cellAnimationSpeed": "ujredis animatsiis sichkare",
+    "showSkins": "ujredis tqavi",
+    "showNames": "ujredebis sakhelebi",
+    "showColor": "ujredis ferebi",
+    "showMass": "ujredis masa",
+    "slowMassUpdates": "neli masobrivi ganakhlebebi",
+    "jellyPhysics": "ujredis zhele fizika",
+    "showIdenticon": "ujredis identikonebi",
+    "fillSkin": "ujredis feri kanis kvesh",
+    "showTransparent": "ujredis gamchvirvaloba",
+    "showChat": "chetis chveneba",
+    "showMinimap": "minimapis chveneba",
+    "showPosition": "pozitsiis chveneba",
+    "showBorder": "rukis sazghvris chveneba",
+    "showGrid": "rukis badis chveneba",
+    "backgroundSectors": "rukis sektorebis chveneba",
+    "moreZoom": "masshtabireba gazrda",
+    "showZoom": "Zoom Slider-is chveneba",
+    "playSounds": "khmebi",
+    "feedMacro": "shesanakhi makro",
+    "splitMacro": "makro gaqofa",
+    "leftClickToggle": "martskhena datskapunebit",
+    "middleClickToggle": "shua datskapuneba",
+    "rightClickToggle": "daatskapunet marjvena ghilakit",
+    "disableTouchControls": "gamortet sensoruli kontroli",
+    "useJoystick": "sheekhet joistiks",
+    "lockMobileButtons": "mobiluri ghilakebis chaketva",
+    "resetButtonPositions": "mobiluri ghilakebis pozitsiebis gadatvirtva",
+    "useWordFilters": "sitqvebis tsenzura",
+    "autoRespawn": "AutoRespawn-is gadartva"
+  },
+  "colors": {
+    "background": "foni",
+    "name": "sakheli",
+    "color": "feri",
+    "border": "sazghvari"
+  },
+  "mouseActions": {
+    "none": "artserti",
+    "feed": "arkhi (masis amogheba)",
+    "split": "gaqofa",
+    "doubleSplit": "ormagi gaqofa",
+    "multiSplit": "mravaljeradi gaqofa"
+  },
+  "connecting": {
+    "trying": "dakavshirebis mtsdeloba...",
+    "discord": "shemogviertdit Discord-ze!",
+    "firewall": "tu serverebtan dakavshireba ver kherkhdeba, sheamotsmet, gakvt tu ara raime antivirusi an bukhari, romelits blokavs kavshirs.",
+    "multisessionTitle": "mravalsesiis gafrtkhileba",
+    "multisessionBody": "tamashis mravali magaliti daushvebelia.<br />dakhuret qvela skhva tamashis magaliti da gadatvirtet.",
+    "oldBrowserTitle": "tkveni brauzeri dzalian dzvelia",
+    "oldBrowserLink": "gtkhovt, daatskapunot ak, rata ganaakhlot tkveni brauzeri ufro akhal versiaze.",
+    "bannedTitle": "akrdzaluli khar 😭",
+    "bannedBody": "tkven akrdzaluli khart tamashshi, radgan daarghviet tsesebi an chatis spamis gamokveqnebisas, an morgebuli skinebis atvirtvisas.",
+    "bannedBodyBots": "tkven akrdzaluli khart tamashshi, radgan daarghviet tsesebi an chatis spamit, an morgebuli skinebis atvirtvisas, an imitom, rom iqenebt botebs.",
+    "unbanCode": "tkveni akrdzalvis kodi aris"
+  },
+  "errors": {
+    "browserUnsupported": "tkvens brauzers ar akvs sachiro funktsiebis mkhardachera, gtkhovt, ganaakhlot tkveni brauzeri.",
+    "nicknameRequired": "gtkhovt, sheiqvanot metsakheli satamashod.",
+    "nicknameMinLength": "metsakhels minimum {min} simbolo schirdeba",
+    "nicknameDisallowed": "es metsakheli daushvebelia. gtkhovt, airchiot skhva metsakheli."
+  },
+  "muted": {
+    "empty": "ar aris dadumebuli motamasheebi",
+    "unmute": "dadumebis mokhsna"
+  },
+  "keys": {
+    "pressKey": "daachiret ghilaks..."
+  },
+  "gameplay": {
+    "rulesTitle": "tsesebi",
+    "rule1": "ar atvirtot akrdzaluli morgebuli skinebi, mit umetes, tu es vighatsis sakhea, shesadzloa tkveni kani aikrdzalos an tavad aikrdzalos tamashi.",
+    "rule2": "nu gamoiqenebt skhva adamianebis metsakhelebs chatshi an tkveni sakhelis damamtsireblad, sheidzleba dadumdet an tamashshi akrdzalot.",
+    "gameplayTitle": "geimplei",
+    "controlsIntro": "gadaaadgilet tkveni <kbd>mausi</kbd> / <kbd>TOUCH</kbd>, rata martot tkveni ujredi<br /><kbd></kbd>mausis borbali<kbd id=\"key-zoomin-display\"> an </kbd>F<kbd id=\"key-zoomout-display\"> da </kbd>V-ze. <br />W<kbd id=\"key-feed-display\"> an </kbd>martskhniv datskapunebit<kbd> masis amosaghebad</kbd>daachiret <br />SPACE<kbd id=\"key-split-display\"> tkveni ujredis ertkhel gasaqofad</kbd>daachiret <br />daatskapunet marjvena ghilakit<kbd id=\"key-doublesplit-display\"></kbd>daachiret <kbd>C</kbd> an <br />shua datskapuneba<kbd id=\"key-multisplit-display\"> mravaljeradi gaqofis gasaketeblad</kbd><kbd></kbd>",
+    "objective": "<b>mizani:</b> Agar.io-s mizania gaizardos tkveni ujredi patara ujredebis mokhmarebit da ufro didi ujredebis tavidan atsilebit. rotsa izrdebi, ufro dzlieri gakhdebi da shedzleb kidev ufro didi ujredebis mokhmarebas.",
+    "startingOut": "<b>datsqeba:</b> rodesats pirvelad sheuertdebit tamashs, daitsqebt rogorts patara ujredi. imodzravet mausis gamoqenebit rukaze mimofantuli feradi martsvlebis shesagroveblad. martsvlebis chama zrdis tkvens zomas da masas.",
+    "movement": "<b>modzraoba:</b> tkveni ujredis gadasatanad, tkven ubralod gadaitanet mausis kursori an gamoiqenet tkveni sensoruli ekrani im mimartulebit gadaadgilebit, sadats gsurt tkveni ujredi tsavides. tkveni ujredi mihqveba mausis kursoris modzraobas ekranze.",
+    "consumeSmaller": "<b>moikhmaret patara ujredebi:</b> tvali adevnet akhlomakhlo roumingis patara ujredebs. rats ufro didi gakhdebit, tkven shedzlebt am patara ujredebis gadaqlapvas tkveni masis gasazrdelad. miuakhlovdit mat strategiulad, rata ar shechamon ufro didi ujredebi.",
+    "avoidLarger": "<b>moeridet ufro did ujredebs:</b> frtkhilad iqavit ufro didi ujredebis mimart, radgan mat sheudzliat mogchamon, tu matze patara khar. gaufrtkhildit motamasheebs, romlebits iqofa patara ujredebis dasacherad da sheetsadet tsinastsar gansazghvrot mati modzraobebi, rata daitsvan usafrtkhod.",
+    "splitting": "<b>gaqofa:</b> shegidzliat daqot tkveni ujredi ramdenime patara natsilad <kbd>SPACE</kbd> dacherit. gamoiqenet es taktika patara ujredebis dasacherad an ufro didi ujredebisgan tavis dasaghtsevad. tkven aseve shegidzliat gaaketot ramdenime gaqofa <kbd>X</kbd> an <kbd>Z</kbd> dacherit. daimakhsovre, gaqofa ufro dautsvels gkhdis, amitom gonivrulad gamoiqene.",
+    "ejectingMass": "<b>masis amogheba:</b> rodesats masis amogheba <kbd>W</kbd> an <kbd>martskhniv datskapunebit</kbd> dacherit sheidzleba momgebiani iqos, mas aseve akvs riskebi. amogdebuli masa sheidzleba mokhmardes skhva motamasheebs, mat shoris potentsiur konkurentebs. garda amisa, masis gamodevna amtsirebs tkveni ujredis saerto zomas, ramats sheidzleba gakhados ufro dautsveli ufro didi ujre���ebis mier mokhmarebis mimart.",
+    "teamPlay": "<b>gunduri tamashi (arasavaldebulo):</b> gundur rezhimshi, shegidzliat itanamshromlot skhva motamasheebtan liderbordis dominirebistvis. gaertiandit megobrebtan an skhva motamasheebtan, rata ajobot oponentebs da ertad daipqrot tamashi.",
+    "growDominate": "<b>izrdet da dominirdet:</b> rogorts tkven moikhmart patara ujredebs da tavs aridebt chamas, tkveni ujredi gaagrdzelebs zomit zrdas. sheetsadet gakhdet qvelaze didi ujredi serverze da dominirdet liderbortze.",
+    "viruses": "<b>ufrtkhildit virusebs:</b> rukaze, tkven shekhvdebit mtsvane tsvetian tsreebs, romlebits tsnobilia rogorts virusebi. moeridet mattan shejakhebas, radgan mat sheudzliat tkveni ujredis daqofa patara nachrebad, tu tkven matze didi khart. virusebis tkveni masis mimartulebidan gamokveba gamoitsvevs mat sapirispiro mimartulebit gamravlebas.",
+    "beStrategic": "<b>iqavi strategiuli:</b> Agar.io iseve ekheba strategias, rogorts unars. quradgheba miaktsiet tkvens garemotsvas, moitminet tkveni motsinaaghmdegis svlebi da gamoiqenet iseti taktika, rogoritsaa gaqofa da gaertianeba gonivrulad, rata ajobot konkurentebs.<hr />",
+    "closing": "es aris Agar.io-s safudzvlebistvis! akhla droa gadakhvidet tamashshi da daitsqot tkveni ujredis gazrda, rata gakhdet qvelaze didi da dominanturi motamashe serverze.",
+    "goodLuck": "tsarmatebebs gisurvebt da gaertet!"
+  },
+  "news": {
+    "title": "siakhleebi",
+    "entries": [
+      {
+        "date": "21/05/2026",
+        "items": [
+          "gaumjobesebuli <b>ujredebis sakhelebi</b>, <b>ujredis masa</b> da <b>Cell Jelly Physics</b> renderis shesruleba, rodesats isini chartulia <b>parametrebshi</b>",
+          "damatebulia <b>ufro neli masobrivi ganakhlebebi</b> <b>parametrebshi</b> slaiderit, rata akontrolot ra sikhshirit ganakhldeba ritskhvebi (slaideris marjvniv gadatseva nishnavs dabal ganakhlebebs)"
+        ]
+      },
+      {
+        "date": "05/01/2026",
+        "items": [
+          "<b>metsakhelebi</b> akhla unda iqos minimum <b>3 simbolo</b>",
+          "damatebulia arasavaldebulo <b>Words Censorship</b> <b>Chat</b> da <b>Nicknames</b>-istvis, is chartulia naguliskhmevad, <u>shegidzliat gamortot, magram shemdeg ar ichivlot <a style=\"font-weight: bolder;\" href=\"https://discord.gg/emupedia-510149138491506688\" target=\"_blank\">utankhmoeba</a> adamianebis toksikurobis shesakheb</u>",
+          "dafiksirda <b>maqureblis tavisufali kameris gadartva</b>, akhla tkven shegidzliat stsorad gadartot motamasheebis avtomaturi tvalquris devneba ufaso kameraze maqureblis rezhimshi"
+        ]
+      },
+      {
+        "date": "19/11/2025",
+        "items": [
+          "<b>metsakhelebi</b> akhla <b>autsilebelia</b> tkven aghar shegidzliat tsarieli <b>metsakhelebi</b> gkondet",
+          "<b>dadumebuli motamashis gaumjobesebuli funktsia</b> akhla <b>dadumeba</b> sheetsdeba ganaskhvavos <b>motamasheebs</b> igive <b>zedmetsakhelit</b> da sheetsdeba <b>dadumeba</b> mkholod is, vints gsurdat"
+        ]
+      },
+      {
+        "date": "18/11/2025",
+        "items": [
+          "damatebulia <b>gadidebis</b> da <b>gadidebis</b> mobiluri ghilakebi, shegidzliat gadartot <b>zum slaideris chveneba</b> <b>chveneba</b> an <b>damalva</b> <b>parametrebshi</b>",
+          "<b>mobiluri ghilakebis pozitsiis gaumjobesebuli morgeba</b>, akhla shegidzliat <b>sheekhet</b> 3 tsamis ganmavlobashi nebismier ghilakze mis gadasaadgileblad",
+          "damatebulia <b>mobiluri ghilakebis pozitsiebis gadaqeneba</b> <b>parametrebshi</b> tu gsurt <b>mobiluri ghilakebis</b> gadaqeneba <b>naguliskhmev</b> pozitsiebze",
+          "damatebulia <b>mobilis chaketvis ghilakebi</b> <b>parametrebshi</b>, tu amas amotsmebt, ghilakebis gadaadgileba sheudzlebelia",
+          "tsashlilia <b>shekhebis martvis ghilakebi</b> <b>parametrebidan</b> (aghar aris sachiro, akhla shegidzliat gadaitanot ghilakebi sadats gindat)"
+        ]
+      },
+      {
+        "date": "28/10/2025",
+        "items": [
+          "damatebulia regulirebadi <b>klaviaturis ghilakebi</b> da <b>mausis ghilakebi</b> <b>parametrebshi</b>",
+          "damatebulia <b>kameris gluvi</b> da <b>ujredis animatsiis sichkare</b> <b>parametrebshi</b>"
+        ]
+      },
+      {
+        "date": "07/07/2025",
+        "items": [
+          "gaumjobesebulia <b>Skins</b> chatvirtvis metodi, rata gartuldes mati kopireba"
+        ]
+      },
+      {
+        "date": "28/06/2025",
+        "items": [
+          "gaumjobesebuli <b>identikebi</b> ise khshirad ar itsvleba"
+        ]
+      },
+      {
+        "date": "08/03/2025",
+        "items": [
+          "damatebulia <b>motamashis dadumebis/dadumebis ghilaki</b>, akhla shegidzliat <b>dadumeba/dadumebis mokhsna</b> konkretuli <b>motamasheebis</b> <b>chatidan</b>, mati shetqobinebis gverdit <b>dadumebis/mokhsnis khatulaze</b> dacherit an <b>dadumebuli motamasheebis</b> siis gamoqenebit <b></b>"
+        ]
+      },
+      {
+        "date": "03/02/2025",
+        "items": [
+          "damatebulia <b>chetis gadakhveva</b>. akhla shegidzliat gadakhvidet gadakhvevis zolis gadaadgilebit <kbd>mausi</kbd> an <kbd>↑ isris zemot</kbd> da <kbd>↓ isris kvemot</kbd> gamoqenebit"
+        ]
+      },
+      {
+        "date": "11/01/2025",
+        "items": [
+          "damatebulia <b>PVP tamashis rezhimi</b> jer kidev beta rezhimshi",
+          "damatebulia <b>ujredis gamchvirvaloba</b> mosanishni veli <b>parametrebshi</b>"
+        ]
+      },
+      {
+        "date": "13/10/2024",
+        "items": [
+          "damatebulia <kbd>F</kbd> da <kbd>V</kbd> klavishebi masshtabireba da shemtsireba",
+          "damatebulia <b>gadidebis slaideri</b> masshtabirebaze da shemtsirebaze",
+          "damatebulia <b>zoom slaideris chveneba</b> mosanishni veli <b>parametrebshi</b>"
+        ]
+      },
+      {
+        "date": "10/10/2024",
+        "items": [
+          "damatebulia <b>Clear Chat</b> ghilaki, ase rom tkven shegidzliat khelit gaasuftavot chati"
+        ]
+      },
+      {
+        "date": "01/10/2024",
+        "items": [
+          "damatebulia <b>identikonebi</b> megobrebis an mtrebis uket identifitsirebistvis, titoeul motsqobilobas akvs konkretuli unikaluri <b>khati</b>",
+          "damatebulia <b>identikonebis chveneba</b> mosanishni veli <b>parametrebshi</b>",
+          "tsashlilia khrikebi, romlebits sashualebas gadzlevt martivad gaaketot <b>Nicks</b> an <b>Skins</b>"
+        ]
+      },
+      {
+        "date": "16/05/2024",
+        "items": [
+          "daafiksira <b>AZERTY</b> klaviaturis rukebis shedgena akhla <kbd>W</kbd> da <kbd>Z</kbd> orive <b>arkhi</b>",
+          "sheitsvala <b>Muti Split</b> klavishze <kbd>C</kbd> <kbd>Z</kbd>-is natsvlad",
+          "damatebulia <b>shekhebis martvis sashualebebis gamortva</b> mosanishni veli <b>parametrebshi</b>"
+        ]
+      },
+      {
+        "date": "15/05/2024",
+        "items": [
+          "gamostsorda <b>Chat</b>-is didi khnis kharvezi, romelits khels ushlida zogierti shetqobinebis chvenebas khandakhan",
+          "akhla shegidzliat nakhot <b>maqureblis</b> metsakhelebi, tu mat akvt erti nakrebi",
+          "akhla tkven shegidzliat daaqenot <b>virusebi</b> tkveni <b>ujredis</b> masis <b>virusebis</b> amogdebit.",
+          "daregulirda <b>AntiSpam</b> zomebi <b>chatshi</b> ufro mimteveblobistvis, aseve khelakhla chartulia shetqobinebebis <b>chasma</b>",
+          "damatebulia <b>srul ekranze gadartva</b> mosanishni veli <b>parametrebshi</b>",
+          "gankhortsielda <b>AutoRespawn</b>, akhla tkven avtomaturad ganmeorebit ganakhldebit <b>Play</b>-is khelakhla dacheris sachiroebis gareshe",
+          "damatebulia <b>avtomaturi gamokhmaurebis gadartva</b> mosanishni veli <b>parametrebshi</b>",
+          "gaumjobesebuli <b>sensoruli kontroli</b> mobiluristvis (damatebulia <b>meniu ghilakis chveneba</b>, <b>srulekraniani ghilaki</b>, fiksirebuli <b>ghilakebis gaqofis</b> mandzili, ghilakebis gadatanis tavidan atsileba)"
+        ]
+      },
+      {
+        "date": "14/05/2024",
+        "items": [
+          "sensoruli kontrolis gamoqenebisas gaqofam tsota masa amoigho, es kharvezi akhla gamostsorebulia",
+          "Eject Macro akhla mushaobs sensoruli kontrolis gamoqenebisas",
+          "gaumjobesebuli sensoruli kontroli mobiluristvis"
+        ]
+      },
+      {
+        "date": "10/05/2024",
+        "items": [
+          "damatebulia antispamis zomebi chatshi, gamortulia shetqobinebebis chasma",
+          "khelakhla chartulia menius marjvena ghilakit da chatis qutshi",
+          "damatebulia <b>shekhebit martvis sashualebebis</b> gadabrunebis shesadzlebloba marjvena mkhridan martskhena mkhares <b>parametrebshi</b>"
+        ]
+      },
+      {
+        "date": "01/05/2024",
+        "items": [
+          "damatebulia reCaptcha v3 botebis dakavshirebis tavidan asatsileblad <a href=\"https://discord.gg/emupedia-510149138491506688\" target=\"_blank\">(shegidzliat gamokhmaurot Discord-ze, tu is gamartulad ar mushaobs)</a>",
+          "chartulia servertan avtomaturi khelakhla dakavshireba serveris gadatvirtvis shemdeg",
+          "gaumjobesebuli sensoruli kontroli mobiluristvis"
+        ]
+      },
+      {
+        "date": "09/03/2024",
+        "items": [
+          "damatebulia <b>kopireba bufershi</b> <b>amzhamindeli archeuli kanistvis</b>",
+          "gaizarda <b>chetis arealis zoma</b> meti shetqobinebebis mosatsqobad",
+          "<b>lodinis dro</b> <b>Skin-is atvirtvistvis</b> shemtsirda 30 tsamamde"
+        ]
+      },
+      {
+        "date": "28/02/2024",
+        "items": [
+          "danergili <b>Touch Joystick</b> mobiluristvis",
+          "damatebulia <b>shekhebis joistikis</b> mosanishni veli <b>parametrebshi</b>",
+          "<kbd>gif</kbd> failebis atvirtva aghar aris dashvebuli, animatsiam maints ar imushava, mkholod pirveli kadri iqo nachvenebi"
+        ]
+      },
+      {
+        "date": "24/02/2024",
+        "items": [
+          "gankhortsielebuli funktsia <b>Upload Skin</b>"
+        ]
+      },
+      {
+        "date": "20/02/2024",
+        "items": [
+          "damatebulia gadartvis <b>mausis individualuri datskapunebebi</b> mosanishni velebi <b>parametrebshi</b>",
+          "damatebulia morgebuli <b>fonis feris</b> amomrchevi"
+        ]
+      },
+      {
+        "date": "17/02/2024",
+        "items": [
+          "damatebulia <b>Double Split</b>, shegidzliat gamoiqenot <b>Double Split</b> <kbd>X</kbd> an <kbd>marjvena datskapunebit</kbd> dacherit",
+          "damatebulia <b>Multi Split Macro</b>, shegidzliat gamoiqenot <b>Multi Split Macro</b> <kbd>C</kbd> an <kbd>shua datskapuneba</kbd> dacherit",
+          "damatebulia gadartvis veli <b>parametrebshi</b> <b>Multi Split Macro</b>-istvis",
+          "damatebulia <b>metsakheli</b> amomrchevi",
+          "damatebulia <b>Skin Name</b> amomrchevi",
+          "damatebulia morgebuli <b>ujredis sakhelis feri</b> amomrchevi",
+          "damatebulia morgebuli <b>ujredis fonis feris</b> amomrchevi",
+          "damatebulia morgebuli <b>ujris konturis feri</b> amomrchevi",
+          "meniustvis damatebulia <b>muki tema</b>"
+        ]
+      },
+      {
+        "date": "16/02/2024",
+        "items": [
+          "dafiksirda fonis shemtkhveviti ferebi <b>Jelly Physics</b>-is gamoqenebisas",
+          "damatebulia <b>Feed Macro</b>, shegidzliat gamoiqenot <b>Feed Macro</b> <kbd>W</kbd> an <kbd>martskhniv datskapunebit</kbd> dacherit da <b>Feed Macro</b> monishnuli velit <b>parametrebshi</b>",
+          "damatebulia gadartvis veli <b>parametrebshi</b> <b>arkhis makro</b>-stvis",
+          "damatebulia <b>akhali</b> ganqofileba",
+          "damatebulia <b>Gameplay</b> ganqofileba",
+          "danergili skinebi, romlebits itsqeba <kbd>$</kbd>-it",
+          "aghkveta sintezuri movlenebi, romlebits tsarmoikmneba inektsiuri skriptebit",
+          "akrdzalulia qvela skhva morgebuli klienti"
+        ]
+      },
+      {
+        "date": "6/13/2023",
+        "items": [
+          "damatebulia 1195 dakarguli skinsi"
+        ]
+      }
+    ]
+  }
+}

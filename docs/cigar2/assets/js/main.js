@@ -7373,7 +7373,7 @@
 					hideESCOverlay();
 					byId('chat_textbox').hide();
 					byId('chat_clear').hide();
-					byId('connecting-content').innerHTML = '<h3>Multisession Warning</h3><hr class="top" /><p style="text-align: center">Multiple game instances are not allowed.<br />Close all other game instances and reload.</p>';
+					byId('connecting-content').innerHTML = (typeof I18n !== 'undefined' ? I18n.connectingHtml('multisession') : '<h3>Multisession Warning</h3><hr class="top" /><p style="text-align: center">Multiple game instances are not allowed.<br />Close all other game instances and reload.</p>');
 					byId('connecting').show(0.5);
 				}, 1000);
 			}
@@ -8040,7 +8040,8 @@
 		// Mouse button bindings: 'none', 'feed', 'split', 'doubleSplit', 'multiSplit'
 		mouseLeftAction: 'feed',
 		mouseMiddleAction: 'multiSplit',
-		mouseRightAction: 'doubleSplit'
+		mouseRightAction: 'doubleSplit',
+		locale: null
 	};
 
 	// List of disallowed nicknames (case-insensitive)
@@ -8075,7 +8076,9 @@
 		nickname = sanitizeNickname(nickname);
 
 		if (!nickname) {
-			const message = 'Please enter a nickname to play.';
+			const message = (typeof I18n !== 'undefined' && I18n.isReady())
+				? I18n.t('errors.nicknameRequired')
+				: 'Please enter a nickname to play.';
 
 			if (inputElement) {
 				inputElement.setCustomValidity(message);
@@ -8085,7 +8088,10 @@
 		}
 
 		if (nickname.length < parseInt(inputElement.getAttribute('minlength'))) {
-			const message = 'Nickname needs at least ' + parseInt(inputElement.getAttribute('minlength')) + ' characters';
+			const minLen = parseInt(inputElement.getAttribute('minlength'));
+			const message = (typeof I18n !== 'undefined' && I18n.isReady())
+				? I18n.t('errors.nicknameMinLength', { min: minLen })
+				: 'Nickname needs at least ' + minLen + ' characters';
 
 			if (inputElement) {
 				inputElement.setCustomValidity(message);
@@ -8102,7 +8108,9 @@
 
 		for (let i = 0; i < DISALLOWED_NICKNAMES.length; i++) {
 			if (nickLower === DISALLOWED_NICKNAMES[i]) {
-				const message = 'This nickname is not allowed. Please choose a different nickname.';
+				const message = (typeof I18n !== 'undefined' && I18n.isReady())
+					? I18n.t('errors.nicknameDisallowed')
+					: 'This nickname is not allowed. Please choose a different nickname.';
 
 				if (inputElement) {
 					inputElement.setCustomValidity(message);
@@ -8208,6 +8216,7 @@
 	function loadSettings() {
 		const text = localStorage.getItem('settings');
 		const obj = text ? JSON.parse(text) : settings;
+		const hasSavedLocale = text && Object.hasOwnProperty.call(obj, 'locale') && typeof obj.locale === 'string' && obj.locale.length > 0;
 
 		for (const prop in settings) {
 			const elm = byId(prop.charAt(0) === '_' ? prop.slice(1) : prop);
@@ -8243,6 +8252,14 @@
 			settings.nicknames = settings.nicknames
 				.map(n => sanitizeNickname(n))
 				.filter((n, i, arr) => n.length >= 3 && arr.indexOf(n) === i);
+		}
+
+		if (!hasSavedLocale) {
+			settings.locale = null;
+		}
+
+		if (settings.locale === 'pt') {
+			settings.locale = 'pt-BR';
 		}
 	}
 
@@ -8410,7 +8427,7 @@
 		mutedList.innerHTML = '';
 
 		if (settings.mutedPlayers.length === 0) {
-			mutedList.innerHTML = '<p class="text-muted">No Muted Players</p>';
+			mutedList.innerHTML = '<p class="text-muted">' + ((typeof I18n !== 'undefined' && I18n.isReady()) ? I18n.t('muted.empty') : 'No Muted Players') + '</p>';
 			return;
 		}
 
@@ -8441,7 +8458,7 @@
 
 			const unmuteBtn = document.createElement('button');
 			unmuteBtn.className = 'btn btn-xs btn-danger';
-			unmuteBtn.textContent = 'Unmute';
+			unmuteBtn.textContent = (typeof I18n !== 'undefined' && I18n.isReady()) ? I18n.t('muted.unmute') : 'Unmute';
 			unmuteBtn.onclick = () => unmutePlayer(identifier);
 
 			item.appendChild(canvas);
@@ -10014,6 +10031,29 @@
 		}, 1000);
 	}
 
+	async function setupI18n() {
+		if (typeof I18n === 'undefined') return;
+
+		const supported = I18n.SUPPORTED_LOCALES.some(l => l.code === settings.locale);
+		if (!settings.locale || !supported) {
+			settings.locale = I18n.detectDefaultLocale();
+		}
+
+		I18n.populateLocaleSelect(settings.locale);
+		const localeEl = byId('locale');
+		if (localeEl) {
+			localeEl.value = settings.locale;
+			initSetting('locale', localeEl);
+			localeEl.addEventListener('change', async () => {
+				await I18n.loadLocale(settings.locale, true);
+				I18n.applyLocale();
+			});
+		}
+
+		await I18n.loadLocale(settings.locale);
+		I18n.applyLocale();
+	}
+
 	function init() {
 		mainCanvas = document.getElementById('canvas');
 		mainCtx = mainCanvas.getContext('2d');
@@ -10022,7 +10062,16 @@
 		mainCanvas.focus();
 
 		loadSettings();
-		updateMutedPlayersList();
+		setupI18n().then(() => {
+			updateMutedPlayersList();
+			continueInit();
+		}).catch(err => {
+			console.error('i18n setup failed:', err);
+			continueInit();
+		});
+	}
+
+	function continueInit() {
 
 		// Initialize chat filter
 		if (typeof ChatFilter !== 'undefined') {
@@ -10080,7 +10129,7 @@
 								hideESCOverlay();
 								byId('chat_textbox').hide();
 								byId('chat_clear').hide();
-								byId('connecting-content').innerHTML = '<h3>Your Browser is very Old</h3><hr class="top" /><p style="text-align: center"><a href="https://www.whatismybrowser.com/" target="_blank">Please click here to update your Browser to a newer version.</a></p>';
+								byId('connecting-content').innerHTML = (typeof I18n !== 'undefined' ? I18n.connectingHtml('oldBrowser') : '<h3>Your Browser is very Old</h3><hr class="top" /><p style="text-align: center"><a href="https://www.whatismybrowser.com/" target="_blank">Please click here to update your Browser to a newer version.</a></p>');
 								byId('connecting').show(0.5);
 							}, 1000);
 						}
@@ -10092,7 +10141,7 @@
 								hideESCOverlay();
 								byId('chat_textbox').hide();
 								byId('chat_clear').hide();
-								byId('connecting-content').innerHTML = '<h3>Your Browser is very Old</h3><hr class="top" /><p style="text-align: center"><a href="https://www.whatismybrowser.com/" target="_blank">Please click here to update your Browser to a newer version.</a></p>';
+								byId('connecting-content').innerHTML = (typeof I18n !== 'undefined' ? I18n.connectingHtml('oldBrowser') : '<h3>Your Browser is very Old</h3><hr class="top" /><p style="text-align: center"><a href="https://www.whatismybrowser.com/" target="_blank">Please click here to update your Browser to a newer version.</a></p>');
 								byId('connecting').show(0.5);
 							}, 1000);
 						}
@@ -10105,7 +10154,7 @@
 						hideESCOverlay();
 						byId('chat_textbox').hide();
 						byId('chat_clear').hide();
-						byId('connecting-content').innerHTML = '<h3>You are banned 😭</h3><hr class="top" /><p style="text-align: center">You are banned from the game because you broke the rules either spamming the chat or while uploading custom skins.</p><a class="text-center" style="display: block; color: red;" href="https://discord.gg/emupedia-510149138491506688" target="_blank">Join us on Discord!</a><h1 style="text-align: center;">Your unban code is<br /><br />' + btoa(settings.fp2).replace(/(.{10})/g, "$1<br />") + '</h1>';
+						byId('connecting-content').innerHTML = (typeof I18n !== 'undefined' ? I18n.connectingHtml('banned', btoa(settings.fp2).replace(/(.{10})/g, '$1<br />')) : '<h3>You are banned 😭</h3><hr class="top" /><p style="text-align: center">You are banned from the game because you broke the rules either spamming the chat or while uploading custom skins.</p><a class="text-center" style="display: block; color: red;" href="https://discord.gg/emupedia-510149138491506688" target="_blank">Join us on Discord!</a><h1 style="text-align: center;">Your unban code is<br /><br />' + btoa(settings.fp2).replace(/(.{10})/g, '$1<br />') + '</h1>');
 						byId('connecting').show(0.5);
 					}, 1000);
 				}
@@ -10983,7 +11032,7 @@
 					hideESCOverlay();
 					byId('chat_textbox').hide();
 					byId('chat_clear').hide();
-					byId('connecting-content').innerHTML = '<h3>Multisession Warning</h3><hr class="top" /><p style="text-align: center">Multiple game instances are not allowed.<br />Close all other game instances and reload.</p>';
+					byId('connecting-content').innerHTML = (typeof I18n !== 'undefined' ? I18n.connectingHtml('multisession') : '<h3>Multisession Warning</h3><hr class="top" /><p style="text-align: center">Multiple game instances are not allowed.<br />Close all other game instances and reload.</p>');
 					byId('connecting').show(0.5);
 				}, 1000);
 			}
@@ -11516,7 +11565,7 @@
 				currentlyBinding = btn;
 				btn.classList.remove('btn-info');
 				btn.classList.add('btn-warning');
-				btn.textContent = 'Press a key...';
+				btn.textContent = (typeof I18n !== 'undefined' && I18n.isReady()) ? I18n.t('keys.pressKey') : 'Press a key...';
 			});
 		});
 
@@ -11638,7 +11687,7 @@
 										hideESCOverlay();
 										byId('chat_textbox').hide();
 										byId('chat_clear').hide();
-										byId('connecting-content').innerHTML = '<h3>Your Browser is very Old</h3><hr class="top" /><p style="text-align: center"><a href="https://www.whatismybrowser.com/" target="_blank">Please click here to update your Browser to a newer version.</a></p>';
+										byId('connecting-content').innerHTML = (typeof I18n !== 'undefined' ? I18n.connectingHtml('oldBrowser') : '<h3>Your Browser is very Old</h3><hr class="top" /><p style="text-align: center"><a href="https://www.whatismybrowser.com/" target="_blank">Please click here to update your Browser to a newer version.</a></p>');
 										byId('connecting').show(0.5);
 									}, 1000);
 								}
@@ -11650,7 +11699,7 @@
 										hideESCOverlay();
 										byId('chat_textbox').hide();
 										byId('chat_clear').hide();
-										byId('connecting-content').innerHTML = '<h3>Your Browser is very Old</h3><hr class="top" /><p style="text-align: center"><a href="https://www.whatismybrowser.com/" target="_blank">Please click here to update your Browser to a newer version.</a></p>';
+										byId('connecting-content').innerHTML = (typeof I18n !== 'undefined' ? I18n.connectingHtml('oldBrowser') : '<h3>Your Browser is very Old</h3><hr class="top" /><p style="text-align: center"><a href="https://www.whatismybrowser.com/" target="_blank">Please click here to update your Browser to a newer version.</a></p>');
 										byId('connecting').show(0.5);
 									}, 1000);
 								}
@@ -11663,7 +11712,7 @@
 								hideESCOverlay();
 								byId('chat_textbox').hide();
 								byId('chat_clear').hide();
-								byId('connecting-content').innerHTML = '<h3>You are banned 😭</h3><hr class="top" /><p style="text-align: center">You are banned from the game because you broke the rules either spamming the chat or while uploading custom skins or because you are using bots.</p><a class="text-center" style="display: block; color: red;" href="https://discord.gg/emupedia-510149138491506688" target="_blank">Join us on Discord!</a><h1 style="text-align: center;">Your unban code is<br /><br />' + btoa(settings.fp2).replace(/(.{10})/g, "$1<br />") + '</h1>';
+								byId('connecting-content').innerHTML = (typeof I18n !== 'undefined' ? I18n.connectingHtml('bannedBots', btoa(settings.fp2).replace(/(.{10})/g, '$1<br />')) : '<h3>You are banned 😭</h3><hr class="top" /><p style="text-align: center">You are banned from the game because you broke the rules either spamming the chat or while uploading custom skins or because you are using bots.</p><a class="text-center" style="display: block; color: red;" href="https://discord.gg/emupedia-510149138491506688" target="_blank">Join us on Discord!</a><h1 style="text-align: center;">Your unban code is<br /><br />' + btoa(settings.fp2).replace(/(.{10})/g, '$1<br />') + '</h1>');
 								byId('connecting').show(0.5);
 							}, 1000);
 						} else {
@@ -11866,7 +11915,7 @@
 
 		if (el) {
 			let message = document.createElement('div');
-			message.innerText = 'Skin URL Copied to Clipboard!';
+			message.innerText = (typeof I18n !== 'undefined' && I18n.isReady()) ? I18n.t('lobby.skinCopied') : 'Skin URL Copied to Clipboard!';
 			el.parentElement.parentElement.after(message);
 			setTimeout(() => message.remove(), 2000);
 		}

@@ -1,0 +1,353 @@
+{
+  "meta": {
+    "title": "Agar.io v2.0",
+    "description": "Eshte kletki menshego razmera, chem vy, i ne pozvolyayte sebe byt sedennymi bolee krupnymi, kak v MMO."
+  },
+  "chat": {
+    "general": "Obshchiy",
+    "clan": "Klan",
+    "placeholder": "Nazhmite Enter, chtoby nachat chat",
+    "clearTitle": "Ochistit chat",
+    "zoom": "Uvelichit"
+  },
+  "gallery": {
+    "skins": "Skiny"
+  },
+  "lobby": {
+    "title": "Agar.io v2.0",
+    "discordSuggestions": "Prisoedinyaytes k nam v Discord, esli u vas est predlozheniya",
+    "nickname": "Psevdonim",
+    "skin": "Kozha",
+    "skinPlaceholder": "Nazvanie skina",
+    "copy": "Kopirovat",
+    "clanName": "Nazvanie klana",
+    "clanPlaceholder": "maksimum 5 bukv",
+    "createClan": "Sozdat klan",
+    "leaveClan": "Pokinut klan",
+    "copyInvite": "Kopirovat priglashenie",
+    "gameMode": "Igrovoy rezhim",
+    "play": "Igrat",
+    "chooseSkin": "Vybrat skin",
+    "uploadSkin": "Zagruzit skin",
+    "unban": "Razbanit",
+    "skinCopied": "URL skina skopirovan v bufer obmena!"
+  },
+  "settings": {
+    "language": "Yazyk",
+    "mutedPlayers": "Priglushennye igroki",
+    "mutePlaceholder": "Vvedite psevdonim, chtoby otklyuchit zvuk",
+    "mute": "Nemoy",
+    "keyboardBindings": "Privyazki knopok klaviatury",
+    "feed": "Kormit:",
+    "split": "Raskolot:",
+    "doubleSplit": "Dvoynoy split:",
+    "multiSplit": "Multi Split:",
+    "zoomIn": "Uvelichenie masshtaba:",
+    "zoomOut": "Umenshit masshtab:",
+    "minion": "Besplatnaya kamera nablyudeniya/upravlenie minonami:",
+    "resetKeys": "Sbros k nastroykam po umolchaniyu",
+    "keyRebindHint": "Nazhmite knopku i nazhmite klavishu, chtoby pereprivyazat",
+    "mouseBindings": "Privyazki knopok myshi",
+    "leftClick": "Levyy klik:",
+    "middleClick": "Sredniy shchelchok:",
+    "rightClick": "Shchelknite pravoy knopkoy myshi:",
+    "resetMouse": "Sbros k nastroykam po umolchaniyu",
+    "mouseHint": "Nastroyte, kakoe deystvie vypolnyaet kazhdaya knopka myshi",
+    "toggleFullscreen": "Pereklyuchit polnoekrannyy rezhim",
+    "darkTheme": "Temnaya tema",
+    "cameraSmoothing": "Sglazhivanie kamery",
+    "cellAnimationSpeed": "Skorost animatsii yacheek",
+    "showSkins": "Kletochnye skiny",
+    "showNames": "Imena yacheek",
+    "showColor": "Tsveta yacheek",
+    "showMass": "Kletochnaya massa",
+    "slowMassUpdates": "Medlennye massovye obnovleniya",
+    "jellyPhysics": "Kletochnye zhele S fizikoy",
+    "showIdenticon": "Identifikatory yacheek",
+    "fillSkin": "Tsvet kletok pod kozhey",
+    "showTransparent": "Prozrachnost yacheek",
+    "showChat": "Pokazat chat",
+    "showMinimap": "Pokazat minikartu",
+    "showPosition": "Pokazat pozitsiyu",
+    "showBorder": "Pokazat ramku karty",
+    "showGrid": "Pokazat setku karty",
+    "backgroundSectors": "Pokazat sektora karty",
+    "moreZoom": "Umenshit Uvelichenie",
+    "showZoom": "Pokazat polzunok masshtabirovaniya",
+    "playSounds": "Zvuki",
+    "feedMacro": "Kormovoy makros",
+    "splitMacro": "Razdelit makros",
+    "leftClickToggle": "Shchelknite levoy knopkoy myshi",
+    "middleClickToggle": "Sredniy shchelchok",
+    "rightClickToggle": "Shchelknite pravoy knopkoy myshi",
+    "disableTouchControls": "Otklyuchit sensornoe upravlenie",
+    "useJoystick": "Sensornyy dzhoystik",
+    "lockMobileButtons": "Blokirovka mobilnykh knopok",
+    "resetButtonPositions": "Sbrosit raspolozhenie mobilnykh knopok",
+    "useWordFilters": "Tsenzura slov",
+    "autoRespawn": "Pereklyuchit avtovozrozhdenie"
+  },
+  "colors": {
+    "background": "Fon",
+    "name": "Imya",
+    "color": "Tsvet",
+    "border": "Granitsa"
+  },
+  "mouseActions": {
+    "none": "Nikto",
+    "feed": "Podacha (vybros massy)",
+    "split": "Raskolot",
+    "doubleSplit": "Dvoynoy Split",
+    "multiSplit": "Multi Split"
+  },
+  "connecting": {
+    "trying": "Pytayus podklyuchitsya...",
+    "discord": "Prisoedinyaytes k nam v Discord!",
+    "firewall": "Esli vy ne mozhete podklyuchitsya k serveram, proverte, ne blokiruet li soedinenie kakoy-libo antivirus ili brandmauer.",
+    "multisessionTitle": "Preduprezhdenie o multisessii",
+    "multisessionBody": "Ispolzovanie neskolkikh ekzemplyarov igry ne dopuskaetsya.<br />Zakroyte vse ostalnye ekzemplyary igry i perezagruzite kompyuter.",
+    "oldBrowserTitle": "Vash brauzer ochen staryy",
+    "oldBrowserLink": "Pozhaluysta, nazhmite zdes, chtoby obnovit brauzer do bolee novoy versii.",
+    "bannedTitle": "Vas zabanili 😭",
+    "bannedBody": "Vas zabanili v igre, potomu chto vy narushili pravila, rassylaya spam v chat ili zagruzhaya sobstvennye skiny.",
+    "bannedBodyBots": "Vas zabanili v igre, potomu chto vy narushili pravila, libo rassylaya spam v chat, libo zagruzhaya sobstvennye skiny, libo potomu, chto vy ispolzuete botov.",
+    "unbanCode": "Vash kod razbana"
+  },
+  "errors": {
+    "browserUnsupported": "Vash brauzer ne podderzhivaet neobkhodimye funktsii, obnovite brauzer.",
+    "nicknameRequired": "Pozhaluysta, vvedite nikneym dlya igry.",
+    "nicknameMinLength": "Psevdonim dolzhen soderzhat ne menee {min} simvolov.",
+    "nicknameDisallowed": "Etot psevdonim nedopustim. Pozhaluysta, vyberite drugoy psevdonim."
+  },
+  "muted": {
+    "empty": "Net otklyuchennykh igrokov",
+    "unmute": "Vklyuchit zvuk"
+  },
+  "keys": {
+    "pressKey": "Nazhmite klavishu..."
+  },
+  "gameplay": {
+    "rulesTitle": "Pravila",
+    "rule1": "Ne zagruzhayte zapreshchennye polzovatelskie skiny, osobenno esli eto che-to litso, vy mozhete zabanit svoy skin ili sebya zabanit v igre.",
+    "rule2": "Ne ispolzuyte nikneymy drugikh lyudey v chate ili v kachestve svoego imeni v unichizhitelnoy forme, vas mogut otklyuchit ili zabanit v igre.",
+    "gameplayTitle": "Geympley",
+    "controlsIntro": "Peremeshchayte <kbd>MOUSE</kbd> / <kbd>TOUCH</kbd>, chtoby upravlyat kameroy<br /><kbd>Koleso myshi</kbd> ili <kbd id=\"key-zoomin-display\">F</kbd> i <kbd id=\"key-zoomout-display\">V</kbd> dlya uvelicheniya i umensheniya masshtaba<br />Nazhmite <kbd id=\"key-feed-display\">W</kbd> ili <kbd>shchelknite levoy knopkoy myshi</kbd>, chtoby izvlech massu<br />Nazhmite <kbd id=\"key-split-display\">PROBEL</kbd>, chtoby razdelit yacheyku odin raz<br />Nazhmite <kbd id=\"key-doublesplit-display\">X</kbd> ili <kbd>shchelknite pravoy knopkoy myshi</kbd>, chtoby sdelat Dvoynoe razdelenie<br />Nazhmite <kbd id=\"key-multisplit-display\">C</kbd> ili <kbd>shchelknite sredney knopkoy myshi</kbd>, chtoby vypolnit mnozhestvennoe razdelenie.",
+    "objective": "<b>Tsel:</b> Tsel Agar.io — vyrastit vashu kletku, potreblyaya menshie kletki i izbegaya bolee krupnykh. Po mere rosta vy stanete bolee groznym i smozhete potreblyat eshche bolee krupnye kletki.",
+    "startingOut": "<b>Nachalo:</b> Kogda vy vpervye prisoedinyaetes k igre, vy nachinaete s malenkoy yacheyki. Peremeshchaytes s pomoshchyu myshi, chtoby sobirat raznotsvetnye shariki, razbrosannye po karte. Upotreblenie granul uvelichivaet vash razmer i massu.",
+    "movement": "<b>Peremeshchenie.</b> Chtoby peremestit yacheyku, prosto peremeshchayte kursor myshi ili ispolzuyte sensornyy ekran, peremeshchaya yacheyku v nuzhnom napravlenii. Vasha yacheyka budet sledovat za dvizheniem kursora myshi na ekrane.",
+    "consumeSmaller": "<b>Potreblenie yacheek menshego razmera.</b> Sledite za sotami menshego razmera, peremeshchayushchimisya poblizosti. Po mere togo, kak vy stanovites bolshe, vy smozhete pogloshchat eti bolee melkie kletki, chtoby uvelichit svoyu massu. Podkhodite k nim strategicheski, chtoby ikh ne seli bolee krupnye kletki.",
+    "avoidLarger": "<b>Izbegayte yacheek bolshego razmera.</b> Budte ostorozhny s yacheykami bolshego razmera, poskolku oni mogut poglotit vas, esli vy menshe ikh. Osteregaytes igrokov, kotorye razdelyayutsya, chtoby zakhvatit bolee melkie yacheyki, i staraytes predugadat ikh dvizheniya, chtoby ostavatsya v bezopasnosti.",
+    "splitting": "<b>Razdelenie.</b> Vy mozhete razdelit yacheyku na neskolko bolee melkikh chastey, nazhav <kbd>PROBEL</kbd>. Ispolzuyte etu taktiku dlya zakhvata yacheek menshego razmera ili dlya pobega iz bolee krupnykh. Vy takzhe mozhete vypolnit neskolko razdeleniy, nazhav <kbd>X</kbd> ili <kbd>Z</kbd>. Pomnite, chto razdelenie takzhe delaet vas bolee uyazvimym, poetomu ispolzuyte ego s umom.",
+    "ejectingMass": "<b>Izvlechenie massy:</b> Khotya izvlechenie massy nazhatiem <kbd>W</kbd> ili <kbd>levogo shchelchka</kbd> mozhet byt poleznym, ono takzhe sopryazheno s riskom. Vybroshennaya massa mozhet byt sedena drugimi igrokami, v tom chisle potentsialnymi sopernikami. Krome togo, vybros massy umenshaet obshchiy razmer vashey kletki, chto mozhet sdelat vas bolee uyazvimym dlya pogloshcheniya bolee krupnymi kletkami.",
+    "teamPlay": "<b>Komandnaya igra (neobyazatelno):</b> V komandnom rezhime vy mozhete sotrudnichat s drugimi igrokami, chtoby dominirovat v tablitse liderov. Obedinyaytes s druzyami ili drugimi igrokami, chtoby prevzoyti svoikh protivnikov i vmeste pobedit v igre.",
+    "growDominate": "<b>Rasti i dominiruy:</b> Po mere togo, kak vy potreblyaete menshie kletki i izbegaete byt sedennymi, vasha kletka budet prodolzhat rasti v razmerakh. Stremites stat samoy bolshoy yacheykoy na servere i dominirovat v tablitse liderov.",
+    "viruses": "<b>Osteregaytes virusov.</b> Po vsey karte vy vstretite zelenye kolyuchie krugi, izvestnye kak virusy. Izbegayte stolknoveniy s nimi, tak kak oni mogut razdelit vashu kletku na bolee melkie chasti, esli vy bolshe ikh. Kormlenie virusov v vashey masse v odnom napravlenii zastavit ikh razmnozhatsya v protivopolozhnom napravlenii.",
+    "beStrategic": "<b>Budte strategicheskimi:</b> Agar.io — eto ne tolko umenie, no i strategiya. Obrashchayte vnimanie na svoe okruzhenie, predugadyvayte deystviya protivnikov i razumno ispolzuyte takie taktiki, kak razdelenie i sliyanie, chtoby perekhitrit svoikh sopernikov.<hr />",
+    "closing": "Vot i vse osnovy Agar.io! Teper prishlo vremya pristupit k igre i nachat razvivat svoyu yacheyku, chtoby stat samym bolshim i dominiruyushchim igrokom na servere.",
+    "goodLuck": "Udachi i poluchayte udovolstvie!"
+  },
+  "news": {
+    "title": "Novosti",
+    "entries": [
+      {
+        "date": "21.05.2026",
+        "items": [
+          "Uluchshena proizvoditelnost renderinga <b>Imen yacheek</b>, <b>Massy kletok</b> i <b>Fiziki kletochnogo zhele</b>, kogda oni vklyucheny v <b>Nastroykakh</b>.",
+          "V <b>Nastroyki</b> dobavlen <b>Medlennye massovye obnovleniya</b> s polzunkom, pozvolyayushchim kontrolirovat chastotu massovogo obnovleniya chisel (peretaskivanie polzunka vpravo oznachaet menshee kolichestvo obnovleniy)."
+        ]
+      },
+      {
+        "date": "01.05.2026",
+        "items": [
+          "<b>Psevdonimy</b> teper dolzhny soderzhat ne menee <b>3 simvolov</b>.",
+          "Dobavlena ​​dopolnitelnaya <b>Tsenzura slov</b> dlya <b>Chata</b> i <b>Psevdonimov</b>, ona vklyuchena po umolchaniyu, <u>vy mozhete otklyuchit ee, no togda ne zhaluytes na <a style=\"font-weight: bolder;\" href=\"https://discord.gg/emupedia-510149138491506688\" target=\"_blank\">Discord</a> o tom, chto lyudi toksichny</u>",
+          "Ispravlen <b>pereklyuchenie svobodnoy kamery nablyudatelya</b>, teper vy mozhete pravilno pereklyuchatsya s avtomaticheskogo sledovaniya za igrokami na svobodnuyu kameru v rezhime nablyudatelya."
+        ]
+      },
+      {
+        "date": "11.19.2025",
+        "items": [
+          "<b>Psevdonimy</b> teper <b>obyazatelny</b>, pustye <b>psevdonimy</b> bolshe ne mogut byt.",
+          "<b>Uluchshena funktsiya otklyucheniya zvuka</b>. Teper <b>Otklyuchenie zvuka</b> budet pytatsya razlichat <b>igrokov</b> s odinakovym <b>psevdonimom</b> i pytatsya <b>otklyuchit zvuk</b> tolko dlya togo, kotorogo vy khoteli."
+        ]
+      },
+      {
+        "date": "18.11.2025",
+        "items": [
+          "Dobavleny mobilnye knopki <b>Uvelichit</b> i <b>Umenshit</b>. Vy mozhete pereklyuchat <b>Pokazat polzunok masshtabirovaniya</b> na <b>Pokazat</b> ili <b>Skryt</b> ikh v <b>Nastroykakh</b>.",
+          "<b>Uluchshena nastroyka polozheniya mobilnykh knopok</b>: teper vy mozhete <b>nazhimat</b> na 3 sekundy na lyubuyu knopku, chtoby peremeshchat ee.",
+          "V <b>Nastroyki</b> dobavlena ​​funktsiya <b>Sbrosit pozitsii mobilnykh knopok</b>, esli vy khotite sbrosit <b>Mobilnye knopki</b> na pozitsii <b>po umolchaniyu</b>.",
+          "V <b>Nastroyki</b> dobavlen <b>Blokirovat mobilnye knopki</b>. Esli vy otmetite etot flazhok, vy ne smozhete peremeshchat knopki.",
+          "Udaleny <b>perevernutye sensornye elementy upravleniya</b> iz <b>nastroek</b> (bolshe ne nuzhny, teper vy mozhete peremeshchat knopki kuda khotite)."
+        ]
+      },
+      {
+        "date": "28.10.2025",
+        "items": [
+          "Dobavleny nastraivaemye <b>knopki klaviatury</b> i <b>knopki myshi</b> v <b>nastroykakh</b>.",
+          "Dobavleny <b>Sglazhivanie kamery</b> i <b>Skorost animatsii yacheek</b> v <b>Nastroyki</b>."
+        ]
+      },
+      {
+        "date": "07.07.2025",
+        "items": [
+          "Uluchshen sposob zagruzki <b>skinov</b>, chtoby ikh bylo slozhnee skopirovat."
+        ]
+      },
+      {
+        "date": "28.06.2025",
+        "items": [
+          "Uluchsheny <b>Identifikatory</b>, chtoby oni ne menyalis tak chasto."
+        ]
+      },
+      {
+        "date": "03.08.2025",
+        "items": [
+          "Dobavlena ​​<b>Knopka otklyucheniya/vklyucheniya zvuka igroka</b>. Teper vy mozhete <b>otklyuchit/vklyuchit zvuk</b> opredelennykh <b>igrokov</b> iz <b>Chata</b>, nazhav <b>Znachok otklyucheniya/vklyucheniya zvuka</b> ryadom s ikh soobshcheniem ili ispolzuya spisok <b>Igroki s otklyuchennym zvukom</b> v <b>Nastroykakh</b>"
+        ]
+      },
+      {
+        "date": "02.03.2025",
+        "items": [
+          "Dobavlen <b>Prokrutka chata</b>. Teper vy mozhete prokruchivat ee, peretaskivaya polosu prokrutki s pomoshchyu <kbd>Myshi</kbd> ili ispolzuya klavishi <kbd>↑ Strelka vverkh</kbd> i <kbd>↓ Strelka vniz</kbd>."
+        ]
+      },
+      {
+        "date": "01.11.2025",
+        "items": [
+          "Dobavlen <b>Igrovoy rezhim PVP</b>, kotoryy vse eshche nakhoditsya v stadii beta-testirovaniya.",
+          "Dobavlen flazhok <b>Prozrachnost yacheyki</b> v <b>Nastroyki</b>."
+        ]
+      },
+      {
+        "date": "10.13.2024",
+        "items": [
+          "Dobavleny klavishi <kbd>F</kbd> i <kbd>V</kbd> dlya uvelicheniya i umensheniya masshtaba.",
+          "Dobavlen <b>Polzunok masshtabirovaniya</b> dlya uvelicheniya i umensheniya masshtaba.",
+          "Dobavlen flazhok <b>Pokazat polzunok masshtabirovaniya</b> v <b>Nastroyki</b>."
+        ]
+      },
+      {
+        "date": "10.10.2024",
+        "items": [
+          "Dobavlena ​​knopka <b>Ochistit chat</b>, pozvolyayushchaya ochistit chat vruchnuyu."
+        ]
+      },
+      {
+        "date": "10.01.2024",
+        "items": [
+          "Dobavleny <b>Identifikatory</b>, chtoby luchshe identifitsirovat druzey ili vragov. Kazhdoe ustroystvo imeet svoy unikalnyy <b>Znachok</b>.",
+          "Dobavlen flazhok <b>Pokazat identifikatory</b> v <b>Nastroyki</b>.",
+          "Udaleny tryuki, pozvolyayushchie legko dublirovat <b>Niki</b> ili <b>skiny</b>."
+        ]
+      },
+      {
+        "date": "05.16.2024",
+        "items": [
+          "Ispravleno otobrazhenie klaviatury <b>AZERTY</b>: teper <kbd>W</kbd> i <kbd>Z</kbd> oba <b>Feed</b>",
+          "<b>Muti Split</b> izmenen na klavishu <kbd>C</kbd> vmesto <kbd>Z</kbd>.",
+          "Dobavlen flazhok <b>Otklyuchit sensornoe upravlenie</b> v <b>Nastroyki</b>."
+        ]
+      },
+      {
+        "date": "05.15.2024",
+        "items": [
+          "Ispravlena ​​davnyaya oshibka v <b>Chate</b>, iz-za kotoroy inogda ne otobrazhalis nekotorye soobshcheniya.",
+          "Teper vy mozhete videt psevdonimy <b>Zritelya</b>, esli oni u nego est.",
+          "Teper vy mozhete prodvigat <b>virusy</b>, vybrasyvaya massu svoey <b>kletki</b> v storonu <b>virusov</b>.",
+          "Skorrektirovany mery <b>Antispama</b>, chtoby oni byli bolee shchadyashchimi v <b>Chate</b>, a takzhe snova vklyuchena funktsiya <b>Vstavka</b> soobshcheniy.",
+          "Dobavlen flazhok <b>Pereklyuchit polnoekrannyy rezhim</b> v <b>Nastroyki</b>.",
+          "Realizovan <b>AutoRespawn</b>, teper vy avtomaticheski vozrozhdaetes bez neobkhodimosti povtorno nazhimat <b>Play</b>.",
+          "Dobavlen flazhok <b>Pereklyuchit avtovozrozhdenie</b> v <b>Nastroyki</b>.",
+          "Uluchsheno <b>Sensornoe upravlenie</b> dlya mobilnykh ustroystv (dobavleny <b>Pokazat knopku menyu</b>, <b>Polnoekrannaya knopka</b>, ispravleno rasstoyanie <b>Razdelit knopku</b>, zapreshcheno peretaskivanie knopok)"
+        ]
+      },
+      {
+        "date": "05.14.2024",
+        "items": [
+          "Razdelenie pri ispolzovanii sensornogo upravleniya privodilo k vybrasyvaniyu nebolshogo kolichestva massy, eta oshibka ispravlena.",
+          "Makros izvlecheniya teper rabotaet pri ispolzovanii sensornogo upravleniya.",
+          "Uluchshennoe sensornoe upravlenie dlya mobilnykh ustroystv."
+        ]
+      },
+      {
+        "date": "05.10.2024",
+        "items": [
+          "V chat dobavleny mery zashchity ot spama, otklyuchena vstavka soobshcheniy.",
+          "Povtornoe vklyuchenie s pomoshchyu shchelchka pravoy knopkoy myshi v menyu i v okne chata.",
+          "Dobavlena ​​vozmozhnost <b>perevorachivat sensornye elementy upravleniya</b> s pravoy storony na levuyu v <b>Nastroykakh</b>."
+        ]
+      },
+      {
+        "date": "05.01.2024",
+        "items": [
+          "Dobavlen reCaptcha v3 dlya predotvrashcheniya podklyucheniya botov <a href=\"https://discord.gg/emupedia-510149138491506688\" target=\"_blank\">(vy mozhete ostavit otzyv v Discord, esli on ne rabotaet dolzhnym obrazom)</a>",
+          "Vklyucheno avtomaticheskoe perepodklyuchenie k serveru posle perezagruzki servera.",
+          "Uluchshennoe sensornoe upravlenie dlya mobilnykh ustroystv."
+        ]
+      },
+      {
+        "date": "03.09.2024",
+        "items": [
+          "Dobavlena ​​knopka <b>Kopirovat v bufer obmena</b> dlya <b>Tekushchego vybrannogo skina</b>.",
+          "Uvelichen <b>Razmer oblasti chata</b>, chtoby vmestit bolshe soobshcheniy.",
+          "<b>Vremya ozhidaniya</b> dlya <b>zagruzki skina</b> umensheno do 30 sekund."
+        ]
+      },
+      {
+        "date": "28.02.2024",
+        "items": [
+          "Realizovan <b>Sensornyy dzhoystik</b> dlya mobilnykh ustroystv.",
+          "Dobavlen flazhok <b>Sensornyy dzhoystik</b> v <b>Nastroyki</b>.",
+          "Zagruzka faylov <kbd>gif</kbd> bolshe ne razreshena, animatsiya vse ravno ne rabotala, pokazyvalsya tolko pervyy kadr"
+        ]
+      },
+      {
+        "date": "24.02.2024",
+        "items": [
+          "Realizovana funktsiya <b>Zagruzit skin</b>."
+        ]
+      },
+      {
+        "date": "02.2024 20.02.2024",
+        "items": [
+          "Dobavleny pereklyuchateli <b>Individualnye shchelchki myshyu</b> v <b>Nastroyki</b>.",
+          "Dobavlen polzovatelskiy instrument vybora <b>Tsvet fona</b>."
+        ]
+      },
+      {
+        "date": "02.17.2024",
+        "items": [
+          "Dobavlen <b>Dvoynoe razdelenie</b>. Vy mozhete ispolzovat <b>Dvoynoe razdelenie</b>, nazhav <kbd>X</kbd> ili <kbd>Shchelknuv pravoy knopkoy myshi</kbd>",
+          "Dobavlen <b>Makros mnozhestvennogo razdeleniya</b>. Vy mozhete ispolzovat <b>Makros mnozhestvennogo razdeleniya</b>, nazhav <kbd>C</kbd> ili <kbd>Sredniy shchelchok</kbd>",
+          "Dobavlen flazhok pereklyucheniya v <b>Nastroyki</b> dlya <b>Multi Split Macro</b>.",
+          "Dobavlen vybor <b>Psevdonima</b>.",
+          "Dobavlen vybor <b>Nazvaniya skina</b>.",
+          "Dobavlen polzovatelskiy instrument vybora <b>Tsvet imeni yacheyki</b>.",
+          "Dobavlen polzovatelskiy instrument vybora <b>Tsvet fona yacheyki</b>.",
+          "Dobavlen polzovatelskiy instrument vybora <b>Tsvet granitsy yacheyki</b>.",
+          "Dobavlena ​​<b>Temnaya tema</b> dlya menyu."
+        ]
+      },
+      {
+        "date": "02.16.2024",
+        "items": [
+          "Ispravleny sluchaynye tsveta fona pri ispolzovanii <b>Jelly Physics</b>.",
+          "Dobavlen <b>Makros podachi</b>. Vy mozhete ispolzovat <b>Makros podachi</b>, nazhav <kbd>W</kbd> ili <kbd>shchelknuv levoy knopkoy myshi</kbd> i ustanoviv flazhok <b>Makros podachi</b> v <b>Nastroykakh</b>.",
+          "Dobavlen flazhok pereklyucheniya v <b>Nastroyki</b> dlya <b>Makrosa fida</b>.",
+          "Dobavlen razdel <b>Novosti</b>.",
+          "Dobavlen razdel <b>Geympley</b>.",
+          "Realizovany skiny, nachinayushchiesya s <kbd>$</kbd>.",
+          "Predotvrashcheny sinteticheskie sobytiya, generiruemye vnedrennymi skriptami.",
+          "Zapreshcheny vse drugie polzovatelskie klienty."
+        ]
+      },
+      {
+        "date": "13.06.2023",
+        "items": [
+          "Dobavleno 1195 nedostayushchikh skinov."
+        ]
+      }
+    ]
+  }
+}

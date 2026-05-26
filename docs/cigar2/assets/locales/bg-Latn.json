@@ -1,0 +1,353 @@
+{
+  "meta": {
+    "title": "Agar.io v2.0",
+    "description": "Yazhte kletki, po-malki ot vas i ne bdete izyazhdani ot po-golemite, kato MMO"
+  },
+  "chat": {
+    "general": "general",
+    "clan": "Klan",
+    "placeholder": "Natisnete enter za chat",
+    "clearTitle": "Izchistvane na chata",
+    "zoom": "mashchabirane"
+  },
+  "gallery": {
+    "skins": "Kozhi"
+  },
+  "lobby": {
+    "title": "Agar.io v2.0",
+    "discordSuggestions": "Prisedinete se km nas v Discord, ako imate predlozheniya",
+    "nickname": "Psevdonim",
+    "skin": "kozha",
+    "skinPlaceholder": "Ime na kozhata",
+    "copy": "kopie",
+    "clanName": "Ime na klana",
+    "clanPlaceholder": "5 bukvi maksimum",
+    "createClan": "Szdayte klan",
+    "leaveClan": "Napusni klana",
+    "copyInvite": "Kopirane na pokana",
+    "gameMode": "Rezhim na igra",
+    "play": "Igrayte",
+    "chooseSkin": "Izberete Kozha",
+    "uploadSkin": "Kachvane na kozha",
+    "unban": "Otmyana na zabranata",
+    "skinCopied": "URL adrest na kozhata e kopiran v klipborda!"
+  },
+  "settings": {
+    "language": "ezik",
+    "mutedPlayers": "Zaglusheni igrachi",
+    "mutePlaceholder": "Vvedete psevdonim za zaglushavane",
+    "mute": "Bez zvuk",
+    "keyboardBindings": "Svrzvane na butonite na klaviaturata",
+    "feed": "Emisiya:",
+    "split": "Razdelyane:",
+    "doubleSplit": "Dvoyno razdelyane:",
+    "multiSplit": "Multi razdelyane:",
+    "zoomIn": "Uvelichavane:",
+    "zoomOut": "Namalyavane:",
+    "minion": "Bezplatna kamera za zriteli / Upravlenie na minoni:",
+    "resetKeys": "Vzstanovyavane na nastroykite po podrazbirane",
+    "keyRebindHint": "Shchraknete vrkhu buton i natisnete klavish za povtorno obvrzvane",
+    "mouseBindings": "Vrzki na butonite na mishkata",
+    "leftClick": "Lyav klik:",
+    "middleClick": "Sredno klikvane:",
+    "rightClick": "Desen klik:",
+    "resetMouse": "Vzstanovyavane na nastroykite po podrazbirane",
+    "mouseHint": "Konfigurirayte kakvo deystvie da izplnyava vseki buton na mishkata",
+    "toggleFullscreen": "Prevklyuchvane na tsyal ekran",
+    "darkTheme": "Tmna tema",
+    "cameraSmoothing": "Izglazhdane na kamerata",
+    "cellAnimationSpeed": "Skorost na kletchnite animatsii",
+    "showSkins": "Kletchni kozhi",
+    "showNames": "Imena na kletki",
+    "showColor": "Kletchni tsvetove",
+    "showMass": "Kletchna masa",
+    "slowMassUpdates": "Po-bavni masovi aktualizatsii",
+    "jellyPhysics": "Fizika na kletchnoto zhele",
+    "showIdenticon": "Kletchni identifikatsii",
+    "fillSkin": "Tsvyat na kletkite pod kozhata",
+    "showTransparent": "Prozrachnost na kletkata",
+    "showChat": "Pokazhi chat",
+    "showMinimap": "Pokazvane na minikarta",
+    "showPosition": "Pokazvane na pozitsiya",
+    "showBorder": "Pokazvane na granitsata na kartata",
+    "showGrid": "Pokazvane na mrezhata na kartata",
+    "backgroundSectors": "Pokazvane na sektori na kartata",
+    "moreZoom": "Namalyavane Uvelichavane",
+    "showZoom": "Pokazvane na plzgacha za mashchabirane",
+    "playSounds": "Zvutsi",
+    "feedMacro": "Podavane na makros",
+    "splitMacro": "Razdelen makros",
+    "leftClickToggle": "Lyav klik",
+    "middleClickToggle": "Sredno shchrakvane",
+    "rightClickToggle": "Shchraknete s desen buton",
+    "disableTouchControls": "Deaktivirayte senzornite kontroli",
+    "useJoystick": "Dokosnete Dzhoystik",
+    "lockMobileButtons": "Zaklyuchvane na mobilni butoni",
+    "resetButtonPositions": "Nulirane na pozitsiite na mobilnite butoni",
+    "useWordFilters": "Tsenzura na dumite",
+    "autoRespawn": "Prevklyuchete AutoRespawn"
+  },
+  "colors": {
+    "background": "Fon",
+    "name": "Ime",
+    "color": "Tsvyat",
+    "border": "Granitsa"
+  },
+  "mouseActions": {
+    "none": "Nyama",
+    "feed": "Zakhranvane (izkhvrlena masa)",
+    "split": "Split",
+    "doubleSplit": "Dvoyno razdelenie",
+    "multiSplit": "Multi split"
+  },
+  "connecting": {
+    "trying": "Opit za svrzvane...",
+    "discord": "Prisedinete se km nas v Discord!",
+    "firewall": "Ako ne mozhete da se svrzhete ss srvrite, proverete dali imate antivirusna programa ili zashchitna stena, koyato blokira vrzkata.",
+    "multisessionTitle": "Preduprezhdenie za mnogosesiya",
+    "multisessionBody": "Ne sa razresheni mnozhestvo ekzemplyari na igra.<br />Zatvorete vsichki drugi ekzemplyari na igra i prezaredete.",
+    "oldBrowserTitle": "Vashiyat brauzr e mnogo star",
+    "oldBrowserLink": "Molya, shchraknete tuk, za da aktualizirate svoya brauzr do po-nova versiya.",
+    "bannedTitle": "Zabraneni ste 😭",
+    "bannedBody": "Vie ste zabraneni ot igrata, zashchoto ste narushili pravilata ili chrez spam v chata, ili dokato kachvate personalizirani kozhi.",
+    "bannedBodyBots": "Vie ste zabraneni ot igrata, zashchoto ste narushili pravilata ili chrez spam v chata, ili dokato kachvate personalizirani kozhi, ili zashchoto izpolzvate botove.",
+    "unbanCode": "Vashiyat kod za deblokirane e"
+  },
+  "errors": {
+    "browserUnsupported": "Vashiyat brauzr ne poddrzha neobkhodimite funktsii, molya, aktualizirayte brauzra si.",
+    "nicknameRequired": "Molya, vvedete psevdonim, za da igraete.",
+    "nicknameMinLength": "Psevdonimt tryabva da ima pone {min} znaka",
+    "nicknameDisallowed": "Tozi psevdonim ne e razreshen. Molya, izberete drug psevdonim."
+  },
+  "muted": {
+    "empty": "Bez zaglusheni igrachi",
+    "unmute": "Vklyuchvane na zvuka"
+  },
+  "keys": {
+    "pressKey": "Natisnete klavish..."
+  },
+  "gameplay": {
+    "rulesTitle": "pravila",
+    "rule1": "Ne kachvayte zabraneni personalizirani skinove, osobeno ako tova e nechie litse, mozhe da poluchite zabrana na vashiya skin ili vas samite ot igrata.",
+    "rule2": "Ne izpolzvayte psevdonimi na drugi khora v chata ili kato svoe ime po unizitelen nachin, mozhe da bdete zaglushen ili zabranen ot igrata.",
+    "gameplayTitle": "Geympley",
+    "controlsIntro": "Premestete svoyata <kbd>MIShKA</kbd> / <kbd>DOKOSVANE</kbd>, za da upravlyavate svoyata kletka<br /><kbd>Koleltseto na mishkata</kbd> ili <kbd id=\"key-zoomin-display\">F</kbd> i <kbd id=\"key-zoomout-display\">V</kbd> za uvelichavane i namalyavane na mashchaba<br />Natisnete <kbd id=\"key-feed-display\">W</kbd> ili <kbd>Shchraknete s lyav buton</kbd>, za da izvadite masa<br />Natisnete <kbd id=\"key-split-display\">INTERVAL</kbd>, za da razdelite vashata kletka vednzh<br />Natisnete <kbd id=\"key-doublesplit-display\">X</kbd> ili <kbd>Shchraknete s desen buton</kbd>, za da napravite dvoyno razdelyane<br />Natisnete <kbd id=\"key-multisplit-display\">C</kbd> ili <kbd>Shchraknete ss sreden buton</kbd>, za da napravite razdelyane na nyakolko pti",
+    "objective": "<b>Tsel:</b> Tselta na Agar.io e da razviete vashata kletka, kato konsumirate po-malki kletki i izbyagvate po-golemite. Dokato rastete, shche stavate po-strashni i shche mozhete da konsumirate dori po-golemi kletki.",
+    "startingOut": "<b>Zapochvane:</b> Kogato za prvi pt se prisedinite km igrata, shche zapochnete kato malka kletka. Dvizhete se s pomoshchta na mishkata, za da sbirate tsvetnite peleti, razprsnati po kartata. Yadeneto na peleti uvelichava vashiya razmer i masa.",
+    "movement": "<b>Dvizhenie:</b> Za da premestite kletkata si, prosto premestete kursora na mishkata ili izpolzvayte senzorniya ekran, kato se dvizhite v posokata, v koyato iskate kletkata da se dvizhi. Vashata kletka shche sledva dvizhenieto na kursora na mishkata vrkhu ekrana.",
+    "consumeSmaller": "<b>Konsumirayte po-malki kletki:</b> Vnimavayte za po-malki kletki, rouming nablizo. Dokato rastete, shche mozhete da poglnete tezi po-malki kletki, za da uvelichite masata si. Podkhozhdayte km tyakh strategicheski, za da izbegnete izyazhdane ot po-golemi kletki.",
+    "avoidLarger": "<b>Izbyagvayte po-golemite kletki:</b> Bdete vnimatelni s po-golemite kletki, ty kato te mogat da vi poglnat, ako ste po-malki ot tyakh. Vnimavayte za igrachi, koito se razdelyat, za da ulovyat po-malki kletki, i se opitayte da predvidite dvizheniyata im, za da ste v bezopasnost.",
+    "splitting": "<b>Razdelyane:</b> Mozhete da razdelite kletkata si na mnozhestvo po-malki chasti, kato natisnete <kbd>INTERVAL</kbd>. Izpolzvayte tazi taktika, za da ulovite po-malki kletki ili da izbyagate ot po-golemite. Mozhete sshcho taka da napravite nyakolko razdelyaniya, kato natisnete <kbd>X</kbd> ili <kbd>Z</kbd>. Ne zabravyayte, che razdelyaneto sshcho vi pravi po-uyazvimi, taka che go izpolzvayte razumno.",
+    "ejectingMass": "<b>Izkhvrlyane na masa:</b> Vpreki che izkhvrlyaneto na masa chrez natiskane na <kbd>W</kbd> ili <kbd>lyav klik</kbd> mozhe da bde polezno, to nosi i riskove. Izkhvrlenata masa mozhe da bde konsumirana ot drugi igrachi, vklyuchitelno potentsialni spernitsi. Osven tova izkhvrlyaneto na masa namalyava obshchiya razmer na vashata kletka, koeto mozhe da vi napravi po-uyazvimi km poglshchane ot po-golemi kletki.",
+    "teamPlay": "<b>Otborna igra (po izbor):</b> V otboren rezhim mozhete da si strudnichite s drugi igrachi, za da dominirate v klasatsiyata. Obedinete se s priyateli ili drugi igrachi, za da nadkhitrite oponentite si i da pobedite igrata zaedno.",
+    "growDominate": "<b>Rastete i dominirayte:</b> Dokato konsumirate po-malki kletki i izbyagvate da bdete izyadeni, vashata kletka shche prodlzhi da raste po razmer. Stremete se da stanete nay-golyamata kletka na srvra i da dominirate v klasatsiyata.",
+    "viruses": "<b>Vnimavayte za virusi:</b> Po tsyalata karta shche sreshchnete zeleni krgove s shipove, izvestni kato virusi. Izbyagvayte sblsk s tyakh, ty kato te mogat da razdelyat kletkata vi na po-malki parcheta, ako ste po-golemi ot tyakh. Khraneneto na virusi s vashata masa ot posoka shche gi nakara da se razmnozhavat v obratna posoka.",
+    "beStrategic": "<b>Bdete strategicheski:</b> Agar.io e tolkova za strategiya, kolkoto i za umeniya. Obrnete vnimanie na zaobikalyashchata vi sreda, predvidete dvizheniyata na oponentite si i izpolzvayte taktiki kato razdelyane i slivane mdro, za da nadkhitrite spernitsite si.<hr />",
+    "closing": "Tova e vsichko za osnovite na Agar.io! Sega e vreme da se vklyuchite v igrata i da zapochnete da razvivate kletkata si, za da stanete nay-golemiyat i dominirashch igrach na srvra.",
+    "goodLuck": "Uspekh i se zabavlyavayte!"
+  },
+  "news": {
+    "title": "Novini",
+    "entries": [
+      {
+        "date": "21.05.2026 g",
+        "items": [
+          "Podobrena proizvoditelnost na izobrazyavane na <b>imena na kletki</b>, <b>kletchna masa</b> i <b>fizika na zheleto ot kletki</b>, kogato sa aktivirani v <b>Nastroyki</b>",
+          "Dobaveni sa <b>Po-bavni masovi aktualizatsii</b> v <b>Nastroyki</b> s plzgach za kontrol kolko chesto se opresnyavat masovite chisla (plzganeto na plzgacha nadyasno oznachava po-niski aktualizatsii)"
+        ]
+      },
+      {
+        "date": "01.05.2026 g",
+        "items": [
+          "<b>Psevdonimite</b> veche tryabva da sdrzhat pone <b>3 znaka</b>",
+          "Dobavena e nezadlzhitelna <b>tsenzura na dumi</b> za <b>chat</b> i <b>psevdonimi</b>, aktivirana e po podrazbirane, <u>mozhete da ya deaktivirate, no sled tova ne se oplakvayte na <a style=\"font-weight: bolder;\" href=\"https://discord.gg/emupedia-510149138491506688\" target=\"_blank\">Discord</a> otnosno khorata, koito sa toksichni</u>",
+          "Korigirano <b>Spectator Free-Camera Toggle</b>, sega mozhete da prevklyuchvate ot Auto Follow igrachi km Free-Camera pravilno v rezhim Spectator"
+        ]
+      },
+      {
+        "date": "19.11.2025 g",
+        "items": [
+          "<b>Psevdonimite</b> veche sa <b>zadlzhitelni</b>, veche ne mozhete da imate prazni <b>Psevdonimi</b>",
+          "<b>Podobrena funktsiya za zaglushavane na igracha</b> sega <b>Zaglushavane</b> shche se opita da razgranichi <b>Igrachi</b> s edin i sshchi <b>Psevdonim</b> i shche se opita da <b>zaglushi</b> samo tozi, koyto iskate"
+        ]
+      },
+      {
+        "date": "18.11.2025 g",
+        "items": [
+          "Dobaveni sa mobilni butoni <b>Uvelichavane</b> i <b>Namalyavane</b>, mozhete da prevklyuchvate <b>Pokazvane na plzgacha za mashchabirane</b> na <b>Pokazvane</b> ili <b>Skrivane</b> v <b>Nastroyki</b>",
+          "<b>Podobreno personalizirane na pozitsiyata na mobilnite butoni</b>, sega mozhete da <b>Dokosnete</b> za 3 sekundi vseki buton, za da go premestite",
+          "Dobaveno e <b>Nulirane na pozitsiite na mobilnite butoni</b> v <b>Nastroyki</b>, ako iskate da nulirate <b>mobilnite butoni</b> do pozitsiite <b>Po podrazbirane</b>",
+          "Dobaveno <b>Zaklyuchvane na mobilni butoni</b> v <b>Nastroyki</b>, ako postavite otmetka na tova, ne mozhete da mestite butonite",
+          "Premakhnati <b>Flip Touch Controls</b> ot <b>Settings</b> (veche ne sa neobkhodimi, veche mozhete da premestvate butonite, kdeto pozhelaete)"
+        ]
+      },
+      {
+        "date": "28/10/2025 g",
+        "items": [
+          "Dobaveni sa personalizirani <b>butoni na klaviaturata</b> i <b>butoni na mishkata</b> v <b>Nastroyki</b>",
+          "Dobaveni sa <b>Izglazhdane na kamerata</b> i <b>Skorost na kletchnite animatsii</b> v <b>Nastroyki</b>"
+        ]
+      },
+      {
+        "date": "07.07.2025 g",
+        "items": [
+          "Podobren e nachint, po koyto se zarezhdat <b>skinove</b>, za da stane po-trudno kopiraneto im"
+        ]
+      },
+      {
+        "date": "28.06.2025 g",
+        "items": [
+          "Podobreni <b>identifikatsii</b>, za da ne se promenyat tolkova chesto"
+        ]
+      },
+      {
+        "date": "03.08.2025 g",
+        "items": [
+          "Dobaven e <b>Buton za zaglushavane/vklyuchvane na zvuka na igracha</b>, sega mozhete da <b>zaglushavate/vklyuchvate zvuka</b> na konkretni <b>igrachi</b> ot <b>chat</b>, kato natisnete <b>ikonata za izklyuchvane/vklyuchvane na zvuka</b> do tyakhnoto sobshchenie ili izpolzvate spiska s <b>zaglusheni igrachi</b> v <b>Nastroyki</b>"
+        ]
+      },
+      {
+        "date": "02.03.2025 g",
+        "items": [
+          "Dobaveno e <b>Prevrtane na chata</b>, sega mozhete da prevrtate chrez plzgane na lentata za prevrtane s <kbd>Mishka</kbd> ili s pomoshchta na klavishite <kbd>↑ Strelka nagore</kbd> i <kbd>↓ Strelka nadolu</kbd>"
+        ]
+      },
+      {
+        "date": "01.11.2025 g",
+        "items": [
+          "Dobaven <b>PVP rezhim na igra</b>, koyto vse oshche e v beta versiya",
+          "Dobaveno kvadratche za otmetka <b>Prozrachnost na kletkite</b> v <b>Nastroyki</b>"
+        ]
+      },
+      {
+        "date": "13.10.2024 g",
+        "items": [
+          "Dobaveni sa klavishi <kbd>F</kbd> i <kbd>V</kbd> za uvelichavane i namalyavane",
+          "Dobaven <b>Plzgach za mashchabirane</b> za uvelichavane i namalyavane na mashchaba",
+          "Dobaveno kvadratche za otmetka <b>Pokazvane na plzgacha za mashchabirane</b> v <b>Nastroyki</b>"
+        ]
+      },
+      {
+        "date": "10.10.2024 g",
+        "items": [
+          "Dobaven e buton <b>Izchistvane na chata</b>, za da mozhete da izchistite chata rchno"
+        ]
+      },
+      {
+        "date": "10.01.2024 g",
+        "items": [
+          "Dobaveni <b>Identikoni</b> za po-dobro identifitsirane na priyateli ili vragove, vsyako ustroystvo ima spetsifichna unikalna <b>Ikona</b>",
+          "Dobaveno kvadratche za otmetka <b>Pokazvane na identifikatsii</b> v <b>Nastroyki</b>",
+          "Premakhnati trikove, koito pozvolyavat lesno dublirane na <b>Nikove</b> ili <b>Kozhi</b>"
+        ]
+      },
+      {
+        "date": "16.05.2024 g",
+        "items": [
+          "Korigirano spostavyane na klaviaturata <b>AZERTY</b> sega <kbd>W</kbd> i <kbd>Z</kbd> i dvete <b>Feed</b>",
+          "Promeneno <b>Muti Split</b> na klavish <kbd>C</kbd> vmesto <kbd>Z</kbd>",
+          "Dobaveno kvadratche za otmetka <b>Deaktivirane na senzornite kontroli</b> v <b>Nastroyki</b>"
+        ]
+      },
+      {
+        "date": "15.05.2024 g",
+        "items": [
+          "Popraven e dlgogodishen bg v <b>chat</b>, koyto ne pozvolyavashe ponyakoga da se pokazvat nyakoi sobshcheniya",
+          "Veche mozhete da vidite psevdonimite na <b>Spectator</b>, ako imat edin nabor",
+          "Sega mozhete da natiskate <b>Virusi</b>, kato izkhvrlyate masata na vashata <b>Kletka</b> km <b>Virusite</b>",
+          "Korigirani merki za <b>antispam</b>, za da bdat po-proshchavashchi v <b>chat</b>, sshcho taka povtorno aktivirano <b>postavyane</b> na sobshcheniya",
+          "Dobaveno kvadratche za otmetka <b>Prevklyuchvane na tsyal ekran</b> v <b>Nastroyki</b>",
+          "Vnedreno <b>AutoRespawn</b>, sega avtomatichno shche se porazhdate otnovo, bez da e neobkhodimo da natiskate <b>Play</b> otnovo",
+          "Dobaveno kvadratche za otmetka <b>Toggle AutoRespawn</b> v <b>Nastroyki</b>",
+          "Podobreni <b>Senzorni kontroli</b> za mobilni ustroystva (dobaven <b>Pokazvane na buton za menyu</b>, <b>Buton za tsyal ekran</b>, fiksirano razstoyanie na <b>Razdelen buton</b>, predotvratyavane na plzgane na butoni)"
+        ]
+      },
+      {
+        "date": "14.05.2024 g",
+        "items": [
+          "Razdelyaneto pri izpolzvane na senzorni kontroli izkhvrli malko masa, tozi bg veche e korigiran",
+          "Eject Macro veche raboti, dokato izpolzvate senzorni kontroli",
+          "Podobreni senzorni kontroli za mobilni ustroystva"
+        ]
+      },
+      {
+        "date": "05.10.2024 g",
+        "items": [
+          "Dobaveni sa merki za zashchita ot nezhelana poshcha km chat, zabraneno postavyane na sobshcheniya",
+          "Povtorno aktivirano chrez shchrakvane s desniya buton vrkhu menyutata i v poleto za chat",
+          "Dobavena e vzmozhnost za <b>prevrtane na senzornite kontroli</b> ot dyasnata km lyavata strana v <b>Nastroyki</b>"
+        ]
+      },
+      {
+        "date": "01.05.2024 g",
+        "items": [
+          "Dobavena e reCaptcha v3, za da se predotvrati svrzvaneto na botove <a href=\"https://discord.gg/emupedia-510149138491506688\" target=\"_blank\">(mozhete da dadete otzivi za Discord, ako ne raboti pravilno)</a>",
+          "Aktivirano avtomatichno povtorno svrzvane ss srvra sled restartirane na srvra",
+          "Podobreni senzorni kontroli za mobilni ustroystva"
+        ]
+      },
+      {
+        "date": "03.09.2024 g",
+        "items": [
+          "Dobaven buton <b>Kopirane v klipborda</b> za <b>Tekushcho izbrana kozha</b>",
+          "Uvelichen <b>Razmer na zonata za chat</b>, za da pobere poveche sobshcheniya",
+          "Namaleno <b>Vreme za izchakvane</b> za <b>Kozha za kachvane</b> do 30 sekundi"
+        ]
+      },
+      {
+        "date": "28.02.2024 g",
+        "items": [
+          "Realiziran <b>Touch Joystick</b> za mobilni ustroystva",
+          "Dobaveno kvadratche za otmetka <b>Touch Joystick</b> v <b>Nastroyki</b>",
+          "Kachvaneto na <kbd>gif</kbd> faylove veche ne e razresheno, animatsiyata taka ili inache ne raboti, beshe pokazan samo prviyat kadr"
+        ]
+      },
+      {
+        "date": "24.02.2024 g",
+        "items": [
+          "Vnedrena funktsiya <b>Kachvane na oblozhka</b>"
+        ]
+      },
+      {
+        "date": "20.02.2024 g",
+        "items": [
+          "Dobaveni kvadratcheta za otmetka <b>Individualni klikvaniya na mishkata</b> v <b>Nastroyki</b>",
+          "Dobaven personaliziran instrument za izbor na <b>Tsvyat na fona</b>"
+        ]
+      },
+      {
+        "date": "17.02.2024 g",
+        "items": [
+          "Dobaveno <b>Dvoyno razdelyane</b>, mozhete da izpolzvate <b>Dvoyno razdelyane</b>, kato natisnete <kbd>X</kbd> ili <kbd>Shchraknete s desniya buton</kbd>",
+          "Dobaven <b>Multi Split Macro</b>, mozhete da izpolzvate <b>Multi Split Macro</b>, kato natisnete <kbd>C</kbd> ili <kbd>Sredno shchrakvane</kbd>",
+          "Dobaveno kvadratche za otmetka za prevklyuchvane v <b>Nastroyki</b> za <b>Mnozhestven razdelen makros</b>",
+          "Dobaven e instrument za izbor na <b>psevdonim</b>",
+          "Dobaven e instrument za izbor na <b>Ime na kozhata</b>",
+          "Dobaven personaliziran instrument za izbor na <b>Tsvyat na imeto na kletka</b>",
+          "Dobaven izbor na personaliziran <b>tsvet na fona na kletkata</b>",
+          "Dobaven izbor na personaliziran <b>Tsvyat na ramkata na kletka</b>",
+          "Dobavena <b>Tmna tema</b> za menyuta"
+        ]
+      },
+      {
+        "date": "16.02.2024 g",
+        "items": [
+          "Korigirani proizvolni fonovi tsvetove pri izpolzvane na <b>Jelly Physics</b>",
+          "Dobaven <b>Makro za emisiya</b>, mozhete da izpolzvate <b>Makro za emisiya</b>, kato natisnete <kbd>W</kbd> ili <kbd>Shchraknete s leviya buton</kbd> i postavite otmetka v kvadratcheto <b>Makro za emisiya</b> v <b>Nastroyki</b>",
+          "Dobaveno kvadratche za otmetka za prevklyuchvane v <b>Nastroyki</b> za <b>Makro za emisii</b>",
+          "Dobaven razdel <b>Novini</b>",
+          "Dobaven razdel <b>Geympley</b>",
+          "Vnedreni kozhi, koito zapochvat s <kbd>$</kbd>",
+          "Predotvrateni sintetichni sbitiya, generirani ot inzhektirani skriptove",
+          "Zabranyava vsichki drugi potrebitelski klienti"
+        ]
+      },
+      {
+        "date": "13.06.2023 g",
+        "items": [
+          "Dobaveni sa 1195 lipsvashchi kozhi"
+        ]
+      }
+    ]
+  }
+}

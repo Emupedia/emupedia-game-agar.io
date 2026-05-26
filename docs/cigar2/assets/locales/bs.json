@@ -1,0 +1,353 @@
+{
+  "meta": {
+    "title": "Agar.io v2.0",
+    "description": "Jedite ćelije manje od vas i nemojte da vas pojedu veće, kao MMO"
+  },
+  "chat": {
+    "general": "Generale",
+    "clan": "Klan",
+    "placeholder": "Pritisnite enter za ćaskanje",
+    "clearTitle": "Obriši chat",
+    "zoom": "Zoom"
+  },
+  "gallery": {
+    "skins": "Skinovi"
+  },
+  "lobby": {
+    "title": "Agar.io v2.0",
+    "discordSuggestions": "Pridružite nam se na Discordu ako imate prijedloge",
+    "nickname": "Nadimak",
+    "skin": "Skin",
+    "skinPlaceholder": "Ime kože",
+    "copy": "Kopiraj",
+    "clanName": "Ime klana",
+    "clanPlaceholder": "5 slova max",
+    "createClan": "Kreiraj klan",
+    "leaveClan": "Napusti klan",
+    "copyInvite": "Copy Invite",
+    "gameMode": "Način igre",
+    "play": "Igraj",
+    "chooseSkin": "Odaberite Skin",
+    "uploadSkin": "Upload Skin",
+    "unban": "Unban",
+    "skinCopied": "URL kože kopiran u međuspremnik!"
+  },
+  "settings": {
+    "language": "Jezik",
+    "mutedPlayers": "Muted Players",
+    "mutePlaceholder": "Unesite nadimak da isključite zvuk",
+    "mute": "Mute",
+    "keyboardBindings": "Vezivanje dugmadi na tastaturi",
+    "feed": "Feed:",
+    "split": "Split:",
+    "doubleSplit": "Dvostruki Split:",
+    "multiSplit": "Multi Split:",
+    "zoomIn": "Uvećaj:",
+    "zoomOut": "Umanji:",
+    "minion": "Besplatna kontrola kamere za gledatelje / miniona:",
+    "resetKeys": "Vratite na zadane postavke",
+    "keyRebindHint": "Kliknite na dugme i pritisnite taster da ponovo povežete",
+    "mouseBindings": "Vezivanje dugmeta miša",
+    "leftClick": "Lijevi klik:",
+    "middleClick": "Srednji klik:",
+    "rightClick": "Desni klik:",
+    "resetMouse": "Vratite na zadane postavke",
+    "mouseHint": "Konfigurirajte koju radnju izvodi svako dugme miša",
+    "toggleFullscreen": "Uključi/isključi cijeli ekran",
+    "darkTheme": "Dark Theme",
+    "cameraSmoothing": "Camera Smoothing",
+    "cellAnimationSpeed": "Brzina animacije ćelija",
+    "showSkins": "Cell Skins",
+    "showNames": "Cell Names",
+    "showColor": "Cell Colors",
+    "showMass": "Cell Mass",
+    "slowMassUpdates": "Sporije masovna ažuriranja",
+    "jellyPhysics": "Cell Jelly Physics",
+    "showIdenticon": "Cell Identicons",
+    "fillSkin": "Boja ćelije ispod kože",
+    "showTransparent": "Cell Transparency",
+    "showChat": "Prikaži chat",
+    "showMinimap": "Prikaži minimapu",
+    "showPosition": "Prikaži poziciju",
+    "showBorder": "Prikaži granicu karte",
+    "showGrid": "Prikaži mrežu karte",
+    "backgroundSectors": "Prikaži sektore karte",
+    "moreZoom": "Povećaj umanjivanje",
+    "showZoom": "Prikaži klizač za zumiranje",
+    "playSounds": "Zvuci",
+    "feedMacro": "Feed Macro",
+    "splitMacro": "Split Macro",
+    "leftClickToggle": "Kliknite lijevo",
+    "middleClickToggle": "Srednji klik",
+    "rightClickToggle": "Desni klik",
+    "disableTouchControls": "Onemogućite kontrole dodirom",
+    "useJoystick": "Dodirnite Joystick",
+    "lockMobileButtons": "Zaključavanje mobilnih dugmadi",
+    "resetButtonPositions": "Poništi položaj mobilnih dugmadi",
+    "useWordFilters": "Riječi Cenzura",
+    "autoRespawn": "Uključi AutoRespawn"
+  },
+  "colors": {
+    "background": "Pozadina",
+    "name": "Ime",
+    "color": "Boja",
+    "border": "Granica"
+  },
+  "mouseActions": {
+    "none": "Nema",
+    "feed": "Feed (izbacivanje mase)",
+    "split": "Split",
+    "doubleSplit": "Dvostruki Split",
+    "multiSplit": "Multi Split"
+  },
+  "connecting": {
+    "trying": "Pokušavam povezivanja...",
+    "discord": "Pridružite nam se na Discordu!",
+    "firewall": "Ako ne možete da se povežete sa serverima, proverite da li imate neki antivirus ili zaštitni zid koji blokira vezu.",
+    "multisessionTitle": "Upozorenje o više sesija",
+    "multisessionBody": "Višestruke instance igre nisu dozvoljene.<br />Zatvorite sve ostale instance igre i ponovo učitajte.",
+    "oldBrowserTitle": "Vaš pretraživač je veoma star",
+    "oldBrowserLink": "Molimo kliknite ovdje da ažurirate svoj pretraživač na noviju verziju.",
+    "bannedTitle": "Zabranjeni ste 😭",
+    "bannedBody": "Zabranjeni ste iz igre jer ste prekršili pravila ili slanjem neželjene pošte u chat ili prilikom postavljanja prilagođenih skinova.",
+    "bannedBodyBots": "Zabranjeni ste iz igre jer ste prekršili pravila ili slanjem neželjene e-pošte na chat ili prilikom postavljanja prilagođenih skinova ili zato što koristite botove.",
+    "unbanCode": "Vaš kod za odbranu je"
+  },
+  "errors": {
+    "browserUnsupported": "Vaš pretraživač ne podržava potrebne funkcije, ažurirajte svoj pretraživač.",
+    "nicknameRequired": "Unesite nadimak za igru.",
+    "nicknameMinLength": "Nadimak treba najmanje {min} znakova",
+    "nicknameDisallowed": "Ovaj nadimak nije dozvoljen. Molimo odaberite drugi nadimak."
+  },
+  "muted": {
+    "empty": "Nema isključenih igrača",
+    "unmute": "Uključi zvuk"
+  },
+  "keys": {
+    "pressKey": "Pritisnite tipku..."
+  },
+  "gameplay": {
+    "rulesTitle": "Pravila",
+    "rule1": "Ne postavljajte zabranjene prilagođene skinove, pogotovo ako je nečije lice, možete dobiti zabranu vašeg skina ili vas iz igre.",
+    "rule2": "Ne koristite nadimke drugih ljudi u chatu ili kao svoje ime na pogrdan način, možete biti isključeni ili izbačeni iz igre.",
+    "gameplayTitle": "Igranje",
+    "controlsIntro": "Pomjerite <kbd>MIŠ</kbd> / <kbd>TOUCH</kbd> da kontrolirate svoju ćeliju<br /><kbd></kbd>Točak miša<kbd id=\"key-zoomin-display\"> ili </kbd>F<kbd id=\"key-zoomout-display\"> i </kbd>V Zoomout-display /Prethodno zumiranje<br /> <kbd id=\"key-feed-display\">W</kbd> ili <kbd>Kliknite lijevom tipkom</kbd> za izbacivanje mase<br />Pritisnite <kbd id=\"key-split-display\">SPACE</kbd> da podijelite ćeliju jednom<br />Pritisnite <kbd id=\"key-doublesplit-display\"> </kbd>Desni klik<kbd> da izvršite dvostruko razdvajanje</kbd>Pritisnite <br />C<kbd id=\"key-multisplit-display\"> ili </kbd>Srednji klik<kbd> da izvršite višestruko razdvajanje</kbd>",
+    "objective": "<b>Cilj:</b> Cilj Agar.io je da raste vaše ćelije konzumiranjem manjih ćelija i izbegavanjem većih. Kako rastete, postat ćete moćniji i moći ćete konzumirati još veće ćelije.",
+    "startingOut": "<b>Početak:</b> Kada se prvi put pridružite igri, počet ćete kao mala ćelija. Krećite se mišem kako biste prikupili šarene kuglice razbacane po karti. Jedenje peleta povećava vašu veličinu i masu.",
+    "movement": "<b>Kretanje:</b> Da pomjerite svoju ćeliju, jednostavno pomjerite kursor miša ili koristite ekran osjetljiv na dodir pomicanjem u smjeru u kojem želite da vaša ćelija ide. Vaša ćelija će pratiti kretanje vašeg kursora miša na ekranu.",
+    "consumeSmaller": "<b>Potroši manje ćelije:</b> Pazite na manje ćelije koje lutaju u blizini. Kako rastete, moći ćete da progutate ove manje ćelije kako biste povećali svoju masu. Pristupite im strateški kako biste izbjegli da ih pojedu veće ćelije.",
+    "avoidLarger": "<b>Izbjegavajte veće ćelije:</b> Budite oprezni s većim ćelijama, jer vas mogu pojesti ako ste manji od njih. Pazite na igrače koji se podijele kako bi uhvatili manje ćelije i pokušajte predvidjeti njihove pokrete kako biste ostali sigurni.",
+    "splitting": "<b>Razdvajanje:</b> Svoju ćeliju možete podijeliti na više manjih dijelova pritiskom na <kbd>SPACE</kbd>. Koristite ovu taktiku da uhvatite manje ćelije ili da pobjegnete iz većih. Također možete napraviti višestruke podjele pritiskom na <kbd>X</kbd> ili <kbd>Z</kbd>. Zapamtite, razdvajanje vas takođe čini ranjivijim, pa ga koristite mudro.",
+    "ejectingMass": "<b>Izbacivanje mase:</b> Dok izbacivanje mase pritiskom na <kbd>W</kbd> ili <kbd>lijevim klikom</kbd> može biti korisno, isto tako dolazi sa rizicima. Izbačenu masu mogu potrošiti drugi igrači, uključujući potencijalne rivale. Uz to, izbacivanje mase smanjuje ukupnu veličinu vaše ćelije, što vas može učiniti ranjivijim da vas prožmu veće ćelije.",
+    "teamPlay": "<b>Timska igra (opciono):</b> U timskom modu, možete sarađivati ​​s drugim igračima kako biste dominirali na tabeli. Udružite se s prijateljima ili drugim igračima da nadmašite svoje protivnike i zajedno osvojite igru.",
+    "growDominate": "<b>Rasti i dominiraj:</b> Kako konzumirate manje ćelije i izbjegavate da budete pojedeni, vaša ćelija će nastaviti rasti u veličini. Ciljajte da postanete najveća ćelija na serveru i dominirate na tabeli.",
+    "viruses": "<b>Pazite na viruse:</b> Na mapi ćete naići na zelene šiljaste krugove poznate kao virusi. Izbjegavajte sudare s njima, jer oni mogu podijeliti vašu ćeliju na manje komade ako ste veći od njih. Hranjenje virusa svojom masom iz jednog smjera će uzrokovati njihovo razmnožavanje u suprotnom smjeru.",
+    "beStrategic": "<b>Budite strateški:</b> Agar.io je jednako o strategiji koliko i o vještini. Obratite pažnju na svoje okruženje, predvidite poteze svojih protivnika i koristite taktike poput podjele i mudrog spajanja kako biste nadmudrili svoje rivale.<hr />",
+    "closing": "To je to za osnove Agar.io! Sada je vrijeme da uskočite u igru ​​i počnete rasti svoju ćeliju kako biste postali najveći i najdominantniji igrač na serveru.",
+    "goodLuck": "Sretno i zabavite se!"
+  },
+  "news": {
+    "title": "Vijesti",
+    "entries": [
+      {
+        "date": "21.05.2026",
+        "items": [
+          "Poboljšane performanse renderiranja <b>Imena ćelija</b>, <b>Cell Mass</b> i <b>Cell Jelly Physics</b> kada su omogućene u <b>Postavke</b>",
+          "Dodano <b>Sporija masovna ažuriranja</b> u <b>Postavke</b> s klizačem za kontrolu učestalosti osvježavanja masovnih brojeva (prevlačenjem klizača udesno znači manje ažuriranja)"
+        ]
+      },
+      {
+        "date": "05.01.2026",
+        "items": [
+          "<b>Nadimci</b> sada moraju imati najmanje <b>3 znaka</b>",
+          "Dodato je opciono <b>Cenzura riječi</b> za <b>Chat</b> i <b>Nadimke</b>, omogućeno je po defaultu, <u>možete ga onemogućiti, ali se onda nemojte žaliti na <a style=\"font-weight: bolder;\" href=\"https://discord.gg/emupedia-510149138491506688\" target=\"_blank\">Nesloga</a> o tome da su ljudi otrovni</u>",
+          "Ispravljeno <b>Prebacivanje slobodne kamere za gledatelja</b>, sada se možete prebaciti s automatskog praćenja igrača na slobodnu kameru ispravno u načinu rada za gledatelja"
+        ]
+      },
+      {
+        "date": "19.11.2025",
+        "items": [
+          "<b>Nadimci</b> su sada <b>Obavezni</b> više ne možete imati prazne <b>Nadimke</b>",
+          "<b>Poboljšana funkcija isključivanja zvuka igrača</b> sada će <b>isključi zvuk</b> pokušati razlikovati <b>igrače</b> s istim <b>nadimkom</b> i pokušati <b>isključiti zvuk</b> samo onog koji želite"
+        ]
+      },
+      {
+        "date": "18/11/2025",
+        "items": [
+          "Dodani <b>Zumiraj</b> i <b>Smanji</b> mobilni gumbi, možete prebaciti <b>Prikaži klizač zumiranja</b> na <b>Prikaži</b> ili <b>Sakrij</b> ih u <b>Postavke</b>",
+          "<b>Poboljšano prilagođavanje položaja mobilnih dugmadi</b>, sada možete <b>tapnuti</b> na 3 sekunde bilo koje dugme da ga pomerate",
+          "Dodano <b>Reset Mobile Buttons Positions</b> u <b>Postavke</b> ako želite resetirati <b>Mobilne Buttons</b> na <b>Default</b> pozicije",
+          "Dodano <b>Zaključavanje dugmadi za mobilne uređaje</b> u <b>Postavke</b> ako ovo označite ne možete pomicati dugmad",
+          "Uklonjene <b>Flip Touch kontrole</b> iz <b>Postavke</b> (više nisu potrebne, sada možete premještati dugmad gdje god želite)"
+        ]
+      },
+      {
+        "date": "28/10/2025",
+        "items": [
+          "Dodano prilagodljivo <b>dugme tastature</b> i <b>dugmad miša</b> u <b>Postavke</b>",
+          "Dodano <b>Uglađivanje kamere</b> i <b>Brzina animacije ćelije</b> u <b>Postavke</b>"
+        ]
+      },
+      {
+        "date": "07.07.2025",
+        "items": [
+          "Poboljšan način na koji se <b>skinovi</b> učitavaju kako bi ih bilo teže kopirati"
+        ]
+      },
+      {
+        "date": "28/06/2025",
+        "items": [
+          "Poboljšani <b>Identikoni</b> da se ne mijenjaju tako često"
+        ]
+      },
+      {
+        "date": "03.08.2025",
+        "items": [
+          "Dodano <b>Dugme za isključivanje/uključivanje zvuka igrača</b> sada možete <b>Isključiti/Uključiti</b> određene <b>Igrače</b> iz <b>Chata</b> pritiskom na ikonu <b>Isključi/Uključi zvuk</b> pored njihove poruke ili korištenjem liste <b>Isključeni igrači</b> u <b></b> Postavkama"
+        ]
+      },
+      {
+        "date": "03.02.2025",
+        "items": [
+          "Dodano <b>Chat Scroll</b>, sada možete pomicati ili povlačenjem trake za pomicanje pomoću <kbd>miša</kbd> ili korištenjem tipki <kbd>↑ Strelica gore</kbd> i <kbd>↓ Strelica dolje</kbd>"
+        ]
+      },
+      {
+        "date": "01.11.2025",
+        "items": [
+          "Dodan <b>PVP način igre</b> koji je još uvijek u beta verziji",
+          "Dodano polje za potvrdu <b>Transparentnost ćelije</b> u <b>Postavke</b>"
+        ]
+      },
+      {
+        "date": "13/10/2024",
+        "items": [
+          "Dodani <kbd>F</kbd> i <kbd>V</kbd> tasteri za uvećanje i smanjenje",
+          "Dodan <b>Klizač za zumiranje</b> za povećanje i smanjenje",
+          "Dodano polje za potvrdu <b>Prikaži klizač zumiranja</b> u <b>Postavke</b>"
+        ]
+      },
+      {
+        "date": "10.10.2024",
+        "items": [
+          "Dodano dugme <b>Obriši chat</b>, tako da možete ručno izbrisati chat"
+        ]
+      },
+      {
+        "date": "01/10/2024",
+        "items": [
+          "Dodani <b>Identikoni</b> za bolje prepoznavanje prijatelja ili neprijatelja, svaki uređaj ima specifičnu jedinstvenu <b>ikonu</b>",
+          "Dodano polje za potvrdu <b>Prikaži identitete</b> u <b>Postavke</b>",
+          "Uklonjeni trikovi koji omogućavaju da se lako dupliciraju <b>Nicks</b> ili <b>skinovi</b>"
+        ]
+      },
+      {
+        "date": "16/05/2024",
+        "items": [
+          "Ispravljeno <b>AZERTY</b> mapiranje tastature sada <kbd>W</kbd> i <kbd>Z</kbd> oba <b>Feed</b>",
+          "Promijenjeno <b>Muti Split</b> u tipku <kbd>C</kbd> umjesto <kbd>Z</kbd>",
+          "Dodan potvrdni okvir <b>Onemogući kontrole dodirom</b> u <b>Postavke</b>"
+        ]
+      },
+      {
+        "date": "15/05/2024",
+        "items": [
+          "Ispravljena je dugogodišnja greška u <b>Čatu</b> koja je ponekad sprečavala prikazivanje nekih poruka",
+          "Sada možete vidjeti <b>Spectatorove</b> nadimke ako imaju jedan skup",
+          "Sada možete gurati <b>Viruse</b> tako što ćete izbaciti masu vaše <b>Ćelije</b> prema <b>Virusima</b>",
+          "Prilagođene mjere <b>AntiSpam</b> da budu popustljive u <b>Chatu</b>, također ponovo omogućeno <b>Ljepljenje</b> poruka",
+          "Dodano polje za potvrdu <b>Uključi cijeli ekran</b> u <b>Postavke</b>",
+          "Implementirano <b>AutoRespawn</b>, sada ćete se automatski ponovno pojavljivati ​​bez potrebe da ponovo pritisnete <b>Play</b>",
+          "Dodan potvrdni okvir <b>Toggle AutoRespawn</b> u <b>Postavke</b>",
+          "Poboljšane <b>Kontrole dodirom</b> za mobilne uređaje (dodato <b>Taster za prikaz menija</b>, <b>Dugme za cijeli ekran</b>, fiksna udaljenost <b>Podijeljenog dugmeta</b>, spriječiti prevlačenje dugmadi)"
+        ]
+      },
+      {
+        "date": "14/05/2024",
+        "items": [
+          "Razdvajanje tijekom korištenja Touch kontrola izbacilo je malo mase, ova greška je sada ispravljena",
+          "Eject Macro sada radi dok koristite kontrole na dodir",
+          "Poboljšane kontrole dodirom za mobilne uređaje"
+        ]
+      },
+      {
+        "date": "10/05/2024",
+        "items": [
+          "Dodane su mere zaštite od neželjene pošte u ćaskanje, onemogućeno lepljenje poruka",
+          "Ponovo omogućeno desnim klikom na menije i u okviru za ćaskanje",
+          "Dodata mogućnost <b>okretanja dodirnih kontrola</b> s desne strane na lijevu stranu u <b>Postavke</b>"
+        ]
+      },
+      {
+        "date": "01.05.2024",
+        "items": [
+          "Dodan reCaptcha v3 kako bi se spriječilo povezivanje botova <a href=\"https://discord.gg/emupedia-510149138491506688\" target=\"_blank\">(možete dati neke povratne informacije o Discordu ako ne radi ispravno)</a>",
+          "Omogućeno automatsko ponovno povezivanje sa serverom nakon ponovnog pokretanja servera",
+          "Poboljšane kontrole dodirom za mobilne uređaje"
+        ]
+      },
+      {
+        "date": "09/03/2024",
+        "items": [
+          "Dodano dugme <b>Kopiraj u međuspremnik</b> za <b>Trenutno odabranu masku</b>",
+          "Povećana <b>Veličina područja za ćaskanje</b> da stane više poruka",
+          "Smanjeno <b>Vrijeme čekanja</b> za <b>Skinu za otpremanje</b> na 30 sekundi"
+        ]
+      },
+      {
+        "date": "28/02/2024",
+        "items": [
+          "Implementiran <b>Touch Joystick</b> za mobilni",
+          "Dodano polje za potvrdu <b>Touch Joystick</b> u <b>Postavke</b>",
+          "Učitavanje <kbd>gif</kbd> fajlova više nije dozvoljeno, animacija ionako nije radila, samo je prikazan prvi kadar"
+        ]
+      },
+      {
+        "date": "24/02/2024",
+        "items": [
+          "Implementirana funkcija <b>Upload Skin</b>"
+        ]
+      },
+      {
+        "date": "20/02/2024",
+        "items": [
+          "Dodani su okviri za potvrdu <b>Pojedinačni klikovi mišem</b> u <b>Postavke</b>",
+          "Dodan prilagođeni birač <b>Boje pozadine</b>"
+        ]
+      },
+      {
+        "date": "17/02/2024",
+        "items": [
+          "Dodano <b>Double Split</b>, možete koristiti <b>Double Split</b> pritiskom na <kbd>X</kbd> ili <kbd>desnim klikom</kbd>",
+          "Dodan <b>Multi Split Macro</b>, možete koristiti <b>Multi Split Macro</b> pritiskom na <kbd>C</kbd> ili <kbd>Srednji klik</kbd>",
+          "Dodan potvrdni okvir za uključivanje/isključivanje u <b>Postavke</b> za <b>Multi Split Macro</b>",
+          "Dodan birač <b>Nadimak</b>",
+          "Dodan birač <b>Naziv kože</b>",
+          "Dodan prilagođeni birač <b>Boja imena ćelije</b>",
+          "Dodan je prilagođeni birač <b>Boja pozadine ćelije</b>",
+          "Dodan prilagođeni birač <b>Boja granice ćelije</b>",
+          "Dodata <b>Tamna tema</b> za menije"
+        ]
+      },
+      {
+        "date": "16/02/2024",
+        "items": [
+          "Ispravljene nasumične boje pozadine kada se koristi <b>Jelly Physics</b>",
+          "Dodan je <b>Makro sažetka sadržaja</b>, možete koristiti <b>Makro feeda</b> tako što ćete pritisnuti <kbd>W</kbd> ili <kbd>lijevim klikom</kbd> i označiti <b>Makro sažetka sadržaja</b> u <b>Postavke</b>",
+          "Dodan je potvrdni okvir za uključivanje/isključivanje u <b>Postavke</b> za <b>Makro sažetka sadržaja</b>",
+          "Dodan odjeljak <b>Novosti</b>",
+          "Dodan odjeljak <b>Gameplay</b>",
+          "Implementirani skinovi koji počinju sa <kbd>$</kbd>",
+          "Spriječeni sintetički događaji generirani umetnutim skriptama",
+          "Zabranjeni svi drugi prilagođeni klijenti"
+        ]
+      },
+      {
+        "date": "13.6.2023",
+        "items": [
+          "Dodano 1195 nedostajućih skinova"
+        ]
+      }
+    ]
+  }
+}

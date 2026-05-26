@@ -1,0 +1,353 @@
+{
+  "meta": {
+    "title": "Agar.io v2.0",
+    "description": "Coma células menores que você e não seja comido pelas maiores, como um MMO"
+  },
+  "chat": {
+    "general": "Geral",
+    "clan": "Clã",
+    "placeholder": "Pressione Enter para conversar",
+    "clearTitle": "Limpar bate-papo",
+    "zoom": "Zoom"
+  },
+  "gallery": {
+    "skins": "Peles"
+  },
+  "lobby": {
+    "title": "Agar.io v2.0",
+    "discordSuggestions": "Junte-se a nós no Discord se tiver sugestões",
+    "nickname": "Apelido",
+    "skin": "Pele",
+    "skinPlaceholder": "Nome da pele",
+    "copy": "Copiar",
+    "clanName": "Nome do Clã",
+    "clanPlaceholder": "5 letras no máximo",
+    "createClan": "Criar clã",
+    "leaveClan": "Sair do clã",
+    "copyInvite": "Copiar convite",
+    "gameMode": "Modo de jogo",
+    "play": "Jogar",
+    "chooseSkin": "Escolha a pele",
+    "uploadSkin": "Carregar skin",
+    "unban": "Desbanir",
+    "skinCopied": "URL do skin copiado para a área de transferência!"
+  },
+  "settings": {
+    "language": "Idioma",
+    "mutedPlayers": "Jogadores silenciados",
+    "mutePlaceholder": "Digite o apelido para silenciar",
+    "mute": "Mudo",
+    "keyboardBindings": "Vinculações de botões do teclado",
+    "feed": "Alimentação:",
+    "split": "Divisão:",
+    "doubleSplit": "Divisão Dupla:",
+    "multiSplit": "Divisão múltipla:",
+    "zoomIn": "Ampliar:",
+    "zoomOut": "Diminuir zoom:",
+    "minion": "Câmera de espectador / controle de Minion grátis:",
+    "resetKeys": "Redefinir para os padrões",
+    "keyRebindHint": "Clique em um botão e pressione uma tecla para religar",
+    "mouseBindings": "Vinculações de botão do mouse",
+    "leftClick": "Clique esquerdo:",
+    "middleClick": "Clique do meio:",
+    "rightClick": "Clique com o botão direito:",
+    "resetMouse": "Redefinir para os padrões",
+    "mouseHint": "Configure qual ação cada botão do mouse executa",
+    "toggleFullscreen": "Alternar tela cheia",
+    "darkTheme": "Tema escuro",
+    "cameraSmoothing": "Suavização de câmera",
+    "cellAnimationSpeed": "Velocidade das animações celulares",
+    "showSkins": "Peles celulares",
+    "showNames": "Nomes de células",
+    "showColor": "Cores das células",
+    "showMass": "Massa Celular",
+    "slowMassUpdates": "Atualizações em massa mais lentas",
+    "jellyPhysics": "Física da Geléia Celular",
+    "showIdenticon": "Identicons de células",
+    "fillSkin": "Cor das células sob a pele",
+    "showTransparent": "Transparência celular",
+    "showChat": "Mostrar bate-papo",
+    "showMinimap": "Mostrar minimapa",
+    "showPosition": "Mostrar posição",
+    "showBorder": "Mostrar borda do mapa",
+    "showGrid": "Mostrar grade do mapa",
+    "backgroundSectors": "Mostrar setores do mapa",
+    "moreZoom": "Aumento de redução de zoom",
+    "showZoom": "Mostrar controle deslizante de zoom",
+    "playSounds": "Sons",
+    "feedMacro": "Macro de alimentação",
+    "splitMacro": "Macro dividida",
+    "leftClickToggle": "Clique esquerdo",
+    "middleClickToggle": "Clique do meio",
+    "rightClickToggle": "Clique com o botão direito",
+    "disableTouchControls": "Desativar controles de toque",
+    "useJoystick": "Joystick de toque",
+    "lockMobileButtons": "Bloquear botões móveis",
+    "resetButtonPositions": "Redefinir as posições dos botões móveis",
+    "useWordFilters": "Censura de palavras",
+    "autoRespawn": "Alternar AutoRespawn"
+  },
+  "colors": {
+    "background": "Plano de fundo",
+    "name": "Nome",
+    "color": "Cor",
+    "border": "Fronteira"
+  },
+  "mouseActions": {
+    "none": "Nenhum",
+    "feed": "Alimentação (Ejetar Massa)",
+    "split": "Dividir",
+    "doubleSplit": "Divisão Dupla",
+    "multiSplit": "Divisão múltipla"
+  },
+  "connecting": {
+    "trying": "Tentando conectar...",
+    "discord": "Junte-se a nós no Discord!",
+    "firewall": "Caso não consiga se conectar aos servidores, verifique se há algum antivírus ou firewall bloqueando a conexão.",
+    "multisessionTitle": "Aviso multisessão",
+    "multisessionBody": "Não são permitidas múltiplas instâncias de jogo.<br />Feche todas as outras instâncias de jogo e recarregue.",
+    "oldBrowserTitle": "Seu navegador é muito antigo",
+    "oldBrowserLink": "Clique aqui para atualizar seu navegador para uma versão mais recente.",
+    "bannedTitle": "Você está banido 😭",
+    "bannedBody": "Você foi banido do jogo porque violou as regras ao enviar spam no bate-papo ou ao enviar skins personalizadas.",
+    "bannedBodyBots": "Você foi banido do jogo porque violou as regras, enviando spam no bate-papo ou enviando skins personalizadas ou porque está usando bots.",
+    "unbanCode": "Seu código de cancelamento é"
+  },
+  "errors": {
+    "browserUnsupported": "Seu navegador não oferece suporte aos recursos necessários. Atualize seu navegador.",
+    "nicknameRequired": "Por favor, digite um apelido para jogar.",
+    "nicknameMinLength": "O apelido precisa de pelo menos {min} caracteres",
+    "nicknameDisallowed": "Este apelido não é permitido. Escolha um apelido diferente."
+  },
+  "muted": {
+    "empty": "Nenhum jogador silenciado",
+    "unmute": "Ativar som"
+  },
+  "keys": {
+    "pressKey": "Pressione uma tecla..."
+  },
+  "gameplay": {
+    "rulesTitle": "Regras",
+    "rule1": "Não carregue skins personalizadas proibidas, especialmente se for o rosto de alguém, você pode ter sua skin banida ou você mesmo ser banido do jogo.",
+    "rule2": "Não use apelidos de outras pessoas no chat ou como seu nome de forma depreciativa, pois você pode ser silenciado ou banido do jogo.",
+    "gameplayTitle": "Jogabilidade",
+    "controlsIntro": "Mova seu <kbd>MOUSE</kbd> / <kbd>TOUCH</kbd> para controlar seu celular<br /><kbd>Roda do mouse</kbd> ou <kbd id=\"key-zoomin-display\">F</kbd> e <kbd id=\"key-zoomout-display\">V</kbd> para aumentar e diminuir o zoom<br />Pressione <kbd id=\"key-feed-display\">W</kbd> ou <kbd>clique esquerdo</kbd> para ejetar massa<br />Pressione <kbd id=\"key-split-display\">ESPAÇO</kbd> para dividir sua célula uma vez<br />Pressione <kbd id=\"key-doublesplit-display\">X</kbd> ou <kbd>clique com o botão direito</kbd> para fazer um Divisão dupla<br />Pressione <kbd id=\"key-multisplit-display\">C</kbd> ou <kbd>Clique do meio</kbd> para fazer uma divisão múltipla",
+    "objective": "<b>Objetivo:</b> O objetivo do Agar.io é fazer crescer sua célula consumindo células menores e evitando as maiores. À medida que você cresce, você se tornará mais formidável e será capaz de consumir células ainda maiores.",
+    "startingOut": "<b>Começando:</b> Ao entrar no jogo pela primeira vez, você começará como uma pequena célula. Mova-se usando o mouse para coletar as bolinhas coloridas espalhadas pelo mapa. Comer pellets aumenta seu tamanho e massa.",
+    "movement": "<b>Movimento:</b> Para mover sua célula, basta mover o cursor do mouse ou usar a tela sensível ao toque, movendo-se na direção desejada para a célula. Sua célula seguirá o movimento do cursor do mouse na tela.",
+    "consumeSmaller": "<b>Consumir células menores:</b> fique atento às células menores circulando nas proximidades. À medida que você cresce, você será capaz de engolir essas células menores para aumentar sua massa. Aproxime-se deles estrategicamente para evitar ser comido por células maiores.",
+    "avoidLarger": "<b>Evite células maiores:</b> Tenha cuidado com células maiores, pois elas podem consumir você se você for menor que elas. Cuidado com os jogadores que se dividem para capturar células menores e tente antecipar seus movimentos para se manterem seguros.",
+    "splitting": "<b>Divisão:</b> Você pode dividir sua célula em vários pedaços menores pressionando <kbd>ESPAÇO</kbd>. Use esta tática para capturar células menores ou para escapar das maiores. Você também pode fazer divisões múltiplas pressionando <kbd>X</kbd> ou <kbd>Z</kbd>. Lembre-se de que a divisão também o torna mais vulnerável, portanto, use-a com sabedoria.",
+    "ejectingMass": "<b>Ejetar massa:</b> Embora ejetar massa pressionando <kbd>W</kbd> ou <kbd>Clique esquerdo</kbd> possa ser benéfico, também traz riscos. A massa ejetada pode ser consumida por outros jogadores, incluindo rivais em potencial. Além disso, a ejeção de massa reduz o tamanho geral da célula, o que pode torná-lo mais vulnerável ao consumo de células maiores.",
+    "teamPlay": "<b>Jogo em equipe (opcional):</b> No modo equipe, você pode colaborar com outros jogadores para dominar a tabela de classificação. Junte-se a amigos ou outros jogadores para superar seus oponentes e conquistar o jogo juntos.",
+    "growDominate": "<b>Crescer e dominar:</b> À medida que você consome células menores e evita ser comido, sua célula continuará a crescer em tamanho. Procure se tornar a maior célula do servidor e dominar a tabela de classificação.",
+    "viruses": "<b>Cuidado com os vírus:</b> Em todo o mapa, você encontrará círculos pontiagudos verdes conhecidos como vírus. Evite colidir com eles, pois eles podem dividir sua célula em pedaços menores se você for maior que eles. Alimentar sua massa com vírus em uma direção fará com que eles se multipliquem na direção oposta.",
+    "beStrategic": "<b>Seja Estratégico:</b> Agar.io tem tanto a ver com estratégia quanto com habilidade. Preste atenção ao que está ao seu redor, antecipe os movimentos de seus oponentes e use táticas como dividir e fundir com sabedoria para ser mais esperto que seus rivais.<hr />",
+    "closing": "É isso o básico do Agar.io! Agora é hora de entrar no jogo e começar a desenvolver sua célula para se tornar o maior e mais dominante jogador do servidor.",
+    "goodLuck": "Boa sorte e divirta-se!"
+  },
+  "news": {
+    "title": "Notícias",
+    "entries": [
+      {
+        "date": "21/05/2026",
+        "items": [
+          "Melhor desempenho de renderização de <b>Nomes de células</b>, <b>Massa celular</b> e <b>Física de gelatina celular</b> quando ativados em <b>Configurações</b>",
+          "Adicionadas <b>Atualizações em massa mais lentas</b> em <b>Configurações</b> com um controle deslizante para controlar a frequência com que os números em massa são atualizados (arrastar o controle deslizante para a direita significa menos atualizações)"
+        ]
+      },
+      {
+        "date": "01/05/2026",
+        "items": [
+          "<b>Os apelidos</b> agora precisam ter pelo menos <b>3 caracteres</b>",
+          "Adicionada <b>Censura de palavras</b> opcional para <b>Bate-papo</b> e <b>Apelidos</b>, ela está habilitada por padrão, <u>você pode desabilitá-la, mas não reclame em <a style=\"font-weight: bolder;\" href=\"https://discord.gg/emupedia-510149138491506688\" target=\"_blank\">Discórdia</a> sobre pessoas serem tóxicas</u>",
+          "Corrigida a <b>Alternância de Câmera Livre do Espectador</b>, agora você pode alternar entre o Seguimento Automático de jogadores e a Câmera Livre corretamente no modo Espectador."
+        ]
+      },
+      {
+        "date": "19/11/2025",
+        "items": [
+          "<b>Apelidos</b> agora são <b>Obrigatórios</b>, você não pode mais ter <b>Apelidos</b> vazios",
+          "<b>Função melhorada para silenciar o player</b> agora o <b>Mute</b> tentará diferenciar entre <b>jogadores</b> com o mesmo <b>apelido</b> e tentará <b>silenciar</b> apenas aquele que você deseja"
+        ]
+      },
+      {
+        "date": "18/11/2025",
+        "items": [
+          "Adicionados botões móveis <b>Aumentar</b> e <b>Diminuir zoom</b>, você pode alternar <b>Mostrar controle deslizante de zoom</b> para <b>Mostrar</b> ou <b>Ocultar</b> em <b>Configurações</b>",
+          "<b>Personalização aprimorada da posição dos botões para celular</b>, agora você pode <b>tocar</b> por 3 segundos em qualquer botão para movê-lo",
+          "Adicionado <b>Redefinir posições dos botões do celular</b> em <b>Configurações</b> se você quiser redefinir os <b>Botões do celular</b> para as posições <b>Padrão</b>",
+          "Adicionado <b>Bloquear botões do celular</b> em <b>Configurações</b>. Se você marcar esta opção, não poderá mover os botões",
+          "Removido o <b>Flip Touch Controls</b> das <b>Configurações</b> (não é mais necessário, agora você pode mover os botões para onde quiser)"
+        ]
+      },
+      {
+        "date": "28/10/2025",
+        "items": [
+          "Adicionados <b>botões de teclado</b> e <b>botões de mouse</b> personalizáveis em <b>Configurações</b>",
+          "Adicionados <b>Suavização de câmera</b> e <b>Velocidade de animações de células</b> em <b>Configurações</b>"
+        ]
+      },
+      {
+        "date": "07/07/2025",
+        "items": [
+          "Foi melhorado o modo como os <b>skins</b> são carregados para dificultar sua cópia"
+        ]
+      },
+      {
+        "date": "28/06/2025",
+        "items": [
+          "<b>Identicons</b> aprimorados para não mudar com tanta frequência"
+        ]
+      },
+      {
+        "date": "03/08/2025",
+        "items": [
+          "Adicionado o <b>Botão Ativar/Ativar som do jogador</b>. Agora você pode <b>Ativar/Ativar som</b> de <b>Jogadores</b> específicos no <b>Bate-papo</b> pressionando o <b>Ícone Ativar/Ativar som</b> ao lado da mensagem ou usando a lista de <b>Jogadores silenciados</b> em <b>Configurações</b>"
+        ]
+      },
+      {
+        "date": "02/03/2025",
+        "items": [
+          "Adicionado <b>Rolagem de bate-papo</b>, você pode rolar agora arrastando a barra de rolagem com o <kbd>Mouse</kbd> ou usando as teclas <kbd>↑Seta para cima</kbd> e <kbd>↓ Seta para baixo</kbd>"
+        ]
+      },
+      {
+        "date": "01/11/2025",
+        "items": [
+          "Adicionado <b>modo de jogo PVP</b> ainda em beta",
+          "Adicionada caixa de seleção <b>Transparência da célula</b> em <b>Configurações</b>"
+        ]
+      },
+      {
+        "date": "13/10/2024",
+        "items": [
+          "Adicionadas teclas <kbd>F</kbd> e <kbd>V</kbd> para aumentar e diminuir o zoom",
+          "Adicionado <b>Zoom Slider</b> para aumentar e diminuir o zoom",
+          "Adicionada caixa de seleção <b>Mostrar controle deslizante de zoom</b> em <b>Configurações</b>"
+        ]
+      },
+      {
+        "date": "10/10/2024",
+        "items": [
+          "Adicionado botão <b>Limpar bate-papo</b>, para que você possa limpar o bate-papo manualmente"
+        ]
+      },
+      {
+        "date": "10/01/2024",
+        "items": [
+          "Adicionados <b>identicons</b> para melhor identificar amigos ou inimigos, cada dispositivo tem um <b>ícone</b> exclusivo e específico",
+          "Adicionada caixa de seleção <b>Mostrar Identicons</b> em <b>Configurações</b>",
+          "Removemos truques que permitem duplicar <b>Nicks</b> ou <b>Skins</b> facilmente"
+        ]
+      },
+      {
+        "date": "16/05/2024",
+        "items": [
+          "Correção do mapeamento do teclado <b>AZERTY</b> agora <kbd>W</kbd> e <kbd>Z</kbd> ambos <b>Feed</b>",
+          "Alterado <b>Muti Split</b> para a tecla <kbd>C</kbd> em vez de <kbd>Z</kbd>",
+          "Adicionada caixa de seleção <b>Desativar controles de toque</b> em <b>Configurações</b>"
+        ]
+      },
+      {
+        "date": "15/05/2024",
+        "items": [
+          "Corrigido um bug antigo no <b>Bate-papo</b> que às vezes impedia a exibição de algumas mensagens",
+          "Agora você pode ver os apelidos do <b>Espectador</b> se eles tiverem um definido",
+          "Agora você pode enviar <b>Vírus</b> ejetando a massa da sua <b>Célula</b> em direção aos <b>Vírus</b>",
+          "Medidas de <b>AntiSpam</b> ajustadas para serem mais indulgentes no <b>Bate-papo</b>, também reativadas mensagens de <b>Colar</b>",
+          "Adicionada caixa de seleção <b>Alternar tela inteira</b> em <b>Configurações</b>",
+          "Implementado o <b>AutoRespawn</b>, agora você irá reaparecer automaticamente sem precisar pressionar <b>Play</b> novamente",
+          "Adicionada caixa de seleção <b>Alternar AutoRespawn</b> em <b>Configurações</b>",
+          "<b>Controles de toque</b> aprimorados para dispositivos móveis (adicionados <b>Mostrar botão de menu</b>, <b>Botão de tela cheia</b>, distância fixa do <b>Botão de divisão</b>, evitando arrastar botões)"
+        ]
+      },
+      {
+        "date": "14/05/2024",
+        "items": [
+          "A divisão ao usar os controles de toque ejetou um pouco de massa, esse bug agora foi corrigido",
+          "Ejetar macro agora funciona ao usar controles de toque",
+          "Controles de toque aprimorados para dispositivos móveis"
+        ]
+      },
+      {
+        "date": "05/10/2024",
+        "items": [
+          "Adicionadas medidas antiSpam ao Chat, desativada a colagem de mensagens",
+          "Reativado usando o botão direito nos menus e na caixa de bate-papo",
+          "Adicionada possibilidade de <b>Inverter os controles de toque</b> do lado direito para o esquerdo em <b>Configurações</b>"
+        ]
+      },
+      {
+        "date": "01/05/2024",
+        "items": [
+          "Adicionado reCaptcha v3 para evitar que bots se conectem <a href=\"https://discord.gg/emupedia-510149138491506688\" target=\"_blank\">(você pode dar algum feedback sobre o Discord se ele não estiver funcionando corretamente)</a>",
+          "Habilitada a reconexão automática ao servidor após a reinicialização do servidor",
+          "Controles de toque aprimorados para dispositivos móveis"
+        ]
+      },
+      {
+        "date": "03/09/2024",
+        "items": [
+          "Adicionado o botão <b>Copiar para a área de transferência</b> para o <b>Tema atual selecionado</b>",
+          "Aumento do <b>tamanho da área de bate-papo</b> para acomodar mais mensagens",
+          "<b>Tempo de espera</b> para <b>carregar skin</b> reduzido para 30 segundos"
+        ]
+      },
+      {
+        "date": "28/02/2024",
+        "items": [
+          "Implementado o <b>Touch Joystick</b> para dispositivos móveis",
+          "Adicionada caixa de seleção <b>Touch Joystick</b> em <b>Configurações</b>",
+          "O upload de arquivos <kbd>gif</kbd> não é mais permitido, a animação não funcionou de qualquer maneira, apenas o primeiro quadro foi mostrado"
+        ]
+      },
+      {
+        "date": "24/02/2024",
+        "items": [
+          "Recurso <b>Upload Skin</b> implementado"
+        ]
+      },
+      {
+        "date": "20/02/2024",
+        "items": [
+          "Adicionadas caixas de seleção para alternar <b>Cliques individuais do mouse</b> em <b>Configurações</b>",
+          "Adicionado seletor personalizado de <b>Cor de fundo</b>"
+        ]
+      },
+      {
+        "date": "17/02/2024",
+        "items": [
+          "Adicionado <b>Double Split</b>, você pode usar <b>Double Split</b> pressionando <kbd>X</kbd> ou <kbd>Clique com o botão direito</kbd>",
+          "Adicionado <b>Multi Split Macro</b>, você pode usar <b>Multi Split Macro</b> pressionando <kbd>C</kbd> ou <kbd>Clique do Meio</kbd>",
+          "Adicionada caixa de seleção de alternância em <b>Configurações</b> para <b>Multi Split Macro</b>",
+          "Adicionado seletor de <b>Apelido</b>",
+          "Adicionado seletor de <b>Nome da skin</b>",
+          "Adicionado seletor personalizado de <b>Cor do nome da célula</b>",
+          "Adicionado seletor personalizado de <b>Cor de fundo da célula</b>",
+          "Adicionado seletor personalizado de <b>Cor da borda da célula</b>",
+          "Adicionado <b>Tema Escuro</b> para menus"
+        ]
+      },
+      {
+        "date": "16/02/2024",
+        "items": [
+          "Corrigidas cores de fundo aleatórias ao usar <b>Jelly Physics</b>",
+          "Adicionado <b>Feed Macro</b>, você pode usar <b>Feed Macro</b> pressionando <kbd>W</kbd> ou <kbd>Clique esquerdo</kbd> e marcando a caixa de seleção <b>Feed Macro</b> em <b>Configurações</b>",
+          "Adicionada caixa de seleção de alternância em <b>Configurações</b> para <b>Macro de feed</b>",
+          "Adicionada seção de <b>Notícias</b>",
+          "Adicionada seção <b>Jogabilidade</b>",
+          "Skins implementadas que começam com <kbd>$</kbd>",
+          "Eventos sintéticos evitados gerados por scripts injetados",
+          "Todos os outros clientes personalizados não foram permitidos"
+        ]
+      },
+      {
+        "date": "13/06/2023",
+        "items": [
+          "Adicionadas 1195 skins faltantes"
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,353 @@
+{
+  "meta": {
+    "title": "Agar.io v2.0",
+    "description": "Syö itseäsi pienempiä soluja, äläkä joudu syömään isompia MMO:na"
+  },
+  "chat": {
+    "general": "Kenraali",
+    "clan": "Klaani",
+    "placeholder": "Paina enteriä keskustellaksesi",
+    "clearTitle": "Tyhjennä chat",
+    "zoom": "Zoomaa"
+  },
+  "gallery": {
+    "skins": "Skinit"
+  },
+  "lobby": {
+    "title": "Agar.io v2.0",
+    "discordSuggestions": "Liity meihin Discordissa, jos sinulla on ehdotuksia",
+    "nickname": "Lempinimi",
+    "skin": "Iho",
+    "skinPlaceholder": "Ihon nimi",
+    "copy": "Kopioida",
+    "clanName": "Klaanin nimi",
+    "clanPlaceholder": "5 kirjainta max",
+    "createClan": "Luo klaani",
+    "leaveClan": "Poistu klaanista",
+    "copyInvite": "Kopioi kutsu",
+    "gameMode": "Pelitila",
+    "play": "Pelata",
+    "chooseSkin": "Valitse Skin",
+    "uploadSkin": "Lataa Skin",
+    "unban": "Poista porttikielto",
+    "skinCopied": "Skin URL kopioitu leikepöydälle!"
+  },
+  "settings": {
+    "language": "Kieli",
+    "mutedPlayers": "Mykistetut pelaajat",
+    "mutePlaceholder": "Anna lempinimi mykistääksesi",
+    "mute": "Mykistä",
+    "keyboardBindings": "Näppäimistön painikkeiden sidokset",
+    "feed": "Syöte:",
+    "split": "Jakaa:",
+    "doubleSplit": "Kaksoisjako:",
+    "multiSplit": "Monijako:",
+    "zoomIn": "Lähennä:",
+    "zoomOut": "Loitonna:",
+    "minion": "Ilmainen katsojakamera / Minion Control:",
+    "resetKeys": "Palauta oletusarvoihin",
+    "keyRebindHint": "Napsauta painiketta ja paina näppäintä sitoaksesi uudelleen",
+    "mouseBindings": "Hiiren painikkeiden sidokset",
+    "leftClick": "Vasen napsautus:",
+    "middleClick": "Keskimmäinen napsautus:",
+    "rightClick": "Napsauta hiiren kakkospainikkeella:",
+    "resetMouse": "Palauta oletusarvoihin",
+    "mouseHint": "Määritä, mitä toimintoa kukin hiiren painike suorittaa",
+    "toggleFullscreen": "Koko näyttö päälle/pois",
+    "darkTheme": "Tumma teema",
+    "cameraSmoothing": "Kameran tasoitus",
+    "cellAnimationSpeed": "Solun animaatioiden nopeus",
+    "showSkins": "Solun nahat",
+    "showNames": "Solujen nimet",
+    "showColor": "Solun värit",
+    "showMass": "Solumassa",
+    "slowMassUpdates": "Hitaammat massapäivitykset",
+    "jellyPhysics": "Soluhyytelöfysiikka",
+    "showIdenticon": "Solujen tunnisteet",
+    "fillSkin": "Soluväri ihon alla",
+    "showTransparent": "Solun läpinäkyvyys",
+    "showChat": "Näytä chat",
+    "showMinimap": "Näytä minikartta",
+    "showPosition": "Näytä sijainti",
+    "showBorder": "Näytä kartan reuna",
+    "showGrid": "Näytä karttaruudukko",
+    "backgroundSectors": "Näytä karttasektorit",
+    "moreZoom": "Loitonna lisäys",
+    "showZoom": "Näytä zoomausliukusäädin",
+    "playSounds": "Äänet",
+    "feedMacro": "Syötteen makro",
+    "splitMacro": "Jaettu makro",
+    "leftClickToggle": "Vasen napsautus",
+    "middleClickToggle": "Keskimmäinen napsautus",
+    "rightClickToggle": "Napsauta hiiren kakkospainikkeella",
+    "disableTouchControls": "Poista kosketusohjaimet käytöstä",
+    "useJoystick": "Kosketa Joystick",
+    "lockMobileButtons": "Lukitse mobiilipainikkeet",
+    "resetButtonPositions": "Palauta mobiilipainikkeiden paikat",
+    "useWordFilters": "Sanat sensuuri",
+    "autoRespawn": "Ota AutoRespawn käyttöön"
+  },
+  "colors": {
+    "background": "Tausta",
+    "name": "Nimi",
+    "color": "Väri",
+    "border": "Raja"
+  },
+  "mouseActions": {
+    "none": "Ei mitään",
+    "feed": "Syötä (poistaa massa)",
+    "split": "Jakaa",
+    "doubleSplit": "Double Split",
+    "multiSplit": "Multi Split"
+  },
+  "connecting": {
+    "trying": "Yritetään yhdistää...",
+    "discord": "Liity meihin Discordissa!",
+    "firewall": "Jos et saa yhteyttä palvelimiin, tarkista, onko sinulla virustorjunta tai palomuuri, joka estää yhteyden.",
+    "multisessionTitle": "Moniistuntovaroitus",
+    "multisessionBody": "Useita peliesiintymiä ei sallita.<br />Sulje kaikki muut peliinstanssit ja lataa uudelleen.",
+    "oldBrowserTitle": "Selaimesi on erittäin vanha",
+    "oldBrowserLink": "Napsauta tätä päivittääksesi selaimesi uudempaan versioon.",
+    "bannedTitle": "Olet bannattu 😭",
+    "bannedBody": "Sinut on kielletty pelistä, koska rikoit sääntöjä joko lähettäessäsi roskapostia chatissa tai lataaessasi mukautettuja skinejä.",
+    "bannedBodyBots": "Sinut on kielletty pelistä, koska rikoit sääntöjä joko lähettäessäsi roskapostia chatissa tai lataaessasi mukautettuja skinejä tai koska käytät botteja.",
+    "unbanCode": "Unban-koodisi on"
+  },
+  "errors": {
+    "browserUnsupported": "Selaimesi ei tue vaadittuja ominaisuuksia, päivitä selaimesi.",
+    "nicknameRequired": "Anna lempinimi pelataksesi.",
+    "nicknameMinLength": "Lempinimessä on oltava vähintään {min} merkkiä",
+    "nicknameDisallowed": "Tämä lempinimi ei ole sallittu. Valitse toinen lempinimi."
+  },
+  "muted": {
+    "empty": "Ei mykistettyjä pelaajia",
+    "unmute": "Poista mykistys"
+  },
+  "keys": {
+    "pressKey": "Paina näppäintä..."
+  },
+  "gameplay": {
+    "rulesTitle": "säännöt",
+    "rule1": "Älä lataa kiellettyjä mukautettuja skinejä, varsinkin jos kyseessä ovat jonkun kasvot, saatat saada skinisi pelikiellon tai itsesi pelikiellon.",
+    "rule2": "Älä käytä muiden ihmisten lempinimiä chatissa tai nimenäsi halventavasti, sillä saatat saada mykistyksen tai pelikiellon.",
+    "gameplayTitle": "Pelin kulku",
+    "controlsIntro": "Siirrä <kbd>HIIRTÄ</kbd> / <kbd>KOSKETTA</kbd> ohjataksesi soluasi<br /><kbd></kbd>hiiren pyörää<kbd id=\"key-zoomin-display\"> tai </kbd>F<kbd id=\"key-zoomout-display\"> ja </kbd> <br />V<kbd id=\"key-feed-display\"> </kbd>V<kbd> id=\"key-feed-display\">W</kbd> tai <br />vasen napsautus<kbd id=\"key-split-display\"> poistaaksesi massan</kbd>Paina <br />VÄLINÄPPÄIN<kbd id=\"key-doublesplit-display\"> jakaaksesi solun kerran</kbd>Paina <kbd> tai </kbd>R<br />X tai<kbd id=\"key-multisplit-display\"> tee kaksoisjako</kbd>paina <kbd>C</kbd> tai ",
+    "objective": "<b>Tavoite:</b> Agar.io:n tavoitteena on kasvattaa soluasi kuluttamalla pienempiä soluja ja välttämällä suurempia. Kasvatessasi sinusta tulee pelottavampi ja pystyt kuluttamaan entistä suurempia soluja.",
+    "startingOut": "<b>Aloitus:</b> Kun liityt peliin ensimmäisen kerran, aloitat pienenä soluna. Liiku hiirellä kerätäksesi värikkäitä pellettejä hajallaan kartalla. Pellettien syöminen lisää kokoasi ja massaasi.",
+    "movement": "<b>Liike:</b> Jos haluat siirtää soluasi, siirrät hiiren osoitinta tai käytät kosketusnäyttöäsi liikkumalla siihen suuntaan, johon haluat solun siirtyvän. Solusi seuraa hiiren osoittimen liikettä näytöllä.",
+    "consumeSmaller": "<b>Käytä pienempiä soluja:</b> Pidä silmällä lähellä olevia pienempiä soluja. Kun kasvat suuremmaksi, pystyt nielemään nämä pienemmät solut kasvattaaksesi massaasi. Lähesty niitä strategisesti, jotta suuremmat solut eivät syö niitä.",
+    "avoidLarger": "<b>Vältä suurempia soluja:</b> Varo suurempia soluja, koska ne voivat kuluttaa sinua, jos olet pienempi kuin ne. Varo pelaajia, jotka eroavat vangitakseen pienempiä soluja, ja yritä ennakoida heidän liikkeitään pysyäkseen turvassa.",
+    "splitting": "<b>Jakaminen:</b> Voit jakaa solun useisiin pienempiin osiin painamalla <kbd>VÄLINÄPPÄIN</kbd>. Käytä tätä taktiikkaa vangitaksesi pienempiä soluja tai paetaksesi suurempia. Voit myös tehdä useita jakoja painamalla <kbd>X</kbd> tai <kbd>Z</kbd>. Muista, että jakaminen tekee sinusta myös haavoittuvamman, joten käytä sitä viisaasti.",
+    "ejectingMass": "<b>Massan poistaminen:</b> Vaikka massan poistaminen painamalla <kbd>W</kbd>- tai <kbd>vasen napsautus</kbd> voi olla hyödyllistä, mutta siihen liittyy myös riskejä. Muut pelaajat, mukaan lukien mahdolliset kilpailijat, voivat kuluttaa ulos heitetyn massan. Lisäksi massan poistaminen pienentää solusi kokonaiskokoa, mikä voi tehdä sinusta alttiimman suuremmille soluille.",
+    "teamPlay": "<b>Joukkuepeli (valinnainen):</b> Joukkuetilassa voit tehdä yhteistyötä muiden pelaajien kanssa hallitaksesi tulostaulukkoa. Yhdistä ystävien tai muiden pelaajien kanssa voittaaksesi vastustajasi ja valloittaaksesi pelin yhdessä.",
+    "growDominate": "<b>Kasvaa ja hallitse:</b> Kun kulutat pienempiä soluja ja vältät syömistä, solusi koko kasvaa edelleen. Pyri olemaan palvelimen suurin solu ja hallitsemaan tulostaulukkoa.",
+    "viruses": "<b>Varo viruksia:</b> Kaikkialla kartalla kohtaat vihreitä piikkirenkaita, jotka tunnetaan viruksina. Vältä törmäämästä näihin, koska ne voivat jakaa solusi pienemmiksi paloiksi, jos olet niitä suurempi. Virusten ruokkiminen massaasi suunnasta saa ne lisääntymään vastakkaiseen suuntaan.",
+    "beStrategic": "<b>Ole strateginen:</b> Agar.io on yhtä paljon strategiasta kuin taidosta. Kiinnitä huomiota ympäristöösi, ennakoi vastustajiesi liikkeitä ja käytä viisaita taktiikoita, kuten jakamista ja yhdistämistä, jotta voit ovelaa kilpailijasi älykkäämmin.<hr />",
+    "closing": "Siinä kaikki Agar.io:n perusteet! Nyt on aika hypätä peliin ja aloittaa solun kasvattaminen palvelimen suurimmaksi ja hallitsevimmaksi pelaajaksi.",
+    "goodLuck": "Onnea, ja pidä hauskaa!"
+  },
+  "news": {
+    "title": "Uutiset",
+    "entries": [
+      {
+        "date": "21.5.2026",
+        "items": [
+          "Parannettu <b>solujen nimet</b>, <b>solumassa</b> ja <b>solujen hyytelöfysiikka</b> renderöintisuorituskykyä, kun ne on otettu käyttöön <b>asetuksissa</b>.",
+          "<b>Asetuksiin</b> lisätty <b>hitaammat massapäivitykset</b>, jossa on liukusäädin, jolla ohjataan massalukujen päivittymisväliä (liukusäätimen vetäminen oikealle tarkoittaa pienempiä päivityksiä)"
+        ]
+      },
+      {
+        "date": "5.1.2026",
+        "items": [
+          "<b>Lempinimien</b> on nyt oltava vähintään <b>3 merkkiä</b>",
+          "Lisätty valinnainen <b>sanasensuuri</b> <b>chatille</b> ja <b>lempinimille</b>, se on oletuksena käytössä, <u>voit poistaa sen käytöstä, mutta älä sitten valittaa <a style=\"font-weight: bolder;\" href=\"https://discord.gg/emupedia-510149138491506688\" target=\"_blank\">Eiriita</a> ihmisten myrkyllisyydestä</u>",
+          "Korjattu <b>Katsojien vapaan kameran vaihto</b>, nyt voit vaihtaa automaattisesti seuraamisesta pelaajien vapaaseen kameraan oikein katsojatilassa"
+        ]
+      },
+      {
+        "date": "19.11.2025",
+        "items": [
+          "<b>Lempinimet</b> ovat nyt <b>pakollisia</b> sinulla ei voi enää olla tyhjiä <b>lempinimiä</b>",
+          "<b>Parannettu soittimen mykistystoiminto</b> nyt <b>Mute</b> yrittää erottaa <b>pelaajista</b>, joilla on sama <b>nimimerkki</b> ja yrittää <b>mykistää</b> juuri haluamasi"
+        ]
+      },
+      {
+        "date": "18.11.2025",
+        "items": [
+          "Lisätyt <b>Lähennä</b>- ja <b>Loitonna</b>-painikkeet, voit vaihtaa <b>Näytä zoomauksen liukusäädin</b>-asetukseksi <b>Näytä</b> tai <b>Piilota</b> ne <b>Asetuksissa</b>.",
+          "<b>Parannettu mobiilipainikkeiden sijainnin mukauttaminen</b>, nyt voit <b>napauttaa</b> 3 sekunnin ajan mitä tahansa painiketta siirtääksesi sitä.",
+          "Lisätty <b>Nollaa mobiilipainikkeiden sijainnit</b> <b>asetuksiin</b>, jos haluat palauttaa <b>mobiilipainikkeet</b> <b>oletusasentoihin</b>",
+          "<b>Lukitse mobiilipainikkeet</b> lisätty <b>asetuksiin</b>, jos valitset tämän, et voi siirtää painikkeita",
+          "<b>Flip Touch Controls</b> poistettiin <b>Asetuksista</b> (ei enää tarpeen, voit nyt siirtää painikkeet minne haluat)"
+        ]
+      },
+      {
+        "date": "28.10.2025",
+        "items": [
+          "Lisätty muokattavat <b>näppäimistön painikkeet</b> ja <b>hiiren painikkeet</b> <b>Asetuksiin</b>",
+          "Lisätty <b>Kameran tasoitus</b> ja <b>soluanimaatioiden nopeus</b> <b>Asetuksiin</b>"
+        ]
+      },
+      {
+        "date": "7.7.2025",
+        "items": [
+          "<b>Skinien</b> lataustapoja on parannettu, jotta niiden kopiointi on vaikeampaa"
+        ]
+      },
+      {
+        "date": "28.6.2025",
+        "items": [
+          "Parannetut <b>tunnisteet</b>, jotta ne eivät muutu niin usein"
+        ]
+      },
+      {
+        "date": "8.3.2025",
+        "items": [
+          "Lisätty <b>Soittimen mykistys/poista mykistyspainike</b>. Voit nyt <b>mykistää/poistaa mykistyksen</b> tietyt <b>pelaajat</b> <b>chatista</b> painamalla <b>Mykistys-/Poista mykistys -kuvaketta</b> heidän viestin vieressä tai käyttämällä <b>Mykistetyt pelaajat</b> -luetteloa <b>Asetuksissa</b>."
+        ]
+      },
+      {
+        "date": "3.2.2025",
+        "items": [
+          "Lisätty <b>Chat Scroll</b>, voit vierittää nyt joko vetämällä vierityspalkkia <kbd>hiirellä</kbd> tai käyttämällä <kbd>↑ Nuoli ylös</kbd> ja <kbd>↓ Nuoli alas</kbd> näppäimiä."
+        ]
+      },
+      {
+        "date": "11.1.2025",
+        "items": [
+          "Lisätty <b>PVP-pelitila</b>, joka on edelleen beta-vaiheessa",
+          "Lisätty <b>Solun läpinäkyvyys</b> -valintaruutu <b>Asetuksiin</b>"
+        ]
+      },
+      {
+        "date": "13.10.2024",
+        "items": [
+          "Lisätty <kbd>F</kbd>- ja <kbd>V</kbd>-näppäimet lähentää ja loitontaa",
+          "Lisätty <b>Zoomausliukusäädin</b> lähentämään ja loitontaaksesi",
+          "Lisätty <b>Näytä zoomauksen liukusäädin</b> -valintaruutu <b>Asetuksiin</b>"
+        ]
+      },
+      {
+        "date": "10.10.2024",
+        "items": [
+          "Lisätty <b>Poista keskustelu</b> -painike, jotta voit tyhjentää keskustelun manuaalisesti"
+        ]
+      },
+      {
+        "date": "10.1.2024",
+        "items": [
+          "Lisätty <b>tunnisteita</b> ystävien tai vihollisten tunnistamiseksi paremmin. Jokaisella laitteella on oma ainutlaatuinen <b>kuvake</b>",
+          "Lisätty <b>Näytä tunnisteet</b> -valintaruutu <b>Asetuksiin</b>",
+          "Poistettu temppuja, joiden avulla <b>Nickit</b> tai <b>Skins</b> on helppo kopioida"
+        ]
+      },
+      {
+        "date": "16.5.2024",
+        "items": [
+          "Korjattu <b>AZERTY</b>-näppäimistökartoitus nyt <kbd>W</kbd> ja <kbd>Z</kbd>, molemmat <b>syöte</b>",
+          "<b>Muti Split</b> muutettiin avaimeksi <kbd>C</kbd> <kbd>Z</kbd>:n sijaan.",
+          "Lisätty <b>Asetuksiin</b> -valintaruutu <b>Poista kosketusohjaimet käytöstä</b>"
+        ]
+      },
+      {
+        "date": "15.5.2024",
+        "items": [
+          "Korjattu <b>Chatissa</b> ollut pitkäaikainen virhe, joka esti joidenkin viestien näyttämisen toisinaan",
+          "Voit nyt nähdä <b>Katsojien</b> lempinimet, jos heillä on yksi sarja",
+          "Nyt voit työntää <b>viruksia</b> poistamalla <b>solusi</b> massan <b>viruksia</b> kohti",
+          "Muokattu <b>AntiSpam</b> on anteeksiantavampi <b>Chatissa</b>, ja myös viestien <b>liittäminen</b> on otettu uudelleen käyttöön",
+          "Lisätty <b>Vaihda koko näyttö</b> -valintaruutu <b>Asetuksiin</b>",
+          "Toteutettu <b>AutoRespawn</b>, nyt syntyisi automaattisesti uudelleen ilman, että sinun tarvitsee painaa <b>Play</b> uudelleen",
+          "<b>Asetuksiin</b> lisättiin <b>Toggle AutoRespawn</b> -valintaruutu",
+          "Parannetut <b>kosketusohjaimet</b> mobiililaitteille (lisätty <b>Näytä valikkopainike</b>, <b>koko näytön painike</b>, kiinteä <b>jaetun painikkeen</b> etäisyys, estetään painikkeiden vetäminen)"
+        ]
+      },
+      {
+        "date": "14.5.2024",
+        "items": [
+          "Kosketusohjaimia käytettäessä jakaminen poisti hieman massaa, tämä virhe on nyt korjattu",
+          "Eject Macro toimii nyt kosketusohjaimien käytön aikana",
+          "Parannetut kosketusohjaimet mobiililaitteille"
+        ]
+      },
+      {
+        "date": "5.10.2024",
+        "items": [
+          "Roskapostin esto lisätty Chatiin, viestien liittäminen poistettu käytöstä",
+          "Otetaan uudelleen käyttöön napsauttamalla hiiren kakkospainikkeella valikot ja Chat Box",
+          "Lisätty mahdollisuus <b>Kääntää kosketusohjaimia</b> oikealta puolelta vasemmalle <b>Asetuksissa</b>"
+        ]
+      },
+      {
+        "date": "1.5.2024",
+        "items": [
+          "Lisätty reCaptcha v3 estämään robotteja yhdistämästä <a href=\"https://discord.gg/emupedia-510149138491506688\" target=\"_blank\">(voit antaa palautetta Discordista, jos se ei toimi kunnolla)</a>",
+          "Automaattinen yhteyden muodostaminen palvelimeen otettu käyttöön palvelimen uudelleenkäynnistyksen jälkeen",
+          "Parannetut kosketusohjaimet mobiililaitteille"
+        ]
+      },
+      {
+        "date": "9.3.2024",
+        "items": [
+          "Lisätty <b>Kopioi leikepöydälle</b> -painike <b>nykyiselle valitulle ulkoasulle</b>",
+          "Suurempi <b>chat-alueen kokoa</b>, jotta se mahtuu enemmän viestejä",
+          "<b>Latausskin</b> <b>odotusaika</b> lyhennetty 30 sekuntiin"
+        ]
+      },
+      {
+        "date": "28.2.2024",
+        "items": [
+          "Toteutettu <b>Touch Joystick</b> mobiililaitteille",
+          "Lisätty <b>Touch Joystick</b> -valintaruutu <b>Asetuksiin</b>",
+          "<kbd>gif</kbd>-tiedostojen lataaminen ei ole enää sallittua, animaatio ei kuitenkaan toiminut, vain ensimmäinen kehys näytettiin"
+        ]
+      },
+      {
+        "date": "24.2.2024",
+        "items": [
+          "Otettu käyttöön <b>Upload Skin</b> -ominaisuus"
+        ]
+      },
+      {
+        "date": "20.2.2024",
+        "items": [
+          "Lisätty <b>Yksittäiset hiiren napsautukset</b> -valintaruudut <b>Asetuksiin</b>",
+          "Lisätty mukautettu <b>taustavärin</b> valitsin"
+        ]
+      },
+      {
+        "date": "17.2.2024",
+        "items": [
+          "Lisätty <b>kaksoisjako</b>, voit käyttää <b>kaksoisjakoa</b> painamalla <kbd>X</kbd> tai <kbd>oikea napsautus</kbd>.",
+          "Lisätty <b>Multi Split Macro</b>, voit käyttää <b>Multi Split Macroa</b> painamalla <kbd>C</kbd> tai <kbd>Keskiklikkaus</kbd>",
+          "Lisätty valintaruutu <b>Asetuksiin</b> <b>Multi Split Macro</b>",
+          "Lisätty <b>Lempinimen</b>-valitsin",
+          "Lisätty <b>Ihon nimen</b> -valitsin",
+          "Lisätty mukautettu <b>solun nimen väri</b> -valitsin",
+          "Lisätty mukautettu <b>solun taustavärin</b> valitsin",
+          "Lisätty mukautettu <b>solun reunuksen väri</b> -valitsin",
+          "Lisätty <b>tumma teema</b> valikoihin"
+        ]
+      },
+      {
+        "date": "16.2.2024",
+        "items": [
+          "Korjattu satunnaisia ​​taustavärejä käytettäessä <b>Jelly Physics</b>",
+          "Lisätty <b>Syötemakro</b>, voit käyttää <b>Syötemakroa</b> painamalla <kbd>W</kbd> tai <kbd>vasen klikkaus</kbd> ja valitsemalla <b>Syötemakro</b>-valintaruutu <b>Asetuksissa</b>.",
+          "Lisätty vaihtovalintaruutu <b>Asetuksiin</b> <b>Syötemakrolle</b>",
+          "Lisätty <b>Uutiset</b>-osio",
+          "Lisätty <b>Pelaaminen</b>-osio",
+          "Toteutetut skinit, joiden alussa on <kbd>$</kbd>",
+          "Estetty lisättyjen komentosarjojen luomat synteettiset tapahtumat",
+          "Kaikki muut mukautetut asiakkaat estetty"
+        ]
+      },
+      {
+        "date": "13.6.2023",
+        "items": [
+          "Lisätty 1195 puuttuvaa skiniä"
+        ]
+      }
+    ]
+  }
+}

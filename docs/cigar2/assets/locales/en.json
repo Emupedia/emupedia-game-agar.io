@@ -1,0 +1,353 @@
+{
+  "meta": {
+    "title": "Agar.io v2.0",
+    "description": "Eat cells smaller than you and don't get eaten by the bigger ones, as an MMO"
+  },
+  "chat": {
+    "general": "General",
+    "clan": "Clan",
+    "placeholder": "Press enter to chat",
+    "clearTitle": "Clear chat",
+    "zoom": "Zoom"
+  },
+  "gallery": {
+    "skins": "Skins"
+  },
+  "lobby": {
+    "title": "Agar.io v2.0",
+    "discordSuggestions": "Join us on Discord if you have suggestions",
+    "nickname": "Nickname",
+    "skin": "Skin",
+    "skinPlaceholder": "Skin Name",
+    "copy": "Copy",
+    "clanName": "Clan Name",
+    "clanPlaceholder": "5 letters max",
+    "createClan": "Create Clan",
+    "leaveClan": "Leave Clan",
+    "copyInvite": "Copy Invite",
+    "gameMode": "Game Mode",
+    "play": "Play",
+    "chooseSkin": "Choose Skin",
+    "uploadSkin": "Upload Skin",
+    "unban": "Unban",
+    "skinCopied": "Skin URL Copied to Clipboard!"
+  },
+  "settings": {
+    "language": "Language",
+    "mutedPlayers": "Muted Players",
+    "mutePlaceholder": "Enter nickname to mute",
+    "mute": "Mute",
+    "keyboardBindings": "Keyboard Button Bindings",
+    "feed": "Feed:",
+    "split": "Split:",
+    "doubleSplit": "Double Split:",
+    "multiSplit": "Multi Split:",
+    "zoomIn": "Zoom In:",
+    "zoomOut": "Zoom Out:",
+    "minion": "Free Spectator Camera / Minion Control:",
+    "resetKeys": "Reset to Defaults",
+    "keyRebindHint": "Click a button and press a key to rebind",
+    "mouseBindings": "Mouse Button Bindings",
+    "leftClick": "Left Click:",
+    "middleClick": "Middle Click:",
+    "rightClick": "Right Click:",
+    "resetMouse": "Reset to Defaults",
+    "mouseHint": "Configure what action each mouse button performs",
+    "toggleFullscreen": "Toggle Fullscreen",
+    "darkTheme": "Dark Theme",
+    "cameraSmoothing": "Camera Smoothing",
+    "cellAnimationSpeed": "Cell Animations Speed",
+    "showSkins": "Cell Skins",
+    "showNames": "Cell Names",
+    "showColor": "Cell Colors",
+    "showMass": "Cell Mass",
+    "slowMassUpdates": "Slower Mass Updates",
+    "jellyPhysics": "Cell Jelly Physics",
+    "showIdenticon": "Cell Identicons",
+    "fillSkin": "Cell Color Under Skin",
+    "showTransparent": "Cell Transparency",
+    "showChat": "Show Chat",
+    "showMinimap": "Show Minimap",
+    "showPosition": "Show Position",
+    "showBorder": "Show Map Border",
+    "showGrid": "Show Map Grid",
+    "backgroundSectors": "Show Map Sectors",
+    "moreZoom": "Zoom Out Increase",
+    "showZoom": "Show Zoom Slider",
+    "playSounds": "Sounds",
+    "feedMacro": "Feed Macro",
+    "splitMacro": "Split Macro",
+    "leftClickToggle": "Left Click",
+    "middleClickToggle": "Middle Click",
+    "rightClickToggle": "Right Click",
+    "disableTouchControls": "Disable Touch Controls",
+    "useJoystick": "Touch Joystick",
+    "lockMobileButtons": "Lock Mobile Buttons",
+    "resetButtonPositions": "Reset Mobile Buttons Positions",
+    "useWordFilters": "Words Censorship",
+    "autoRespawn": "Toggle AutoRespawn"
+  },
+  "colors": {
+    "background": "Background",
+    "name": "Name",
+    "color": "Color",
+    "border": "Border"
+  },
+  "mouseActions": {
+    "none": "None",
+    "feed": "Feed (Eject Mass)",
+    "split": "Split",
+    "doubleSplit": "Double Split",
+    "multiSplit": "Multi Split"
+  },
+  "connecting": {
+    "trying": "Trying to connect...",
+    "discord": "Join us on Discord!",
+    "firewall": "If you cannot connect to the servers, check if you have some antivirus or firewall blocking the connection.",
+    "multisessionTitle": "Multisession Warning",
+    "multisessionBody": "Multiple game instances are not allowed.<br />Close all other game instances and reload.",
+    "oldBrowserTitle": "Your Browser is very Old",
+    "oldBrowserLink": "Please click here to update your Browser to a newer version.",
+    "bannedTitle": "You are banned 😭",
+    "bannedBody": "You are banned from the game because you broke the rules either spamming the chat or while uploading custom skins.",
+    "bannedBodyBots": "You are banned from the game because you broke the rules either spamming the chat or while uploading custom skins or because you are using bots.",
+    "unbanCode": "Your unban code is"
+  },
+  "errors": {
+    "browserUnsupported": "Your browser does not support required features, please update your browser.",
+    "nicknameRequired": "Please enter a nickname to play.",
+    "nicknameMinLength": "Nickname needs at least {min} characters",
+    "nicknameDisallowed": "This nickname is not allowed. Please choose a different nickname."
+  },
+  "muted": {
+    "empty": "No Muted Players",
+    "unmute": "Unmute"
+  },
+  "keys": {
+    "pressKey": "Press a key..."
+  },
+  "gameplay": {
+    "rulesTitle": "Rules",
+    "rule1": "Don't upload forbbiden custom skins, especially if it's someone's face, you might get your skin banned or yourself banned from the game.",
+    "rule2": "Don't use other people's nicknames in chat or as your name in a derogatory way, you might get muted or banned from the game.",
+    "gameplayTitle": "Gameplay",
+    "controlsIntro": "Move your <kbd>MOUSE</kbd> / <kbd>TOUCH</kbd> to control your Cell<br /><kbd>Mouse Wheel</kbd> or <kbd id=\"key-zoomin-display\">F</kbd> and <kbd id=\"key-zoomout-display\">V</kbd> to Zoom in and out<br />Press <kbd id=\"key-feed-display\">W</kbd> or <kbd>Left Click</kbd> to Eject Mass<br />Press <kbd id=\"key-split-display\">SPACE</kbd> to Split your Cell once<br />Press <kbd id=\"key-doublesplit-display\">X</kbd> or <kbd>Right Click</kbd> to do a Double Split<br />Press <kbd id=\"key-multisplit-display\">C</kbd> or <kbd>Middle Click</kbd> to do a Multi Split",
+    "objective": "<b>Objective:</b> The objective of Agar.io is to grow your cell by consuming smaller cells and avoiding larger ones. As you grow, you'll become more formidable and be able to consume even larger cells.",
+    "startingOut": "<b>Starting Out:</b> When you first join the game, you'll start as a small cell. Move around using your mouse to collect the colorful pellets scattered across the map. Eating pellets increases your size and mass.",
+    "movement": "<b>Movement:</b> To move your cell, you simply move your mouse cursor or use your touch screen by moving in the direction you want your cell to go. Your cell will follow the movement of your mouse cursor on the screen.",
+    "consumeSmaller": "<b>Consume Smaller Cells:</b> Keep an eye out for smaller cells roaming nearby. As you grow larger, you'll be able to engulf these smaller cells to increase your mass. Approach them strategically to avoid being eaten by larger cells.",
+    "avoidLarger": "<b>Avoid Larger Cells:</b> Be cautious of larger cells, as they can consume you if you're smaller than they. Watch out for players who split to capture smaller cells, and try to anticipate their movements to stay safe.",
+    "splitting": "<b>Splitting:</b> You can split your cell into multiple smaller pieces by pressing <kbd>SPACE</kbd>. Use this tactic to capture smaller cells or to escape from larger ones. You can also do a multiple splits by pressing <kbd>X</kbd> or <kbd>Z</kbd>. Remember, splitting also makes you more vulnerable, so use it wisely.",
+    "ejectingMass": "<b>Ejecting Mass:</b> While ejecting mass by pressing the <kbd>W</kbd> or <kbd>Left Click</kbd> can be beneficial, it also comes with risks. Ejected mass can be consumed by other players, including potential rivals. Additionally, ejecting mass reduces your cell's overall size, which may make you more vulnerable to being consumed by larger cells.",
+    "teamPlay": "<b>Team Play (Optional):</b> In team mode, you can collaborate with other players to dominate the leaderboard. Team up with friends or other players to outmaneuver your opponents and conquer the game together.",
+    "growDominate": "<b>Grow and Dominate:</b> As you consume smaller cells and avoid being eaten, your cell will continue to grow in size. Aim to become the largest cell on the server and dominate the leaderboard.",
+    "viruses": "<b>Watch Out for Viruses:</b> Throughout the map, you'll encounter green spiky circles known as viruses. Avoid colliding with these, as they can split your cell into smaller pieces if you're larger than they. Feeding viruses your mass from a direction will cause them to multiply in the opposite direction.",
+    "beStrategic": "<b>Be Strategic:</b> Agar.io is as much about strategy as it is about skill. Pay attention to your surroundings, anticipate your opponents' moves, and use tactics like splitting and merging wisely to outsmart your rivals.<hr />",
+    "closing": "That's it for the basics of Agar.io! Now it's time to jump into the game and start growing your cell to become the biggest and most dominant player on the server.",
+    "goodLuck": "Good luck, and have fun!"
+  },
+  "news": {
+    "title": "News",
+    "entries": [
+      {
+        "date": "05/21/2026",
+        "items": [
+          "Improved <b>Cell Names</b>, <b>Cell Mass</b> and <b>Cell Jelly Physics</b> rendering performance when they are enabled in <b>Settings</b>",
+          "Added <b>Slower Mass Updates</b> in <b>Settings</b> with a slider to control how often mass numbers refresh (dragging slider to the right means lower updates)"
+        ]
+      },
+      {
+        "date": "01/05/2026",
+        "items": [
+          "<b>Nicknames</b> now need to be at least <b>3 characters</b>",
+          "Added optional <b>Words Censorship</b> for <b>Chat</b> and <b>Nicknames</b>, it's enabled by default, <u>you can disable it, but then don't complain on <a style=\"font-weight: bolder;\" href=\"https://discord.gg/emupedia-510149138491506688\" target=\"_blank\">Discord</a> about people being toxic</u>",
+          "Fixed <b>Spectator Free-Camera Toggle</b>, now you can toggle from Auto Follow players to Free-Camera properly in Spectator mode"
+        ]
+      },
+      {
+        "date": "11/19/2025",
+        "items": [
+          "<b>Nicknames</b> are now <b>Required</b> you can't have empty <b>Nicknames</b> anymore",
+          "<b>Improved Mute Player Function</b> now <b>Mute</b> will try to differentiate between <b>Players</b> with same <b>Nickname</b> and try to <b>Mute</b> just the one you wanted"
+        ]
+      },
+      {
+        "date": "11/18/2025",
+        "items": [
+          "Added <b>Zoom In</b> and <b>Zoom Out</b> Mobile Buttons, you can toggle <b>Show Zoom Slider</b> to <b>Show</b> or <b>Hide</b> them in <b>Settings</b>",
+          "<b>Improved Mobile Buttons Position Customization</b>, now you can <b>Tap</b> for 3 seconds on any Button to move it around",
+          "Added <b>Reset Mobile Buttons Positions</b> in <b>Settings</b> if you want to reset the <b>Mobile Buttons</b> to the <b>Default</b> positions",
+          "Added <b>Lock Mobile Buttons</b> in <b>Settings</b> if you check this you cannot move the buttons",
+          "Removed <b>Flip Touch Controls</b> from <b>Settings</b> (no longer needed, you can now move the Buttons wherever you want)"
+        ]
+      },
+      {
+        "date": "10/28/2025",
+        "items": [
+          "Added Customizable <b>Keyboard Buttons</b> and <b>Mouse Buttons</b> in <b>Settings</b>",
+          "Added <b>Camera Smoothing</b> and <b>Cell Animations Speed</b> in <b>Settings</b>"
+        ]
+      },
+      {
+        "date": "07/07/2025",
+        "items": [
+          "Improved how <b>Skins</b> are loaded to make it harder to copy them"
+        ]
+      },
+      {
+        "date": "06/28/2025",
+        "items": [
+          "Improved <b>Identicons</b> to not change so often"
+        ]
+      },
+      {
+        "date": "03/08/2025",
+        "items": [
+          "Added <b>Player Mute/Unmute Button</b> you can now <b>Mute/Unmute</b> specific <b>Players</b> from <b>Chat</b> by pressing the <b>Mute/Unmute Icon</b> next to their message or using the <b>Muted Players</b> list in <b>Settings</b>"
+        ]
+      },
+      {
+        "date": "02/03/2025",
+        "items": [
+          "Added <b>Chat Scroll</b>, you can scroll now either by with dragging scrollbar with the <kbd>Mouse</kbd> or using <kbd>↑ Arrow Up</kbd> and <kbd>↓ Arrow Down</kbd> keys"
+        ]
+      },
+      {
+        "date": "01/11/2025",
+        "items": [
+          "Added <b>PVP Game Mode</b> still in Beta",
+          "Added <b>Cell Transparency</b> checkbox in <b>Settings</b>"
+        ]
+      },
+      {
+        "date": "10/13/2024",
+        "items": [
+          "Added <kbd>F</kbd> and <kbd>V</kbd> keys to Zoom in and out",
+          "Added <b>Zoom Slider</b> to Zoom in and out",
+          "Added <b>Show Zoom Slider</b> checkbox in <b>Settings</b>"
+        ]
+      },
+      {
+        "date": "10/10/2024",
+        "items": [
+          "Added <b>Clear Chat</b> button, so you can clear the chat manually"
+        ]
+      },
+      {
+        "date": "10/01/2024",
+        "items": [
+          "Added <b>Identicons</b> to better identify friends or enemies, each device has a specific unique <b>Icon</b>",
+          "Added <b>Show Identicons</b> checkbox in <b>Settings</b>",
+          "Removed tricks that allow to duplicate <b>Nicks</b> or <b>Skins</b> easily"
+        ]
+      },
+      {
+        "date": "05/16/2024",
+        "items": [
+          "Fixed <b>AZERTY</b> keyboard mapping now <kbd>W</kbd> and <kbd>Z</kbd> both <b>Feed</b>",
+          "Changed <b>Muti Split</b> to key <kbd>C</kbd> instead of <kbd>Z</kbd>",
+          "Added <b>Disable Touch Controls</b> checkbox in <b>Settings</b>"
+        ]
+      },
+      {
+        "date": "05/15/2024",
+        "items": [
+          "Fixed a long-standing bug in <b>Chat</b> that prevented showing some messages sometimes",
+          "You can now see <b>Spectator</b>'s nicknames if they have one set",
+          "Now you can push <b>Viruses</b> by ejecting your <b>Cell</b>'s mass towards the <b>Viruses</b>",
+          "Adjusted <b>AntiSpam</b> measures to be more forgiving in <b>Chat</b>, also re-enabled <b>Pasting</b> messages",
+          "Added <b>Toggle Fullscreen</b> checkbox in <b>Settings</b>",
+          "Implemented <b>AutoRespawn</b>, now you will automatically respawn without needing to press <b>Play</b> again",
+          "Added <b>Toggle AutoRespawn</b> checkbox in <b>Settings</b>",
+          "Improved <b>Touch Controls</b> for mobile (added <b>Show Menu Button</b>, <b>Fullscreen Button</b>, fixed <b>Split Button</b> distance, prevent dragging Buttons)"
+        ]
+      },
+      {
+        "date": "05/14/2024",
+        "items": [
+          "Splitting while using Touch controls ejected a bit of mass, this bug has now been fixed",
+          "Eject Macro is now working while using Touch controls",
+          "Improved Touch controls for mobile"
+        ]
+      },
+      {
+        "date": "10/05/2024",
+        "items": [
+          "Added AntiSpam measures to Chat, disabled Pasting messages",
+          "Re-enabled using Right Click on Menus and in Chat Box",
+          "Added possibility to <b>Flip Touch Controls</b> from right side to left side in <b>Settings</b>"
+        ]
+      },
+      {
+        "date": "05/01/2024",
+        "items": [
+          "Added reCaptcha v3 to prevent bots connecting <a href=\"https://discord.gg/emupedia-510149138491506688\" target=\"_blank\">(you can give some feedback on Discord if it's not working properly)</a>",
+          "Enabled auto-reconnect to server after a server restart",
+          "Improved Touch controls for mobile"
+        ]
+      },
+      {
+        "date": "03/09/2024",
+        "items": [
+          "Added <b>Copy To Clipboard</b> button for <b>Current Selected Skin</b>",
+          "Increased <b>Chat Area Size</b> to fit more messages",
+          "Reduced <b>Wait Time</b> for <b>Upload Skin</b> to 30 seconds"
+        ]
+      },
+      {
+        "date": "02/28/2024",
+        "items": [
+          "Implemented <b>Touch Joystick</b> for mobile",
+          "Added <b>Touch Joystick</b> checkbox in <b>Settings</b>",
+          "Uploading <kbd>gif</kbd> files is no longer allowed, the animation didn't work anyway, just first frame was shown"
+        ]
+      },
+      {
+        "date": "02/24/2024",
+        "items": [
+          "Implemented <b>Upload Skin</b> feature"
+        ]
+      },
+      {
+        "date": "02/20/2024",
+        "items": [
+          "Added toggle <b>Individual Mouse Clicks</b> checkboxes in <b>Settings</b>",
+          "Added custom <b>Background Color</b> picker"
+        ]
+      },
+      {
+        "date": "02/17/2024",
+        "items": [
+          "Added <b>Double Split</b>, you can use <b>Double Split</b> by pressing <kbd>X</kbd> or <kbd>Right Click</kbd>",
+          "Added <b>Multi Split Macro</b>, you can use <b>Multi Split Macro</b> by pressing <kbd>C</kbd> or <kbd>Middle Click</kbd>",
+          "Added toggle checkbox in <b>Settings</b> for <b>Multi Split Macro</b>",
+          "Added <b>Nickname</b> picker",
+          "Added <b>Skin Name</b> picker",
+          "Added custom <b>Cell Name Color</b> picker",
+          "Added custom <b>Cell Background Color</b> picker",
+          "Added custom <b>Cell Border Color</b> picker",
+          "Added <b>Dark Theme</b> for menus"
+        ]
+      },
+      {
+        "date": "02/16/2024",
+        "items": [
+          "Fixed random background colors when using <b>Jelly Physics</b>",
+          "Added <b>Feed Macro</b>, you can use <b>Feed Macro</b> by pressing <kbd>W</kbd> or <kbd>Left Click</kbd> and having <b>Feed Macro</b> checkbox checked in <b>Settings</b>",
+          "Added toggle checkbox in <b>Settings</b> for <b>Feed Macro</b>",
+          "Added <b>News</b> section",
+          "Added <b>Gameplay</b> section",
+          "Implemented skins that start with <kbd>$</kbd>",
+          "Prevented synthetic events generated by injected scripts",
+          "Disallowed all other custom clients"
+        ]
+      },
+      {
+        "date": "06/13/2023",
+        "items": [
+          "Added 1195 missing Skins"
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,353 @@
+{
+  "meta": {
+    "title": "Agar.io v2.0",
+    "description": "Valgykite ląsteles, mažesnes nei jūs, ir nesuvalgykite didesnių, kaip MMO"
+  },
+  "chat": {
+    "general": "Generolas",
+    "clan": "Klanas",
+    "placeholder": "Norėdami kalbėtis, paspauskite „Enter“.",
+    "clearTitle": "Išvalyti pokalbį",
+    "zoom": "Padidinti"
+  },
+  "gallery": {
+    "skins": "Skinai"
+  },
+  "lobby": {
+    "title": "Agar.io v2.0",
+    "discordSuggestions": "Jei turite pasiūlymų, prisijunkite prie mūsų „Discord“.",
+    "nickname": "Slapyvardis",
+    "skin": "Oda",
+    "skinPlaceholder": "Odos pavadinimas",
+    "copy": "Kopijuoti",
+    "clanName": "Klano pavadinimas",
+    "clanPlaceholder": "max 5 raides",
+    "createClan": "Sukurti klaną",
+    "leaveClan": "Palikite klaną",
+    "copyInvite": "Kopijuoti kvietimą",
+    "gameMode": "Žaidimo režimas",
+    "play": "Žaisti",
+    "chooseSkin": "Pasirinkite odą",
+    "uploadSkin": "Įkelti odą",
+    "unban": "Atšaukti draudimą",
+    "skinCopied": "Skin URL nukopijuotas į mainų sritį!"
+  },
+  "settings": {
+    "language": "Kalba",
+    "mutedPlayers": "Nutildyti žaidėjai",
+    "mutePlaceholder": "Norėdami nutildyti, įveskite slapyvardį",
+    "mute": "Nutildyti",
+    "keyboardBindings": "Klaviatūros mygtukų jungtys",
+    "feed": "Sklaidos kanalas:",
+    "split": "Padalijimas:",
+    "doubleSplit": "Dvigubas padalijimas:",
+    "multiSplit": "Keletas padalijimo:",
+    "zoomIn": "Padidinti:",
+    "zoomOut": "Sumažinti:",
+    "minion": "Nemokama žiūrovų kamera / minionų valdymas:",
+    "resetKeys": "Atstatyti į numatytuosius nustatymus",
+    "keyRebindHint": "Spustelėkite mygtuką ir paspauskite klavišą, kad vėl susietumėte",
+    "mouseBindings": "Pelės mygtukų apkaustai",
+    "leftClick": "Kairiuoju pelės mygtuku spustelėkite:",
+    "middleClick": "Vidurinis paspaudimas:",
+    "rightClick": "Dešiniuoju pelės mygtuku spustelėkite:",
+    "resetMouse": "Atstatyti į numatytuosius nustatymus",
+    "mouseHint": "Konfigūruokite, kokį veiksmą atlieka kiekvienas pelės mygtukas",
+    "toggleFullscreen": "Perjungti viso ekrano režimą",
+    "darkTheme": "Tamsi tema",
+    "cameraSmoothing": "Kameros išlyginimas",
+    "cellAnimationSpeed": "Ląstelių animacijos greitis",
+    "showSkins": "Ląstelių odos",
+    "showNames": "Ląstelių pavadinimai",
+    "showColor": "Ląstelių spalvos",
+    "showMass": "Ląstelių masė",
+    "slowMassUpdates": "Lėtesni masiniai atnaujinimai",
+    "jellyPhysics": "Ląstelių želė fizika",
+    "showIdenticon": "Ląstelių identifikatoriai",
+    "fillSkin": "Ląstelių spalva po oda",
+    "showTransparent": "Ląstelių skaidrumas",
+    "showChat": "Rodyti pokalbį",
+    "showMinimap": "Rodyti minimalų žemėlapį",
+    "showPosition": "Rodyti poziciją",
+    "showBorder": "Rodyti žemėlapio kraštą",
+    "showGrid": "Rodyti žemėlapio tinklelį",
+    "backgroundSectors": "Rodyti žemėlapio sektorius",
+    "moreZoom": "Sumažinti Padidinti",
+    "showZoom": "Rodyti mastelio keitimo slankiklį",
+    "playSounds": "Garsai",
+    "feedMacro": "Pašarų makrokomandas",
+    "splitMacro": "Padalintas makrokomandas",
+    "leftClickToggle": "Kairiuoju pelės mygtuku spustelėkite",
+    "middleClickToggle": "Vidurinis paspaudimas",
+    "rightClickToggle": "Dešiniuoju pelės mygtuku spustelėkite",
+    "disableTouchControls": "Išjungti jutiklinius valdiklius",
+    "useJoystick": "Palieskite Vairasvirtę",
+    "lockMobileButtons": "Užrakinti mobiliojo telefono mygtukus",
+    "resetButtonPositions": "Iš naujo nustatyti mobiliųjų mygtukų padėtis",
+    "useWordFilters": "Žodžiai cenzūra",
+    "autoRespawn": "Perjungti „AutoRespawn“."
+  },
+  "colors": {
+    "background": "Fonas",
+    "name": "Vardas",
+    "color": "Spalva",
+    "border": "Sienos"
+  },
+  "mouseActions": {
+    "none": "Nėra",
+    "feed": "Tiekimas (išstumti masę)",
+    "split": "Padalinti",
+    "doubleSplit": "Dvigubas padalijimas",
+    "multiSplit": "Multi Split"
+  },
+  "connecting": {
+    "trying": "Bandoma prisijungti...",
+    "discord": "Prisijunkite prie mūsų Discord!",
+    "firewall": "Jei negalite prisijungti prie serverių, patikrinkite, ar turite antivirusinę ar užkardą, kuri blokuoja ryšį.",
+    "multisessionTitle": "Įspėjimas dėl kelių seansų",
+    "multisessionBody": "Keli žaidimo egzemplioriai neleidžiami.<br />Uždarykite visus kitus žaidimo atvejus ir įkelkite iš naujo.",
+    "oldBrowserTitle": "Jūsų naršyklė labai sena",
+    "oldBrowserLink": "Spustelėkite čia, jei norite atnaujinti savo naršyklę į naujesnę versiją.",
+    "bannedTitle": "Esate užblokuotas 😭",
+    "bannedBody": "Jums uždrausta dalyvauti žaidime, nes pažeidėte taisykles siųsdami šlamštą pokalbyje arba įkeldami pasirinktinius apvalkalus.",
+    "bannedBodyBots": "Jums uždrausta dalyvauti žaidime, nes pažeidėte taisykles siųsdami šlamštą pokalbyje arba įkeldami pasirinktinius apvalkalus, arba dėl to, kad naudojate robotus.",
+    "unbanCode": "Jūsų panaikinimo kodas yra"
+  },
+  "errors": {
+    "browserUnsupported": "Jūsų naršyklė nepalaiko reikiamų funkcijų, atnaujinkite naršyklę.",
+    "nicknameRequired": "Norėdami žaisti, įveskite slapyvardį.",
+    "nicknameMinLength": "Slapyvardyje reikia mažiausiai {min} simbolių",
+    "nicknameDisallowed": "Šis slapyvardis neleidžiamas. Pasirinkite kitą slapyvardį."
+  },
+  "muted": {
+    "empty": "Nėra nutildytų žaidėjų",
+    "unmute": "Įjungti garsą"
+  },
+  "keys": {
+    "pressKey": "Paspauskite klavišą..."
+  },
+  "gameplay": {
+    "rulesTitle": "Taisyklės",
+    "rule1": "Neįkelkite uždraustų tinkintų skinų, ypač jei tai kažkieno veidas, jūsų oda gali būti uždrausta arba jums bus uždrausta dalyvauti žaidime.",
+    "rule2": "Nenaudokite kitų žmonių slapyvardžių pokalbiuose ar kaip savo vardo žeminančiai, nes galite būti nutildyti arba uždrausti dalyvauti žaidime.",
+    "gameplayTitle": "Žaidimo eiga",
+    "controlsIntro": "Perkelkite <kbd>PELĖS</kbd> / <kbd>LIESTĮ</kbd>, kad valdytumėte langelį<br /><kbd></kbd>Pelės ratuką<kbd id=\"key-zoomin-display\"> arba </kbd>F<kbd id=\"key-zoomout-display\"> ir </kbd> <br />V<kbd id=\"key-feed-display\"> </kbd>Didinti ir tolinti id=\"key-feed-display\">W<kbd> arba </kbd>kairysis spustelėjimas<br />, kad išstumtumėte masę<kbd id=\"key-split-display\">Paspauskite </kbd>tarpo klavišą<br />, kad padalintumėte langelį vieną kartą.<kbd id=\"key-doublesplit-display\">Paspauskite </kbd> arba <kbd></kbd>X Atlikite dvigubą padalijimą<br />Paspauskite <kbd id=\"key-multisplit-display\">C</kbd> arba <kbd>vidutinį paspaudimą</kbd>, kad atliktumėte padalijimą iš kelių kartų",
+    "objective": "<b>Tikslas:</b> Agar.io tikslas yra auginti jūsų ląsteles vartojant mažesnes ląsteles ir vengiant didesnių. Augdami tapsite grėsmingesni ir galėsite suvartoti dar didesnes ląsteles.",
+    "startingOut": "<b>Pradžia:</b> pirmą kartą prisijungę prie žaidimo, pradėsite kaip mažas langelis. Judėkite naudodami pelę, kad surinktumėte spalvingas granules, išsibarsčiusias žemėlapyje. Valgant granules padidėja dydis ir masė.",
+    "movement": "<b>Judėjimas:</b> norėdami perkelti langelį, tiesiog perkelkite pelės žymeklį arba naudokite jutiklinį ekraną judėdami ta kryptimi, kuria norite judėti. Jūsų ląstelė stebės pelės žymeklio judėjimą ekrane.",
+    "consumeSmaller": "<b>Naudokite mažesnius langelius:</b> stebėkite, ar netoliese nėra tarptinklinio ryšio mažesnių ląstelių. Kai augsite didesni, galėsite praryti šias mažesnes ląsteles, kad padidintumėte savo masę. Prieikite prie jų strategiškai, kad jų nesuvalgytų didesnės ląstelės.",
+    "avoidLarger": "<b>Venkite didesnių ląstelių:</b> būkite atsargūs su didesnėmis ląstelėmis, nes jos gali jus sunaudoti, jei esate mažesnės už jas. Saugokitės žaidėjų, kurie pasiskirsto, kad užfiksuotų mažesnes ląsteles, ir stenkitės numatyti jų judesius, kad išliktumėte saugūs.",
+    "splitting": "<b>Padalijimas:</b> galite padalinti langelį į keletą mažesnių dalių paspausdami <kbd>TARPAS</kbd>. Naudokite šią taktiką norėdami užfiksuoti mažesnes ląsteles arba pabėgti nuo didesnių. Taip pat galite atlikti kelis padalijimus paspausdami <kbd>X</kbd> arba <kbd>Z</kbd>. Atminkite, kad padalijimas taip pat daro jus labiau pažeidžiamus, todėl naudokite jį protingai.",
+    "ejectingMass": "<b>Masės išstūmimas:</b> nors masės išstūmimas paspaudus <kbd>W</kbd> arba <kbd>kairįjį paspaudimą</kbd> gali būti naudingas, tačiau tai taip pat kelia pavojų. Išmestą masę gali suvartoti kiti žaidėjai, įskaitant potencialius varžovus. Be to, išmetus masę sumažėja bendras jūsų ląstelės dydis, todėl galite būti labiau pažeidžiami, kad jus sunaudos didesnės ląstelės.",
+    "teamPlay": "<b>Žaidimas komandoje (pasirenkama):</b> komandiniu režimu galite bendradarbiauti su kitais žaidėjais, kad dominuotumėte pirmaujančiųjų sąraše. Susiburkite su draugais ar kitais žaidėjais, kad pralenktumėte savo priešininkus ir kartu užkariatumėte žaidimą.",
+    "growDominate": "<b>Auginkite ir dominuokite:</b> vartojant mažesnes ląsteles ir vengiant būti suvalgytam, jūsų ląstelės ir toliau didės. Siekite tapti didžiausia ląstele serveryje ir dominuoti pirmaujančiųjų sąraše.",
+    "viruses": "<b>Saugokitės virusų:</b> visame žemėlapyje susidursite su žaliais smailiais apskritimais, vadinamais virusais. Venkite susidūrimo su jais, nes jie gali padalyti jūsų ląstelę į mažesnes dalis, jei esate didesnis už juos. Maitindami virusus savo mase iš vienos krypties, jie dauginsis priešinga kryptimi.",
+    "beStrategic": "<b>Būk strategiškas:</b> Agar.io yra tiek strategija, tiek įgūdžiai. Atkreipkite dėmesį į aplinką, numatykite oponentų judesius ir išmintingai naudokite tokias taktikas kaip padalijimas ir susijungimas, kad aplenktumėte savo varžovus.<hr />",
+    "closing": "Štai viskas apie Agar.io pagrindus! Dabar metas įsitraukti į žaidimą ir pradėti plėsti savo mobilųjį telefoną, kad taptumėte didžiausiu ir dominuojančiu žaidėju serveryje.",
+    "goodLuck": "Sėkmės ir smagiai!"
+  },
+  "news": {
+    "title": "Naujienos",
+    "entries": [
+      {
+        "date": "2026-05-21",
+        "items": [
+          "Patobulintas <b>ląstelių pavadinimų</b>, <b>ląstelių masės</b> ir <b>ląstelių drebėjimo fizikos</b> našumas, kai jie įgalinti skiltyje <b>Nustatymai</b>",
+          "<b>Nustatymuose</b> pridėti <b>Lėtesni masiniai atnaujinimai</b> su slankikliu, leidžiančiu valdyti, kaip dažnai atnaujinami masės skaičiai (vilkdami slankiklį į dešinę, naujinimai bus mažesni)"
+        ]
+      },
+      {
+        "date": "2026-05-01",
+        "items": [
+          "<b>Slapyvardžiai</b> dabar turi sudaryti mažiausiai <b>3 simbolius</b>",
+          "Pridėta pasirenkama <b>žodžių cenzūra</b>, skirta <b>pokalbiams</b> ir <b>slapyvardžiams</b>, ji įjungta pagal numatytuosius nustatymus, <u>galite ją išjungti, bet nesiskųskite <a style=\"font-weight: bolder;\" href=\"https://discord.gg/emupedia-510149138491506688\" target=\"_blank\">nesantaika</a> dėl žmonių toksiškumo</u>",
+          "Ištaisytas <b>Žiūrėjo laisvos kameros perjungimas</b>. Dabar galite tinkamai perjungti iš automatinio žaidėjų sekimo į laisvą kamerą žiūrėtojo režimu"
+        ]
+      },
+      {
+        "date": "2025-11-19",
+        "items": [
+          "<b>Slapyvardžiai</b> dabar <b>būtinai</b> nebegalite turėti tuščių <b>slapyvardžių</b>",
+          "<b>Patobulinta leistuvo nutildymo funkcija</b> dabar <b>Nutildyti</b> bandys atskirti <b>žaidėjus</b>, turinčius tą patį <b>slapyvardį</b> ir bandys <b>Nutildyti</b> tik tą, kurio norėjote"
+        ]
+      },
+      {
+        "date": "2025-11-18",
+        "items": [
+          "Pridėję <b>Mastelio keitimo</b> ir <b>Mastelio mažinimo</b> mygtukus mobiliesiems, galite perjungti <b>Rodyti mastelio keitimo slankiklį</b> į <b>Rodyti</b> arba <b>Slėpti</b> juos <b>Nustatymuose</b>",
+          "<b>Patobulintas mobiliųjų mygtukų padėties tinkinimas</b>, dabar galite <b>palieskite</b> 3 sekundes bet kurį mygtuką, kad jį judintumėte",
+          "Pridėta <b>Atstatyti mobiliųjų mygtukų pozicijas</b> skiltyje <b>Nustatymai</b>, jei norite iš naujo nustatyti <b>mobiliųjų mygtukų</b> padėtį į <b>numatytąsias</b>",
+          "<b>Nustatymuose</b> pridėta <b>Užrakinti mobiliuosius mygtukus</b>, jei pažymėsite tai, negalėsite perkelti mygtukų",
+          "Pašalinti <b>Pasukami jutikliniai valdikliai</b> iš <b>Nustatymų</b> (nebereikia, dabar galite perkelti mygtukus kur tik norite)"
+        ]
+      },
+      {
+        "date": "2025-10-28",
+        "items": [
+          "Pridedami tinkinami <b>klaviatūros mygtukai</b> ir <b>pelės mygtukai</b> skiltyje <b>Nustatymai</b>",
+          "Pridėtas <b>Kameros išlyginimas</b> ir <b>Ląstelės animacijos greitis</b> <b>Nustatymuose</b>"
+        ]
+      },
+      {
+        "date": "2025-07-07",
+        "items": [
+          "Patobulintas <b>Skinų</b> įkėlimas, kad būtų sunkiau juos kopijuoti"
+        ]
+      },
+      {
+        "date": "2025-06-28",
+        "items": [
+          "Patobulinti <b>identifikatoriai</b>, kad nebūtų taip dažnai keičiami"
+        ]
+      },
+      {
+        "date": "2025-08-03",
+        "items": [
+          "Pridėtas <b>grotuvo nutildymo / įjungimo mygtukas</b>, dabar galite <b>nutildyti / įjungti</b> konkrečius <b>žaidėjus</b> iš <b>pokalbio</b> paspausdami <b>nutildymo / įjungimo piktogramą</b> šalia jų pranešimo arba naudodami <b>Nustatymų</b>sąrašą <b>Nutildyti grotuvai</b>"
+        ]
+      },
+      {
+        "date": "2025-03-02",
+        "items": [
+          "Pridėta <b>Pokalbių slinktis</b>, dabar galite slinkti vilkdami slinkties juostą su <kbd>pele</kbd> arba naudodami klavišus <kbd>↑ Rodyklė aukštyn</kbd> ir <kbd>↓ Rodyklė žemyn</kbd>"
+        ]
+      },
+      {
+        "date": "2025-11-01",
+        "items": [
+          "Pridėtas <b>PVP žaidimo režimas</b> vis dar yra beta versijos",
+          "Skiltyje <b>Nustatymai</b> pridėtas žymimasis laukelis <b>Ląstelės skaidrumas</b>"
+        ]
+      },
+      {
+        "date": "2024-10-13",
+        "items": [
+          "Pridėti <kbd>F</kbd> ir <kbd>V</kbd> klavišai, kad padidintumėte ir sumažintumėte",
+          "Pridėtas <b>Mastelio keitimo slankiklis</b>, kad galėtumėte priartinti ir tolinti",
+          "<b>Nustatymuose</b> pridėtas žymimasis laukelis <b>Rodyti mastelio keitimo slankiklį</b>"
+        ]
+      },
+      {
+        "date": "2024-10-10",
+        "items": [
+          "Pridėtas mygtukas <b>Išvalyti pokalbį</b>, kad galėtumėte išvalyti pokalbį rankiniu būdu"
+        ]
+      },
+      {
+        "date": "2024-01-10",
+        "items": [
+          "Pridėta <b>identifikatorių</b>, kad būtų galima geriau atpažinti draugus ar priešus, kiekvienas įrenginys turi specifinę unikalią <b>piktogramą</b>",
+          "<b>Nustatymuose</b> pridėtas žymimasis laukelis <b>Rodyti identifikatorius</b>",
+          "Pašalinti triukai, leidžiantys lengvai kopijuoti <b>Nickus</b> arba <b>Skins</b>"
+        ]
+      },
+      {
+        "date": "2024-05-16",
+        "items": [
+          "Ištaisytas <b>AZERTY</b> klaviatūros susiejimas dabar <kbd>W</kbd> ir <kbd>Z</kbd> <b>Sklaidos kanalas</b>",
+          "<b>Muti Split</b> pakeistas į <kbd>C</kbd>, o ne <kbd>Z</kbd>",
+          "Skiltyje <b>Nustatymai</b> pridėtas žymimasis laukelis <b>Išjungti jutiklinius valdiklius</b>"
+        ]
+      },
+      {
+        "date": "2024-05-15",
+        "items": [
+          "Ištaisyta ilgalaikė <b>Pokalbių</b> klaida, kuri neleido kartais rodyti kai kurių pranešimų",
+          "Dabar galite matyti <b>Žiūrovų</b> slapyvardžius, jei jie turi vieną rinkinį",
+          "Dabar galite nustumti <b>virusus</b> išstumdami <b>ląstelės</b> masę link <b>virusų</b>",
+          "Pakoreguotos <b>AntiSpam</b> priemonės, kad būtų atlaidesnės <b>pokalbyje</b>, taip pat iš naujo įjungtos <b>įklijavimo</b> pranešimai",
+          "<b>Nustatymuose</b> pridėtas žymimasis laukelis <b>Perjungti visą ekraną</b>",
+          "Įdiegtas <b>AutoRespawn</b>, dabar automatiškai atkursite naują, nereikės dar kartą paspausti <b>Play</b>",
+          "<b>Nustatymuose</b> pridėtas žymimasis laukelis <b>Perjungti automatinį atkūrimą</b>",
+          "Patobulinti <b>lietimo valdikliai</b> mobiliesiems (pridėtas <b>Rodyti meniu</b>, <b>Viso ekrano mygtukas</b>, fiksuotas <b>Padalijimo mygtuko</b> atstumas, neleidžiama vilkti mygtukų)"
+        ]
+      },
+      {
+        "date": "2024-05-14",
+        "items": [
+          "Dalijimas naudojant jutiklinius valdiklius išmetė šiek tiek masės, dabar ši klaida ištaisyta",
+          "Eject Macro dabar veikia naudojant jutiklinius valdiklius",
+          "Patobulinti jutikliniai valdikliai mobiliesiems"
+        ]
+      },
+      {
+        "date": "2024-10-05",
+        "items": [
+          "Prie pokalbių pridėtos antispam priemonės, išjungtas pranešimų įklijavimas",
+          "Iš naujo įgalinta dešiniuoju pelės mygtuku spustelėkite meniu ir pokalbių laukelyje",
+          "Pridėta galimybė <b>Pasukti jutiklinius valdiklius</b> iš dešinės į kairę skiltyje <b>Nustatymai</b>"
+        ]
+      },
+      {
+        "date": "2024-01-05",
+        "items": [
+          "Pridėta reCaptcha v3, kad robotai neprisijungtų <a href=\"https://discord.gg/emupedia-510149138491506688\" target=\"_blank\">(galite pateikti atsiliepimų apie Discord, jei ji neveikia tinkamai)</a>",
+          "Įgalintas automatinis pakartotinis prisijungimas prie serverio paleidus serverį iš naujo",
+          "Patobulinti jutikliniai valdikliai mobiliesiems"
+        ]
+      },
+      {
+        "date": "2024-09-03",
+        "items": [
+          "Pridėtas mygtukas <b>Kopijuoti į iškarpinę</b>, skirtas <b>dabartinis pasirinktas apvalkalas</b>",
+          "Padidintas <b>pokalbių srities dydis</b>, kad tilptų daugiau pranešimų",
+          "Sutrumpintas <b>laukimo laikas</b> iki 30 sekundžių <b>įkeliant odą</b>"
+        ]
+      },
+      {
+        "date": "2024-02-28",
+        "items": [
+          "Įdiegta <b>Touch Joystick</b> mobiliesiems",
+          "<b>Nustatymuose</b> pridėtas žymimasis laukelis <b>Touch Joystick</b>",
+          "Įkelti <kbd>gif</kbd> failų nebeleidžiama, animacija vis tiek neveikė, tik buvo parodytas pirmasis kadras"
+        ]
+      },
+      {
+        "date": "2024-02-24",
+        "items": [
+          "Įdiegta funkcija <b>Įkelti odą</b>"
+        ]
+      },
+      {
+        "date": "2024-02-20",
+        "items": [
+          "<b>Nustatymuose</b> pridėti žymės langeliai <b>Atskiri pelės paspaudimai</b>",
+          "Pridėtas tinkintas <b>fono spalvos</b> rinkiklis"
+        ]
+      },
+      {
+        "date": "2024-02-17",
+        "items": [
+          "Pridėtas <b>Dvigubas padalijimas</b>, galite naudoti <b>Dvigubą padalijimą</b> paspausdami <kbd>X</kbd> arba <kbd>Dešiniuoju pelės mygtuku</kbd>",
+          "Pridėta <b>Multi Split Macro</b>, galite naudoti <b>Multi Split Macro</b> paspausdami <kbd>C</kbd> arba <kbd>Vidurinį paspaudimą</kbd>",
+          "<b>Nustatymų</b> skiltyje <b>Multi Split Macro</b> pridėtas perjungimo žymimasis laukelis",
+          "Pridėtas <b>Slapyvardžio</b> rinkiklis",
+          "Pridėtas <b>Odos pavadinimo</b> rinkiklis",
+          "Pridėtas tinkintas <b>ląstelės pavadinimo spalvos</b> rinkiklis",
+          "Pridėtas tinkintas <b>ląstelės fono spalvos</b> rinkiklis",
+          "Pridėtas tinkintas <b>ląstelių kraštinės spalvos</b> rinkiklis",
+          "Pridėta meniu <b>Tamsioji tema</b>"
+        ]
+      },
+      {
+        "date": "2024-02-16",
+        "items": [
+          "Ištaisytos atsitiktinės fono spalvos naudojant <b>Jelly Physics</b>",
+          "Pridėta <b>Sklaidos kanalo makrokomanda</b>, galite naudoti <b>Sklaidos kanalo makrokomandą</b> paspausdami <kbd>W</kbd> arba <kbd>Kairįjį spustelėjimą</kbd> ir pažymėję <b>Sklaidos kanalo makrokomandą</b> <b>Nustatymai</b>",
+          "<b>Sklaidos kanalo makrokomandos</b> skiltyje <b>Nustatymai</b> pridėtas perjungimo žymimasis laukelis",
+          "Pridėta skiltis <b>Naujienos</b>",
+          "Pridėta skiltis <b>Žaidimas</b>",
+          "Įdiegti apvalkalai, prasidedantys <kbd>$</kbd>",
+          "Užkirsti kelią sintetiniams įvykiams, kuriuos generuoja įterpti scenarijai",
+          "Neleidžiami visi kiti pasirinktiniai klientai"
+        ]
+      },
+      {
+        "date": "2023-06-13",
+        "items": [
+          "Pridėta 1195 trūkstamos odos"
+        ]
+      }
+    ]
+  }
+}

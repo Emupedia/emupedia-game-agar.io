@@ -1,0 +1,353 @@
+{
+  "meta": {
+    "title": "Agar.io v2.0",
+    "description": "Jedz komórki mniejsze od siebie i nie daj się zjeść większym, w grze MMO"
+  },
+  "chat": {
+    "general": "Ogólny",
+    "clan": "Klan",
+    "placeholder": "Naciśnij Enter, aby porozmawiać",
+    "clearTitle": "Wyczyść czat",
+    "zoom": "Brzęczenie"
+  },
+  "gallery": {
+    "skins": "Skórki"
+  },
+  "lobby": {
+    "title": "Agar.io v2.0",
+    "discordSuggestions": "Dołącz do nas na Discordzie, jeśli masz sugestie",
+    "nickname": "Przydomek",
+    "skin": "Skóra",
+    "skinPlaceholder": "Nazwa skórki",
+    "copy": "Kopia",
+    "clanName": "Nazwa klanu",
+    "clanPlaceholder": "Maks. 5 liter",
+    "createClan": "Utwórz klan",
+    "leaveClan": "Opuść klan",
+    "copyInvite": "Skopiuj zaproszenie",
+    "gameMode": "Tryb gry",
+    "play": "Grać",
+    "chooseSkin": "Wybierz skórkę",
+    "uploadSkin": "Prześlij skórkę",
+    "unban": "Odblokuj",
+    "skinCopied": "Adres URL skórki skopiowany do schowka!"
+  },
+  "settings": {
+    "language": "Język",
+    "mutedPlayers": "Wyciszeni gracze",
+    "mutePlaceholder": "Wpisz pseudonim, aby wyciszyć",
+    "mute": "Niemy",
+    "keyboardBindings": "Wiązania przycisków klawiatury",
+    "feed": "Karmić:",
+    "split": "Podział:",
+    "doubleSplit": "Podwójny podział:",
+    "multiSplit": "Multi podział:",
+    "zoomIn": "Powiększ:",
+    "zoomOut": "Pomniejsz:",
+    "minion": "Darmowa kamera widza / kontrola stworów:",
+    "resetKeys": "Przywróć ustawienia domyślne",
+    "keyRebindHint": "Kliknij przycisk i naciśnij klawisz, aby ponownie powiązać",
+    "mouseBindings": "Wiązania przycisków myszy",
+    "leftClick": "Lewy przycisk myszy:",
+    "middleClick": "Środkowe kliknięcie:",
+    "rightClick": "Kliknij prawym przyciskiem myszy:",
+    "resetMouse": "Przywróć ustawienia domyślne",
+    "mouseHint": "Skonfiguruj działanie, jakie wykonuje każdy przycisk myszy",
+    "toggleFullscreen": "Przełącz tryb pełnoekranowy",
+    "darkTheme": "Ciemny motyw",
+    "cameraSmoothing": "Wygładzanie aparatu",
+    "cellAnimationSpeed": "Szybkość animacji komórek",
+    "showSkins": "Skórki komórek",
+    "showNames": "Nazwy komórek",
+    "showColor": "Kolory komórek",
+    "showMass": "Masa komórkowa",
+    "slowMassUpdates": "Wolniejsze aktualizacje masowe",
+    "jellyPhysics": "Fizyka galaretki komórkowej",
+    "showIdenticon": "Identyfikatory komórek",
+    "fillSkin": "Kolor komórki pod skórą",
+    "showTransparent": "Przezroczystość komórek",
+    "showChat": "Pokaż czat",
+    "showMinimap": "Pokaż minimapę",
+    "showPosition": "Pokaż pozycję",
+    "showBorder": "Pokaż granicę mapy",
+    "showGrid": "Pokaż siatkę mapy",
+    "backgroundSectors": "Pokaż sektory mapy",
+    "moreZoom": "Zmniejsz Zwiększ",
+    "showZoom": "Pokaż suwak powiększenia",
+    "playSounds": "Brzmi",
+    "feedMacro": "Podaj makro",
+    "splitMacro": "Podziel makro",
+    "leftClickToggle": "Kliknij lewym przyciskiem myszy",
+    "middleClickToggle": "Środkowe kliknięcie",
+    "rightClickToggle": "Kliknij prawym przyciskiem myszy",
+    "disableTouchControls": "Wyłącz sterowanie dotykowe",
+    "useJoystick": "Dotknij joysticka",
+    "lockMobileButtons": "Zablokuj przyciski mobilne",
+    "resetButtonPositions": "Zresetuj pozycje przycisków telefonu komórkowego",
+    "useWordFilters": "Cenzura słów",
+    "autoRespawn": "Przełącz automatyczne odrodzenie"
+  },
+  "colors": {
+    "background": "Tło",
+    "name": "Nazwa",
+    "color": "Kolor",
+    "border": "Granica"
+  },
+  "mouseActions": {
+    "none": "Nic",
+    "feed": "Pasza (wyrzucana masa)",
+    "split": "Podział",
+    "doubleSplit": "Podwójny podział",
+    "multiSplit": "Multi Split"
+  },
+  "connecting": {
+    "trying": "Próbuję się połączyć...",
+    "discord": "Dołącz do nas na Discordzie!",
+    "firewall": "Jeśli nie możesz połączyć się z serwerami, sprawdź, czy masz jakiś program antywirusowy lub zaporę sieciową blokującą połączenie.",
+    "multisessionTitle": "Ostrzeżenie o wielu sesjach",
+    "multisessionBody": "Wiele instancji gry nie jest dozwolonych.<br />Zamknij wszystkie inne instancje gry i załaduj ponownie.",
+    "oldBrowserTitle": "Twoja przeglądarka jest bardzo stara",
+    "oldBrowserLink": "Kliknij tutaj, aby zaktualizować przeglądarkę do nowszej wersji.",
+    "bannedTitle": "Masz zakaz 😭",
+    "bannedBody": "Zostałeś zablokowany w grze, ponieważ złamałeś zasady, spamując na czacie lub przesyłając niestandardowe skórki.",
+    "bannedBodyBots": "Zostałeś zablokowany w grze, ponieważ złamałeś zasady, spamując czat, przesyłając niestandardowe skórki, lub ponieważ korzystasz z botów.",
+    "unbanCode": "Twój kod do odblokowania to"
+  },
+  "errors": {
+    "browserUnsupported": "Twoja przeglądarka nie obsługuje wymaganych funkcji, zaktualizuj swoją przeglądarkę.",
+    "nicknameRequired": "Wprowadź pseudonim, aby zagrać.",
+    "nicknameMinLength": "Pseudonim wymaga co najmniej {min} znaków",
+    "nicknameDisallowed": "Ten pseudonim jest niedozwolony. Proszę wybrać inny pseudonim."
+  },
+  "muted": {
+    "empty": "Brak wyciszonych graczy",
+    "unmute": "Wyłącz wyciszenie"
+  },
+  "keys": {
+    "pressKey": "Naciśnij klawisz..."
+  },
+  "gameplay": {
+    "rulesTitle": "Zasady",
+    "rule1": "Nie przesyłaj zabronionych niestandardowych skórek, zwłaszcza jeśli jest to czyjaś twarz, możesz zostać zbanowany za swoją skórkę lub zostać wyrzucony z gry.",
+    "rule2": "Nie używaj pseudonimów innych osób na czacie ani jako swojego imienia w obraźliwy sposób, ponieważ możesz zostać wyciszony lub zablokowany w grze.",
+    "gameplayTitle": "Rozgrywka",
+    "controlsIntro": "Poruszaj <kbd>MYSZĄ</kbd> / <kbd>TOUCH</kbd>, aby sterować komórką<br /><kbd>Kółkiem myszy</kbd> lub <kbd id=\"key-zoomin-display\">F</kbd> i <kbd id=\"key-zoomout-display\">V</kbd>, aby przybliżać i oddalać<br />Naciśnij <kbd id=\"key-feed-display\">W</kbd> lub <kbd>Kliknij lewym przyciskiem myszy</kbd>, aby wysunąć masę<br />Naciśnij <kbd id=\"key-split-display\">SPACJA</kbd>, aby jednokrotnie podzielić komórkę<br />Naciśnij <kbd id=\"key-doublesplit-display\">X</kbd> lub <kbd>kliknij prawym przyciskiem</kbd>, aby wykonać Podwójny podział<br />Naciśnij <kbd id=\"key-multisplit-display\">C</kbd> lub <kbd>kliknięcie środkowym przyciskiem</kbd>, aby wykonać wielokrotny podział",
+    "objective": "<b>Cel:</b> Celem Agar.io jest hodowanie komórek poprzez spożywanie mniejszych komórek i unikanie większych. W miarę dorastania staniesz się potężniejszy i będziesz mógł konsumować jeszcze większe komórki.",
+    "startingOut": "<b>Rozpoczęcie:</b> Kiedy po raz pierwszy dołączysz do gry, zaczniesz jako mała komórka. Poruszaj się za pomocą myszki, aby zbierać kolorowe kulki rozrzucone po mapie. Jedzenie pelletu zwiększa Twój rozmiar i masę.",
+    "movement": "<b>Ruch:</b> aby przenieść komórkę, wystarczy przesunąć kursor myszy lub użyć ekranu dotykowego, przesuwając się w kierunku, w którym ma się poruszać komórka. Twoja komórka będzie podążać za ruchem kursora myszy na ekranie.",
+    "consumeSmaller": "<b>Wykorzystuj mniejsze komórki:</b> uważaj na mniejsze komórki krążące w pobliżu. Gdy urośniesz, będziesz w stanie pochłonąć te mniejsze komórki, aby zwiększyć swoją masę. Podejdź do nich strategicznie, aby uniknąć zjedzenia przez większe komórki.",
+    "avoidLarger": "<b>Unikaj większych komórek:</b> uważaj na większe komórki, ponieważ mogą cię pożreć, jeśli jesteś od nich mniejszy. Uważaj na graczy, którzy rozdzielili się, aby przejąć mniejsze komórki, i staraj się przewidzieć ich ruchy, aby zachować bezpieczeństwo.",
+    "splitting": "<b>Dzielenie:</b> możesz podzielić komórkę na wiele mniejszych części, naciskając <kbd>SPACE</kbd>. Użyj tej taktyki, aby przejąć mniejsze komórki lub uciec przed większymi. Możesz także dokonać wielokrotnego podziału, naciskając <kbd>X</kbd> lub <kbd>Z</kbd>. Pamiętaj, że podział sprawia, że ​​jesteś bardziej bezbronny, więc używaj go mądrze.",
+    "ejectingMass": "<b>Wyrzucanie masy:</b> Wyrzucanie masy poprzez naciśnięcie klawisza <kbd>W</kbd> lub <kbd>kliknięcie lewym przyciskiem</kbd> może być korzystne, ale wiąże się również z ryzykiem. Wyrzuconą masę mogą pochłonąć inni gracze, w tym także potencjalni rywale. Dodatkowo wyrzucanie masy zmniejsza całkowity rozmiar komórki, co może sprawić, że będziesz bardziej podatny na pochłonięcie przez większe komórki.",
+    "teamPlay": "<b>Gra zespołowa (opcjonalnie):</b> w trybie zespołowym możesz współpracować z innymi graczami, aby zdominować tabelę liderów. Połącz siły ze znajomymi lub innymi graczami, aby wymanewrować przeciwników i wspólnie podbić grę.",
+    "growDominate": "<b>Rozwijaj się i dominuj:</b> w miarę spożywania mniejszych komórek i unikania bycia zjedzonym, Twoja komórka będzie nadal rosła. Staraj się stać największą komórką na serwerze i zdominować tabelę liderów.",
+    "viruses": "<b>Uważaj na wirusy:</b> Na całej mapie napotkasz zielone kolczaste okręgi zwane wirusami. Unikaj kolizji z nimi, ponieważ mogą podzielić twoją komórkę na mniejsze części, jeśli jesteś od nich większy. Karmienie wirusów swoją masą z określonego kierunku spowoduje ich namnażanie w przeciwnym kierunku.",
+    "beStrategic": "<b>Bądź strategiczny:</b> Agar.io to zarówno strategia, jak i umiejętności. Zwracaj uwagę na otoczenie, przewidywaj ruchy przeciwników i mądrze stosuj taktyki, takie jak dzielenie i łączenie, aby przechytrzyć rywali.<hr />",
+    "closing": "To tyle, jeśli chodzi o podstawy Agar.io! Teraz nadszedł czas, aby wskoczyć do gry i zacząć rozwijać swoją komórkę, aby stać się największym i najbardziej dominującym graczem na serwerze.",
+    "goodLuck": "Powodzenia i dobrej zabawy!"
+  },
+  "news": {
+    "title": "Aktualności",
+    "entries": [
+      {
+        "date": "21.05.2026",
+        "items": [
+          "Poprawiono wydajność renderowania <b>Nazw komórek</b>, <b>Masy komórek</b> i <b>Fizyki galaretki komórkowej</b>, gdy są one włączone w <b>Ustawieniach</b>",
+          "Dodano <b>Wolniejsze aktualizacje masowe</b> w <b>Ustawieniach</b> z suwakiem kontrolującym częstotliwość odświeżania liczb masowych (przeciągnięcie suwaka w prawo oznacza rzadsze aktualizacje)"
+        ]
+      },
+      {
+        "date": "01.05.2026",
+        "items": [
+          "<b>Pseudonimy</b> muszą teraz mieć co najmniej <b>3 znaki</b>",
+          "Dodano opcjonalną <b>Cenzurę słów</b> dla <b>Czatu</b> i <b>Pseudonimów</b>, jest ona domyślnie włączona, <u>możesz ją wyłączyć, ale wtedy nie narzekasz na <a style=\"font-weight: bolder;\" href=\"https://discord.gg/emupedia-510149138491506688\" target=\"_blank\">Discord</a> na temat toksyczności ludzi</u>",
+          "Naprawiono <b>przełączanie swobodnej kamery obserwatora</b>, teraz możesz prawidłowo przełączać się z automatycznego śledzenia graczy na swobodną kamerę w trybie obserwatora"
+        ]
+      },
+      {
+        "date": "19.11.2025",
+        "items": [
+          "<b>Pseudonimy</b> są teraz <b>Wymagane</b>. Nie możesz już mieć pustych <b>Pseudonimów</b>",
+          "<b>Ulepszona funkcja wyciszania gracza</b> teraz <b>Wycisz</b> spróbuje rozróżnić <b>Graczy</b> o tym samym <b>pseudonim</b> i spróbuje <b>Wyciszyć</b> tylko tego, którego chciałeś"
+        ]
+      },
+      {
+        "date": "18.11.2025",
+        "items": [
+          "Dodano przyciski mobilne <b>Powiększ</b> i <b>Pomniejsz</b>. Możesz przełączyć <b>Pokaż suwak powiększenia</b> na <b>Pokaż</b> lub <b>Ukryj</b> je w <b>Ustawieniach</b>",
+          "<b>Ulepszone dostosowywanie położenia przycisków mobilnych</b>, teraz możesz <b>Dotknąć</b> przez 3 sekundy dowolnego przycisku, aby go przesuwać",
+          "Dodano <b>Resetuj pozycje przycisków mobilnych</b> w <b>Ustawieniach</b>, jeśli chcesz zresetować <b>Przyciski mobilne</b> do pozycji <b>Domyślnych</b>",
+          "Dodano opcję <b>Zablokuj przyciski mobilne</b> w <b>Ustawieniach</b>. Jeśli zaznaczysz tę opcję, nie będzie można przesuwać przycisków",
+          "Usunięto <b>Obróć elementy sterujące dotykiem</b> z <b>Ustawień</b> (nie są już potrzebne, możesz teraz przenosić przyciski w dowolne miejsce)"
+        ]
+      },
+      {
+        "date": "28.10.2025",
+        "items": [
+          "Dodano konfigurowalne <b>Przyciski klawiatury</b> i <b>Przyciski myszy</b> w <b>Ustawieniach</b>",
+          "Dodano <b>Wygładzanie kamery</b> i <b>Szybkość animacji komórek</b> w <b>Ustawieniach</b>"
+        ]
+      },
+      {
+        "date": "07.07.2025",
+        "items": [
+          "Poprawiono sposób ładowania <b>skórek</b>, aby utrudnić ich kopiowanie"
+        ]
+      },
+      {
+        "date": "28.06.2025",
+        "items": [
+          "Ulepszono <b>Identyfikacje</b>, aby nie zmieniały się tak często"
+        ]
+      },
+      {
+        "date": "08.03.2025",
+        "items": [
+          "Dodano <b>Przycisk wyciszenia/wyłączenia wyciszenia gracza</b>. Możesz teraz <b>wyciszyć/wyłączyć wyciszenie</b> określonych <b>graczy</b> w <b>czacie</b>, naciskając <b>ikonę wyciszenia/wyłączenia wyciszenia</b> obok ich wiadomości lub korzystając z listy <b>Wyciszonych graczy</b> w <b>Ustawieniach</b>"
+        ]
+      },
+      {
+        "date": "03.02.2025",
+        "items": [
+          "Dodano opcję <b>Przewijanie czatu</b>. Możesz teraz przewijać, przeciągając pasek przewijania za pomocą <kbd>myszy</kbd> lub używając klawiszy <kbd>↑ Strzałka w górę</kbd> i <kbd>↓ Strzałka w dół</kbd>"
+        ]
+      },
+      {
+        "date": "11.01.2025",
+        "items": [
+          "Dodano <b>Tryb gry PvP</b>, który jest nadal w wersji beta",
+          "Dodano pole wyboru <b>Przezroczystość komórki</b> w <b>Ustawieniach</b>"
+        ]
+      },
+      {
+        "date": "13.10.2024",
+        "items": [
+          "Dodano klawisze <kbd>F</kbd> i <kbd>V</kbd> do powiększania i pomniejszania",
+          "Dodano <b>Suwak powiększenia</b> do powiększania i pomniejszania",
+          "Dodano pole wyboru <b>Pokaż suwak powiększenia</b> w <b>Ustawieniach</b>"
+        ]
+      },
+      {
+        "date": "10.10.2024",
+        "items": [
+          "Dodano przycisk <b>Wyczyść czat</b>, dzięki któremu możesz wyczyścić czat ręcznie"
+        ]
+      },
+      {
+        "date": "01.10.2024",
+        "items": [
+          "Dodano <b>Identyfikatory</b>, aby lepiej identyfikować przyjaciół i wrogów. Każde urządzenie ma unikalną <b>ikonę</b>",
+          "Dodano pole wyboru <b>Pokaż identyfikatory</b> w <b>Ustawieniach</b>",
+          "Usunięto triki umożliwiające łatwe powielanie <b>Nicków</b> lub <b>Skinsów</b>"
+        ]
+      },
+      {
+        "date": "16.05.2024",
+        "items": [
+          "Naprawiono mapowanie klawiatury <b>AZERTY</b> teraz <kbd>W</kbd> i <kbd>Z</kbd> w obu <b>Feed</b>",
+          "Zmieniono <b>Muti Split</b> na klucz <kbd>C</kbd> zamiast <kbd>Z</kbd>",
+          "Dodano pole wyboru <b>Wyłącz sterowanie dotykowe</b> w <b>Ustawieniach</b>"
+        ]
+      },
+      {
+        "date": "15.05.2024",
+        "items": [
+          "Naprawiono długotrwały błąd w <b>Czacie</b>, który czasami uniemożliwiał wyświetlanie niektórych wiadomości",
+          "Możesz teraz zobaczyć pseudonimy <b>Spectatora</b>, jeśli mają jeden ustawiony",
+          "Teraz możesz wypchnąć <b>Wirusy</b>, wyrzucając masę swojej <b>Komórki</b> w stronę <b>Wirusów</b>",
+          "Dostosowano funkcje <b>Antyspamu</b>, aby były bardziej wyrozumiałe w <b>Czacie</b>, ponownie włączono także <b>Wklejanie</b> wiadomości",
+          "Dodano pole wyboru <b>Przełącz pełny ekran</b> w <b>Ustawieniach</b>",
+          "Zaimplementowano funkcję <b>AutoRespawn</b>, teraz odrodzisz się automatycznie bez konieczności ponownego naciskania przycisku <b>Odtwórz</b>",
+          "Dodano pole wyboru <b>Przełącz automatyczne odradzanie</b> w <b>Ustawieniach</b>",
+          "Ulepszone <b>Sterowanie dotykowe</b> dla urządzeń mobilnych (dodano <b>Pokaż przycisk menu</b>, <b>Przycisk pełnoekranowy</b>, stała odległość między <b>przyciskiem podziału</b>, zapobieganie przeciąganiu przycisków)"
+        ]
+      },
+      {
+        "date": "14.05.2024",
+        "items": [
+          "Dzielenie podczas korzystania z elementów sterujących dotykiem powodowało wyrzucanie niewielkiej masy, błąd ten został już naprawiony",
+          "Opcja Wysuń makro działa teraz podczas korzystania ze sterowania dotykowego",
+          "Ulepszone sterowanie dotykowe dla urządzeń mobilnych"
+        ]
+      },
+      {
+        "date": "10.05.2024",
+        "items": [
+          "Dodano moduły antyspamowe do czatu, wyłączono opcję wklejania wiadomości",
+          "Włączono ponownie, klikając prawym przyciskiem myszy menu i okno czatu",
+          "Dodano możliwość <b>przerzucania elementów sterujących dotykiem</b> z prawej strony na lewą w <b>Ustawieniach</b>"
+        ]
+      },
+      {
+        "date": "01.05.2024",
+        "items": [
+          "Dodano reCaptcha v3, aby uniemożliwić botom łączenie się <a href=\"https://discord.gg/emupedia-510149138491506688\" target=\"_blank\">(możesz przesłać opinię na temat Discorda, jeśli nie działa poprawnie)</a>",
+          "Włączono automatyczne ponowne łączenie z serwerem po ponownym uruchomieniu serwera",
+          "Ulepszone sterowanie dotykowe dla urządzeń mobilnych"
+        ]
+      },
+      {
+        "date": "09.03.2024",
+        "items": [
+          "Dodano przycisk <b>Kopiuj do schowka</b> dla <b>bieżącej wybranej skórki</b>",
+          "Zwiększono <b>Rozmiar obszaru czatu</b>, aby zmieścić więcej wiadomości",
+          "Skrócono <b>Czas oczekiwania</b> na <b>Przesłanie skórki</b> do 30 sekund"
+        ]
+      },
+      {
+        "date": "28.02.2024",
+        "items": [
+          "Zaimplementowano <b>joystick dotykowy</b> dla urządzeń mobilnych",
+          "Dodano pole wyboru <b>Joystick dotykowy</b> w <b>Ustawieniach</b>",
+          "Przesyłanie plików <kbd>gif</kbd> nie jest już dozwolone, animacja i tak nie działała, wyświetliła się tylko pierwsza klatka"
+        ]
+      },
+      {
+        "date": "24.02.2024",
+        "items": [
+          "Zaimplementowano funkcję <b>Prześlij skórkę</b>"
+        ]
+      },
+      {
+        "date": "20.02.2024",
+        "items": [
+          "Dodano przełączające pola wyboru <b>Poszczególne kliknięcia myszą</b> w <b>Ustawieniach</b>",
+          "Dodano niestandardowy selektor <b>Koloru tła</b>"
+        ]
+      },
+      {
+        "date": "17.02.2024",
+        "items": [
+          "Dodano opcję <b>Podwójny podział</b>. Możesz użyć opcji <b>Podwójny podział</b>, naciskając <kbd>X</kbd> lub <kbd>Kliknij prawym przyciskiem myszy</kbd>",
+          "Dodano <b>Makro z wieloma podziałami</b>. Możesz użyć <b>Makra z wieloma podziałami</b>, naciskając <kbd>C</kbd> lub <kbd>Kliknięcie środkowym</kbd>",
+          "Dodano pole wyboru przełączania w <b>Ustawieniach</b> dla <b>Makra z wieloma podziałami</b>",
+          "Dodano selektor <b>Pseudonim</b>",
+          "Dodano selektor <b>Nazwa skórki</b>",
+          "Dodano niestandardowy selektor <b>Kolor nazwy komórki</b>",
+          "Dodano niestandardowy selektor <b>Koloru tła komórki</b>",
+          "Dodano niestandardowy selektor <b>Koloru obramowania komórki</b>",
+          "Dodano <b>Ciemny motyw</b> do menu"
+        ]
+      },
+      {
+        "date": "16.02.2024",
+        "items": [
+          "Naprawiono losowe kolory tła podczas korzystania z <b>Jelly Physics</b>",
+          "Dodano <b>Makro kanału</b>, możesz użyć <b>Makra kanału</b>, naciskając <kbd>W</kbd> lub <kbd>kliknij lewym przyciskiem myszy</kbd> i zaznaczając pole wyboru <b>Makro kanału</b> w <b>Ustawieniach</b>",
+          "Dodano pole wyboru przełączania w <b>Ustawieniach</b> dla <b>Makra kanału</b>",
+          "Dodano sekcję <b>Aktualności</b>",
+          "Dodano sekcję <b>Rozgrywka</b>",
+          "Zaimplementowano skórki zaczynające się od <kbd>$</kbd>",
+          "Zapobiegnięto syntetycznym zdarzeniom generowanym przez wstrzyknięte skrypty",
+          "Zabroniono wszystkim innym niestandardowym klientom"
+        ]
+      },
+      {
+        "date": "13.06.2023",
+        "items": [
+          "Dodano 1195 brakujących skórek"
+        ]
+      }
+    ]
+  }
+}

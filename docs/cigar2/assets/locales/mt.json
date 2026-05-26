@@ -1,0 +1,353 @@
+{
+  "meta": {
+    "title": "Agar.io v2.0",
+    "description": "Kul ċelluli iżgħar minnek u ma jittieklux mill-akbar, bħala MMO"
+  },
+  "chat": {
+    "general": "Ġenerali",
+    "clan": "Klan",
+    "placeholder": "Agħfas enter biex tiċċettja",
+    "clearTitle": "Ċat ċar",
+    "zoom": "Zoom"
+  },
+  "gallery": {
+    "skins": "Ġlud"
+  },
+  "lobby": {
+    "title": "Agar.io v2.0",
+    "discordSuggestions": "Ingħaqad magħna fuq Discord jekk għandek suġġerimenti",
+    "nickname": "Laqam",
+    "skin": "Ġilda",
+    "skinPlaceholder": "Isem tal-Ġilda",
+    "copy": "Kopja",
+    "clanName": "Isem Klan",
+    "clanPlaceholder": "5 ittri massimu",
+    "createClan": "Oħloq Klan",
+    "leaveClan": "Ħalli Clan",
+    "copyInvite": "Ikkopja Stedinna",
+    "gameMode": "Mod tal-Logħba",
+    "play": "Play",
+    "chooseSkin": "Agħżel Ġilda",
+    "uploadSkin": "Ittella Ġilda",
+    "unban": "Unban",
+    "skinCopied": "URL tal-ġilda kkupjat fil-clipboard!"
+  },
+  "settings": {
+    "language": "Lingwa",
+    "mutedPlayers": "Plejers Muted",
+    "mutePlaceholder": "Daħħal il-laqam biex tismut",
+    "mute": "Mute",
+    "keyboardBindings": "Bindings tal-buttuni tat-Tastiera",
+    "feed": "Għalf:",
+    "split": "Qsim:",
+    "doubleSplit": "Qsim Doppju:",
+    "multiSplit": "Multi Split:",
+    "zoomIn": "Żomm 'il ġewwa:",
+    "zoomOut": "Żomm 'il barra:",
+    "minion": "Kamera tal-Ispettatur b'xejn / Kontroll tal-Minion:",
+    "resetKeys": "Irrisettja għal Defaults",
+    "keyRebindHint": "Ikklikkja buttuna u agħfas ċavetta biex terġa' tgħaqqad",
+    "mouseBindings": "L-irbit tal-buttuni tal-ġurdien",
+    "leftClick": "Ikklikkja Xellug:",
+    "middleClick": "Ikklikkja Nofsani:",
+    "rightClick": "Ikklikkja bil-lemin:",
+    "resetMouse": "Irrisettja għal Defaults",
+    "mouseHint": "Ikkonfigura liema azzjoni twettaq kull buttuna tal-maws",
+    "toggleFullscreen": "Toggle Fullscreen",
+    "darkTheme": "Tema skur",
+    "cameraSmoothing": "It-twittija tal-kamera",
+    "cellAnimationSpeed": "Veloċità ta' Animazzjonijiet taċ-Ċelluli",
+    "showSkins": "Ġlud taċ-Ċelloli",
+    "showNames": "Ismijiet taċ-Ċelloli",
+    "showColor": "Kuluri taċ-Ċellola",
+    "showMass": "Massa taċ-Ċellola",
+    "slowMassUpdates": "Aġġornamenti tal-Massa aktar bil-mod",
+    "jellyPhysics": "Ċellula Jelly Fiżika",
+    "showIdenticon": "Identiċi taċ-ċelluli",
+    "fillSkin": "Kulur taċ-Ċellola Taħt il-Ġilda",
+    "showTransparent": "Trasparenza taċ-ċelluli",
+    "showChat": "Uri Chat",
+    "showMinimap": "Uri Mappa Mini",
+    "showPosition": "Uri l-Pożizzjoni",
+    "showBorder": "Uri Map Border",
+    "showGrid": "Uri Grid tal-Mappa",
+    "backgroundSectors": "Uri s-Setturi tal-Mappa",
+    "moreZoom": "Żieda 'l barra",
+    "showZoom": "Uri Zoom Slider",
+    "playSounds": "Ħsejjes",
+    "feedMacro": "Għalf Makro",
+    "splitMacro": "Split Makro",
+    "leftClickToggle": "Ikklikkja Xellug",
+    "middleClickToggle": "Ikklikkja Nofsani",
+    "rightClickToggle": "Ikklikkja Dritt",
+    "disableTouchControls": "Itfi Touch Controls",
+    "useJoystick": "Touch Joystick",
+    "lockMobileButtons": "Lock Buttuni Mobbli",
+    "resetButtonPositions": "Irrisettja l-Pożizzjonijiet tal-buttuni mobbli",
+    "useWordFilters": "Kliem Ċensura",
+    "autoRespawn": "Toggle AutoRespawn"
+  },
+  "colors": {
+    "background": "Sfond",
+    "name": "Isem",
+    "color": "Kulur",
+    "border": "Fruntiera"
+  },
+  "mouseActions": {
+    "none": "Xejn",
+    "feed": "Għalf (Eject Massa)",
+    "split": "Split",
+    "doubleSplit": "Doppju Split",
+    "multiSplit": "Multi Split"
+  },
+  "connecting": {
+    "trying": "Nipprova jgħaqqad...",
+    "discord": "Ingħaqad magħna fuq Discord!",
+    "firewall": "Jekk ma tistax tikkonnettja mas-servers, iċċekkja jekk għandekx xi antivirus jew firewall li jimblokka l-konnessjoni.",
+    "multisessionTitle": "Twissija għal Multisessjoni",
+    "multisessionBody": "Każijiet ta' logħob multipli mhumiex permessi.<br />Agħlaq l-istanzi tal-logħob l-oħra kollha u erġa' tagħbija.",
+    "oldBrowserTitle": "Il-Browser tiegħek huwa Antik ħafna",
+    "oldBrowserLink": "Jekk jogħġbok ikklikkja hawn biex taġġorna l-Browser tiegħek għal verżjoni aktar ġdida.",
+    "bannedTitle": "Inti pprojbit 😭",
+    "bannedBody": "Inti pprojbit mil-logħba għax kisret ir-regoli jew spammja ċ-chat jew waqt li ttella' ġlud tad-dwana.",
+    "bannedBodyBots": "Inti pprojbit mil-logħba għax kisret ir-regoli jew spammja ċ-chat jew waqt li ttella' ġlud tad-dwana jew għax qed tuża bots.",
+    "unbanCode": "Il-kodiċi unban tiegħek huwa"
+  },
+  "errors": {
+    "browserUnsupported": "Il-browser tiegħek ma jappoġġjax il-karatteristiċi meħtieġa, jekk jogħġbok aġġorna l-browser tiegħek.",
+    "nicknameRequired": "Jekk jogħġbok daħħal laqam biex tilgħab.",
+    "nicknameMinLength": "Il-laqam jeħtieġ mill-inqas {min} karattri",
+    "nicknameDisallowed": "Dan il-laqam mhux permess. Jekk jogħġbok agħżel laqam differenti."
+  },
+  "muted": {
+    "empty": "Ebda Plejers Muted",
+    "unmute": "Iċċekkja"
+  },
+  "keys": {
+    "pressKey": "Agħfas ċavetta..."
+  },
+  "gameplay": {
+    "rulesTitle": "Regoli",
+    "rule1": "M'għandekx ittella ġlud tad-dwana projbiti, speċjalment jekk ikun wiċċ xi ħadd, jista 'jkollok il-ġilda tiegħek ipprojbita jew lilek innifsek ipprojbit mil-logħba.",
+    "rule2": "Tużax il-laqmijiet ta' nies oħra fiċ-chat jew bħala ismek b'mod dispreġġjattiv, tista' tisikket jew ipprojbit mil-logħba.",
+    "gameplayTitle": "Gameplay",
+    "controlsIntro": "Mexxi <kbd>MOUSE</kbd> / <kbd>TOUCH</kbd> tiegħek biex tikkontrolla ċ-Ċellula tiegħek<br /><kbd></kbd>Rota tal-maws<kbd id=\"key-zoomin-display\"> jew </kbd>F<kbd id=\"key-zoomout-display\"> u </kbd>V<br /> biex Iżżejjed<kbd id=\"key-feed-display\">b> id=\"key-feed-display\">W</kbd> jew <kbd>Ikklikkja tax-Xellug</kbd> biex Tneħħi l-Massa<br />Agħfas <kbd id=\"key-split-display\">SPAZJU</kbd> biex taqsam iċ-Ċellola tiegħek darba<br />Agħfas <kbd id=\"key-doublesplit-display\">>R</kbd>>R<kbd>D</kbd> Double Split<br />Agħfas <kbd id=\"key-multisplit-display\">C</kbd> jew <kbd>Middle Click</kbd> biex tagħmel Multi Split",
+    "objective": "<b>Objettiv:</b> L-għan ta 'Agar.io huwa li tkabbar iċ-ċellula tiegħek billi tikkonsma ċelluli iżgħar u tevita dawk akbar. Hekk kif tikber, int se ssir aktar formidabbli u tkun tista 'tikkonsma ċelloli saħansitra akbar.",
+    "startingOut": "<b>Bidu:</b> Meta tingħaqad mal-logħba għall-ewwel darba, tibda bħala ċellola żgħira. Ċaqlaq uża l-maws biex tiġbor il-gerbub ikkuluriti mifruxa mal-mappa. Tiekol gerbub iżid id-daqs u l-massa tiegħek.",
+    "movement": "<b>Moviment:</b> Biex iċċaqlaq iċ-ċellula tiegħek, sempliċement ċċaqlaq il-cursor tal-maws jew tuża l-iskrin tat-touch billi timxi fid-direzzjoni li trid li tmur iċ-ċellula tiegħek. Iċ-ċellula tiegħek se ssegwi l-moviment tal-cursor tal-maws fuq l-iskrin.",
+    "consumeSmaller": "<b>Ikkunsma Ċelloli Żgħar:</b> Oqgħod attent għal ċelloli iżgħar roaming fil-qrib. Hekk kif tikber, tkun tista' taħsad dawn iċ-ċelloli iżgħar biex iżżid il-massa tiegħek. Avviċinahom strateġikament biex tevita li tittiekel minn ċelloli akbar.",
+    "avoidLarger": "<b>Evita Ċelloli Akbar:</b> Oqgħod attent minn ċelloli akbar, peress li jistgħu jikkunsmawk jekk int iżgħar minnhom. Oqgħod attent għal plejers li jaqsmu biex jaqbdu ċelloli iżgħar, u pprova jantiċipa l-movimenti tagħhom biex jibqgħu sikuri.",
+    "splitting": "<b>Qsim:</b> Tista' taqsam iċ-ċellula tiegħek f'diversi biċċiet iżgħar billi tagħfas <kbd>SPAZJU</kbd>. Uża din it-tattika biex taqbad ċelluli iżgħar jew biex taħrab minn oħrajn akbar. Tista' wkoll tagħmel qsim multipli billi tagħfas <kbd>X</kbd> jew <kbd>Z</kbd>. Ftakar, il-qsim tagħmlek ukoll aktar vulnerabbli, għalhekk użaha bil-għaqal.",
+    "ejectingMass": "<b>Tkeċċi l-Massa:</b> Filwaqt li tkeċċi l-massa billi tagħfas il-<kbd>W</kbd> jew il-<kbd>Ikklikkja tax-Xellug</kbd> tista' tkun ta' benefiċċju, tiġi wkoll b'riskji. Il-massa ejected tista 'tiġi kkunsmata minn plejers oħra, inklużi rivali potenzjali. Barra minn hekk, it-tneħħija tal-massa tnaqqas id-daqs ġenerali taċ-ċellula tiegħek, li jista 'jagħmel inti aktar vulnerabbli biex tiġi kkunsmat minn ċelloli akbar.",
+    "teamPlay": "<b>Team Play (Mhux obbligatorju):</b> Fil-mod tat-tim, tista' tikkollabora ma' plejers oħra biex tiddomina l-leaderboard. Għaqqad flimkien ma' ħbieb jew plejers oħra biex tegħleb lill-avversarji tiegħek u tirbaħ il-logħba flimkien.",
+    "growDominate": "<b>Kber u Iddomina:</b> Hekk kif tikkonsma ċelluli iżgħar u tevita li tittiekel, iċ-ċellula tiegħek se tkompli tikber fid-daqs. Immira li ssir l-akbar ċellula fuq is-server u tiddomina l-leaderboard.",
+    "viruses": "<b>Oqgħod attent għall-Viruses:</b> Tul il-mappa, int se tiltaqa' ma' ċrieki ħodor mgħarrqa magħrufa bħala viruses. Evita li taħbat ma 'dawn, peress li jistgħu jaqsmu ċ-ċellula tiegħek f'biċċiet iżgħar jekk int akbar minnhom. It-tmigħ tal-viruses tal-massa tiegħek minn direzzjoni se jġiegħelhom jimmultiplikaw fid-direzzjoni opposta.",
+    "beStrategic": "<b>Kun Strateġiku:</b> Agar.io huwa kemm dwar strateġija kif ukoll dwar ħila. Oqgħod attent għall-madwar tiegħek, antiċipa l-movimenti tal-avversarji tiegħek, u uża tattiċi bħall-qsim u l-għaqda bil-għaqal biex tissupera r-rivali tiegħek.<hr />",
+    "closing": "Dak hu għall-baŜi ta 'Agar.io! Issa wasal iż-żmien li taqbeż fil-logħba u tibda tkabbar iċ-ċellula tiegħek biex issir l-akbar u l-aktar plejer dominanti fuq is-server.",
+    "goodLuck": "Xorti tajba, u tieħdu gost!"
+  },
+  "news": {
+    "title": "Aħbarijiet",
+    "entries": [
+      {
+        "date": "21/05/2026",
+        "items": [
+          "<b>Ismijiet taċ-ċelluli</b>, <b>Massa taċ-ċelluli</b> u <b>Fiżika tal-ġelatina taċ-ċelluli</b> imtejba meta jkunu attivati f'<b>Settings</b>",
+          "Miżjud <b>Aġġornamenti tal-Massa aktar bil-mod</b> f'<b>Settings</b> bi slajder biex tikkontrolla kemm-il darba n-numri tal-massa jġedded (tkaxkar is-slajder lejn il-lemin ifisser aġġornamenti aktar baxxi)"
+        ]
+      },
+      {
+        "date": "05/01/2026",
+        "items": [
+          "<b>Laqmijiet</b> issa jridu jkunu mill-inqas <b>3 karattri</b>",
+          "Miżjud <b>Kliem Ċensura</b> għal <b>Chat</b> u <b>Laqmijiet</b>, hija attivata awtomatikament, <u>tista' tiddiżattivaha, iżda mbagħad ma tilmentax fuq <a style=\"font-weight: bolder;\" href=\"https://discord.gg/emupedia-510149138491506688\" target=\"_blank\">Discord</a> dwar in-nies li jkunu tossiċi</u>",
+          "Fissa <b>Spectator Free-Camera Toggle</b>, issa tista' taqleb minn Auto Follow players għal Free-Camera kif suppost fil-mod Spectator"
+        ]
+      },
+      {
+        "date": "19/11/2025",
+        "items": [
+          "<b>Laqmijiet</b> issa huma <b>Meħtieġa</b> ma jistax ikollok aktar <b>Laqmijiet</b> vojta",
+          "<b>Funzjoni Mtejba ta' Mute Player</b> issa <b>Mute</b> se jipprova jiddifferenzja bejn <b>Plejers</b> bl-istess <b>Laqam</b> u jipprova <b>Issikkli</b> biss dak li ridt"
+        ]
+      },
+      {
+        "date": "18/11/2025",
+        "items": [
+          "Miżjud <b>Zoom In</b> u <b>Zoom Out</b> Buttuni mobbli, tista' taqleb <b>Uri Zoom Slider</b> biex <b>Uri</b> jew <b>Aħbi</b>hom f'<b>Settings</b>",
+          "<b>Personalizzazzjoni mtejba tal-Pożizzjoni tal-buttuni tal-mowbajl</b>, issa tista' <b>Ttektek</b> għal 3 sekondi fuq kwalunkwe Buttuna biex iċċaqlaqha",
+          "Miżjud <b>Irrisettja l-Pożizzjonijiet tal-buttuni mobbli</b> f'<b>Settings</b> jekk trid tirrisettja l-<b>buttuni tal-mowbajl</b> għall-pożizzjonijiet <b>Default</b>",
+          "Miżjud <b>Lock Mobile Buttons</b> f'<b>Settings</b> jekk tiċċekkja dan ma tistax tiċċaqlaq il-buttuni",
+          "Neħħew <b>Flip Touch Controls</b> minn <b>Settings</b> (m'għadux meħtieġ, issa tista' ċċaqlaq il- Buttuni fejn trid)"
+        ]
+      },
+      {
+        "date": "28/10/2025",
+        "items": [
+          "Miżjuda <b>Butuni tat-Tastiera</b> u <b>Butuni tal-maws</b> li jistgħu jiġu personalizzati f'<b>Settings</b>",
+          "Miżjud l-<b>Lillixx tal-Kamera</b> u l-<b>Veloċità tal-Animazzjonijiet taċ-Ċellola</b> f'<b>Settings</b>"
+        ]
+      },
+      {
+        "date": "07/07/2025",
+        "items": [
+          "Imtejba kif jiġu mgħobbija <b>Ġlud</b> biex tagħmilha aktar diffiċli biex tikkopjahom"
+        ]
+      },
+      {
+        "date": "28/06/2025",
+        "items": [
+          "<b>Identicons</b> imtejba biex ma jinbidlux daqshekk spiss"
+        ]
+      },
+      {
+        "date": "08/03/2025",
+        "items": [
+          "Miżjud <b>Buttuna ta' Mute/Issikket tal-Plejer</b>, issa tista' <b>Issikket/Tattiva</b> ta' <b>Plejers</b> speċifiċi minn <b>Chat</b> billi tagħfas l-<b>Ikona ta' Mute/Tattiva</b> ta' ħdejn il-messaġġ tagħhom jew tuża l-lista ta' <b>Plejers Muted</b> f'<b>Settings</b>"
+        ]
+      },
+      {
+        "date": "03/02/2025",
+        "items": [
+          "Miżjud <b>Chat Scroll</b>, tista' tiskrollja issa jew billi tkaxkru l-iscrollbar bil-<kbd>Maws</kbd> jew billi tuża <kbd>↑ Arrow Up</kbd> u <kbd>↓ Arrow Down</kbd>."
+        ]
+      },
+      {
+        "date": "11/01/2025",
+        "items": [
+          "Miżjud <b>Modalità Logħba PVP</b> għadha f'Beta",
+          "Miżjud <b>Trasparenza taċ-Ċellula</b> f'<b>Settings</b>"
+        ]
+      },
+      {
+        "date": "13/10/2024",
+        "items": [
+          "Żiedu ċwievet <kbd>F</kbd> u <kbd>V</kbd> biex Iżżejjen u 'l barra",
+          "Miżjud <b>Zoom Slider</b> għal Żomm 'il ġewwa u 'l barra",
+          "Miżjud <b>Uri Zoom Slider</b> f'<b>Settings</b>"
+        ]
+      },
+      {
+        "date": "10/10/2024",
+        "items": [
+          "Miżjud buttuna <b>Clear Chat</b>, sabiex tkun tista' tneħħi ċ-chat manwalment"
+        ]
+      },
+      {
+        "date": "01/10/2024",
+        "items": [
+          "Miżjuda <b>Identicons</b> biex tidentifika aħjar ħbieb jew għedewwa, kull apparat għandu <b>Icona</b> unika speċifika",
+          "Miżjud kaxxa ta' kontroll <b>Uri Identicons</b> f'<b>Settings</b>",
+          "Tricks imneħħija li jippermettu li jiġu duplikati <b>Nicks</b> jew <b>Ġlud</b> faċilment"
+        ]
+      },
+      {
+        "date": "16/05/2024",
+        "items": [
+          "Immappjar tat-tastiera <b>AZERTY</b> issa <kbd>W</kbd> u <kbd>Z</kbd> it-tnejn <b>Feed</b>",
+          "Inbidel <b>Muti Split</b> għal ċavetta <kbd>C</kbd> minflok <kbd>Z</kbd>",
+          "Miżjud <b>Iżżeb il-Kontrolli tat-Touch</b> f'<b>Settings</b>"
+        ]
+      },
+      {
+        "date": "15/05/2024",
+        "items": [
+          "Irranġa bug li kien ilu fix-<b>Chat</b> li ma waqqafx xi kultant li jintwerew xi messaġġi",
+          "Issa tista' tara l-laqmijiet ta' <b>Spectator</b> jekk ikollhom sett wieħed",
+          "Issa tista' timbotta <b>Viruses</b> billi tkeċċi l-massa <b>Ċellola</b> tiegħek lejn il-<b>Viruses</b>",
+          "Miżuri ta' <b>AntiSpam</b> aġġustati biex ikunu aktar taħfer f'<b>Chat</b>, reġgħu ppermettew ukoll <b>Pasting</b> ta' messaġġi",
+          "Miżjud kaxxa ta' kontroll <b>Toggle Fullscreen</b> f'<b>Settings</b>",
+          "Implimentat <b>AutoRespawn</b>, issa int awtomatikament terġa' terġa' tirrepeti mingħajr ma jkollok bżonn tagħfas <b>Play</b> mill-ġdid",
+          "Miżjud <b>Toggle AutoRespawn</b> f'<b>Settings</b>",
+          "<b>Kontrolli tat-Touch</b> imtejba għall-mowbajl (miżjuda <b>Uri Buttuna tal-Menu</b>, <b>Buttuna ta' l-iskrin sħiħ</b>, distanza fissa ta' <b>Buttuna maqsuma</b>, tipprevjeni t-tkaxkir tal- Buttuni)"
+        ]
+      },
+      {
+        "date": "14/05/2024",
+        "items": [
+          "Il-qsim waqt l-użu tal-kontrolli Touch ħarġet daqsxejn ta 'massa, dan il-bug issa ġie ffissat",
+          "Eject Macro issa qed taħdem waqt li tuża l-kontrolli Touch",
+          "Kontrolli Touch imtejba għall-mowbajl"
+        ]
+      },
+      {
+        "date": "10/05/2024",
+        "items": [
+          "Miżuri AntiSpam miżjuda maċ-Chat, diżattivat It-twaħħil tal-messaġġi",
+          "Ippermettiet mill-ġdid billi tuża Ikklikkja Lemin fuq Menus u fil-Kaxxa taċ-Chat",
+          "Possibilità miżjuda għal <b>Flip Touch Controls</b> min-naħa tal-lemin għax-xellug f'<b>Settings</b>"
+        ]
+      },
+      {
+        "date": "01/05/2024",
+        "items": [
+          "Miżjud reCaptcha v3 biex jipprevjeni bots li jgħaqqdu <a href=\"https://discord.gg/emupedia-510149138491506688\" target=\"_blank\">(tista' tagħti xi feedback dwar Discord jekk ma tkunx qed taħdem sew)</a>",
+          "Ippermettiet konnessjoni awtomatika mas-server wara li jerġa' jibda server",
+          "Kontrolli Touch imtejba għall-mowbajl"
+        ]
+      },
+      {
+        "date": "09/03/2024",
+        "items": [
+          "Miżjud buttuna <b>Kopja Mal-Klipboard</b> għal <b>Ġilda Magħżula Attwali</b>",
+          "Żieda <b>Daqs taż-Żona taċ-Chat</b> biex taqbel aktar messaġġi",
+          "<b>Ħin ta' Stennija</b> imnaqqas għal <b>Upload Skin</b> għal 30 sekonda"
+        ]
+      },
+      {
+        "date": "28/02/2024",
+        "items": [
+          "Implimentat <b>Touch Joystick</b> għall-mowbajl",
+          "Miżjud <b>Touch Joystick</b> f'<b>Settings</b>",
+          "It-tlugħ ta' fajls <kbd>gif</kbd> m'għadux permess, l-animazzjoni xorta waħda ma ħadmitx, intwera biss l-ewwel frame"
+        ]
+      },
+      {
+        "date": "24/02/2024",
+        "items": [
+          "Implimentat il-karatteristika ta' <b>Upload Skin</b>"
+        ]
+      },
+      {
+        "date": "20/02/2024",
+        "items": [
+          "Kaxxi ta' kontroll miżjuda ta' <b>Klikks Individwali tal-Maws</b> f'<b>Settings</b>",
+          "Miżjud addattat tal-<b>Kulur tal-Isfond</b>"
+        ]
+      },
+      {
+        "date": "17/02/2024",
+        "items": [
+          "Miżjud <b>Double Split</b>, tista' tuża <b>Double Split</b> billi tagħfas <kbd>X</kbd> jew <kbd>Ikklikkja Dritt</kbd>",
+          "Miżjud <b>Multi Split Macro</b>, tista' tuża <b>Multi Split Macro</b> billi tagħfas <kbd>C</kbd> jew <kbd>Middle Click</kbd>",
+          "Miżjuda toggle checkbox f'<b>Settings</b> għal <b>Multi Split Macro</b>",
+          "Miżjud il-picker tal-<b>Laqam</b>",
+          "Miżjud l-<b>Isem tal-Ġilda</b>",
+          "Miżjud id-dwana tal-<b>Kulur tal-Isem taċ-Ċellola</b>",
+          "Miżjud id-drawwa tal-<b>Kulur tal-Isfond taċ-Ċellula</b>",
+          "Miżjud id-drawwa tal-<b>Kulur tal-Bord taċ-Ċellola</b>",
+          "Miżjud <b>Tema Skura</b> għall-menus"
+        ]
+      },
+      {
+        "date": "16/02/2024",
+        "items": [
+          "Kuluri fl-isfond każwali fissi meta tuża <b>Jelly Physics</b>",
+          "Miżjud <b>Feed Macro</b>, tista' tuża l-<b>Feed Macro</b> billi tagħfas <kbd>W</kbd> jew <kbd>Ikklikkja tax-Xellug</kbd> u ċċekkja l-<b>Feed Macro</b> f'<b>Settings</b>",
+          "Miżjuda toggle checkbox f'<b>Settings</b> għal <b>Feed Macro</b>",
+          "Miżjuda taqsima <b>Aħbarijiet</b>",
+          "Miżjud taqsima <b>Gameplay</b>",
+          "Ġlud implimentati li jibdew b'<kbd>$</kbd>",
+          "Avvenimenti sintetiċi pprevenuti ġġenerati minn skripts injettati",
+          "Il-klijenti tad-dwana l-oħra kollha ma ġewx permessi"
+        ]
+      },
+      {
+        "date": "6/13/2023",
+        "items": [
+          "Miżjud 1195 Ġlud neqsin"
+        ]
+      }
+    ]
+  }
+}

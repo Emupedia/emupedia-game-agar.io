@@ -1,0 +1,353 @@
+{
+  "meta": {
+    "title": "Agar.io v2.0",
+    "description": "Eet cellen die kleiner zijn dan jij en word niet opgegeten door de grotere, als een MMO"
+  },
+  "chat": {
+    "general": "Algemeen",
+    "clan": "Clan",
+    "placeholder": "Druk op Enter om te chatten",
+    "clearTitle": "Duidelijke chat",
+    "zoom": "Zoom"
+  },
+  "gallery": {
+    "skins": "Huiden"
+  },
+  "lobby": {
+    "title": "Agar.io v2.0",
+    "discordSuggestions": "Sluit je aan bij ons op Discord als je suggesties hebt",
+    "nickname": "Bijnaam",
+    "skin": "Huid",
+    "skinPlaceholder": "Huidnaam",
+    "copy": "Kopiëren",
+    "clanName": "Clannaam",
+    "clanPlaceholder": "Maximaal 5 letters",
+    "createClan": "Creëer een clan",
+    "leaveClan": "Verlaat de clan",
+    "copyInvite": "Kopieer uitnodiging",
+    "gameMode": "Spelmodus",
+    "play": "Toneelstuk",
+    "chooseSkin": "Kies Huid",
+    "uploadSkin": "Huid uploaden",
+    "unban": "Verbanning ongedaan maken",
+    "skinCopied": "Skin-URL gekopieerd naar klembord!"
+  },
+  "settings": {
+    "language": "Taal",
+    "mutedPlayers": "Gedempte spelers",
+    "mutePlaceholder": "Voer een bijnaam in om te dempen",
+    "mute": "Stom",
+    "keyboardBindings": "Toetsenbordknopbindingen",
+    "feed": "Voer:",
+    "split": "Splitsen:",
+    "doubleSplit": "Dubbele splitsing:",
+    "multiSplit": "Multi-splitsing:",
+    "zoomIn": "Inzoomen:",
+    "zoomOut": "Uitzoomen:",
+    "minion": "Gratis toeschouwercamera / Minion-bediening:",
+    "resetKeys": "Terugzetten naar standaardwaarden",
+    "keyRebindHint": "Klik op een knop en druk op een toets om opnieuw te binden",
+    "mouseBindings": "Muisknopbindingen",
+    "leftClick": "Links klikken:",
+    "middleClick": "Middelste klik:",
+    "rightClick": "Klik met de rechtermuisknop:",
+    "resetMouse": "Terugzetten naar standaardwaarden",
+    "mouseHint": "Configureer welke actie elke muisknop uitvoert",
+    "toggleFullscreen": "Schakel Volledig scherm in",
+    "darkTheme": "Donker thema",
+    "cameraSmoothing": "Cameraverzachting",
+    "cellAnimationSpeed": "Celanimaties Snelheid",
+    "showSkins": "Celhuiden",
+    "showNames": "Celnamen",
+    "showColor": "Celkleuren",
+    "showMass": "Cel massa",
+    "slowMassUpdates": "Langzamere massa-updates",
+    "jellyPhysics": "Celgelei-fysica",
+    "showIdenticon": "Celidenticonen",
+    "fillSkin": "Celkleur onder de huid",
+    "showTransparent": "Celtransparantie",
+    "showChat": "Chat tonen",
+    "showMinimap": "Minimap weergeven",
+    "showPosition": "Toon positie",
+    "showBorder": "Toon kaartrand",
+    "showGrid": "Kaartraster weergeven",
+    "backgroundSectors": "Toon kaartsectoren",
+    "moreZoom": "Uitzoomen vergroten",
+    "showZoom": "Zoomschuifregelaar tonen",
+    "playSounds": "Geluiden",
+    "feedMacro": "Feedmacro",
+    "splitMacro": "Gesplitste macro",
+    "leftClickToggle": "Links klikken",
+    "middleClickToggle": "Middelste klik",
+    "rightClickToggle": "Klik met de rechtermuisknop",
+    "disableTouchControls": "Schakel aanraakbediening uit",
+    "useJoystick": "Raak Joystick aan",
+    "lockMobileButtons": "Mobiele knoppen vergrendelen",
+    "resetButtonPositions": "Posities van mobiele knoppen opnieuw instellen",
+    "useWordFilters": "Woorden censuur",
+    "autoRespawn": "Schakel AutoRespawn in"
+  },
+  "colors": {
+    "background": "Achtergrond",
+    "name": "Naam",
+    "color": "Kleur",
+    "border": "Grens"
+  },
+  "mouseActions": {
+    "none": "Geen",
+    "feed": "Invoer (uitwerpmassa)",
+    "split": "Splitsen",
+    "doubleSplit": "Dubbele splitsing",
+    "multiSplit": "Multi-splitsing"
+  },
+  "connecting": {
+    "trying": "Proberen verbinding te maken...",
+    "discord": "Sluit je aan bij Discord!",
+    "firewall": "Als u geen verbinding kunt maken met de servers, controleer dan of er een antivirusprogramma of firewall is die de verbinding blokkeert.",
+    "multisessionTitle": "Multisessiewaarschuwing",
+    "multisessionBody": "Meerdere game-instanties zijn niet toegestaan.<br />Sluit alle andere game-instanties en laad opnieuw.",
+    "oldBrowserTitle": "Uw browser is erg oud",
+    "oldBrowserLink": "Klik hier om uw browser bij te werken naar een nieuwere versie.",
+    "bannedTitle": "Je bent verbannen 😭",
+    "bannedBody": "Je bent verbannen uit het spel omdat je de regels hebt overtreden door de chat te spammen of tijdens het uploaden van aangepaste skins.",
+    "bannedBodyBots": "Je bent verbannen uit het spel omdat je de regels hebt overtreden door de chat te spammen of tijdens het uploaden van aangepaste skins, of omdat je bots gebruikt.",
+    "unbanCode": "Uw unban-code is"
+  },
+  "errors": {
+    "browserUnsupported": "Uw browser ondersteunt de vereiste functies niet. Update uw browser.",
+    "nicknameRequired": "Voer een bijnaam in om te spelen.",
+    "nicknameMinLength": "Bijnaam heeft minimaal {min} tekens nodig",
+    "nicknameDisallowed": "Deze bijnaam is niet toegestaan. Kies een andere bijnaam."
+  },
+  "muted": {
+    "empty": "Geen gedempte spelers",
+    "unmute": "Dempen opheffen"
+  },
+  "keys": {
+    "pressKey": "Druk op een toets..."
+  },
+  "gameplay": {
+    "rulesTitle": "Regels",
+    "rule1": "Upload geen verboden aangepaste skins, vooral niet als het iemands gezicht is. Het kan zijn dat uw skin wordt verbannen of dat u zelf uit het spel wordt verbannen.",
+    "rule2": "Gebruik de bijnamen van anderen niet op een denigrerende manier in de chat of als jouw naam. Het kan zijn dat je hierdoor wordt gedempt of uit het spel wordt verbannen.",
+    "gameplayTitle": "Gameplay",
+    "controlsIntro": "Beweeg je <kbd>MUIS</kbd> / <kbd>TOUCH</kbd> om je cel te besturen<br /><kbd>Muiswiel</kbd> of <kbd id=\"key-zoomin-display\">F</kbd> en <kbd id=\"key-zoomout-display\">V</kbd> om in en uit te zoomen<br />Druk op <kbd id=\"key-feed-display\">W</kbd> of <kbd>Klik met de linkermuisknop</kbd> om massa uit te werpen<br />Druk op <kbd id=\"key-split-display\">SPACE</kbd> om uw cel één keer te splitsen<br />Druk op <kbd id=\"key-doublesplit-display\">X</kbd> of <kbd>Klik met de rechtermuisknop</kbd> om een dubbele splitsing uit te voeren<br />Druk op <kbd id=\"key-multisplit-display\">C</kbd> of <kbd>Middelklik</kbd> om een Multi Split uit te voeren",
+    "objective": "<b>Doelstelling:</b> Het doel van Agar.io is om uw cel te laten groeien door kleinere cellen te consumeren en grotere cellen te vermijden. Naarmate je groeit, word je formidabeler en kun je nog grotere cellen consumeren.",
+    "startingOut": "<b>Beginnen:</b> Wanneer je voor het eerst meedoet aan het spel, begin je als een kleine cel. Beweeg rond met je muis om de kleurrijke pellets te verzamelen die verspreid over de kaart liggen. Het eten van pellets vergroot uw omvang en massa.",
+    "movement": "<b>Beweging:</b> om uw cel te verplaatsen, verplaatst u eenvoudigweg uw muiscursor of gebruikt u uw aanraakscherm door in de richting te bewegen waarin u de cel wilt laten gaan. Uw cel volgt de beweging van uw muiscursor op het scherm.",
+    "consumeSmaller": "<b>Verbruik kleinere cellen:</b> Houd kleinere cellen in de buurt in de gaten. Naarmate je groter wordt, kun je deze kleinere cellen opslokken om je massa te vergroten. Benader ze strategisch om te voorkomen dat ze door grotere cellen worden opgegeten.",
+    "avoidLarger": "<b>Vermijd grotere cellen:</b> Wees voorzichtig met grotere cellen, omdat ze je kunnen opslokken als je kleiner bent dan zij. Pas op voor spelers die zich splitsen om kleinere cellen te veroveren, en probeer op hun bewegingen te anticiperen om veilig te blijven.",
+    "splitting": "<b>Splitsen:</b> je kunt je cel in meerdere kleinere stukjes splitsen door op <kbd>SPACE</kbd> te drukken. Gebruik deze tactiek om kleinere cellen te veroveren of om uit grotere cellen te ontsnappen. Je kunt ook meerdere splitsingen uitvoeren door op <kbd>X</kbd> of <kbd>Z</kbd> te drukken. Bedenk dat splitsen je ook kwetsbaarder maakt, dus gebruik het verstandig.",
+    "ejectingMass": "<b>Mass uitwerpen:</b> Hoewel het uitwerpen van massa door op de <kbd>W</kbd> of <kbd>klik met de linkermuisknop</kbd> te drukken nuttig kan zijn, brengt het ook risico's met zich mee. Uitgeworpen massa kan worden geconsumeerd door andere spelers, inclusief potentiële rivalen. Bovendien vermindert de uitgeworpen massa de totale grootte van uw cel, waardoor u kwetsbaarder kunt worden voor consumptie door grotere cellen.",
+    "teamPlay": "<b>Teamspel (optioneel):</b> In de teammodus kun je samenwerken met andere spelers om het klassement te domineren. Werk samen met vrienden of andere spelers om je tegenstanders te slim af te zijn en samen het spel te veroveren.",
+    "growDominate": "<b>Groeien en domineren:</b> als je kleinere cellen consumeert en vermijdt opgegeten te worden, zal je cel in omvang blijven groeien. Probeer de grootste cel op de server te worden en het klassement te domineren.",
+    "viruses": "<b>Pas op voor virussen:</b> Op de hele kaart kom je groene puntige cirkels tegen die bekend staan ​​als virussen. Zorg ervoor dat je hier niet mee in botsing komt, omdat ze je cel in kleinere stukken kunnen splitsen als je groter bent dan zij. Als u virussen vanuit een bepaalde richting aan uw massa voedt, zullen ze zich in de tegenovergestelde richting vermenigvuldigen.",
+    "beStrategic": "<b>Wees strategisch:</b> Agar.io gaat net zo goed over strategie als over vaardigheden. Let op je omgeving, anticipeer op de bewegingen van je tegenstanders en gebruik verstandig tactieken zoals splitsen en samenvoegen om je rivalen te slim af te zijn.<hr />",
+    "closing": "Dat is alles voor de basisprincipes van Agar.io! Nu is het tijd om in het spel te duiken en je cel te laten groeien om de grootste en meest dominante speler op de server te worden.",
+    "goodLuck": "Veel succes, en veel plezier!"
+  },
+  "news": {
+    "title": "Nieuws",
+    "entries": [
+      {
+        "date": "21/05/2026",
+        "items": [
+          "Verbeterde weergaveprestaties van <b>Celnamen</b>, <b>Celmassa</b> en <b>Celgeleifysica</b> wanneer ze zijn ingeschakeld in <b>Instellingen</b>",
+          "<b>Langzamere massa-updates</b> toegevoegd in <b>Instellingen</b> met een schuifregelaar om te bepalen hoe vaak massanummers worden vernieuwd (schuifregelaar naar rechts slepen betekent lagere updates)"
+        ]
+      },
+      {
+        "date": "01-05-2026",
+        "items": [
+          "<b>Bijnamen</b> moeten nu minimaal <b>3 tekens</b> bevatten",
+          "Optionele <b>Woordencensuur</b> toegevoegd voor <b>Chat</b> en <b>Bijnamen</b>, het is standaard ingeschakeld, <u>je kunt het uitschakelen, maar klaag dan niet over <a style=\"font-weight: bolder;\" href=\"https://discord.gg/emupedia-510149138491506688\" target=\"_blank\">Onenigheid</a> over mensen die giftig zijn</u>",
+          "Probleem opgelost met de <b>schakelaar voor vrije camera voor toeschouwers</b>, nu kun je in de toeschouwermodus correct overschakelen van spelers automatisch volgen naar vrije camera"
+        ]
+      },
+      {
+        "date": "19/11/2025",
+        "items": [
+          "<b>Bijnamen</b> zijn nu <b>Vereist</b> je kunt geen lege <b>Bijnamen</b> meer hebben",
+          "<b>Verbeterde functie voor het dempen van spelers</b> nu <b>Mute</b> probeert onderscheid te maken tussen <b>spelers</b> met dezelfde <b>bijnaam</b> en probeert precies degene die je wilde te <b>dempen</b>"
+        ]
+      },
+      {
+        "date": "18/11/2025",
+        "items": [
+          "Mobiele knoppen <b>Inzoomen</b> en <b>Uitzoomen</b> toegevoegd. U kunt de <b>Zoomschuifregelaar tonen</b> in <b>Instellingen</b> instellen op <b>Toon</b> of <b>Verbergen</b>",
+          "<b>Verbeterde aanpassing van de positie van mobiele knoppen</b>, nu kun je <b>3 seconden op elke knop tikken</b> om deze te verplaatsen",
+          "<b>Posities van mobiele knoppen opnieuw instellen</b> toegevoegd in <b>Instellingen</b> als je de <b>Mobiele knoppen</b> wilt resetten naar de <b>standaard</b> posities",
+          "<b>Mobiele knoppen vergrendelen</b> toegevoegd in <b>Instellingen</b>. Als je dit aanvinkt, kun je de knoppen niet verplaatsen",
+          "<b>Flip Touch Controls</b> verwijderd uit <b>Instellingen</b> (niet langer nodig, je kunt de knoppen nu verplaatsen waar je maar wilt)"
+        ]
+      },
+      {
+        "date": "28/10/2025",
+        "items": [
+          "Aanpasbare <b>toetsenbordknoppen</b> en <b>muisknoppen</b> toegevoegd in <b>Instellingen</b>",
+          "<b>Camera Smoothing</b> en <b>Celanimatiesnelheid</b> toegevoegd in <b>Instellingen</b>"
+        ]
+      },
+      {
+        "date": "07/07/2025",
+        "items": [
+          "Verbeterde manier waarop <b>Skins</b> worden geladen, zodat het moeilijker wordt om ze te kopiëren"
+        ]
+      },
+      {
+        "date": "28/06/2025",
+        "items": [
+          "Verbeterde <b>Identicons</b> zodat deze niet zo vaak veranderen"
+        ]
+      },
+      {
+        "date": "08/03/2025",
+        "items": [
+          "Er is een <b>knop voor het dempen/dempen van spelers</b> toegevoegd. Je kunt nu specifieke <b>spelers</b> <b>spelers</b> <b>chatten</b> <b>dempen/dempen opheffen</b> door op het <b>pictogram voor dempen/dempen opheffen</b> naast hun bericht te drukken of door de lijst <b>Gedempte spelers</b>"
+        ]
+      },
+      {
+        "date": "03/02/2025",
+        "items": [
+          "<b>Chat Scroll</b> toegevoegd, u kunt nu scrollen door de schuifbalk te slepen met de <kbd>muis</kbd> of door de toetsen <kbd>↑ Pijl omhoog</kbd> en <kbd>↓ Pijl omlaag</kbd> te gebruiken"
+        ]
+      },
+      {
+        "date": "11/01/2025",
+        "items": [
+          "<b>PVP-spelmodus</b> toegevoegd, nog in bèta",
+          "Selectievakje voor <b>Celtransparantie</b> toegevoegd in <b>Instellingen</b>"
+        ]
+      },
+      {
+        "date": "13/10/2024",
+        "items": [
+          "Toetsen <kbd>F</kbd> en <kbd>V</kbd> toegevoegd om in en uit te zoomen",
+          "<b>Zoomschuifregelaar</b> toegevoegd om in en uit te zoomen",
+          "Selectievakje <b>Zoomschuifregelaar tonen</b> toegevoegd in <b>Instellingen</b>"
+        ]
+      },
+      {
+        "date": "10/10/2024",
+        "items": [
+          "Knop <b>Chat wissen</b> toegevoegd, zodat u de chat handmatig kunt wissen"
+        ]
+      },
+      {
+        "date": "01/10/2024",
+        "items": [
+          "<b>Identicons</b> toegevoegd om vrienden of vijanden beter te identificeren, elk apparaat heeft een specifiek uniek <b>Icoon</b>",
+          "Selectievakje <b>Identicons weergeven</b> toegevoegd in <b>Instellingen</b>",
+          "Trucs verwijderd waarmee je gemakkelijk <b>Nicks</b> of <b>Skins</b> kunt dupliceren"
+        ]
+      },
+      {
+        "date": "16/05/2024",
+        "items": [
+          "Vaste <b>AZERTY</b> toetsenbordtoewijzing nu <kbd>W</kbd> en <kbd>Z</kbd> beide <b>Feed</b>",
+          "<b>Muti Split</b> gewijzigd in sleutel <kbd>C</kbd> in plaats van <kbd>Z</kbd>",
+          "Selectievakje <b>Aanraakbediening uitschakelen</b> toegevoegd in <b>Instellingen</b>"
+        ]
+      },
+      {
+        "date": "15/05/2024",
+        "items": [
+          "Een al lang bestaande bug in <b>Chat</b> opgelost waardoor sommige berichten soms niet werden weergegeven",
+          "Je kunt nu de bijnamen van <b>Spectator</b> zien, als ze die hebben",
+          "Nu kun je <b>Virussen</b> pushen door de massa van je <b>cel</b> naar de <b>Virussen</b> te werpen",
+          "<b>AntiSpam</b> maatregelen aangepast om vergevingsgezinder te zijn in <b>Chat</b>, en <b>Plakken</b> berichten opnieuw ingeschakeld",
+          "Selectievakje <b>Volledig scherm in-/uitschakelen</b> toegevoegd in <b>Instellingen</b>",
+          "<b>AutoRespawn</b> geïmplementeerd, nu zul je automatisch respawnen zonder dat je opnieuw op <b>Play</b> hoeft te drukken",
+          "Er is een selectievakje <b>AutoRespawn</b> toegevoegd in <b>Instellingen</b>",
+          "Verbeterde <b>aanraakbediening</b> voor mobiel (toegevoegd <b>Menuknop weergeven</b>, <b>knop Volledig scherm</b>, vaste <b>knop splitsen</b> afstand, voorkomen dat knoppen worden gesleept)"
+        ]
+      },
+      {
+        "date": "14/05/2024",
+        "items": [
+          "Bij het splitsen tijdens het gebruik van de aanraakbediening kwam er wat massa vrij. Deze bug is nu opgelost",
+          "Macro uitwerpen werkt nu tijdens het gebruik van aanraakbedieningen",
+          "Verbeterde aanraakbediening voor mobiel"
+        ]
+      },
+      {
+        "date": "10/05/2024",
+        "items": [
+          "AntiSpam-maatregelen toegevoegd aan Chat, berichten plakken uitgeschakeld",
+          "Opnieuw ingeschakeld door met de rechtermuisknop op menu's en in de chatbox te klikken",
+          "Mogelijkheid toegevoegd om <b>aanraakbedieningen</b> van rechts naar links te kantelen in <b>Instellingen</b>"
+        ]
+      },
+      {
+        "date": "01/05/2024",
+        "items": [
+          "ReCaptcha v3 toegevoegd om te voorkomen dat bots verbinding maken <a href=\"https://discord.gg/emupedia-510149138491506688\" target=\"_blank\">(je kunt wat feedback geven over Discord als het niet goed werkt)</a>",
+          "Automatisch opnieuw verbinden met de server ingeschakeld na opnieuw opstarten van de server",
+          "Verbeterde aanraakbediening voor mobiel"
+        ]
+      },
+      {
+        "date": "09/03/2024",
+        "items": [
+          "Knop <b>Kopiëren naar klembord</b> toegevoegd voor <b>Huidige geselecteerde skin</b>",
+          "<b>Chatgebiedgrootte</b> vergroot, zodat er meer berichten in passen",
+          "<b>Wachttijd</b> voor <b>Upload Skin</b> teruggebracht tot 30 seconden"
+        ]
+      },
+      {
+        "date": "28/02/2024",
+        "items": [
+          "Implementatie van <b>Touch-joystick</b> voor mobiel",
+          "Selectievakje <b>Touch Joystick</b> toegevoegd in <b>Instellingen</b>",
+          "Het uploaden van <kbd>gif</kbd> bestanden is niet langer toegestaan, de animatie werkte toch niet, alleen het eerste frame werd getoond"
+        ]
+      },
+      {
+        "date": "24/02/2024",
+        "items": [
+          "Implementatie van de <b>Upload Skin</b>-functie"
+        ]
+      },
+      {
+        "date": "20/02/2024",
+        "items": [
+          "Schakelvakjes voor <b>Individuele muisklikken</b> toegevoegd in <b>Instellingen</b>",
+          "Aangepaste <b>Achtergrondkleur</b>-kiezer toegevoegd"
+        ]
+      },
+      {
+        "date": "17/02/2024",
+        "items": [
+          "<b>Double Split</b> toegevoegd, je kunt <b>Double Split</b> gebruiken door op <kbd>X</kbd> of <kbd>Right Click</kbd> te drukken",
+          "<b>Multi Split Macro</b> toegevoegd, je kunt <b>Multi Split Macro</b> gebruiken door op <kbd>C</kbd> of <kbd>Middle Click</kbd> te drukken",
+          "Schakelvakje toegevoegd in <b>Instellingen</b> voor <b>Multi Split Macro</b>",
+          "<b>Bijnaam</b>-kiezer toegevoegd",
+          "<b>Skinnaam</b>-kiezer toegevoegd",
+          "Aangepaste <b>Celnaamkleur</b>-kiezer toegevoegd",
+          "Aangepaste kiezer voor <b>Celachtergrondkleur</b> toegevoegd",
+          "Aangepaste <b>Celrandkleur</b>-kiezer toegevoegd",
+          "<b>Donker thema</b> toegevoegd voor menu's"
+        ]
+      },
+      {
+        "date": "16/02/2024",
+        "items": [
+          "Willekeurige achtergrondkleuren opgelost bij gebruik van <b>Jelly Physics</b>",
+          "<b>Feed Macro</b> toegevoegd, u kunt <b>Feed Macro</b> gebruiken door op <kbd>W</kbd> of <kbd>Links klikken</kbd> te drukken en het selectievakje <b>Feed Macro</b> aangevinkt te hebben in <b>Instellingen</b>",
+          "Schakelvakje toegevoegd in <b>Instellingen</b> voor <b>Feedmacro</b>",
+          "Sectie <b>Nieuws</b> toegevoegd",
+          "<b>Gameplay</b>-sectie toegevoegd",
+          "Geïmplementeerde skins die beginnen met <kbd>$</kbd>",
+          "Voorkom synthetische gebeurtenissen gegenereerd door geïnjecteerde scripts",
+          "Alle andere aangepaste clients zijn niet toegestaan"
+        ]
+      },
+      {
+        "date": "13-06-2023",
+        "items": [
+          "1195 ontbrekende skins toegevoegd"
+        ]
+      }
+    ]
+  }
+}

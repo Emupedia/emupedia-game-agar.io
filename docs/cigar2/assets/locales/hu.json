@@ -1,0 +1,353 @@
+{
+  "meta": {
+    "title": "Agar.io v2.0",
+    "description": "Egyél meg a nálad kisebb sejteket, és ne egyék meg a nagyobbak, MMO-ként"
+  },
+  "chat": {
+    "general": "Általános",
+    "clan": "Klán",
+    "placeholder": "Nyomja meg az Entert a csevegéshez",
+    "clearTitle": "Csevegés törlése",
+    "zoom": "Zoomolás"
+  },
+  "gallery": {
+    "skins": "Skinek"
+  },
+  "lobby": {
+    "title": "Agar.io v2.0",
+    "discordSuggestions": "Ha javaslata van, csatlakozzon hozzánk a Discordon",
+    "nickname": "Becenév",
+    "skin": "Bőr",
+    "skinPlaceholder": "Bőr neve",
+    "copy": "Másolat",
+    "clanName": "Klán neve",
+    "clanPlaceholder": "5 betű max",
+    "createClan": "Klán létrehozása",
+    "leaveClan": "Hagyd el a klánt",
+    "copyInvite": "Meghívó másolása",
+    "gameMode": "Játék mód",
+    "play": "Játék",
+    "chooseSkin": "Válassza a Skin lehetőséget",
+    "uploadSkin": "Skin feltöltése",
+    "unban": "Unban",
+    "skinCopied": "Skin URL a vágólapra másolva!"
+  },
+  "settings": {
+    "language": "Nyelv",
+    "mutedPlayers": "Elnémított játékosok",
+    "mutePlaceholder": "Adja meg a becenevet a némításhoz",
+    "mute": "Néma",
+    "keyboardBindings": "Billentyűzet gombkötések",
+    "feed": "Hírcsatorna:",
+    "split": "Hasított:",
+    "doubleSplit": "Dupla felosztás:",
+    "multiSplit": "Több felosztás:",
+    "zoomIn": "Nagyítás:",
+    "zoomOut": "Kicsinyítés:",
+    "minion": "Ingyenes nézői kamera/minion vezérlés:",
+    "resetKeys": "Állítsa vissza az alapértelmezett értékeket",
+    "keyRebindHint": "Kattintson egy gombra, és nyomja meg a gombot az újrakötéshez",
+    "mouseBindings": "Egérgomb kötések",
+    "leftClick": "Bal kattintás:",
+    "middleClick": "Középső kattintás:",
+    "rightClick": "Jobb klikk:",
+    "resetMouse": "Állítsa vissza az alapértelmezett értékeket",
+    "mouseHint": "Állítsa be, hogy az egyes egérgombok milyen műveleteket hajtsanak végre",
+    "toggleFullscreen": "Teljes képernyő váltás",
+    "darkTheme": "Sötét téma",
+    "cameraSmoothing": "Kamera simítás",
+    "cellAnimationSpeed": "Cell animációk sebessége",
+    "showSkins": "Sejtbőrök",
+    "showNames": "Sejtnevek",
+    "showColor": "Sejtszínek",
+    "showMass": "Sejttömeg",
+    "slowMassUpdates": "Lassabb tömegfrissítések",
+    "jellyPhysics": "Cell Jelly fizika",
+    "showIdenticon": "Cellaazonosítók",
+    "fillSkin": "Sejtszín Bőr alatt",
+    "showTransparent": "Cellátlátszóság",
+    "showChat": "Chat megjelenítése",
+    "showMinimap": "Minimap megjelenítése",
+    "showPosition": "Pozíció megjelenítése",
+    "showBorder": "Térkép határának megjelenítése",
+    "showGrid": "Térképrács megjelenítése",
+    "backgroundSectors": "Térkép szektorok megjelenítése",
+    "moreZoom": "Kicsinyítés növelése",
+    "showZoom": "Zoom Slider megjelenítése",
+    "playSounds": "Hangok",
+    "feedMacro": "Feed Makró",
+    "splitMacro": "Osztott makró",
+    "leftClickToggle": "Bal kattintás",
+    "middleClickToggle": "Középső kattintás",
+    "rightClickToggle": "Kattintson a jobb gombbal",
+    "disableTouchControls": "Az érintésvezérlés letiltása",
+    "useJoystick": "Érintse meg a Joystick gombot",
+    "lockMobileButtons": "Mobil gombok zárolása",
+    "resetButtonPositions": "Állítsa vissza a mobilgombok pozícióit",
+    "useWordFilters": "Szavak cenzúra",
+    "autoRespawn": "Kapcsolja be az AutoRespawn funkciót"
+  },
+  "colors": {
+    "background": "Háttér",
+    "name": "Név",
+    "color": "Szín",
+    "border": "Határ"
+  },
+  "mouseActions": {
+    "none": "Egyik sem",
+    "feed": "Táplálkozás (tömeg kidobása)",
+    "split": "Hasított",
+    "doubleSplit": "Dupla felosztás",
+    "multiSplit": "Multi Split"
+  },
+  "connecting": {
+    "trying": "Csatlakozni próbál...",
+    "discord": "Csatlakozz hozzánk a Discordon!",
+    "firewall": "Ha nem tud csatlakozni a szerverekhez, ellenőrizze, hogy van-e valamilyen vírusirtó vagy tűzfal, amely blokkolja a kapcsolatot.",
+    "multisessionTitle": "Több munkamenetes figyelmeztetés",
+    "multisessionBody": "Több játékpéldány nem engedélyezett.<br />Zárja be az összes többi játékpéldányt, és töltse be újra.",
+    "oldBrowserTitle": "A böngésződ nagyon régi",
+    "oldBrowserLink": "Kattintson ide, hogy frissítse böngészőjét egy újabb verzióra.",
+    "bannedTitle": "Ki vagy tiltva 😭",
+    "bannedBody": "Ki lettél tiltva a játékból, mert megszegted a szabályokat a chat spam küldésével vagy egyéni skinek feltöltésével.",
+    "bannedBodyBots": "Ki lettél tiltva a játékból, mert megsérted a szabályokat a chat spam küldésével vagy egyéni skinek feltöltése közben, vagy mert botokat használsz.",
+    "unbanCode": "A letiltási kódod az"
+  },
+  "errors": {
+    "browserUnsupported": "Az Ön böngészője nem támogatja a szükséges funkciókat, kérjük, frissítse böngészőjét.",
+    "nicknameRequired": "Kérjük, adjon meg egy becenevet a játékhoz.",
+    "nicknameMinLength": "A becenévnek legalább {min} karakternek kell lennie",
+    "nicknameDisallowed": "Ez a becenév nem engedélyezett. Kérjük, válasszon másik becenevet."
+  },
+  "muted": {
+    "empty": "Nincsenek elnémított játékosok",
+    "unmute": "Némítás feloldása"
+  },
+  "keys": {
+    "pressKey": "Nyomj meg egy gombot..."
+  },
+  "gameplay": {
+    "rulesTitle": "Szabályok",
+    "rule1": "Ne tölts fel tiltott egyéni skineket, különösen, ha valakinek az arca, előfordulhat, hogy a bőrödet kitiltják, vagy magadat kitiltják a játékból.",
+    "rule2": "Ne használj mások becenevét a chaten vagy saját nevedként becsmérlő módon, mert elnémítanak vagy kitiltják a játékból.",
+    "gameplayTitle": "Játékmenet",
+    "controlsIntro": "Mozgassa az <kbd>EGÉR</kbd> / <kbd>ÉRINTÉS</kbd> elemet a cella<br /><kbd></kbd>egérgörgő<kbd id=\"key-zoomin-display\"> vagy </kbd>F<kbd id=\"key-zoomout-display\"> és </kbd>F<br /> és <kbd id=\"key-feed-display\"> gombjával a </kbd>V<kbd> </kbd>nagyításhoz és kicsinyítéshez. id=\"key-feed-display\">W<br /> vagy <kbd id=\"key-split-display\">bal gomb</kbd> a tömeg kiadásához<br />Nyomja meg a <kbd id=\"key-doublesplit-display\">SZÓKÖZ</kbd> billentyűt a cella egyszeri felosztásához<kbd>Nyomja meg a </kbd>R vagy a<br />R<kbd id=\"key-multisplit-display\"> gombot a kattintáshoz végezzen kettős felosztást</kbd>Nyomja meg a <kbd>C</kbd> vagy a ",
+    "objective": "<b>Cél:</b> Az Agar.io célja, hogy a sejteket kisebb sejtek fogyasztásával és a nagyobbak elkerülésével növelje. Ahogy nősz, egyre félelmetesebb leszel, és képes leszel még nagyobb sejteket fogyasztani.",
+    "startingOut": "<b>Kezdés:</b> Amikor először csatlakozik a játékhoz, kis cellaként indul. Mozogjon az egérrel, és gyűjtse össze a térképen szétszórt színes pelleteket. A pellet fogyasztása növeli a méretét és tömegét.",
+    "movement": "<b>Mozgás:</b> A cella mozgatásához egyszerűen mozgassa az egérkurzort, vagy használja az érintőképernyőt úgy, hogy abba az irányba mozgassa, amerre a cellát szeretné mozgatni. A cellája követni fogja az egérkurzor mozgását a képernyőn.",
+    "consumeSmaller": "<b>Kisebb cellák fogyasztása:</b> Tartsa szemmel a közelben barangoló kisebb cellákat. Ahogy nősz, képes leszel elnyelni ezeket a kisebb sejteket, hogy növeld a tömeged. Stratégiailag közelítsd meg őket, nehogy megegyék őket a nagyobb sejtek.",
+    "avoidLarger": "<b>Kerülje a nagyobb sejteket:</b> Legyen óvatos a nagyobb cellákkal, mert felemészthetik Önt, ha kisebb vagy náluk. Vigyázz azokra a játékosokra, akik szétválnak, hogy elfogják a kisebb sejteket, és próbáld meg előre látni a mozgásukat, hogy biztonságban maradjanak.",
+    "splitting": "<b>Felosztás:</b> A <kbd>SZÓKÖZ</kbd> billentyű lenyomásával több kisebb részre oszthatja fel celláját. Használja ezt a taktikát a kisebb sejtek elfogására vagy a nagyobbak elől való menekülésre. Több felosztást is végezhet az <kbd>X</kbd> vagy a <kbd>Z</kbd> megnyomásával. Ne feledje, hogy a szétválás sebezhetőbbé is tesz, ezért használd okosan.",
+    "ejectingMass": "<b>Tömeg kilökése:</b> Míg a tömeg kilökése a <kbd>W</kbd> vagy a <kbd>bal klikk</kbd> megnyomásával előnyös lehet, de kockázatokkal is jár. A kidobott tömeget más játékosok is elfogyaszthatják, beleértve a potenciális riválisokat is. Ezenkívül a tömeg kilökése csökkenti a sejt méretét, ami érzékenyebbé teheti a nagyobb sejtek fogyasztását.",
+    "teamPlay": "<b>Csapatjáték (opcionális):</b> Csapat módban együttműködhet más játékosokkal, hogy uralja a ranglistát. Álljon össze barátaival vagy más játékosokkal, hogy felülmúlja ellenfeleit, és együtt hódítsa meg a játékot.",
+    "growDominate": "<b>Növekedés és dominálás:</b> Ha kisebb sejteket fogyaszt, és elkerüli, hogy megegyék, a sejt mérete tovább növekszik. Célja, hogy a szerver legnagyobb cellájává váljon, és uralja a ranglistát.",
+    "viruses": "<b>Vigyázz a vírusokra:</b> A térképen vírusként ismert zöld, tüskés körökkel találkozhatsz. Kerülje az ütközést ezekkel, mert kisebb darabokra oszthatják a cellát, ha nagyobb vagy náluk. Ha egy adott irányból táplálja a vírusokat a tömegével, akkor azok az ellenkező irányban szaporodnak.",
+    "beStrategic": "<b>Légy stratégiai:</b> Az Agar.io éppúgy a stratégiáról szól, mint a készségekről. Figyelj a környezetedre, számíts előre ellenfeleid lépéseire, és használj olyan taktikákat, mint például a szétválás és az összeolvadás, hogy túljárj riválisaid eszén.<hr />",
+    "closing": "Ennyi az Agar.io alapjaihoz! Itt az ideje, hogy belevágjon a játékba, és elkezdje növelni a celláját, hogy a szerver legnagyobb és legdominánsabb játékosává váljon.",
+    "goodLuck": "Sok sikert, és jó szórakozást!"
+  },
+  "news": {
+    "title": "Hír",
+    "entries": [
+      {
+        "date": "2026.05.21",
+        "items": [
+          "Továbbfejlesztett <b>cellanevek</b>, <b>sejttömeg</b> és <b>sejtzselés fizika</b> megjelenítési teljesítmény, ha engedélyezve vannak a <b>Beállítások</b> között",
+          "<b>Lassabb tömegfrissítések</b> hozzáadva a <b>Beállítások</b> között egy csúszkával a tömegszámok frissítési gyakoriságának szabályozására (a csúszka jobbra húzása alacsonyabb frissítéseket jelent)"
+        ]
+      },
+      {
+        "date": "2026.05.01",
+        "items": [
+          "A <b>beceneveknek</b> most legalább <b>3 karakterből</b> kell állnia",
+          "Opcionális <b>szócenzúra</b> hozzáadva a <b>csevegéshez</b> és a <b>becenevekhez</b>, alapértelmezés szerint engedélyezve van, <u>letilthatja, de ne panaszkodjon a <a style=\"font-weight: bolder;\" href=\"https://discord.gg/emupedia-510149138491506688\" target=\"_blank\">Viszály</a> arról, hogy az emberek mérgezőek</u>",
+          "Javítva a <b>Kinéző szabad kamera váltása</b>, most már megfelelően válthat a játékosok automatikus követéséről a szabad kamera funkcióra néző módban"
+        ]
+      },
+      {
+        "date": "2025.11.19",
+        "items": [
+          "A <b>becenevek</b> mostantól <b>kötelező</b>, többé nem lehetnek üres <b>becenevek</b>",
+          "A <b>Javított némítási funkció</b> most a <b>Némítás</b> megpróbál különbséget tenni az azonos <b>becenévvel</b> rendelkező <b>játékosok</b> között, és csak azt próbálja meg <b>némítani</b>"
+        ]
+      },
+      {
+        "date": "2025.11.18",
+        "items": [
+          "A <b>Nagyítás</b> és a <b>Kicsinyítés</b> mobilgombok hozzáadásával a <b>Nagyítási csúszka megjelenítése</b> <b>Megjelenítés</b> vagy <b>Elrejtés</b> között a <b>Beállításokban</b> kapcsolhatja őket.",
+          "<b>Továbbfejlesztett mobilgombok helyzetének testreszabása</b>, most már 3 másodpercig <b>koppinthat</b> bármelyik gombra, és mozgathatja azt",
+          "A <b>Mobilgombok pozíciójának visszaállítása</b> hozzáadva a <b>Beállítások</b> menüben, ha vissza szeretné állítani a <b>Mobilgombok</b> beállításait az <b>alapértelmezett</b> pozícióba.",
+          "<b>Mobilgombok zárolása</b> hozzáadva a <b>Beállítások</b> menüben, ha bejelöli, nem tudja mozgatni a gombokat",
+          "Eltávolítottuk a <b>Flip Touch Controls</b> vezérlőket a <b>Beállítások</b> menüből (már nincs rá szükség, a gombokat mostantól bárhová mozgathatja)"
+        ]
+      },
+      {
+        "date": "2025.10.28",
+        "items": [
+          "Testreszabható <b>billentyűzetgombok</b> és <b>egérgombok</b> hozzáadva a <b>Beállítások</b> között",
+          "<b>Kamera simítása</b> és <b>Cella-animációk sebessége</b> hozzáadva a <b>Beállítások</b> között"
+        ]
+      },
+      {
+        "date": "2025.07.07",
+        "items": [
+          "Továbbfejlesztették a <b>Skinek</b> betöltését, hogy megnehezítsék a másolásukat"
+        ]
+      },
+      {
+        "date": "2025.06.28",
+        "items": [
+          "Továbbfejlesztett <b>azonosítók</b>, hogy ne változzanak olyan gyakran"
+        ]
+      },
+      {
+        "date": "2025.08.03",
+        "items": [
+          "Hozzáadva a <b>Játékos némítás/némítás feloldó gombját</b>, mostantól <b>elnémíthat/feloldhat</b> bizonyos <b>játékosokat</b> a <b>csevegésben</b> az üzenetük melletti <b>Némítás/Némítás feloldása ikon</b> megnyomásával, vagy a <b>Némított játékosok</b> listájának használatával a <b>Beállításokban</b>"
+        ]
+      },
+      {
+        "date": "2025.03.02",
+        "items": [
+          "A <b>Csevegés görgető</b> hozzáadásával a görgetősáv <kbd>egér</kbd> húzásával, vagy a <kbd>↑ Felfelé nyíl</kbd> és <kbd>↓ Lefelé nyíl</kbd> billentyűkkel görgethet."
+        ]
+      },
+      {
+        "date": "2025.11.01",
+        "items": [
+          "Hozzáadott <b>PVP játékmód</b> még béta állapotban",
+          "A <b>Cellaátlátszóság</b> jelölőnégyzet hozzáadva a <b>Beállítások</b> között"
+        ]
+      },
+      {
+        "date": "2024.10.13",
+        "items": [
+          "<kbd>F</kbd> és <kbd>V</kbd> billentyűk hozzáadva a nagyításhoz és kicsinyítéshez",
+          "Hozzáadtuk a <b>Nagyítási csúszkát</b> a nagyításhoz és kicsinyítéshez",
+          "A <b>Show Zoom Slider</b> jelölőnégyzet hozzáadva a <b>Beállítások</b> között"
+        ]
+      },
+      {
+        "date": "2024.10.10",
+        "items": [
+          "A <b>Csevegés törlése</b> gomb hozzáadva, így manuálisan törölheti a csevegést"
+        ]
+      },
+      {
+        "date": "2024.10.01",
+        "items": [
+          "A barátok vagy ellenségek jobb azonosítása érdekében hozzáadott <b>azonosítókkal</b> minden eszköz egyedi <b>ikonnal</b> rendelkezik.",
+          "Hozzáadott <b>Az azonosítók megjelenítése</b> jelölőnégyzet a <b>Beállítások</b> között",
+          "Eltávolított trükkök, amelyek lehetővé teszik a <b>Nicks</b> vagy <b>Skins</b> egyszerű megkettőzését"
+        ]
+      },
+      {
+        "date": "2024.05.16",
+        "items": [
+          "Javítva az <b>AZERTY</b> billentyűzet-leképezés most már <kbd>W</kbd> és <kbd>Z</kbd> <b>Feed</b>",
+          "A <b>Muti Split</b> <kbd>C</kbd> billentyűre módosult <kbd>Z</kbd> helyett",
+          "Az <b>Érintővezérlések letiltása</b> jelölőnégyzet hozzáadva a <b>Beállítások</b> között"
+        ]
+      },
+      {
+        "date": "2024.05.15",
+        "items": [
+          "Kijavítottunk egy régóta fennálló hibát a <b>Csevegésben</b>, amely megakadályozta, hogy bizonyos üzenetek néha megjelenjenek",
+          "Most már láthatja a <b>Nézők</b> beceneveit, ha van ilyen",
+          "Most a <b>vírusokat</b> továbbíthatja úgy, hogy kidobja a <b>cella</b> tömegét a <b>vírusok</b> felé.",
+          "A kiigazított <b>AntiSpam</b> intézkedések elnézőbbek a <b>Csevegésben</b>, valamint az üzenetek <b>beillesztése</b> újraengedélyezése",
+          "A <b>Teljes képernyő váltása</b> jelölőnégyzet hozzáadva a <b>Beállítások</b> között",
+          "Megvalósított <b>AutoRespawn</b>, most automatikusan újrakezdődik, anélkül, hogy újra meg kellene nyomnia a <b>Play</b> gombot",
+          "Az <b>Automatikus újraírás váltása</b> jelölőnégyzet hozzáadva a <b>Beállítások</b> között",
+          "Továbbfejlesztett <b>érintéses vezérlők</b> mobileszközökhöz (hozzáadva <b>Menü megjelenítése</b>, <b>Teljes képernyő gomb</b>, rögzített <b>osztógomb</b> távolság, megakadályozza a gombok elhúzását)"
+        ]
+      },
+      {
+        "date": "2024.05.14",
+        "items": [
+          "A Touch vezérlők használata közbeni felosztás egy kis tömeget dobott ki, ezt a hibát most javították",
+          "Az Eject Macro most már működik Touch vezérlők használata közben",
+          "Továbbfejlesztett érintőképernyős vezérlés a mobilokhoz"
+        ]
+      },
+      {
+        "date": "2024.10.05",
+        "items": [
+          "Levélszemét-szűrő intézkedések hozzáadva a Chathez, letiltva az üzenetek beillesztése",
+          "Újra engedélyezve a jobb gombbal a Menükre és a Chat Box-ban",
+          "A <b>Beállítások</b> menüben hozzáadva az <b>Érintéses vezérlők átfordításának</b> lehetőségét jobbról balra"
+        ]
+      },
+      {
+        "date": "2024.01.05",
+        "items": [
+          "Hozzáadtuk a reCaptcha v3-at, hogy megakadályozzuk a robotok csatlakozását <a href=\"https://discord.gg/emupedia-510149138491506688\" target=\"_blank\">(visszajelzést adhatsz a Discordról, ha nem működik megfelelően)</a>",
+          "Engedélyezett automatikus újracsatlakozás a szerverhez a szerver újraindítása után",
+          "Továbbfejlesztett érintőképernyős vezérlés a mobilokhoz"
+        ]
+      },
+      {
+        "date": "2024.09.03",
+        "items": [
+          "A <b>Vágólapra másolás</b> gomb hozzáadva a <b>Jelenlegi kiválasztott felülethez</b>",
+          "Megnövelt <b>csevegési terület mérete</b>, hogy több üzenet is elférjen",
+          "A <b>feltöltési felület</b> <b>várakozási ideje</b> 30 másodpercre csökkent"
+        ]
+      },
+      {
+        "date": "2024.02.28",
+        "items": [
+          "Megvalósított <b>Touch Joystick</b> a mobilokhoz",
+          "A <b>Touch Joystick</b> jelölőnégyzet hozzáadva a <b>Beállítások</b> között",
+          "A <kbd>gif</kbd> fájlok feltöltése már nem engedélyezett, az animáció amúgy sem működött, csak az első képkocka jelent meg"
+        ]
+      },
+      {
+        "date": "2024.02.24",
+        "items": [
+          "Megvalósított <b>Skin feltöltés</b> funkció"
+        ]
+      },
+      {
+        "date": "2024.02.20",
+        "items": [
+          "Az <b>Egyes egérkattintások</b> kapcsoló jelölőnégyzetek hozzáadva a <b>Beállítások</b> között",
+          "Egyéni <b>Háttérszín</b> választó hozzáadva"
+        ]
+      },
+      {
+        "date": "2024.02.17",
+        "items": [
+          "A <b>Kettős felosztás</b> hozzáadásával használhatja a <b>Kettős felosztást</b> az <kbd>X</kbd> vagy a <kbd>jobb kattintás</kbd> megnyomásával",
+          "A <b>Több felosztású makró</b> hozzáadásával használhatja a <b>Többszörös felosztású makrót</b> a <kbd>C</kbd> vagy a <kbd>Középső kattintás</kbd> gomb megnyomásával.",
+          "Kapcsoló jelölőnégyzet hozzáadva a <b>Beállításokban</b> a <b>Több felosztású makróhoz</b>",
+          "<b>Becenév</b> választó hozzáadva",
+          "<b>Bőrnév</b> választó hozzáadva",
+          "Egyéni <b>Cellanév színe</b> választó hozzáadva",
+          "Egyéni <b>Cella háttérszín</b> választó hozzáadva",
+          "Egyéni <b>Cellaszegély színe</b> választó hozzáadva",
+          "<b>Sötét téma</b> hozzáadva a menükhöz"
+        ]
+      },
+      {
+        "date": "2024.02.16",
+        "items": [
+          "Véletlenszerű háttérszínek javítása a <b>Jelly Physics</b> használatakor",
+          "A <b>Hírcsatorna makró</b> hozzáadásával használhatja a <b>Hírcsatorna makrót</b> a <kbd>W</kbd> vagy a <kbd>bal gomb megnyomásával</kbd> és a <b>Hírcsatorna makró</b> jelölőnégyzet bejelölésével a <b>Beállítások</b> menüben.",
+          "Hozzáadott kapcsoló jelölőnégyzet a <b>Beállítások</b> között a <b>Hírcsatorna makróhoz</b>",
+          "A <b>Hírek</b> szakasz hozzáadva",
+          "Hozzáadott <b>Játékmenet</b> rész",
+          "Megvalósított felszínek, amelyek a következővel kezdődnek: <kbd>$</kbd>",
+          "Megakadályozták a beinjektált szkriptek által generált szintetikus eseményeket",
+          "Az összes többi egyéni klienst letiltotta"
+        ]
+      },
+      {
+        "date": "2023.06.13",
+        "items": [
+          "1195 hiányzó skin hozzáadva"
+        ]
+      }
+    ]
+  }
+}

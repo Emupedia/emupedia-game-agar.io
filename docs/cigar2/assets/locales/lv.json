@@ -1,0 +1,353 @@
+{
+  "meta": {
+    "title": "Agar.io v2.0",
+    "description": "Ēdiet šūnas, kas ir mazākas par jums, un lai tās neapēd lielākās, kā MMO"
+  },
+  "chat": {
+    "general": "Ģenerālis",
+    "clan": "Klans",
+    "placeholder": "Lai tērzētu, nospiediet taustiņu Enter",
+    "clearTitle": "Notīrīt tērzēšanu",
+    "zoom": "Tālummaiņa"
+  },
+  "gallery": {
+    "skins": "Ādas"
+  },
+  "lobby": {
+    "title": "Agar.io v2.0",
+    "discordSuggestions": "Pievienojieties mums Discord, ja jums ir ieteikumi",
+    "nickname": "Segvārds",
+    "skin": "Āda",
+    "skinPlaceholder": "Ādas nosaukums",
+    "copy": "Kopēt",
+    "clanName": "Klana nosaukums",
+    "clanPlaceholder": "5 burti max",
+    "createClan": "Izveidot klanu",
+    "leaveClan": "Pamest klanu",
+    "copyInvite": "Kopēt uzaicinājumu",
+    "gameMode": "Spēles režīms",
+    "play": "Spēlēt",
+    "chooseSkin": "Izvēlieties Skin",
+    "uploadSkin": "Augšupielādēt ādu",
+    "unban": "Atcelt aizliegumu",
+    "skinCopied": "Ādas URL ir kopēts starpliktuvē!"
+  },
+  "settings": {
+    "language": "Valoda",
+    "mutedPlayers": "Izslēgti spēlētāji",
+    "mutePlaceholder": "Ievadiet segvārdu, lai izslēgtu skaņu",
+    "mute": "Izslēgt skaņu",
+    "keyboardBindings": "Tastatūras pogu stiprinājumi",
+    "feed": "Plūsma:",
+    "split": "Sadalījums:",
+    "doubleSplit": "Divkāršs sadalījums:",
+    "multiSplit": "Vairāki sadalījumi:",
+    "zoomIn": "Tuvināt:",
+    "zoomOut": "Tālināt:",
+    "minion": "Bezmaksas skatītāju kamera/miniona vadība:",
+    "resetKeys": "Atiestatīt uz noklusējuma iestatījumiem",
+    "keyRebindHint": "Noklikšķiniet uz pogas un nospiediet taustiņu, lai pārsietu",
+    "mouseBindings": "Peles pogu stiprinājumi",
+    "leftClick": "Kreisais klikšķis:",
+    "middleClick": "Vidējais klikšķis:",
+    "rightClick": "Ar peles labo pogu noklikšķiniet:",
+    "resetMouse": "Atiestatīt uz noklusējuma iestatījumiem",
+    "mouseHint": "Konfigurējiet, kādu darbību veic katra peles poga",
+    "toggleFullscreen": "Pārslēgt pilnekrāna režīmu",
+    "darkTheme": "Tumšā tēma",
+    "cameraSmoothing": "Kameras izlīdzināšana",
+    "cellAnimationSpeed": "Šūnu animācijas ātrums",
+    "showSkins": "Šūnu ādas",
+    "showNames": "Šūnu nosaukumi",
+    "showColor": "Šūnu krāsas",
+    "showMass": "Šūnu masa",
+    "slowMassUpdates": "Lēnāki masu atjauninājumi",
+    "jellyPhysics": "Šūnu želejas fizika",
+    "showIdenticon": "Šūnu identifikatori",
+    "fillSkin": "Šūnu krāsa zem ādas",
+    "showTransparent": "Šūnu caurspīdīgums",
+    "showChat": "Rādīt tērzēšanu",
+    "showMinimap": "Rādīt minikarti",
+    "showPosition": "Rādīt pozīciju",
+    "showBorder": "Rādīt kartes robežu",
+    "showGrid": "Rādīt kartes režģi",
+    "backgroundSectors": "Rādīt kartes sektorus",
+    "moreZoom": "Tālināšanas palielināšana",
+    "showZoom": "Rādīt tālummaiņas slīdni",
+    "playSounds": "Skaņas",
+    "feedMacro": "Barības makro",
+    "splitMacro": "Sadalīts makro",
+    "leftClickToggle": "Kreisais klikšķis",
+    "middleClickToggle": "Vidējais klikšķis",
+    "rightClickToggle": "Ar peles labo pogu noklikšķiniet",
+    "disableTouchControls": "Atspējot skārienvadību",
+    "useJoystick": "Pieskarieties Kursorsvirai",
+    "lockMobileButtons": "Bloķēt mobilās pogas",
+    "resetButtonPositions": "Atiestatīt mobilo sakaru pogu pozīcijas",
+    "useWordFilters": "Vārdi cenzūra",
+    "autoRespawn": "Pārslēgt AutoRespawn"
+  },
+  "colors": {
+    "background": "Fons",
+    "name": "Vārds",
+    "color": "Krāsa",
+    "border": "Robeža"
+  },
+  "mouseActions": {
+    "none": "Nav",
+    "feed": "Barība (izgrūst masu)",
+    "split": "Sadalīt",
+    "doubleSplit": "Dubultā sadalīšana",
+    "multiSplit": "Vairāki sadalīti"
+  },
+  "connecting": {
+    "trying": "Mēģina izveidot savienojumu...",
+    "discord": "Pievienojieties mums Discord!",
+    "firewall": "Ja nevarat izveidot savienojumu ar serveriem, pārbaudiet, vai savienojumu nebloķē kāds pretvīrusu vai ugunsmūris.",
+    "multisessionTitle": "Brīdinājums par vairākām sesijām",
+    "multisessionBody": "Vairāki spēļu gadījumi nav atļauti.<br />Aizveriet visus pārējos spēļu gadījumus un ielādējiet atkārtoti.",
+    "oldBrowserTitle": "Jūsu pārlūkprogramma ir ļoti veca",
+    "oldBrowserLink": "Lūdzu, noklikšķiniet šeit, lai atjauninātu savu pārlūkprogrammu uz jaunāku versiju.",
+    "bannedTitle": "Jūs esat aizliegts 😭",
+    "bannedBody": "Jūs esat bloķēts no spēles, jo esat pārkāpis noteikumus, sūtot surogātpastu vai augšupielādējot pielāgotas ādas.",
+    "bannedBodyBots": "Jūs esat bloķēts no spēles, jo esat pārkāpis noteikumus, sūtot surogātpastu vai augšupielādējot pielāgotus apvalkus, vai arī tāpēc, ka izmantojat robotprogrammatūras.",
+    "unbanCode": "Jūsu atbloķēšanas kods ir"
+  },
+  "errors": {
+    "browserUnsupported": "Jūsu pārlūkprogramma neatbalsta nepieciešamās funkcijas, lūdzu, atjauniniet pārlūkprogrammu.",
+    "nicknameRequired": "Lūdzu, ievadiet segvārdu, lai spēlētu.",
+    "nicknameMinLength": "Segvārdam ir nepieciešamas vismaz {min} rakstzīmes",
+    "nicknameDisallowed": "Šis segvārds nav atļauts. Lūdzu, izvēlieties citu segvārdu."
+  },
+  "muted": {
+    "empty": "Nav izslēgtu spēlētāju",
+    "unmute": "Ieslēgt skaņu"
+  },
+  "keys": {
+    "pressKey": "Nospiediet taustiņu..."
+  },
+  "gameplay": {
+    "rulesTitle": "Noteikumi",
+    "rule1": "Neaugšupielādējiet aizliegtas pielāgotas ādas, it īpaši, ja tā ir kāda seja, iespējams, ka jūsu āda tiks aizliegta vai jūs pats tiksiet aizliegts no spēles.",
+    "rule2": "Neizmantojiet citu cilvēku segvārdus tērzēšanā vai kā savu vārdu nievājošā veidā, jo jūs varat tikt izslēgts vai padzīts no spēles.",
+    "gameplayTitle": "Spēles gaita",
+    "controlsIntro": "Pārvietojiet savu <kbd>PELI</kbd> / <kbd>PISKIESTIE</kbd>, lai vadītu savu šūnu<br /><kbd></kbd>peles ritenīti<kbd id=\"key-zoomin-display\"> vai </kbd>F<kbd id=\"key-zoomout-display\"> un </kbd>, lai <br />tuvinātu un tālinātu <kbd id=\"key-feed-display\"></kbd>. id=\"key-feed-display\">W<kbd> vai </kbd>kreisais klikšķis<br />, lai izstumtu masu.<kbd id=\"key-split-display\">Nospiediet </kbd>SPACE<br />, lai vienreiz sadalītu šūnu.<kbd id=\"key-doublesplit-display\">Nospiediet </kbd> vai<kbd>X, lai noklikšķinātu</kbd> veiciet dubulto sadalīšanu<br />nospiediet <kbd id=\"key-multisplit-display\">C</kbd> vai <kbd>vidējais klikšķis</kbd>, lai veiktu vairāku sadalīšanu",
+    "objective": "<b>Mērķis:</b> Agar.io mērķis ir palielināt jūsu šūnu, patērējot mazākas šūnas un izvairoties no lielākām. Pieaugot, jūs kļūsit briesmīgāks un varēsit patērēt vēl lielākas šūnas.",
+    "startingOut": "<b>Sākums:</b> pirmo reizi pievienojoties spēlei, jūs sāksit kā maza šūna. Pārvietojieties, izmantojot peli, lai savāktu krāsainās granulas, kas izkaisītas pa karti. Granulu ēšana palielina jūsu izmēru un masu.",
+    "movement": "<b>Kustība:</b> lai pārvietotu šūnu, vienkārši pārvietojiet peles kursoru vai izmantojiet skārienekrānu, pārvietojoties virzienā, kurā vēlaties virzīties šūnā. Jūsu šūna sekos peles kursora kustībai ekrānā.",
+    "consumeSmaller": "<b>Patērējiet mazākas šūnas:</b> uzmanieties, vai tuvumā viesabonē mazākas šūnas. Pieaugot lielākam, jūs varēsit aprīt šīs mazākās šūnas, lai palielinātu savu masu. Pieejiet tiem stratēģiski, lai izvairītos no tā, ka lielākas šūnas tos apēd.",
+    "avoidLarger": "<b>Izvairieties no lielākām šūnām:</b> esiet piesardzīgs attiecībā uz lielākām šūnām, jo ​​tās var jūs patērēt, ja esat mazāks par tām. Uzmanieties no spēlētājiem, kuri sadalās, lai uzņemtu mazākas šūnas, un mēģiniet paredzēt viņu kustības, lai saglabātu drošību.",
+    "splitting": "<b>Sadalīšana:</b> varat sadalīt savu šūnu vairākos mazākos gabalos, nospiežot <kbd>SPACE</kbd>. Izmantojiet šo taktiku, lai notvertu mazākas šūnas vai aizbēgtu no lielākām. Varat arī veikt vairākas sadalīšanas, nospiežot <kbd>X</kbd> vai <kbd>Z</kbd>. Atcerieties, ka sadalīšana arī padara jūs neaizsargātāku, tāpēc izmantojiet to saprātīgi.",
+    "ejectingMass": "<b>Masas izgrūšana:</b> lai gan masas izgrūšana, nospiežot <kbd>W</kbd> vai <kbd>kreiso klikšķi</kbd>, var būt izdevīga, taču tā ir saistīta arī ar riskiem. Izmesto masu var patērēt citi spēlētāji, tostarp potenciālie konkurenti. Turklāt masas izgrūšana samazina jūsu šūnas kopējo izmēru, kas var padarīt jūs neaizsargātāku pret lielāku šūnu patēriņu.",
+    "teamPlay": "<b>Komandas spēle (pēc izvēles):</b> komandas režīmā varat sadarboties ar citiem spēlētājiem, lai dominētu līderu sarakstā. Sadarbojieties ar draugiem vai citiem spēlētājiem, lai pārspētu savus pretiniekus un iekarotu spēli kopā.",
+    "growDominate": "<b>Augst un dominēt:</b> patērējot mazākas šūnas un izvairoties no apēšanas, jūsu šūna turpinās augt. Mērķis ir kļūt par lielāko šūnu serverī un dominēt līderu sarakstā.",
+    "viruses": "<b>Uzmanieties no vīrusiem:</b> visā kartē jūs saskaraties ar zaļiem smailiem apļiem, kas pazīstami kā vīrusi. Izvairieties no sadursmes ar tiem, jo ​​tie var sadalīt jūsu šūnu mazākos gabalos, ja esat lielāks par tiem. Barojot vīrusus ar savu masu no kāda virziena, tie vairosies pretējā virzienā.",
+    "beStrategic": "<b>Esiet stratēģisks:</b> Agar.io ir tikpat daudz par stratēģiju, cik prasmēm. Pievērsiet uzmanību apkārtējai videi, paredziet pretinieku gājienus un izmantojiet tādas taktikas kā gudra sadalīšana un saplūšana, lai pārspētu savus konkurentus.<hr />",
+    "closing": "Tas ir viss Agar.io pamatiem! Tagad ir pienācis laiks ķerties pie spēles un sākt attīstīt savu šūnu, lai kļūtu par lielāko un dominējošo spēlētāju serverī.",
+    "goodLuck": "Veiksmi un izklaidējieties!"
+  },
+  "news": {
+    "title": "Jaunumi",
+    "entries": [
+      {
+        "date": "21/05/2026",
+        "items": [
+          "Uzlabota <b>šūnu nosaukumi</b>, <b>šūnu masa</b> un <b>šūnu želejas fizika</b> renderēšanas veiktspēja, ja tie ir iespējoti sadaļā <b>Iestatījumi</b>",
+          "Sadaļā <b>Iestatījumi</b> ir pievienoti <b>Lēnāki masveida atjauninājumi</b> ar slīdni, lai kontrolētu masu skaitļu atsvaidzināšanas biežumu (velkot slīdni pa labi, atjauninājumi tiek samazināti)"
+        ]
+      },
+      {
+        "date": "01.05.2026",
+        "items": [
+          "<b>Segvārdiem</b> tagad ir jābūt vismaz <b>3 rakstzīmēm</b>",
+          "Pievienota izvēles <b>vārdu cenzūra</b> <b>tērzēšanai</b> un <b>segvārdiem</b>, tā ir iespējota pēc noklusējuma, <u>var to atspējot, bet pēc tam nesūdzieties par <a style=\"font-weight: bolder;\" href=\"https://discord.gg/emupedia-510149138491506688\" target=\"_blank\">Nesaskaņas</a> par to, ka cilvēki ir toksiski</u>",
+          "Izlabota <b>Skatītāju brīvās kameras pārslēgšanās</b>. Tagad skatītāju režīmā varat pareizi pārslēgties no automātiskās sekošanas spēlētājiem uz bezmaksas kameru."
+        ]
+      },
+      {
+        "date": "19/11/2025",
+        "items": [
+          "<b>Segvārdi</b> tagad ir <b>obligāti</b> jums vairs nevar būt tukši <b>segvārdi</b>",
+          "<b>Uzlabota atskaņotāja izslēgšanas funkcija</b> tagad <b>Izslēgt</b> mēģinās atšķirt <b>spēlētājus</b> ar tādu pašu <b>segvārdu</b> un mēģinās <b>izslēgt</b> tikai to, kuru vēlējāties."
+        ]
+      },
+      {
+        "date": "18/11/2025",
+        "items": [
+          "Pievienojot <b>Tuvināt</b> un <b>Tālumināt</b> mobilās pogas, varat pārslēgt <b>Rādīt tālummaiņas slīdni</b> uz <b>Rādīt</b> vai <b>Paslēpt</b> tās sadaļā <b>Iestatījumi</b>.",
+          "<b>Uzlabota mobilo pogu novietojuma pielāgošana</b>. Tagad varat <b>pieskarties</b> 3 sekundes jebkurai pogai, lai to pārvietotu.",
+          "Sadaļā <b>Iestatījumi</b> ir pievienots <b>Mobilo ierīču pogu pozīciju atiestatīšana</b>, ja vēlaties atiestatīt <b>Mobilo ierīču pogas</b> <b>Noklusējuma</b> pozīcijās.",
+          "Sadaļā <b>Iestatījumi</b> ir pievienotas <b>Mobilo ierīču bloķēšanas pogas</b>, ja atzīmējat šo, pogas nevar pārvietot",
+          "No sadaļas <b>Iestatījumi</b> ir noņemtas <b>pārvēršanas skārienvadības</b> (vairs nav vajadzīgas, tagad varat pārvietot pogas, kur vien vēlaties)"
+        ]
+      },
+      {
+        "date": "28/10/2025",
+        "items": [
+          "Sadaļā <b>Iestatījumi</b> ir pievienotas pielāgojamas <b>tastatūras pogas</b> un <b>peles pogas</b>",
+          "Pievienots <b>Kameras izlīdzināšana</b> un <b>Šūnu animācijas ātrums</b> sadaļā <b>Iestatījumi</b>"
+        ]
+      },
+      {
+        "date": "07.07.2025",
+        "items": [
+          "Uzlabots <b>apvalku</b> ielādes veids, lai padarītu to kopēšanu grūtāku"
+        ]
+      },
+      {
+        "date": "28/06/2025",
+        "items": [
+          "Uzlaboti <b>identifikatori</b>, lai netiktu mainīti tik bieži"
+        ]
+      },
+      {
+        "date": "03.08.2025",
+        "items": [
+          "Pievienota <b>atskaņotāja skaņas izslēgšanas/ieslēgšanas poga</b>. Tagad varat <b>izslēgt/ieslēgt skaņu</b> konkrētus <b>spēlētājus</b> no <b>tērzēšanas</b>, nospiežot <b>Izslēgt/ieslēgt skaņu ikonu</b> blakus viņu ziņojumam vai izmantojot <b>Izslēgto atskaņotāju</b> sarakstu sadaļā <b>Iestatījumi.</b>"
+        ]
+      },
+      {
+        "date": "03/02/2025",
+        "items": [
+          "Pievienots <b>Tērzēšanas ritināšana</b>. Tagad varat ritināt, velkot ritjoslu ar <kbd>peli</kbd> vai izmantojot taustiņus <kbd>↑ Uz augšu</kbd> un <kbd>↓ Uz leju</kbd>."
+        ]
+      },
+      {
+        "date": "01.11.2025",
+        "items": [
+          "Pievienots <b>PVP spēles režīms</b> joprojām ir beta versijā",
+          "Sadaļā <b>Iestatījumi</b> ir pievienota izvēles rūtiņa <b>Šūnas caurspīdīgums</b>"
+        ]
+      },
+      {
+        "date": "10.13.2024",
+        "items": [
+          "Pievienoti taustiņi <kbd>F</kbd> un <kbd>V</kbd>, lai tuvinātu un tālinātu",
+          "Pievienots <b>Tālummaiņas slīdnis</b>, lai tuvinātu un tālinātu",
+          "Sadaļā <b>Iestatījumi</b> ir pievienota izvēles rūtiņa <b>Rādīt tālummaiņas slīdni</b>"
+        ]
+      },
+      {
+        "date": "10.10.2024",
+        "items": [
+          "Pievienota poga <b>Notīrīt tērzēšanu</b>, lai jūs varētu manuāli notīrīt tērzēšanu"
+        ]
+      },
+      {
+        "date": "10.01.2024",
+        "items": [
+          "Pievienoti <b>identifikatori</b>, lai labāk identificētu draugus vai ienaidniekus, katrai ierīcei ir īpaša unikāla <b>ikona</b>.",
+          "Sadaļā <b>Iestatījumi</b> ir pievienota izvēles rūtiņa <b>Rādīt identifikācijas</b>",
+          "Noņemti triki, kas ļauj viegli dublēt <b>Nicks</b> vai <b>Skins</b>"
+        ]
+      },
+      {
+        "date": "16/05/2024",
+        "items": [
+          "Izlabota <b>AZERTY</b> tastatūras kartēšana tagad <kbd>W</kbd> un <kbd>Z</kbd> <b>Feed</b>",
+          "<b>Muti Split</b> ir mainīts uz taustiņu <kbd>C</kbd>, nevis <kbd>Z</kbd>",
+          "Sadaļā <b>Iestatījumi</b> ir pievienota izvēles rūtiņa <b>Atspējot skārienvadības</b>"
+        ]
+      },
+      {
+        "date": "15/05/2024",
+        "items": [
+          "Novērsta ilgstoša kļūda pakalpojumā <b>Chat</b>, kas neļāva dažkārt rādīt dažus ziņojumus",
+          "Tagad varat redzēt <b>Skatītāju</b> segvārdus, ja viņiem ir viens komplekts",
+          "Tagad varat virzīt <b>vīrusus</b>, izstumjot <b>šūnas</b> masu virzienā uz <b>vīrusiem</b>.",
+          "Pielāgoti <b>AntiSpam</b> pasākumi, lai būtu piedodošāki pakalpojumā <b>Chat</b>, kā arī atkārtoti iespējota <b>ielīmēšana</b>",
+          "Sadaļā <b>Iestatījumi</b> ir pievienota izvēles rūtiņa <b>Pārslēgt pilnekrāna režīmu</b>",
+          "Ieviests <b>AutoRespawn</b>, tagad jūs automātiski atjaunosit, vēlreiz nenospiežot <b>Atskaņot</b>.",
+          "Sadaļā <b>Iestatījumi</b> ir pievienota izvēles rūtiņa <b>Pārslēgt automātisko atsākšanu</b>",
+          "Uzlabotas <b>skārienvadības</b> mobilajām ierīcēm (pievienota <b>poga Rādīt izvēlni</b>, <b>Pilnekrāna poga</b>, fiksēts <b>Sadalītās pogas</b> attālums, novērš pogu vilkšanu)"
+        ]
+      },
+      {
+        "date": "14/05/2024",
+        "items": [
+          "Sadalot, izmantojot skārienvadības, tika izmesta masa, šī kļūda tagad ir novērsta",
+          "Eject Macro tagad darbojas, kamēr tiek izmantotas pieskāriena vadīklas",
+          "Uzlabotas skārienvadības mobilajām ierīcēm"
+        ]
+      },
+      {
+        "date": "05.10.2024",
+        "items": [
+          "Tērzēšanai pievienoti pretsurogātpasta pasākumi, atspējota ziņojumu ielīmēšana",
+          "Atkārtoti iespējots, ar peles labo pogu noklikšķiniet uz izvēlnes un tērzēšanas lodziņā",
+          "Pievienota iespēja <b>pārvērst skārienvadības</b> no labās puses uz kreiso pusi sadaļā <b>Iestatījumi</b>"
+        ]
+      },
+      {
+        "date": "01.05.2024",
+        "items": [
+          "Pievienots reCaptcha v3, lai neļautu robotiem izveidot savienojumu <a href=\"https://discord.gg/emupedia-510149138491506688\" target=\"_blank\">(varat sniegt atsauksmes par Discord, ja tas nedarbojas pareizi)</a>",
+          "Iespējota automātiska atkārtota savienojuma izveide ar serveri pēc servera restartēšanas",
+          "Uzlabotas skārienvadības mobilajām ierīcēm"
+        ]
+      },
+      {
+        "date": "09.03.2024",
+        "items": [
+          "Pievienota poga <b>Kopēt starpliktuvē</b> <b>pašreiz atlasītajam apvalkam</b>",
+          "Palielināts <b>tērzēšanas apgabala lielums</b>, lai ietilptu vairāk ziņojumu",
+          "Samazināts <b>gaidīšanas laiks</b> <b>augšupielādes apvalkam</b> līdz 30 sekundēm"
+        ]
+      },
+      {
+        "date": "28/02/2024",
+        "items": [
+          "Ieviesta <b>Touch Joystick</b> mobilajām ierīcēm",
+          "Sadaļā <b>Iestatījumi</b> ir pievienota izvēles rūtiņa <b>Touch Joystick</b>",
+          "<kbd>gif</kbd> failu augšupielāde vairs nav atļauta, animācija tik un tā nedarbojās, tika parādīts pirmais kadrs"
+        ]
+      },
+      {
+        "date": "24/02/2024",
+        "items": [
+          "Ieviesta funkcija <b>Augšupielādēt apvalku</b>"
+        ]
+      },
+      {
+        "date": "20/02/2024",
+        "items": [
+          "Sadaļā <b>Iestatījumi</b> ir pievienotas pārslēgšanas izvēles rūtiņas <b>Atsevišķi peles klikšķi</b>",
+          "Pievienots pielāgots <b>fona krāsas</b> atlasītājs"
+        ]
+      },
+      {
+        "date": "17/02/2024",
+        "items": [
+          "Pievienots <b>Dubultā sadalīšana</b>, varat izmantot <b>Divkāršo sadalīšanu</b>, nospiežot <kbd>X</kbd> vai <kbd>Klikšķis ar labo pogu</kbd>",
+          "Pievienots <b>Vairāk sadalīts makro</b>, varat izmantot <b>vairāku sadalījumu makro</b>, nospiežot <kbd>C</kbd> vai <kbd>vidējais klikšķis</kbd>.",
+          "Sadaļā <b>Iestatījumi</b> ir pievienota pārslēgšanas izvēles rūtiņa <b>vairāku sadalījumu makro</b>",
+          "Pievienots <b>Segvārda</b> atlasītājs",
+          "Pievienots <b>Ādas nosaukuma</b> atlasītājs",
+          "Pievienots pielāgots <b>šūnas nosaukuma krāsas</b> atlasītājs",
+          "Pievienots pielāgots <b>šūnas fona krāsas</b> atlasītājs",
+          "Pievienots pielāgots <b>šūnas apmales krāsas</b> atlasītājs",
+          "Izvēlnēm pievienots <b>tumšais motīvs</b>"
+        ]
+      },
+      {
+        "date": "16/02/2024",
+        "items": [
+          "Izlabotas nejaušas fona krāsas, izmantojot <b>Jelly Physics</b>",
+          "Pievienots <b>Plūsmas makro</b>, varat izmantot <b>Plūsmas makro</b>, nospiežot <kbd>W</kbd> vai <kbd>Klikšķis ar kreiso taustiņu</kbd> un atzīmējot izvēles rūtiņu <b>Plūsmas makro</b> sadaļā <b>Iestatījumi</b>.",
+          "Sadaļā <b>Iestatījumi</b> ir pievienota pārslēgšanas izvēles rūtiņa <b>Plūsmas makro</b>",
+          "Pievienota sadaļa <b>Ziņas</b>",
+          "Pievienota sadaļa <b>Spēle</b>",
+          "Ieviestās apvalki, kas sākas ar <kbd>$</kbd>",
+          "Novērsti sintētiskie notikumi, ko ģenerē ievadītie skripti",
+          "Aizliegti visi citi pielāgotie klienti"
+        ]
+      },
+      {
+        "date": "13.06.2023",
+        "items": [
+          "Pievienotas 1195 trūkstošās ādas"
+        ]
+      }
+    ]
+  }
+}
