@@ -349,5 +349,26 @@
         ]
       }
     ]
+  },
+  "canvas": {
+    "unnamedCell": "Ένα κελί χωρίς όνομα",
+    "leaderboard": "Leaderboard",
+    "score": "Βαθμολογία: {score}",
+    "fps": "{fps} FPS",
+    "ping": "{ms}ms ping",
+    "position": "X: {x}, Y: {y}",
+    "statsServer": "{name} ({mode})",
+    "statsWorld": "- World {world}",
+    "statsWorldDefault": "- Κόσμος 1",
+    "statsPlayers": "{total} / {limit} παίκτες",
+    "statsPlaying": "Το {alive} παίζει",
+    "statsSpectating": "{spect} θεατής",
+    "statsLoad": "{load}% φόρτωση @ {uptime}",
+    "timeLessThanMinute": "<1 λεπτό",
+    "timeMinutes": "{n}min",
+    "timeHours": "{n}h",
+    "timeDays": "{n}d",
+    "minionSpectator": "Χρησιμοποιείτε την προβολή Free-Camera Spectator, πατήστε {key} για να επιστρέψετε",
+    "minionControl": "Ελέγχετε ένα minion, πατήστε {key} για να επιστρέψετε"
   }
 }

@@ -349,5 +349,26 @@
         ]
       }
     ]
+  },
+  "canvas": {
+    "unnamedCell": "Een naamloze cel",
+    "leaderboard": "Leiderbord",
+    "score": "Score: {score}",
+    "fps": "{fps} FPS",
+    "ping": "{ms}ms-ping",
+    "position": "X: {x}, Y: {y}",
+    "statsServer": "{name} ({mode})",
+    "statsWorld": "- Wereld {world}",
+    "statsWorldDefault": "- Wereld 1",
+    "statsPlayers": "{total} / {limit}-spelers",
+    "statsPlaying": "{alive} speelt",
+    "statsSpectating": "{spect} kijkt toe",
+    "statsLoad": "{load}% belasting @ {uptime}",
+    "timeLessThanMinute": "<1 min",
+    "timeMinutes": "{n}min",
+    "timeHours": "{n}h",
+    "timeDays": "{n}d",
+    "minionSpectator": "U gebruikt de Free-Camera Spectator-weergave. Druk op {key} om terug te schakelen",
+    "minionControl": "Je bestuurt een minion, druk op {key} om terug te schakelen"
   }
 }

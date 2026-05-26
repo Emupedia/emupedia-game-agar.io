@@ -341,6 +341,7 @@
 		updateMouseActionSelects();
 		renderGameplay();
 		renderNews();
+		window.dispatchEvent(new CustomEvent('i18n:locale'));
 
 		const rulesTitle = document.querySelector('#gameplay h2.title');
 		if (rulesTitle && strings.gameplay) {

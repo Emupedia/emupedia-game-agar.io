@@ -349,5 +349,26 @@
         ]
       }
     ]
+  },
+  "canvas": {
+    "unnamedCell": "Nimetön solu",
+    "leaderboard": "Tulostaulukko",
+    "score": "Pisteet: {score}",
+    "fps": "{fps} FPS",
+    "ping": "{ms}ms ping",
+    "position": "X: {x}, Y: {y}",
+    "statsServer": "{name} ({mode})",
+    "statsWorld": "- Maailman {world}",
+    "statsWorldDefault": "- Maailma 1",
+    "statsPlayers": "{total} / {limit} -soittimet",
+    "statsPlaying": "{alive} pelaa",
+    "statsSpectating": "{spect} katsomassa",
+    "statsLoad": "{load} % kuorma @ {uptime}",
+    "timeLessThanMinute": "<1 min",
+    "timeMinutes": "{n}min",
+    "timeHours": "{n}h",
+    "timeDays": "{n}d",
+    "minionSpectator": "Käytät Free-Camera Spectator -näkymää, paina {key} vaihtaaksesi takaisin",
+    "minionControl": "Ohjaat kätyriä, paina {key}-näppäintä vaihtaaksesi takaisin"
   }
 }

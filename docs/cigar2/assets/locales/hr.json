@@ -349,5 +349,26 @@
         ]
       }
     ]
+  },
+  "canvas": {
+    "unnamedCell": "Neimenovana ćelija",
+    "leaderboard": "Leaderboard",
+    "score": "Rezultat: {score}",
+    "fps": "{fps} FPS",
+    "ping": "{ms}ms ping",
+    "position": "X: {x}, Y: {y}",
+    "statsServer": "{name} ({mode})",
+    "statsWorld": "- Svijet {world}",
+    "statsWorldDefault": "- Svijet 1",
+    "statsPlayers": "{total} / {limit} igrača",
+    "statsPlaying": "{alive} svira",
+    "statsSpectating": "{spect} promatranje",
+    "statsLoad": "{load}% opterećenja @ {uptime}",
+    "timeLessThanMinute": "<1 min",
+    "timeMinutes": "{n}min",
+    "timeHours": "{n}h",
+    "timeDays": "{n}d",
+    "minionSpectator": "Koristite prikaz Free-Camera Spectator, pritisnite {key} za povratak",
+    "minionControl": "Vi kontrolirate minion, pritisnite {key} za povratak"
   }
 }

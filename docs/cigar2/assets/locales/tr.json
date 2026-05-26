@@ -349,5 +349,26 @@
         ]
       }
     ]
+  },
+  "canvas": {
+    "unnamedCell": "İsimsiz bir hücre",
+    "leaderboard": "Liderlik tablosu",
+    "score": "Puan: {score}",
+    "fps": "{fps} FPS",
+    "ping": "{ms}ms ping",
+    "position": "X: {x}, Y: {y}",
+    "statsServer": "{name} ({mode})",
+    "statsWorld": "- Dünya {world}",
+    "statsWorldDefault": "- Dünya 1",
+    "statsPlayers": "{total} / {limit} oyuncuları",
+    "statsPlaying": "{alive} oynatılıyor",
+    "statsSpectating": "{spect} izliyor",
+    "statsLoad": "{load}% yük @ {uptime}",
+    "timeLessThanMinute": "<1 dakika",
+    "timeMinutes": "{n}min",
+    "timeHours": "{n}h",
+    "timeDays": "{n}d",
+    "minionSpectator": "Serbest Kamera İzleyici görünümünü kullanıyorsunuz, geri dönmek için {key} tuşuna basın",
+    "minionControl": "Bir minyonu kontrol ediyorsunuz, geri dönmek için {key} tuşuna basın"
   }
 }

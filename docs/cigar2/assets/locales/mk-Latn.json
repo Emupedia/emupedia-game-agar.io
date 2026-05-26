@@ -349,5 +349,26 @@
         ]
       }
     ]
+  },
+  "canvas": {
+    "unnamedCell": "Неименувана ќелија",
+    "leaderboard": "Табла на водачи",
+    "score": "Резултат: {score}",
+    "fps": "{fps} FPS",
+    "ping": "{ms}ms пинг",
+    "position": "X: {x}, Y: {y}",
+    "statsServer": "{name} ({mode})",
+    "statsWorld": "- Свет {world}",
+    "statsWorldDefault": "- Свет 1",
+    "statsPlayers": "{total} / {limit} играчи",
+    "statsPlaying": "{alive} игра",
+    "statsSpectating": "{spect} гледање",
+    "statsLoad": "{load}% оптоварување @ {uptime}",
+    "timeLessThanMinute": "<1 мин",
+    "timeMinutes": "{n}min",
+    "timeHours": "{n}h",
+    "timeDays": "{n}d",
+    "minionSpectator": "Користите приказ на гледач со слободна камера, притиснете {key} за да се вратите назад",
+    "minionControl": "Контролирате минион, притиснете {key} за да се вратите назад"
   }
 }

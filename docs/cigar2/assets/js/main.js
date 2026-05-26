@@ -7285,6 +7285,39 @@
 	}
 
 	const EMPTY_NAME = 'An unnamed cell';
+
+	function canvasT(key, params) {
+		if (typeof I18n !== 'undefined' && I18n.isReady()) {
+			return I18n.t('canvas.' + key, params);
+		}
+		const p = params || {};
+		const fb = {
+			unnamedCell: 'An unnamed cell',
+			leaderboard: 'Leaderboard',
+			score: `Score: ${p.score != null ? p.score : ''}`,
+			fps: `${p.fps != null ? p.fps : ''} FPS`,
+			ping: `${p.ms != null ? p.ms : ''}ms ping`,
+			position: `X: ${p.x != null ? p.x : ''}, Y: ${p.y != null ? p.y : ''}`,
+			statsServer: `${p.name || ''} (${p.mode || ''})`,
+			statsWorld: ` - World ${p.world != null ? p.world : ''}`,
+			statsWorldDefault: ' - World 1',
+			statsPlayers: `${p.total != null ? p.total : ''} / ${p.limit != null ? p.limit : ''} players`,
+			statsPlaying: `${p.alive != null ? p.alive : ''} playing`,
+			statsSpectating: `${p.spect != null ? p.spect : ''} spectating`,
+			statsLoad: `${p.load != null ? p.load : ''}% load @ ${p.uptime || ''}`,
+			timeLessThanMinute: '<1 min',
+			timeMinutes: `${p.n != null ? p.n : ''}min`,
+			timeHours: `${p.n != null ? p.n : ''}h`,
+			timeDays: `${p.n != null ? p.n : ''}d`,
+			minionSpectator: `You are using Free-Camera Spectator view, press ${p.key || ''} to switch back`,
+			minionControl: `You are controlling a minion, press ${p.key || ''} to switch back`
+		};
+		return fb[key] != null ? fb[key] : key;
+	}
+
+	function emptyCellDisplayName() {
+		return canvasT('unnamedCell');
+	}
 	// Format chars, zero-width marks, and letter-like fillers used to bypass empty-nickname checks (e.g. U+3164 Hangul Filler).
 	const NICK_INVISIBLE_CHARS_RE = /[\p{Cf}]|[\u00AD\u034F\u061C\u115F\u1160\u17B4\u17B5\u180E\u200B-\u200F\u202A-\u202E\u2060-\u2069\u2800\u3164\uFEFF\uFFA0]/gu;
 
@@ -7299,7 +7332,7 @@
 		}
 
 		name = sanitizeNickname(name);
-		if (!name) return EMPTY_NAME;
+		if (!name) return emptyCellDisplayName();
 
 		if (settings.useWordFilters && filters && filters.initialized) {
 			return filters.filter_nickname(filters.filter_nickname(name, 'en'), 'tr');
@@ -8662,12 +8695,15 @@
 		ctx.font = '14px Ubuntu';
 		const uptime = prettyPrintTime(stats.info.uptime);
 
+		const worldSuffix = typeof stats.info.world !== 'undefined'
+			? canvasT('statsWorld', { world: stats.info.world })
+			: canvasT('statsWorldDefault');
 		const rows = [
-			`${stats.info.name} (${stats.info.mode}) ${typeof stats.info.world !== 'undefined' ? ` - World ${stats.info.world}` : ' - World 1'}`,
-			`${stats.info.playersTotal} / ${stats.info.playersLimit} players`,
-			`${stats.info.playersAlive} playing`,
-			`${stats.info.playersSpect} spectating`,
-			`${(stats.info.update * 2.5).toFixed(1)}% load @ ${uptime}`,
+			canvasT('statsServer', { name: stats.info.name, mode: stats.info.mode }) + worldSuffix,
+			canvasT('statsPlayers', { total: stats.info.playersTotal, limit: stats.info.playersLimit }),
+			canvasT('statsPlaying', { alive: stats.info.playersAlive }),
+			canvasT('statsSpectating', { spect: stats.info.playersSpect }),
+			canvasT('statsLoad', { load: (stats.info.update * 2.5).toFixed(1), uptime }),
 		];
 
 		let width = 0;
@@ -8701,24 +8737,24 @@
 			beginY = beginY - 194 * border.height / border.width;
 			mainCtx.textAlign = 'right';
 			mainCtx.fillStyle = settings.darkTheme ? '#aaaaaa' : '#555555';
-			mainCtx.fillText(`X: ${~~camera.x}, Y: ${~~camera.y}`, beginX + width / 2, beginY + height / 2);
+			mainCtx.fillText(canvasT('position', { x: ~~camera.x, y: ~~camera.y }), beginX + width / 2, beginY + height / 2);
 		} else {
 			mainCtx.fillStyle = '#000000';
 			mainCtx.globalAlpha = 0.4;
 			mainCtx.fillRect(beginX, beginY, width, height);
 			mainCtx.globalAlpha = 1;
-			drawRaw(mainCtx, beginX + width / 2, beginY + height / 2, `X: ${~~camera.x}, Y: ${~~camera.y}`, 15);
+			drawRaw(mainCtx, beginX + width / 2, beginY + height / 2, canvasT('position', { x: ~~camera.x, y: ~~camera.y }), 15);
 		}
 	}
 
 	function prettyPrintTime(seconds) {
 		const minutes = ~~(seconds / 60);
-		if (minutes < 1) return '<1 min';
+		if (minutes < 1) return canvasT('timeLessThanMinute');
 		const hours = ~~(minutes / 60);
-		if (hours < 1) return `${minutes}min`;
+		if (hours < 1) return canvasT('timeMinutes', { n: minutes });
 		const days = ~~(hours / 24);
-		if (days < 1) return `${hours}h`;
-		return `${days}d`;
+		if (days < 1) return canvasT('timeHours', { n: hours });
+		return canvasT('timeDays', { n: days });
 	}
 
 	function drawLeaderboard() {
@@ -8742,7 +8778,8 @@
 		ctx.globalAlpha = 1;
 		ctx.fillStyle = '#ffffff';
 		ctx.font = '30px Ubuntu';
-		ctx.fillText('Leaderboard', 100 - ctx.measureText('Leaderboard').width / 2, 40);
+		const leaderboardTitle = canvasT('leaderboard');
+		ctx.fillText(leaderboardTitle, 100 - ctx.measureText(leaderboardTitle).width / 2, 40);
 
 		if (leaderboard.type === 'pie') {
 			let last = 0;
@@ -8904,7 +8941,7 @@
 		if (cell) {
 			mainCtx.fillStyle = settings.showColor && typeof cell['nameColor'] !== 'undefined' && cell.nameColor !== '' && cell.nameColor !== null ? cell.nameColor.toHex() : (settings.darkTheme ? '#dddddd' : '#222222');
 			mainCtx.font = `${sectorNameSize}px Ubuntu`;
-			mainCtx.fillText(cell.name || EMPTY_NAME, myPosX, myPosY - 7 - sectorNameSize / 2);
+			mainCtx.fillText(cell.name || emptyCellDisplayName(), myPosX, myPosY - 7 - sectorNameSize / 2);
 		}
 
 		mainCtx.restore();
@@ -9032,13 +9069,16 @@
 
 		if (!isNaN(stats.score)) {
 			mainCtx.font = '30px Ubuntu';
-			mainCtx.fillText(`Score: ${stats.score}`, 2, height);
+			mainCtx.fillText(canvasT('score', { score: stats.score }), 2, height);
 			height += 30;
 		}
 
 		mainCtx.font = '20px Ubuntu';
 
-		const gameStatsText = `${~~stats.fps} FPS` + (isNaN(stats.latency) ? '' : ` ${stats.latency}ms ping`);
+		let gameStatsText = canvasT('fps', { fps: ~~stats.fps });
+		if (!isNaN(stats.latency)) {
+			gameStatsText += ' ' + canvasT('ping', { ms: stats.latency });
+		}
 
 		mainCtx.fillText(gameStatsText, 2, height);
 		height += 24;
@@ -9068,7 +9108,10 @@
 			mainCtx.textAlign = 'center';
 			mainCtx.textBaseline = 'hanging';
 			mainCtx.fillStyle = '#eea236';
-			const text = isSpectating ? 'You are using Free-Camera Spectator view, press ' + settings.keyMinion.toUpperCase() + ' to switch back' : 'You are controlling a minion, press ' + settings.keyMinion.toUpperCase() + ' to switch back';
+			const minionKey = settings.keyMinion.toUpperCase();
+			const text = isSpectating
+				? canvasT('minionSpectator', { key: minionKey })
+				: canvasT('minionControl', { key: minionKey });
 			mainCtx.fillText(text, mainCanvas.width / 2, 5);
 			mainCtx.restore();
 		}
@@ -10052,6 +10095,14 @@
 
 		await I18n.loadLocale(settings.locale);
 		I18n.applyLocale();
+
+		if (!window.__i18nCanvasLocaleHook) {
+			window.__i18nCanvasLocaleHook = true;
+			window.addEventListener('i18n:locale', () => {
+				drawLeaderboard();
+				drawStats();
+			});
+		}
 	}
 
 	function init() {

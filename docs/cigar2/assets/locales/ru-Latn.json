@@ -349,5 +349,26 @@
         ]
       }
     ]
+  },
+  "canvas": {
+    "unnamedCell": "Безымянная ячейка",
+    "leaderboard": "Таблица лидеров",
+    "score": "Оценка: {score}",
+    "fps": "{fps} кадров в секунду",
+    "ping": "{ms}ms пинг",
+    "position": "X: {x}, Y: {y}",
+    "statsServer": "{name} ({mode})",
+    "statsWorld": "- Мир {world}",
+    "statsWorldDefault": "- Мир 1",
+    "statsPlayers": "Игроки {total} / {limit}",
+    "statsPlaying": "{alive} играет",
+    "statsSpectating": "{spect} наблюдение",
+    "statsLoad": "{load}% загрузки @ {uptime}",
+    "timeLessThanMinute": "<1 мин.",
+    "timeMinutes": "{n}min",
+    "timeHours": "{n}h",
+    "timeDays": "{n}d",
+    "minionSpectator": "Вы используете режим просмотра свободной камеры. Нажмите {key}, чтобы переключиться обратно.",
+    "minionControl": "Вы управляете миньоном, нажмите {key}, чтобы переключиться обратно."
   }
 }

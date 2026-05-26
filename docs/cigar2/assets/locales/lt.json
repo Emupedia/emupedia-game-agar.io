@@ -349,5 +349,26 @@
         ]
       }
     ]
+  },
+  "canvas": {
+    "unnamedCell": "Ląstelė be vardo",
+    "leaderboard": "Lyderių lentelė",
+    "score": "Rezultatas: {score}",
+    "fps": "{fps} FPS",
+    "ping": "{ms}ms ping",
+    "position": "X: {x}, Y: {y}",
+    "statsServer": "{name} ({mode})",
+    "statsWorld": "- Pasaulis {world}",
+    "statsWorldDefault": "- 1 pasaulis",
+    "statsPlayers": "{total} / {limit} grotuvai",
+    "statsPlaying": "Žaidžia {alive}",
+    "statsSpectating": "{spect} žiūrėjimas",
+    "statsLoad": "{load}% apkrova @ {uptime}",
+    "timeLessThanMinute": "<1 min",
+    "timeMinutes": "{n}min",
+    "timeHours": "{n}h",
+    "timeDays": "{n}d",
+    "minionSpectator": "Naudojate Free-Camera Spectator rodinį. Norėdami grįžti atgal, paspauskite klavišą {key}",
+    "minionControl": "Valdote minioną, paspauskite klavišą {key}, kad perjungtumėte atgal"
   }
 }

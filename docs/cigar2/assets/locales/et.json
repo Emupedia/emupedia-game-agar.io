@@ -349,5 +349,26 @@
         ]
       }
     ]
+  },
+  "canvas": {
+    "unnamedCell": "Nimetu rakk",
+    "leaderboard": "Edetabel",
+    "score": "Skoor: {score}",
+    "fps": "{fps} FPS",
+    "ping": "{ms}ms ping",
+    "position": "X: {x}, Y: {y}",
+    "statsServer": "{name} ({mode})",
+    "statsWorld": "- World {world}",
+    "statsWorldDefault": "- maailm 1",
+    "statsPlayers": "{total} / {limit} mängijad",
+    "statsPlaying": "Mängib {alive}",
+    "statsSpectating": "{spect} vaatab",
+    "statsLoad": "{load}% koormus @ {uptime}",
+    "timeLessThanMinute": "<1 min",
+    "timeMinutes": "{n}min",
+    "timeHours": "{n}h",
+    "timeDays": "{n}d",
+    "minionSpectator": "Kasutate Free-Camera Spectator vaadet, tagasilülitamiseks vajutage nuppu {key}",
+    "minionControl": "Te juhite minioni, tagasilülitamiseks vajutage klahvi {key}"
   }
 }

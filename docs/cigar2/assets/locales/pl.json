@@ -349,5 +349,26 @@
         ]
       }
     ]
+  },
+  "canvas": {
+    "unnamedCell": "Nienazwana komórka",
+    "leaderboard": "Tabela liderów",
+    "score": "Wynik: {score}",
+    "fps": "{fps} FPS",
+    "ping": "Ping {ms}ms",
+    "position": "X: {x}, Y: {y}",
+    "statsServer": "{name} ({mode})",
+    "statsWorld": "- Świat {world}",
+    "statsWorldDefault": "- Świat 1",
+    "statsPlayers": "Gracze {total} / {limit}",
+    "statsPlaying": "Gra {alive}",
+    "statsSpectating": "Oglądanie {spect}",
+    "statsLoad": "{load}% obciążenia @ {uptime}",
+    "timeLessThanMinute": "<1min",
+    "timeMinutes": "{n}min",
+    "timeHours": "{n}h",
+    "timeDays": "{n}d",
+    "minionSpectator": "Używasz widoku Free-Camera Spectator, naciśnij klawisz {key}, aby przełączyć się z powrotem",
+    "minionControl": "Kontrolujesz stronnika. Naciśnij klawisz {key}, aby przełączyć się z powrotem"
   }
 }

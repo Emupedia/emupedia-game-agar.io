@@ -349,5 +349,26 @@
         ]
       }
     ]
+  },
+  "canvas": {
+    "unnamedCell": "O celulă fără nume",
+    "leaderboard": "Clasament",
+    "score": "Scor: {score}",
+    "fps": "{fps} FPS",
+    "ping": "{ms}ms ping",
+    "position": "X: {x}, Y: {y}",
+    "statsServer": "{name} ({mode})",
+    "statsWorld": "- Lumea {world}",
+    "statsWorldDefault": "- Lumea 1",
+    "statsPlayers": "{total} / {limit} jucători",
+    "statsPlaying": "{alive} se joacă",
+    "statsSpectating": "{spect} spectator",
+    "statsLoad": "{load}% încărcare @ {uptime}",
+    "timeLessThanMinute": "<1 min",
+    "timeMinutes": "{n}min",
+    "timeHours": "{n}h",
+    "timeDays": "{n}d",
+    "minionSpectator": "Utilizați vizualizarea Free-Camera Spectator, apăsați {key} pentru a comuta înapoi",
+    "minionControl": "Controlați un servitor, apăsați tasta {key} pentru a comuta înapoi"
   }
 }

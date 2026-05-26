@@ -349,5 +349,26 @@
         ]
       }
     ]
+  },
+  "canvas": {
+    "unnamedCell": "Nejmenovaná buňka",
+    "leaderboard": "Žebříček",
+    "score": "Skóre: {score}",
+    "fps": "{fps} FPS",
+    "ping": "Ping {ms}ms",
+    "position": "X: {x}, Y: {y}",
+    "statsServer": "{name} ({mode})",
+    "statsWorld": "- Svět {world}",
+    "statsWorldDefault": "- Svět 1",
+    "statsPlayers": "Hráči {total} / {limit}",
+    "statsPlaying": "Hraje se {alive}",
+    "statsSpectating": "Sledování {spect}",
+    "statsLoad": "{load}% zatížení @ {uptime}",
+    "timeLessThanMinute": "<1 min",
+    "timeMinutes": "{n}min",
+    "timeHours": "{n}h",
+    "timeDays": "{n}d",
+    "minionSpectator": "Používáte zobrazení Free-Camera Spectator, stiskněte tlačítko {key} pro přepnutí zpět",
+    "minionControl": "Ovládáte miniona, stiskněte tlačítko {key} pro přepnutí zpět"
   }
 }

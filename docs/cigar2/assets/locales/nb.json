@@ -349,5 +349,26 @@
         ]
       }
     ]
+  },
+  "canvas": {
+    "unnamedCell": "En ikke navngitt celle",
+    "leaderboard": "Leaderboard",
+    "score": "Poengsum: {score}",
+    "fps": "{fps} FPS",
+    "ping": "{ms}ms ping",
+    "position": "X: {x}, Y: {y}",
+    "statsServer": "{name} ({mode})",
+    "statsWorld": "- Verden {world}",
+    "statsWorldDefault": "- Verden 1",
+    "statsPlayers": "{total} / {limit}-spillere",
+    "statsPlaying": "{alive} spiller",
+    "statsSpectating": "{spect} tilskuer",
+    "statsLoad": "{load} % last @ {uptime}",
+    "timeLessThanMinute": "<1 min",
+    "timeMinutes": "{n}min",
+    "timeHours": "{n}h",
+    "timeDays": "{n}d",
+    "minionSpectator": "Du bruker Free-Camera Spectator-visning, trykk {key} for å bytte tilbake",
+    "minionControl": "Du kontrollerer en minion, trykk {key} for å bytte tilbake"
   }
 }

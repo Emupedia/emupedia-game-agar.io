@@ -349,5 +349,26 @@
         ]
       }
     ]
+  },
+  "canvas": {
+    "unnamedCell": "Ċellula bla isem",
+    "leaderboard": "Leaderboard",
+    "score": "Score: {score}",
+    "fps": "{fps} FPS",
+    "ping": "{ms}ms ping",
+    "position": "X: {x}, Y: {y}",
+    "statsServer": "{name} ({mode})",
+    "statsWorld": "- Dinja {world}",
+    "statsWorldDefault": "- Dinja 1",
+    "statsPlayers": "{total} / {limit} plejers",
+    "statsPlaying": "{alive} playing",
+    "statsSpectating": "{spect} jispettaw",
+    "statsLoad": "{load}% load @ {uptime}",
+    "timeLessThanMinute": "<1 min",
+    "timeMinutes": "{n}min",
+    "timeHours": "{n}h",
+    "timeDays": "{n}d",
+    "minionSpectator": "Qed tuża l-vista Free-Camera Spectator, agħfas {key} biex taqleb lura",
+    "minionControl": "Int qed tikkontrolla minion, agħfas {key} biex taqleb lura"
   }
 }

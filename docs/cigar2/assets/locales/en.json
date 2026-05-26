@@ -126,6 +126,27 @@
   "keys": {
     "pressKey": "Press a key..."
   },
+  "canvas": {
+    "unnamedCell": "An unnamed cell",
+    "leaderboard": "Leaderboard",
+    "score": "Score: {score}",
+    "fps": "{fps} FPS",
+    "ping": "{ms}ms ping",
+    "position": "X: {x}, Y: {y}",
+    "statsServer": "{name} ({mode})",
+    "statsWorld": " - World {world}",
+    "statsWorldDefault": " - World 1",
+    "statsPlayers": "{total} / {limit} players",
+    "statsPlaying": "{alive} playing",
+    "statsSpectating": "{spect} spectating",
+    "statsLoad": "{load}% load @ {uptime}",
+    "timeLessThanMinute": "<1 min",
+    "timeMinutes": "{n}min",
+    "timeHours": "{n}h",
+    "timeDays": "{n}d",
+    "minionSpectator": "You are using Free-Camera Spectator view, press {key} to switch back",
+    "minionControl": "You are controlling a minion, press {key} to switch back"
+  },
   "gameplay": {
     "rulesTitle": "Rules",
     "rule1": "Don't upload forbbiden custom skins, especially if it's someone's face, you might get your skin banned or yourself banned from the game.",

@@ -349,5 +349,26 @@
         ]
       }
     ]
+  },
+  "canvas": {
+    "unnamedCell": "En icke namngiven cell",
+    "leaderboard": "Leaderboard",
+    "score": "Poäng: {score}",
+    "fps": "{fps} FPS",
+    "ping": "{ms}ms ping",
+    "position": "X: {x}, Y: {y}",
+    "statsServer": "{name} ({mode})",
+    "statsWorld": "- Världen {world}",
+    "statsWorldDefault": "- Värld 1",
+    "statsPlayers": "{total} / {limit}-spelare",
+    "statsPlaying": "{alive} spelar",
+    "statsSpectating": "{spect} åskådare",
+    "statsLoad": "{load} % laddning @ {uptime}",
+    "timeLessThanMinute": "<1 min",
+    "timeMinutes": "{n}min",
+    "timeHours": "{n}h",
+    "timeDays": "{n}d",
+    "minionSpectator": "Du använder Free-Camera Spectator-vyn, tryck på {key} för att byta tillbaka",
+    "minionControl": "Du styr en minion, tryck på {key} för att byta tillbaka"
   }
 }

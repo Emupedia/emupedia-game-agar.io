@@ -349,5 +349,26 @@
         ]
       }
     ]
+  },
+  "canvas": {
+    "unnamedCell": "Клетка без име",
+    "leaderboard": "класация",
+    "score": "Резултат: {score}",
+    "fps": "{fps} FPS",
+    "ping": "{ms}ms пинг",
+    "position": "X: {x}, Y: {y}",
+    "statsServer": "{name} ({mode})",
+    "statsWorld": "- Свят {world}",
+    "statsWorldDefault": "- Свят 1",
+    "statsPlayers": "{total} / {limit} играчи",
+    "statsPlaying": "{alive} се играе",
+    "statsSpectating": "{spect} гледам",
+    "statsLoad": "{load}% натоварване @ {uptime}",
+    "timeLessThanMinute": "<1 мин",
+    "timeMinutes": "{n}min",
+    "timeHours": "{n}h",
+    "timeDays": "{n}d",
+    "minionSpectator": "Използвате изглед Free-Camera Spectator, натиснете {key}, за да превключите обратно",
+    "minionControl": "Вие контролирате миньон, натиснете {key}, за да превключите обратно"
   }
 }

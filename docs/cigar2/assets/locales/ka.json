@@ -349,5 +349,26 @@
         ]
       }
     ]
+  },
+  "canvas": {
+    "unnamedCell": "უსახელო უჯრედი",
+    "leaderboard": "ლიდერბორდი",
+    "score": "ქულა: {score}",
+    "fps": "{fps} FPS",
+    "ping": "{ms}ms პინგი",
+    "position": "X: {x}, Y: {y}",
+    "statsServer": "{name} ({mode})",
+    "statsWorld": "- მსოფლიო {world}",
+    "statsWorldDefault": "- მსოფლიო 1",
+    "statsPlayers": "{total} / {limit} მოთამაშეები",
+    "statsPlaying": "{alive} უკრავს",
+    "statsSpectating": "{spect} მაყურებელი",
+    "statsLoad": "{load}% დატვირთვა @ {uptime}",
+    "timeLessThanMinute": "<1 წთ",
+    "timeMinutes": "{n}min",
+    "timeHours": "{n}h",
+    "timeDays": "{n}d",
+    "minionSpectator": "თქვენ იყენებთ უფასო კამერის მაყურებლის ხედს, დააჭირეთ {key} უკან გადასართავად",
+    "minionControl": "თქვენ აკონტროლებთ მინიონს, დააჭირეთ {key}-ს უკან გადასასვლელად"
   }
 }

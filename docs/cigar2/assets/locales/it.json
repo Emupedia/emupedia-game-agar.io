@@ -349,5 +349,26 @@
         ]
       }
     ]
+  },
+  "canvas": {
+    "unnamedCell": "Una cella senza nome",
+    "leaderboard": "Classifica",
+    "score": "Punteggio: {score}",
+    "fps": "{fps} FPS",
+    "ping": "Ping {ms}ms",
+    "position": "X: {x}, Y: {y}",
+    "statsServer": "{name} ({mode})",
+    "statsWorld": "- Mondo {world}",
+    "statsWorldDefault": "- Mondo 1",
+    "statsPlayers": "Giocatori {total} / {limit}",
+    "statsPlaying": "{alive} in riproduzione",
+    "statsSpectating": "Visualizzazione {spect}",
+    "statsLoad": "{load}% carico @ {uptime}",
+    "timeLessThanMinute": "<1 minuto",
+    "timeMinutes": "{n}min",
+    "timeHours": "{n}h",
+    "timeDays": "{n}d",
+    "minionSpectator": "Stai utilizzando la visualizzazione spettatore con telecamera libera, premi il tasto {key} per tornare indietro",
+    "minionControl": "Stai controllando un servitore, premi il tasto {key} per tornare indietro"
   }
 }

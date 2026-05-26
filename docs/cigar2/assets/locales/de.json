@@ -349,5 +349,26 @@
         ]
       }
     ]
+  },
+  "canvas": {
+    "unnamedCell": "Eine unbenannte Zelle",
+    "leaderboard": "Bestenliste",
+    "score": "Ergebnis: {score}",
+    "fps": "{fps} FPS",
+    "ping": "{ms}ms-Ping",
+    "position": "X: {x}, Y: {y}",
+    "statsServer": "{name} ({mode})",
+    "statsWorld": "- Welt {world}",
+    "statsWorldDefault": "- Welt 1",
+    "statsPlayers": "{total} / {limit} Spieler",
+    "statsPlaying": "{alive} spielt",
+    "statsSpectating": "{spect} schaut zu",
+    "statsLoad": "{load} % Last @ {uptime}",
+    "timeLessThanMinute": "<1 Min",
+    "timeMinutes": "{n}min",
+    "timeHours": "{n}h",
+    "timeDays": "{n}d",
+    "minionSpectator": "Sie verwenden die Free-Camera-Zuschaueransicht. Drücken Sie {key}, um zurückzuschalten",
+    "minionControl": "Du kontrollierst einen Diener, drücke {key}, um zurück zu wechseln"
   }
 }

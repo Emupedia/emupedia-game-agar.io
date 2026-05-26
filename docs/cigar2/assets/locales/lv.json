@@ -349,5 +349,26 @@
         ]
       }
     ]
+  },
+  "canvas": {
+    "unnamedCell": "Šūna bez nosaukuma",
+    "leaderboard": "Līderu saraksts",
+    "score": "Rezultāts: {score}",
+    "fps": "{fps} FPS",
+    "ping": "{ms}ms ping",
+    "position": "X: {x}, Y: {y}",
+    "statsServer": "{name} ({mode})",
+    "statsWorld": "- Pasaules {world}",
+    "statsWorldDefault": "- 1. pasaule",
+    "statsPlayers": "{total} / {limit} atskaņotāji",
+    "statsPlaying": "Spēlē {alive}",
+    "statsSpectating": "{spect} skatīšanās",
+    "statsLoad": "{load}% slodze @ {uptime}",
+    "timeLessThanMinute": "<1 min",
+    "timeMinutes": "{n}min",
+    "timeHours": "{n}h",
+    "timeDays": "{n}d",
+    "minionSpectator": "Jūs izmantojat bezmaksas kameras skatītāja skatu. Lai pārslēgtos atpakaļ, nospiediet taustiņu {key}",
+    "minionControl": "Jūs kontrolējat minionu, nospiediet taustiņu {key}, lai pārslēgtos atpakaļ"
   }
 }

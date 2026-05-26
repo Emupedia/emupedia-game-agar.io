@@ -349,5 +349,26 @@
         ]
       }
     ]
+  },
+  "canvas": {
+    "unnamedCell": "Egy névtelen sejt",
+    "leaderboard": "Ranglista",
+    "score": "Pontszám: {score}",
+    "fps": "{fps} FPS",
+    "ping": "{ms}ms ping",
+    "position": "X: {x}, Y: {y}",
+    "statsServer": "{name} ({mode})",
+    "statsWorld": "- World {world}",
+    "statsWorldDefault": "- Világ 1",
+    "statsPlayers": "{total} / {limit} lejátszók",
+    "statsPlaying": "{alive} játszik",
+    "statsSpectating": "{spect} nézelődés",
+    "statsLoad": "{load}% terhelés @ {uptime}",
+    "timeLessThanMinute": "<1 perc",
+    "timeMinutes": "{n}min",
+    "timeHours": "{n}h",
+    "timeDays": "{n}d",
+    "minionSpectator": "A Free-Camera Spectator nézetet használja. Nyomja meg a {key} gombot a visszaváltáshoz",
+    "minionControl": "Ön egy miniont irányít, a visszaváltáshoz nyomja meg a {key} gombot"
   }
 }

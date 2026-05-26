@@ -349,5 +349,26 @@
         ]
       }
     ]
+  },
+  "canvas": {
+    "unnamedCell": "Неименована ћелија",
+    "leaderboard": "Леадербоард",
+    "score": "Оцена: {score}",
+    "fps": "{fps} ФПС",
+    "ping": "{ms}мс пинг",
+    "position": "Кс: {x}, И: {y}",
+    "statsServer": "{name} ({mode})",
+    "statsWorld": "- Свет {world}",
+    "statsWorldDefault": "- Свет 1",
+    "statsPlayers": "{total} / {limit} играчи",
+    "statsPlaying": "{alive} свира",
+    "statsSpectating": "{spect} посматра",
+    "statsLoad": "{load}% оптерећења @ {uptime}",
+    "timeLessThanMinute": "<1 мин",
+    "timeMinutes": "{n}мин",
+    "timeHours": "{n}х",
+    "timeDays": "{n}д",
+    "minionSpectator": "Користите приказ Фрее-Цамера Спецтатор, притисните {key} да бисте се вратили назад",
+    "minionControl": "Контролишете миниона, притисните {key} да бисте се вратили"
   }
 }

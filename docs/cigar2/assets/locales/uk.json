@@ -349,5 +349,26 @@
         ]
       }
     ]
+  },
+  "canvas": {
+    "unnamedCell": "Комірка без назви",
+    "leaderboard": "Таблиця лідерів",
+    "score": "Оцінка: {score}",
+    "fps": "{fps} FPS",
+    "ping": "{ms}ms пінг",
+    "position": "X: {x}, Y: {y}",
+    "statsServer": "{name} ({mode})",
+    "statsWorld": "- Світ {world}",
+    "statsWorldDefault": "- Світ 1",
+    "statsPlayers": "{total} / {limit} гравців",
+    "statsPlaying": "Грає {alive}",
+    "statsSpectating": "{spect} перегляд",
+    "statsLoad": "{load}% завантаження @ {uptime}",
+    "timeLessThanMinute": "<1 хв",
+    "timeMinutes": "{n}min",
+    "timeHours": "{n}h",
+    "timeDays": "{n}d",
+    "minionSpectator": "Ви використовуєте режим Free-Camera Spectator, натисніть {key}, щоб повернутися назад",
+    "minionControl": "Ви керуєте міньйоном, натисніть {key}, щоб повернутися назад"
   }
 }
