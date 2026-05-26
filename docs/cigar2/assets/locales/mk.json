@@ -8,7 +8,8 @@
     "clan": "Клан",
     "placeholder": "Притиснете Enter за да разговарате",
     "clearTitle": "Исчистете го разговорот",
-    "zoom": "Зумирајте"
+    "zoom": "Зумирајте",
+    "translatedSuffix": "→"
   },
   "gallery": {
     "skins": "Кожи"
@@ -85,7 +86,8 @@
     "lockMobileButtons": "Заклучи мобилни копчиња",
     "resetButtonPositions": "Ресетирајте ги позициите на мобилните копчиња",
     "useWordFilters": "Зборови цензура",
-    "autoRespawn": "Вклучете го AutoRespawn"
+    "autoRespawn": "Вклучете го AutoRespawn",
+    "translateChat": "Преведи разговор (бета)"
   },
   "colors": {
     "background": "Позадина",

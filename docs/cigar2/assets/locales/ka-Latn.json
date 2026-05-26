@@ -8,7 +8,8 @@
     "clan": "klani",
     "placeholder": "daachiret Enter chatistvis",
     "clearTitle": "chatis gasuftaveba",
-    "zoom": "masshtabireba"
+    "zoom": "masshtabireba",
+    "translatedSuffix": "→"
   },
   "gallery": {
     "skins": "tqavi"
@@ -85,7 +86,8 @@
     "lockMobileButtons": "mobiluri ghilakebis chaketva",
     "resetButtonPositions": "mobiluri ghilakebis pozitsiebis gadatvirtva",
     "useWordFilters": "sitqvebis tsenzura",
-    "autoRespawn": "AutoRespawn-is gadartva"
+    "autoRespawn": "AutoRespawn-is gadartva",
+    "translateChat": "თარგმნეთ ჩატი (ბეტა)"
   },
   "colors": {
     "background": "foni",

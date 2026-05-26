@@ -8,7 +8,8 @@
     "clan": "Klan",
     "placeholder": "Natisnete enter za chat",
     "clearTitle": "Izchistvane na chata",
-    "zoom": "mashchabirane"
+    "zoom": "mashchabirane",
+    "translatedSuffix": "→"
   },
   "gallery": {
     "skins": "Kozhi"
@@ -85,7 +86,8 @@
     "lockMobileButtons": "Zaklyuchvane na mobilni butoni",
     "resetButtonPositions": "Nulirane na pozitsiite na mobilnite butoni",
     "useWordFilters": "Tsenzura na dumite",
-    "autoRespawn": "Prevklyuchete AutoRespawn"
+    "autoRespawn": "Prevklyuchete AutoRespawn",
+    "translateChat": "Превод на чат (бета)"
   },
   "colors": {
     "background": "Fon",

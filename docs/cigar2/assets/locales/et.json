@@ -8,7 +8,8 @@
     "clan": "Klann",
     "placeholder": "Vestlemiseks vajutage sisestusklahvi",
     "clearTitle": "Tühjenda vestlus",
-    "zoom": "Suumi"
+    "zoom": "Suumi",
+    "translatedSuffix": "→"
   },
   "gallery": {
     "skins": "Nahad"
@@ -85,7 +86,8 @@
     "lockMobileButtons": "Lukusta mobiilinupud",
     "resetButtonPositions": "Lähtestage mobiilinuppude positsioonid",
     "useWordFilters": "Sõnade tsensuur",
-    "autoRespawn": "Lülitage automaatne taaselus"
+    "autoRespawn": "Lülitage automaatne taaselus",
+    "translateChat": "Tõlgi vestlus (beeta)"
   },
   "colors": {
     "background": "Taust",

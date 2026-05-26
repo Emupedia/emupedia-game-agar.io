@@ -8,7 +8,8 @@
     "clan": "Klan",
     "placeholder": "Pritisnite enter za ćaskanje",
     "clearTitle": "Obriši chat",
-    "zoom": "Zoom"
+    "zoom": "Zoom",
+    "translatedSuffix": "→"
   },
   "gallery": {
     "skins": "Skinovi"
@@ -85,7 +86,8 @@
     "lockMobileButtons": "Zaključavanje mobilnih dugmadi",
     "resetButtonPositions": "Poništi položaj mobilnih dugmadi",
     "useWordFilters": "Riječi Cenzura",
-    "autoRespawn": "Uključi AutoRespawn"
+    "autoRespawn": "Uključi AutoRespawn",
+    "translateChat": "Prevedi chat (Beta)"
   },
   "colors": {
     "background": "Pozadina",

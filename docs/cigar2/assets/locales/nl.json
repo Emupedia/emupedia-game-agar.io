@@ -8,7 +8,8 @@
     "clan": "Clan",
     "placeholder": "Druk op Enter om te chatten",
     "clearTitle": "Duidelijke chat",
-    "zoom": "Zoom"
+    "zoom": "Zoom",
+    "translatedSuffix": "→"
   },
   "gallery": {
     "skins": "Huiden"
@@ -85,7 +86,8 @@
     "lockMobileButtons": "Mobiele knoppen vergrendelen",
     "resetButtonPositions": "Posities van mobiele knoppen opnieuw instellen",
     "useWordFilters": "Woorden censuur",
-    "autoRespawn": "Schakel AutoRespawn in"
+    "autoRespawn": "Schakel AutoRespawn in",
+    "translateChat": "Chat vertalen (bèta)"
   },
   "colors": {
     "background": "Achtergrond",

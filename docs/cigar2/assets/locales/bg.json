@@ -8,7 +8,8 @@
     "clan": "Клан",
     "placeholder": "Натиснете enter за чат",
     "clearTitle": "Изчистване на чата",
-    "zoom": "мащабиране"
+    "zoom": "мащабиране",
+    "translatedSuffix": "→"
   },
   "gallery": {
     "skins": "Кожи"
@@ -85,7 +86,8 @@
     "lockMobileButtons": "Заключване на мобилни бутони",
     "resetButtonPositions": "Нулиране на позициите на мобилните бутони",
     "useWordFilters": "Цензура на думите",
-    "autoRespawn": "Превключете AutoRespawn"
+    "autoRespawn": "Превключете AutoRespawn",
+    "translateChat": "Превод на чат (бета)"
   },
   "colors": {
     "background": "Фон",

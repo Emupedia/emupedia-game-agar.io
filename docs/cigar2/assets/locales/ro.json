@@ -8,7 +8,8 @@
     "clan": "Clan",
     "placeholder": "Apăsați Enter pentru a conversa",
     "clearTitle": "Ștergeți chatul",
-    "zoom": "Zoom"
+    "zoom": "Zoom",
+    "translatedSuffix": "→"
   },
   "gallery": {
     "skins": "Piei"
@@ -85,7 +86,8 @@
     "lockMobileButtons": "Blocați butoanele mobile",
     "resetButtonPositions": "Resetați pozițiile butoanelor mobile",
     "useWordFilters": "Cenzura cuvintelor",
-    "autoRespawn": "Comutați AutoRespawn"
+    "autoRespawn": "Comutați AutoRespawn",
+    "translateChat": "Traduceți chat (beta)"
   },
   "colors": {
     "background": "Fundal",

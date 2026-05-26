@@ -8,7 +8,8 @@
     "clan": "clan",
     "placeholder": "Pulsa enter para chatear",
     "clearTitle": "Borrar chat",
-    "zoom": "Ampliar"
+    "zoom": "Ampliar",
+    "translatedSuffix": "→"
   },
   "gallery": {
     "skins": "Pieles"
@@ -85,7 +86,8 @@
     "lockMobileButtons": "Bloquear botones del móvil",
     "resetButtonPositions": "Restablecer posiciones de botones móviles",
     "useWordFilters": "Censura de palabras",
-    "autoRespawn": "Alternar reaparición automática"
+    "autoRespawn": "Alternar reaparición automática",
+    "translateChat": "Traducir chat (Beta)"
   },
   "colors": {
     "background": "Antecedentes",

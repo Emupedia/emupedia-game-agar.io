@@ -8,7 +8,8 @@
     "clan": "klan",
     "placeholder": "Pritisnite enter za chaskanje",
     "clearTitle": "Obrishi chaskanje",
-    "zoom": "Zoom"
+    "zoom": "Zoom",
+    "translatedSuffix": "→"
   },
   "gallery": {
     "skins": "Skins"
@@ -85,7 +86,8 @@
     "lockMobileButtons": "Zakljuchavanje dugmadi za mobilne uredjaje",
     "resetButtonPositions": "Resetujte polozhaje mobilnikh dugmadi",
     "useWordFilters": "Rechi Tsenzura",
-    "autoRespawn": "Toggle AutoRespavn"
+    "autoRespawn": "Toggle AutoRespavn",
+    "translateChat": "Преведи ћаскање (Бета)"
   },
   "colors": {
     "background": "Pozadina",

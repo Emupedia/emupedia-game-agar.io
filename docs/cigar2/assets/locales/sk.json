@@ -8,7 +8,8 @@
     "clan": "Klan",
     "placeholder": "Ak chcete chatovať, stlačte kláves Enter",
     "clearTitle": "Vymazať chat",
-    "zoom": "Zoom"
+    "zoom": "Zoom",
+    "translatedSuffix": "→"
   },
   "gallery": {
     "skins": "Kože"
@@ -85,7 +86,8 @@
     "lockMobileButtons": "Zamknúť tlačidlá mobilu",
     "resetButtonPositions": "Obnovte polohy tlačidiel mobilného telefónu",
     "useWordFilters": "Cenzúra slov",
-    "autoRespawn": "Prepnúť AutoRespawn"
+    "autoRespawn": "Prepnúť AutoRespawn",
+    "translateChat": "Preložiť čet (beta)"
   },
   "colors": {
     "background": "Pozadie",

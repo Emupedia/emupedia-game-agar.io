@@ -8,7 +8,8 @@
     "clan": "Clan",
     "placeholder": "Premi Invio per chattare",
     "clearTitle": "Chiacchierata chiara",
-    "zoom": "Zoom"
+    "zoom": "Zoom",
+    "translatedSuffix": "→"
   },
   "gallery": {
     "skins": "Pelli"
@@ -85,7 +86,8 @@
     "lockMobileButtons": "Blocca i pulsanti mobili",
     "resetButtonPositions": "Ripristina le posizioni dei pulsanti mobili",
     "useWordFilters": "Censura delle parole",
-    "autoRespawn": "Attiva/disattiva la rigenerazione automatica"
+    "autoRespawn": "Attiva/disattiva la rigenerazione automatica",
+    "translateChat": "Traduci chat (Beta)"
   },
   "colors": {
     "background": "Sfondo",

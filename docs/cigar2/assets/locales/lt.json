@@ -8,7 +8,8 @@
     "clan": "Klanas",
     "placeholder": "Norėdami kalbėtis, paspauskite „Enter“.",
     "clearTitle": "Išvalyti pokalbį",
-    "zoom": "Padidinti"
+    "zoom": "Padidinti",
+    "translatedSuffix": "→"
   },
   "gallery": {
     "skins": "Skinai"
@@ -85,7 +86,8 @@
     "lockMobileButtons": "Užrakinti mobiliojo telefono mygtukus",
     "resetButtonPositions": "Iš naujo nustatyti mobiliųjų mygtukų padėtis",
     "useWordFilters": "Žodžiai cenzūra",
-    "autoRespawn": "Perjungti „AutoRespawn“."
+    "autoRespawn": "Perjungti „AutoRespawn“.",
+    "translateChat": "Išversti pokalbį (beta versija)"
   },
   "colors": {
     "background": "Fonas",

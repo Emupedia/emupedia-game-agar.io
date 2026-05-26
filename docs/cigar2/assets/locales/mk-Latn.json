@@ -8,7 +8,8 @@
     "clan": "Klan",
     "placeholder": "Pritisnete Enter za da razgovarate",
     "clearTitle": "Ischistete go razgovorot",
-    "zoom": "Zumirajte"
+    "zoom": "Zumirajte",
+    "translatedSuffix": "→"
   },
   "gallery": {
     "skins": "Kozhi"
@@ -85,7 +86,8 @@
     "lockMobileButtons": "Zakluchi mobilni kopchinja",
     "resetButtonPositions": "Resetirajte gi pozitsiite na mobilnite kopchinja",
     "useWordFilters": "Zborovi tsenzura",
-    "autoRespawn": "Vkluchete go AutoRespawn"
+    "autoRespawn": "Vkluchete go AutoRespawn",
+    "translateChat": "Преведи разговор (бета)"
   },
   "colors": {
     "background": "Pozadina",

@@ -8,7 +8,8 @@
     "clan": "Klan",
     "placeholder": "Agħfas enter biex tiċċettja",
     "clearTitle": "Ċat ċar",
-    "zoom": "Zoom"
+    "zoom": "Zoom",
+    "translatedSuffix": "→"
   },
   "gallery": {
     "skins": "Ġlud"
@@ -85,7 +86,8 @@
     "lockMobileButtons": "Lock Buttuni Mobbli",
     "resetButtonPositions": "Irrisettja l-Pożizzjonijiet tal-buttuni mobbli",
     "useWordFilters": "Kliem Ċensura",
-    "autoRespawn": "Toggle AutoRespawn"
+    "autoRespawn": "Toggle AutoRespawn",
+    "translateChat": "Ittraduċi Chat (Beta)"
   },
   "colors": {
     "background": "Sfond",

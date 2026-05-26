@@ -8,7 +8,8 @@
     "clan": "Clan",
     "placeholder": "Drücken Sie die Eingabetaste, um zu chatten",
     "clearTitle": "Klarer Chat",
-    "zoom": "Zoomen"
+    "zoom": "Zoomen",
+    "translatedSuffix": "→"
   },
   "gallery": {
     "skins": "Skins"
@@ -85,7 +86,8 @@
     "lockMobileButtons": "Sperren Sie mobile Tasten",
     "resetButtonPositions": "Setzen Sie die Positionen der mobilen Tasten zurück",
     "useWordFilters": "Wortzensur",
-    "autoRespawn": "Schalten Sie AutoRespawn um"
+    "autoRespawn": "Schalten Sie AutoRespawn um",
+    "translateChat": "Chat übersetzen (Beta)"
   },
   "colors": {
     "background": "Hintergrund",

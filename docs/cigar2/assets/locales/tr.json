@@ -8,7 +8,8 @@
     "clan": "Klan",
     "placeholder": "Sohbet etmek için enter tuşuna basın",
     "clearTitle": "Sohbeti temizle",
-    "zoom": "Yakınlaştır"
+    "zoom": "Yakınlaştır",
+    "translatedSuffix": "→"
   },
   "gallery": {
     "skins": "Kaplamalar"
@@ -85,7 +86,8 @@
     "lockMobileButtons": "Mobil Düğmeleri Kilitle",
     "resetButtonPositions": "Mobil Düğme Konumlarını Sıfırla",
     "useWordFilters": "Kelimeler Sansür",
-    "autoRespawn": "Otomatik Yeniden Doğmayı Değiştir"
+    "autoRespawn": "Otomatik Yeniden Doğmayı Değiştir",
+    "translateChat": "Sohbeti Çevir (Beta)"
   },
   "colors": {
     "background": "Arka plan",

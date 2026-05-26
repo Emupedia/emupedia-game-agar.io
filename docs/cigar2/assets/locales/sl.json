@@ -8,7 +8,8 @@
     "clan": "Klan",
     "placeholder": "Za klepet pritisnite enter",
     "clearTitle": "Počisti klepet",
-    "zoom": "Zoom"
+    "zoom": "Zoom",
+    "translatedSuffix": "→"
   },
   "gallery": {
     "skins": "Preobleke"
@@ -85,7 +86,8 @@
     "lockMobileButtons": "Zakleni mobilne gumbe",
     "resetButtonPositions": "Ponastavite položaje mobilnih gumbov",
     "useWordFilters": "Cenzura besed",
-    "autoRespawn": "Preklop AutoRespawn"
+    "autoRespawn": "Preklop AutoRespawn",
+    "translateChat": "Prevajalnik klepeta (beta)"
   },
   "colors": {
     "background": "Ozadje",

@@ -8,7 +8,8 @@
     "clan": "Clan",
     "placeholder": "Appuyez sur Entrée pour discuter",
     "clearTitle": "Effacer le chat",
-    "zoom": "Zoomer"
+    "zoom": "Zoomer",
+    "translatedSuffix": "→"
   },
   "gallery": {
     "skins": "Peaux"
@@ -85,7 +86,8 @@
     "lockMobileButtons": "Verrouiller les boutons mobiles",
     "resetButtonPositions": "Réinitialiser les positions des boutons mobiles",
     "useWordFilters": "Censure des mots",
-    "autoRespawn": "Activer la réapparition automatique"
+    "autoRespawn": "Activer la réapparition automatique",
+    "translateChat": "Traduire le chat (bêta)"
   },
   "colors": {
     "background": "Contexte",

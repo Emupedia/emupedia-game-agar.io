@@ -8,7 +8,8 @@
     "clan": "клан",
     "placeholder": "Притисните ентер за ћаскање",
     "clearTitle": "Обриши ћаскање",
-    "zoom": "Зоом"
+    "zoom": "Зоом",
+    "translatedSuffix": "→"
   },
   "gallery": {
     "skins": "Скинс"
@@ -85,7 +86,8 @@
     "lockMobileButtons": "Закључавање дугмади за мобилне уређаје",
     "resetButtonPositions": "Ресетујте положаје мобилних дугмади",
     "useWordFilters": "Речи Цензура",
-    "autoRespawn": "Тоггле АутоРеспавн"
+    "autoRespawn": "Тоггле АутоРеспавн",
+    "translateChat": "Преведи ћаскање (Бета)"
   },
   "colors": {
     "background": "Позадина",

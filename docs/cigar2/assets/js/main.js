@@ -2302,7 +2302,7 @@
 
 			const doc = win.document;
 			const canvas = doc.createElement('canvas');
-			const context = canvas.getContext('2d');
+			const context = canvas.getContext('2d', { willReadFrequently: true });
 			const canvasCPU = doc.createElement('canvas');
 			const contextCPU = canvasCPU.getContext('2d', { desynchronized: true, willReadFrequently: true });
 
@@ -7318,6 +7318,98 @@
 	function emptyCellDisplayName() {
 		return canvasT('unnamedCell');
 	}
+
+	function chatTranslatedSuffix() {
+		return (typeof I18n !== 'undefined' && I18n.isReady()) ? I18n.t('chat.translatedSuffix') : ' → ';
+	}
+
+	function updateTranslateChatUI() {
+		const row = byId('translateChatRow');
+		const cb = byId('translateChat');
+		if (!row || !cb) return;
+
+		const locale = (typeof I18n !== 'undefined' && I18n.getLocale) ? I18n.getLocale() : 'en';
+		const hasApi = typeof ChatTranslate !== 'undefined' && ChatTranslate.isSupported();
+		const available = hasApi && ChatTranslate.isAvailableForLocale(locale);
+
+		row.hidden = !hasApi;
+		cb.disabled = !available;
+		if (!available && settings.translateChat) {
+			settings.translateChat = false;
+			cb.checked = false;
+			storeSettings();
+		}
+		if (typeof ChatTranslate !== 'undefined' && ChatTranslate.isLocalDebug && ChatTranslate.isLocalDebug()) {
+			ChatTranslate.debugLog('settings status', {
+				translateChatEnabled: settings.translateChat,
+				uiLocale: locale,
+				translatorLang: ChatTranslate.toTranslatorLang(locale),
+				hasApi,
+				availableForLocale: available,
+				needsUserGesture: ChatTranslate.needsGesture ? ChatTranslate.needsGesture() : null,
+				modelsPrimed: ChatTranslate.isPrimed ? ChatTranslate.isPrimed() : null
+			});
+		}
+	}
+
+	function warmUpChatTranslateIfNeeded(onReady) {
+		if (!settings.translateChat || typeof ChatTranslate === 'undefined') {
+			if (onReady) onReady(false);
+			return;
+		}
+		const locale = (typeof I18n !== 'undefined' && I18n.getLocale) ? I18n.getLocale() : 'en';
+		if (!ChatTranslate.isAvailableForLocale(locale)) {
+			if (onReady) onReady(false);
+			return;
+		}
+		if (ChatTranslate.isPrimed && ChatTranslate.isPrimed() && ChatTranslate.needsGesture && !ChatTranslate.needsGesture()) {
+			if (onReady) onReady(true);
+			return;
+		}
+		ChatTranslate.warmUp(locale).then(ok => {
+			if (onReady) onReady(ok);
+		});
+	}
+
+	function installChatTranslateWarmUpGestures() {
+		if (window.__chatTranslateGestureHook) return;
+		window.__chatTranslateGestureHook = true;
+
+		const onUserGesture = () => warmUpChatTranslateIfNeeded();
+
+		document.addEventListener('click', onUserGesture, true);
+		document.addEventListener('keydown', onUserGesture, true);
+	}
+
+	function requestChatTranslation(msg) {
+		const dbg = typeof ChatTranslate !== 'undefined' && ChatTranslate.isLocalDebug && ChatTranslate.isLocalDebug();
+
+		if (!settings.translateChat) {
+			if (dbg) ChatTranslate.debugSkip('translate chat is disabled in settings');
+			return;
+		}
+		if (typeof ChatTranslate === 'undefined') {
+			return;
+		}
+		const locale = (typeof I18n !== 'undefined' && I18n.getLocale) ? I18n.getLocale() : 'en';
+		if (!ChatTranslate.isAvailableForLocale(locale)) {
+			if (dbg) {
+				ChatTranslate.debugSkip('UI locale not supported by on-device translator', {
+					uiLocale: locale,
+					translatorLang: ChatTranslate.toTranslatorLang(locale)
+				});
+			}
+			return;
+		}
+		if (!(msg.message || '').trim()) {
+			if (dbg) ChatTranslate.debugSkip('empty message text');
+			return;
+		}
+
+		ChatTranslate.queueMessage(msg, locale, () => {
+			if (settings.showChat) drawChat();
+		});
+	}
 	// Format chars, zero-width marks, and letter-like fillers used to bypass empty-nickname checks (e.g. U+3164 Hangul Filler).
 	const NICK_INVISIBLE_CHARS_RE = /[\p{Cf}]|[\u00AD\u034F\u061C\u115F\u1160\u17B4\u17B5\u180E\u200B-\u200F\u202A-\u202E\u2060-\u2069\u2800\u3164\uFEFF\uFFA0]/gu;
 
@@ -7797,7 +7889,9 @@
 
 				const wait = Math.max(3000, 1000 + filteredMessage.length * 150);
 				chat.waitUntil = syncUpdStamp - chat.waitUntil > 1000 ? syncUpdStamp + wait : chat.waitUntil + wait;
-				chat.messages.push({ color, name, message: filteredMessage, time: syncUpdStamp, server: flags.server, admin: flags.admin, mod: flags.mod, me: false, fp2: fp2 });
+				const chatMsg = { color, name, message: filteredMessage, time: syncUpdStamp, server: flags.server, admin: flags.admin, mod: flags.mod, me: false, fp2: fp2, messageTranslated: null, translationPending: false };
+				chat.messages.push(chatMsg);
+				requestChatTranslation(chatMsg);
 				if (settings.showChat) drawChat();
 				break;
 			}
@@ -7859,7 +7953,9 @@
 		const wait = Math.max(3000, 1000 + text.length * 150);
 		chat.waitUntil = syncUpdStamp - chat.waitUntil > 1000 ? syncUpdStamp + wait : chat.waitUntil + wait;
 
-		chat.messages.push({ color: settings.nameColor !== '#ffffff' ? Color.fromHex(settings.nameColor) : Color.fromHex('#33ff33'), name: '[YOU]', message: text, time: Date.now(), server: false, admin: false, mod: false, me: true, fp2: null });
+		const ownMsg = { color: settings.nameColor !== '#ffffff' ? Color.fromHex(settings.nameColor) : Color.fromHex('#33ff33'), name: '[YOU]', message: text, time: Date.now(), server: false, admin: false, mod: false, me: true, fp2: null, messageTranslated: null, translationPending: false };
+		chat.messages.push(ownMsg);
+		requestChatTranslation(ownMsg);
 
 		if (settings.showChat) drawChat();
 
@@ -8057,6 +8153,7 @@
 		useJoystick: true,
 		lockMobileButtons: false,
 		useWordFilters: true,
+		translateChat: false,
 		autoRespawn: true,
 		animationSpeed: 120,
 		cameraAnimationSpeed: 9,
@@ -8605,23 +8702,37 @@
 
 		for (let i = 0; i < visibleMessages.length; i++) {
 			const message = visibleMessages[i];
-			lines.push([{
+			const parts = [{
 				text: message.server || message.admin || message.mod || message.me ? '' : '🔇',
 				color: Color.fromHex('#ffffff'),
 				username: message.name,
 				fp2: message.fp2,
 				fontSize: '22px Ubuntu',
 				hasMuteIcon: true,
-			} , {
+			}, {
 				text: message.name,
 				color: message.color
-			} , {
+			}, {
 				text: ` ${message.message}`,
 				color: Color.fromHex(settings.darkTheme ? '#ffffff' : '#000000')
-			}]);
-		}
+			}];
 
-		window.lines = lines;
+			if (settings.translateChat && message.messageTranslated) {
+				parts.push({
+					text: chatTranslatedSuffix() + message.messageTranslated,
+					color: Color.fromHex(settings.darkTheme ? '#aaaaaa' : '#666666'),
+					fontSize: '16px Ubuntu'
+				});
+			} else if (settings.translateChat && message.translationPending) {
+				parts.push({
+					text: ' …',
+					color: Color.fromHex(settings.darkTheme ? '#888888' : '#999999'),
+					fontSize: '16px Ubuntu'
+				});
+			}
+
+			lines.push(parts);
+		}
 
 		let textWidth = textLeftMargin;
 
@@ -10096,11 +10207,47 @@
 		await I18n.loadLocale(settings.locale);
 		I18n.applyLocale();
 
+		const translateChatEl = byId('translateChat');
+		if (translateChatEl) {
+			initSetting('translateChat', translateChatEl);
+			translateChatEl.addEventListener('change', () => {
+				if (typeof ChatTranslate !== 'undefined' && ChatTranslate.isLocalDebug && ChatTranslate.isLocalDebug()) {
+					ChatTranslate.debugLog('translate chat toggled', { enabled: settings.translateChat });
+				}
+				if (!settings.translateChat) {
+					chat.messages.forEach(m => {
+						m.messageTranslated = null;
+						m.translationPending = false;
+					});
+					if (typeof ChatTranslate !== 'undefined') ChatTranslate.clearCache();
+					if (settings.showChat) drawChat();
+					return;
+				}
+				warmUpChatTranslateIfNeeded(() => {
+					if (typeof ChatTranslate === 'undefined') return;
+					ChatTranslate.retranslateAll(chat.messages, I18n.getLocale(), () => {
+						if (settings.showChat) drawChat();
+					});
+				});
+			});
+		}
+		updateTranslateChatUI();
+
+		installChatTranslateWarmUpGestures();
+
 		if (!window.__i18nCanvasLocaleHook) {
 			window.__i18nCanvasLocaleHook = true;
 			window.addEventListener('i18n:locale', () => {
 				drawLeaderboard();
 				drawStats();
+				updateTranslateChatUI();
+				if (settings.translateChat && typeof ChatTranslate !== 'undefined') {
+					warmUpChatTranslateIfNeeded(() => {
+						ChatTranslate.retranslateAll(chat.messages, I18n.getLocale(), () => {
+							if (settings.showChat) drawChat();
+						});
+					});
+				}
 			});
 		}
 	}
@@ -11857,6 +12004,14 @@
 		wsInit(GEO[geo]);
 	};
 
+	function toggleSettingsPanel() {
+		const panel = byId('settings');
+		if (panel) {
+			panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+		}
+	}
+
+	window.toggleSettingsPanel = toggleSettingsPanel;
 	window.spectate = sendSpectate
 
 	window.changeSkin = (e, s) => {

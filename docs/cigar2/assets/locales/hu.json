@@ -8,7 +8,8 @@
     "clan": "Klán",
     "placeholder": "Nyomja meg az Entert a csevegéshez",
     "clearTitle": "Csevegés törlése",
-    "zoom": "Zoomolás"
+    "zoom": "Zoomolás",
+    "translatedSuffix": "→"
   },
   "gallery": {
     "skins": "Skinek"
@@ -85,7 +86,8 @@
     "lockMobileButtons": "Mobil gombok zárolása",
     "resetButtonPositions": "Állítsa vissza a mobilgombok pozícióit",
     "useWordFilters": "Szavak cenzúra",
-    "autoRespawn": "Kapcsolja be az AutoRespawn funkciót"
+    "autoRespawn": "Kapcsolja be az AutoRespawn funkciót",
+    "translateChat": "Csevegés fordítása (béta)"
   },
   "colors": {
     "background": "Háttér",

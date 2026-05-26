@@ -8,7 +8,8 @@
     "clan": "Klans",
     "placeholder": "Lai tērzētu, nospiediet taustiņu Enter",
     "clearTitle": "Notīrīt tērzēšanu",
-    "zoom": "Tālummaiņa"
+    "zoom": "Tālummaiņa",
+    "translatedSuffix": "→"
   },
   "gallery": {
     "skins": "Ādas"
@@ -85,7 +86,8 @@
     "lockMobileButtons": "Bloķēt mobilās pogas",
     "resetButtonPositions": "Atiestatīt mobilo sakaru pogu pozīcijas",
     "useWordFilters": "Vārdi cenzūra",
-    "autoRespawn": "Pārslēgt AutoRespawn"
+    "autoRespawn": "Pārslēgt AutoRespawn",
+    "translateChat": "Tulkot tērzēšanu (beta)"
   },
   "colors": {
     "background": "Fons",

@@ -8,7 +8,8 @@
     "clan": "Klan",
     "placeholder": "Tryk på enter for at chatte",
     "clearTitle": "Ryd chat",
-    "zoom": "Zoom"
+    "zoom": "Zoom",
+    "translatedSuffix": "→"
   },
   "gallery": {
     "skins": "Skind"
@@ -85,7 +86,8 @@
     "lockMobileButtons": "Lås mobilknapper",
     "resetButtonPositions": "Nulstil mobilknappernes positioner",
     "useWordFilters": "Ord Censur",
-    "autoRespawn": "Slå AutoRespawn til/fra"
+    "autoRespawn": "Slå AutoRespawn til/fra",
+    "translateChat": "Oversæt chat (beta)"
   },
   "colors": {
     "background": "Baggrund",

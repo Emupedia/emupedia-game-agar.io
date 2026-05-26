@@ -8,7 +8,8 @@
     "clan": "Clan",
     "placeholder": "Press enter to chat",
     "clearTitle": "Clear chat",
-    "zoom": "Zoom"
+    "zoom": "Zoom",
+    "translatedSuffix": " → "
   },
   "gallery": {
     "skins": "Skins"
@@ -67,6 +68,7 @@
     "fillSkin": "Cell Color Under Skin",
     "showTransparent": "Cell Transparency",
     "showChat": "Show Chat",
+    "translateChat": "Translate Chat (Beta)",
     "showMinimap": "Show Minimap",
     "showPosition": "Show Position",
     "showBorder": "Show Map Border",

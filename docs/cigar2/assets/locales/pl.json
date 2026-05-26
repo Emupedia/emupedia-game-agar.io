@@ -8,7 +8,8 @@
     "clan": "Klan",
     "placeholder": "Naciśnij Enter, aby porozmawiać",
     "clearTitle": "Wyczyść czat",
-    "zoom": "Brzęczenie"
+    "zoom": "Brzęczenie",
+    "translatedSuffix": "→"
   },
   "gallery": {
     "skins": "Skórki"
@@ -85,7 +86,8 @@
     "lockMobileButtons": "Zablokuj przyciski mobilne",
     "resetButtonPositions": "Zresetuj pozycje przycisków telefonu komórkowego",
     "useWordFilters": "Cenzura słów",
-    "autoRespawn": "Przełącz automatyczne odrodzenie"
+    "autoRespawn": "Przełącz automatyczne odrodzenie",
+    "translateChat": "Tłumacz czat (beta)"
   },
   "colors": {
     "background": "Tło",

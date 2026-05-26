@@ -8,7 +8,8 @@
     "clan": "კლანი",
     "placeholder": "დააჭირეთ Enter ჩატისთვის",
     "clearTitle": "ჩატის გასუფთავება",
-    "zoom": "მასშტაბირება"
+    "zoom": "მასშტაბირება",
+    "translatedSuffix": "→"
   },
   "gallery": {
     "skins": "ტყავი"
@@ -85,7 +86,8 @@
     "lockMobileButtons": "მობილური ღილაკების ჩაკეტვა",
     "resetButtonPositions": "მობილური ღილაკების პოზიციების გადატვირთვა",
     "useWordFilters": "სიტყვების ცენზურა",
-    "autoRespawn": "AutoRespawn-ის გადართვა"
+    "autoRespawn": "AutoRespawn-ის გადართვა",
+    "translateChat": "თარგმნეთ ჩატი (ბეტა)"
   },
   "colors": {
     "background": "ფონი",

@@ -8,7 +8,8 @@
     "clan": "Klaani",
     "placeholder": "Paina enteriä keskustellaksesi",
     "clearTitle": "Tyhjennä chat",
-    "zoom": "Zoomaa"
+    "zoom": "Zoomaa",
+    "translatedSuffix": "→"
   },
   "gallery": {
     "skins": "Skinit"
@@ -85,7 +86,8 @@
     "lockMobileButtons": "Lukitse mobiilipainikkeet",
     "resetButtonPositions": "Palauta mobiilipainikkeiden paikat",
     "useWordFilters": "Sanat sensuuri",
-    "autoRespawn": "Ota AutoRespawn käyttöön"
+    "autoRespawn": "Ota AutoRespawn käyttöön",
+    "translateChat": "Käännä Chat (beta)"
   },
   "colors": {
     "background": "Tausta",

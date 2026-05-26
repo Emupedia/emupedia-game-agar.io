@@ -8,7 +8,8 @@
     "clan": "Φυλή",
     "placeholder": "Πατήστε enter για συνομιλία",
     "clearTitle": "Εκκαθάριση συνομιλίας",
-    "zoom": "Ανίπταμαι διαγωνίως"
+    "zoom": "Ανίπταμαι διαγωνίως",
+    "translatedSuffix": "→"
   },
   "gallery": {
     "skins": "Δέρματα"
@@ -85,7 +86,8 @@
     "lockMobileButtons": "Κλείδωμα κουμπιά κινητού",
     "resetButtonPositions": "Επαναφορά θέσεων κουμπιών κινητού",
     "useWordFilters": "Λογοκρισία",
-    "autoRespawn": "Εναλλαγή AutoRespawn"
+    "autoRespawn": "Εναλλαγή AutoRespawn",
+    "translateChat": "Μετάφραση συνομιλίας (Beta)"
   },
   "colors": {
     "background": "Φόντο",

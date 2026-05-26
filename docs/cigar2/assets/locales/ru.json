@@ -8,7 +8,8 @@
     "clan": "Клан",
     "placeholder": "Нажмите Enter, чтобы начать чат",
     "clearTitle": "Очистить чат",
-    "zoom": "Увеличить"
+    "zoom": "Увеличить",
+    "translatedSuffix": "→"
   },
   "gallery": {
     "skins": "Скины"
@@ -85,7 +86,8 @@
     "lockMobileButtons": "Блокировка мобильных кнопок",
     "resetButtonPositions": "Сбросить расположение мобильных кнопок",
     "useWordFilters": "Цензура слов",
-    "autoRespawn": "Переключить автовозрождение"
+    "autoRespawn": "Переключить автовозрождение",
+    "translateChat": "Перевести чат (бета)"
   },
   "colors": {
     "background": "Фон",

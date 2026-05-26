@@ -8,7 +8,8 @@
     "clan": "Klan",
     "placeholder": "Trykk enter for å chatte",
     "clearTitle": "Tøm chat",
-    "zoom": "Zoom"
+    "zoom": "Zoom",
+    "translatedSuffix": "→"
   },
   "gallery": {
     "skins": "Skinn"
@@ -85,7 +86,8 @@
     "lockMobileButtons": "Lås mobilknapper",
     "resetButtonPositions": "Tilbakestill mobilknappposisjoner",
     "useWordFilters": "Ordsensur",
-    "autoRespawn": "Slå av/på AutoRespawn"
+    "autoRespawn": "Slå av/på AutoRespawn",
+    "translateChat": "Oversett chat (beta)"
   },
   "colors": {
     "background": "Bakgrunn",

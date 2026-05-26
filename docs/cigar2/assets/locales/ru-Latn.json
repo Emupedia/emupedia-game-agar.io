@@ -8,7 +8,8 @@
     "clan": "Klan",
     "placeholder": "Nazhmite Enter, chtoby nachat chat",
     "clearTitle": "Ochistit chat",
-    "zoom": "Uvelichit"
+    "zoom": "Uvelichit",
+    "translatedSuffix": "→"
   },
   "gallery": {
     "skins": "Skiny"
@@ -85,7 +86,8 @@
     "lockMobileButtons": "Blokirovka mobilnykh knopok",
     "resetButtonPositions": "Sbrosit raspolozhenie mobilnykh knopok",
     "useWordFilters": "Tsenzura slov",
-    "autoRespawn": "Pereklyuchit avtovozrozhdenie"
+    "autoRespawn": "Pereklyuchit avtovozrozhdenie",
+    "translateChat": "Перевести чат (бета)"
   },
   "colors": {
     "background": "Fon",

@@ -8,7 +8,8 @@
     "clan": "Clã",
     "placeholder": "Pressione Enter para conversar",
     "clearTitle": "Limpar bate-papo",
-    "zoom": "Zoom"
+    "zoom": "Zoom",
+    "translatedSuffix": "→"
   },
   "gallery": {
     "skins": "Peles"
@@ -85,7 +86,8 @@
     "lockMobileButtons": "Bloquear botões móveis",
     "resetButtonPositions": "Redefinir as posições dos botões móveis",
     "useWordFilters": "Censura de palavras",
-    "autoRespawn": "Alternar AutoRespawn"
+    "autoRespawn": "Alternar AutoRespawn",
+    "translateChat": "Traduzir bate-papo (beta)"
   },
   "colors": {
     "background": "Plano de fundo",

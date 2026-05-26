@@ -8,7 +8,8 @@
     "clan": "Klan",
     "placeholder": "Tryck på enter för att chatta",
     "clearTitle": "Rensa chatten",
-    "zoom": "Zooma"
+    "zoom": "Zooma",
+    "translatedSuffix": "→"
   },
   "gallery": {
     "skins": "Skinn"
@@ -85,7 +86,8 @@
     "lockMobileButtons": "Lås mobilknappar",
     "resetButtonPositions": "Återställ mobilknapparnas positioner",
     "useWordFilters": "Ord Censur",
-    "autoRespawn": "Växla AutoRespawn"
+    "autoRespawn": "Växla AutoRespawn",
+    "translateChat": "Översätt chatt (beta)"
   },
   "colors": {
     "background": "Bakgrund",

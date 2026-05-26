@@ -8,7 +8,8 @@
     "clan": "Клан",
     "placeholder": "Натисніть enter, щоб поспілкуватися",
     "clearTitle": "Очистити чат",
-    "zoom": "Збільшити"
+    "zoom": "Збільшити",
+    "translatedSuffix": "→"
   },
   "gallery": {
     "skins": "Скіни"
@@ -85,7 +86,8 @@
     "lockMobileButtons": "Блокування мобільних кнопок",
     "resetButtonPositions": "Скинути позиції мобільних кнопок",
     "useWordFilters": "Слова Цензура",
-    "autoRespawn": "Перемкнути AutoRespawn"
+    "autoRespawn": "Перемкнути AutoRespawn",
+    "translateChat": "Перекласти чат (бета-версія)"
   },
   "colors": {
     "background": "Фон",
