@@ -423,7 +423,7 @@ label#nick-list:after, label#skin-list:after {
 	top: 1vh;
 }
 
-#playSounds:checked + #soundsVolume {
+#playSounds:checked ~ #soundsVolume {
 	display: inline;
 }
 
@@ -435,7 +435,7 @@ label#nick-list:after, label#skin-list:after {
 	vertical-align: middle;
 }
 
-#showTransparent:checked + #transparentAlpha {
+#showTransparent:checked ~ #transparentAlpha {
 	display: inline;
 }
 
@@ -447,7 +447,7 @@ label#nick-list:after, label#skin-list:after {
 	vertical-align: middle;
 }
 
-#cellAnimationSpeed:checked + #animationSpeed {
+#cellAnimationSpeed:checked ~ #animationSpeed {
 	display: inline;
 }
 
@@ -459,7 +459,7 @@ label#nick-list:after, label#skin-list:after {
 	vertical-align: middle;
 }
 
-#cameraSmoothing:checked + #cameraAnimationSpeed {
+#cameraSmoothing:checked ~ #cameraAnimationSpeed {
 	display: inline;
 }
 
@@ -471,7 +471,7 @@ label#nick-list:after, label#skin-list:after {
 	vertical-align: middle;
 }
 
-#slowMassUpdates:checked + #massUpdateInterval {
+#slowMassUpdates:checked ~ #massUpdateInterval {
 	display: inline;
 }
 
