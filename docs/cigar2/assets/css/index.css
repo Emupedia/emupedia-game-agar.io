@@ -120,12 +120,17 @@ label#nick-list:after, label#skin-list:after {
 	top: 0;
 	bottom: 0;
 	background-color: rgba(0, 0, 0, 0.3);
+	font-size: 14px;
 	opacity: 0;
 	z-index: 200;
 }
 
-#connecting, #upload-skin, #unban {
+#connecting, #upload-skin {
 	z-index: 201;
+}
+
+#unban {
+	z-index: 2147483647;
 }
 
 #connecting-content {
