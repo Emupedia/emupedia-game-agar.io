@@ -112,7 +112,7 @@
     "oldBrowserLink": "Tarayıcınızı daha yeni bir sürüme güncellemek için lütfen burayı tıklayın.",
     "bannedTitle": "Yasaklandın 😭",
     "bannedBody": "Sohbete spam göndererek veya özel kaplamalar yüklerken kuralları ihlal ettiğiniz için oyundan yasaklandınız.",
-    "bannedBodyBots": "Sohbete spam göndererek, özel görünümler yüklerken veya bot kullandığınız için kuralları ihlal ettiğiniz için oyundan yasaklandınız.",
+    "bannedBodyBots": "Bot veya özel komut dosyaları kullanarak kuralları ihlal ettiğiniz için oyundan yasaklandınız.",
     "unbanCode": "Yasağı kaldırma kodunuz:"
   },
   "errors": {

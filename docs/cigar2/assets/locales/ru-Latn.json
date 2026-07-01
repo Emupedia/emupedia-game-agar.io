@@ -112,7 +112,7 @@
     "oldBrowserLink": "Pozhaluysta, nazhmite zdes, chtoby obnovit brauzer do bolee novoy versii.",
     "bannedTitle": "Vas zabanili 😭",
     "bannedBody": "Vas zabanili v igre, potomu chto vy narushili pravila, rassylaya spam v chat ili zagruzhaya sobstvennye skiny.",
-    "bannedBodyBots": "Vas zabanili v igre, potomu chto vy narushili pravila, libo rassylaya spam v chat, libo zagruzhaya sobstvennye skiny, libo potomu, chto vy ispolzuete botov.",
+    "bannedBodyBots": "Вас забанили в игре, потому что вы нарушили правила, используя ботов или собственные скрипты.",
     "unbanCode": "Vash kod razbana"
   },
   "errors": {

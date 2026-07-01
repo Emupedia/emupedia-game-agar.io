@@ -112,7 +112,7 @@
     "oldBrowserLink": "Fai clic qui per aggiornare il tuo browser a una versione più recente.",
     "bannedTitle": "Sei bannato 😭",
     "bannedBody": "Sei stato bannato dal gioco perché hai infranto le regole inviando spam alla chat o caricando skin personalizzate.",
-    "bannedBodyBots": "Sei stato bannato dal gioco perché hai infranto le regole inviando spam alla chat o caricando skin personalizzate o perché stai utilizzando bot.",
+    "bannedBodyBots": "Sei stato bandito dal gioco perché hai infranto le regole utilizzando bot o script personalizzati.",
     "unbanCode": "Il tuo codice di sblocco è"
   },
   "errors": {

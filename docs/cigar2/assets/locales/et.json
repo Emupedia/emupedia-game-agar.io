@@ -112,7 +112,7 @@
     "oldBrowserLink": "Palun klõpsake siin, et värskendada oma brauseri uuemale versioonile.",
     "bannedTitle": "Oled keelatud 😭",
     "bannedBody": "Olete mängust keelatud, kuna rikkusite reegleid kas vestluses rämpsposti saatmise või kohandatud skinnide üleslaadimise ajal.",
-    "bannedBodyBots": "Teid keelatakse mängust, kuna rikkusite reegleid kas vestluses rämpsposti saatmise või kohandatud skinnide üleslaadimise ajal või seetõttu, et kasutate roboteid.",
+    "bannedBodyBots": "Sa oled mängust keelatud, kuna rikkusid reegleid kasutades roboteid või kohandatud skripte.",
     "unbanCode": "Teie blokeerimise tühistamise kood on"
   },
   "errors": {

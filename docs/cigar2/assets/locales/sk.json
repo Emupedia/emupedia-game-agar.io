@@ -112,7 +112,7 @@
     "oldBrowserLink": "Ak chcete aktualizovať svoj prehliadač na novšiu verziu, kliknite sem.",
     "bannedTitle": "Máš zákaz 😭",
     "bannedBody": "Máte zakázaný vstup do hry, pretože ste porušili pravidlá buď spamovaním chatu alebo pri nahrávaní vlastných vzhľadov.",
-    "bannedBodyBots": "Máte zakázaný vstup do hry, pretože ste porušili pravidlá buď spamovaním chatu alebo pri nahrávaní vlastných vzhľadov, alebo preto, že používate roboty.",
+    "bannedBodyBots": "Máte zakázaný vstup do hry, pretože ste porušili pravidlá používaním robotov alebo vlastných skriptov.",
     "unbanCode": "Váš odblokovací kód je"
   },
   "errors": {

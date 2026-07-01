@@ -112,7 +112,7 @@
     "oldBrowserLink": "Kattintson ide, hogy frissítse böngészőjét egy újabb verzióra.",
     "bannedTitle": "Ki vagy tiltva 😭",
     "bannedBody": "Ki lettél tiltva a játékból, mert megszegted a szabályokat a chat spam küldésével vagy egyéni skinek feltöltésével.",
-    "bannedBodyBots": "Ki lettél tiltva a játékból, mert megsérted a szabályokat a chat spam küldésével vagy egyéni skinek feltöltése közben, vagy mert botokat használsz.",
+    "bannedBodyBots": "Ki lettél tiltva a játékból, mert megszegted a szabályokat botokkal vagy egyedi szkriptekkel.",
     "unbanCode": "A letiltási kódod az"
   },
   "errors": {

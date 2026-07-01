@@ -112,7 +112,7 @@
     "oldBrowserLink": "Please click here to update your Browser to a newer version.",
     "bannedTitle": "You are banned 😭",
     "bannedBody": "You are banned from the game because you broke the rules either spamming the chat or while uploading custom skins.",
-    "bannedBodyBots": "You are banned from the game because you broke the rules either spamming the chat or while uploading custom skins or because you are using bots.",
+    "bannedBodyBots": "You are banned from the game because you broke the rules by using bots or custom scripts.",
     "unbanCode": "Your unban code is"
   },
   "errors": {

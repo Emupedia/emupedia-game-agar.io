@@ -112,7 +112,7 @@
     "oldBrowserLink": "Veuillez cliquer ici pour mettre à jour votre navigateur vers une version plus récente.",
     "bannedTitle": "Vous êtes banni 😭",
     "bannedBody": "Vous êtes banni du jeu parce que vous avez enfreint les règles, soit en spammant le chat, soit en téléchargeant des skins personnalisés.",
-    "bannedBodyBots": "Vous êtes banni du jeu parce que vous avez enfreint les règles, soit en spammant le chat, soit en téléchargeant des skins personnalisés, soit parce que vous utilisez des robots.",
+    "bannedBodyBots": "Vous êtes banni du jeu parce que vous avez enfreint les règles en utilisant des robots ou des scripts personnalisés.",
     "unbanCode": "Votre code de débannissement est"
   },
   "errors": {

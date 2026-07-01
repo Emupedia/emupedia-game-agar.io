@@ -112,7 +112,7 @@
     "oldBrowserLink": "Klicka här för att uppdatera din webbläsare till en nyare version.",
     "bannedTitle": "Du är bannad 😭",
     "bannedBody": "Du är avstängd från spelet eftersom du bröt mot reglerna, antingen genom att spamma chatten eller när du laddade upp anpassade skal.",
-    "bannedBodyBots": "Du är avstängd från spelet för att du bröt mot reglerna, antingen för att spamma chatten eller när du laddade upp anpassade skins eller för att du använder bots.",
+    "bannedBodyBots": "Du är avstängd från spelet eftersom du bröt mot reglerna genom att använda bots eller anpassade skript.",
     "unbanCode": "Din unban-kod är"
   },
   "errors": {

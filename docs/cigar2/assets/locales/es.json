@@ -112,7 +112,7 @@
     "oldBrowserLink": "Haga clic aquí para actualizar su navegador a una versión más reciente.",
     "bannedTitle": "Estás prohibido 😭",
     "bannedBody": "Estás excluido del juego porque infringiste las reglas, ya sea enviando spam al chat o al cargar máscaras personalizadas.",
-    "bannedBodyBots": "Estás excluido del juego porque infringiste las reglas, ya sea enviando spam al chat o al cargar máscaras personalizadas o porque estás usando bots.",
+    "bannedBodyBots": "Estás excluido del juego porque infringiste las reglas al utilizar bots o scripts personalizados.",
     "unbanCode": "Tu código de desbaneo es"
   },
   "errors": {

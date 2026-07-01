@@ -112,7 +112,7 @@
     "oldBrowserLink": "Klikk her for å oppdatere nettleseren til en nyere versjon.",
     "bannedTitle": "Du er utestengt 😭",
     "bannedBody": "Du er utestengt fra spillet fordi du brøt reglene enten ved å spamme chatten eller mens du lastet opp egendefinerte skins.",
-    "bannedBodyBots": "Du blir utestengt fra spillet fordi du brøt reglene enten ved å spamme chatten eller mens du lastet opp tilpassede skins eller fordi du bruker bots.",
+    "bannedBodyBots": "Du er utestengt fra spillet fordi du brøt reglene ved å bruke bots eller tilpassede skript.",
     "unbanCode": "Opphevelseskoden din er"
   },
   "errors": {

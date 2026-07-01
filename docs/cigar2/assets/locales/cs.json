@@ -112,7 +112,7 @@
     "oldBrowserLink": "Kliknutím sem aktualizujte svůj prohlížeč na novější verzi.",
     "bannedTitle": "Máš zákaz 😭",
     "bannedBody": "Jste vyloučeni ze hry, protože jste porušili pravidla buď spamováním chatu nebo při nahrávání vlastních vzhledů.",
-    "bannedBodyBots": "Jste vyloučeni ze hry, protože jste porušili pravidla buď spamováním chatu nebo při nahrávání vlastních vzhledů nebo proto, že používáte roboty.",
+    "bannedBodyBots": "Jste vyloučeni ze hry, protože jste porušili pravidla používáním robotů nebo vlastních skriptů.",
     "unbanCode": "Váš odblokovací kód je"
   },
   "errors": {

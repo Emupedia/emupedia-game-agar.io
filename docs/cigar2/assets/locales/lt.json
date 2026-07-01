@@ -112,7 +112,7 @@
     "oldBrowserLink": "Spustelėkite čia, jei norite atnaujinti savo naršyklę į naujesnę versiją.",
     "bannedTitle": "Esate užblokuotas 😭",
     "bannedBody": "Jums uždrausta dalyvauti žaidime, nes pažeidėte taisykles siųsdami šlamštą pokalbyje arba įkeldami pasirinktinius apvalkalus.",
-    "bannedBodyBots": "Jums uždrausta dalyvauti žaidime, nes pažeidėte taisykles siųsdami šlamštą pokalbyje arba įkeldami pasirinktinius apvalkalus, arba dėl to, kad naudojate robotus.",
+    "bannedBodyBots": "Jūs esate uždraustas dalyvauti žaidime, nes pažeidėte taisykles naudodami robotus arba pasirinktinius scenarijus.",
     "unbanCode": "Jūsų panaikinimo kodas yra"
   },
   "errors": {

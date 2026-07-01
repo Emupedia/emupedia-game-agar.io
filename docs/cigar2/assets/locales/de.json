@@ -112,7 +112,7 @@
     "oldBrowserLink": "Bitte klicken Sie hier, um Ihren Browser auf eine neuere Version zu aktualisieren.",
     "bannedTitle": "Du bist gesperrt 😭",
     "bannedBody": "Sie werden vom Spiel ausgeschlossen, weil Sie gegen die Regeln verstoßen haben, indem Sie entweder den Chat gespammt oder benutzerdefinierte Skins hochgeladen haben.",
-    "bannedBodyBots": "Sie werden vom Spiel ausgeschlossen, weil Sie gegen die Regeln verstoßen haben, indem Sie entweder den Chat gespammt oder benutzerdefinierte Skins hochgeladen haben, oder weil Sie Bots verwenden.",
+    "bannedBodyBots": "Sie werden vom Spiel ausgeschlossen, weil Sie durch die Verwendung von Bots oder benutzerdefinierten Skripten gegen die Regeln verstoßen haben.",
     "unbanCode": "Ihr Unban-Code lautet"
   },
   "errors": {

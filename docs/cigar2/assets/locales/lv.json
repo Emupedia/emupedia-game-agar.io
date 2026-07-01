@@ -112,7 +112,7 @@
     "oldBrowserLink": "Lūdzu, noklikšķiniet šeit, lai atjauninātu savu pārlūkprogrammu uz jaunāku versiju.",
     "bannedTitle": "Jūs esat aizliegts 😭",
     "bannedBody": "Jūs esat bloķēts no spēles, jo esat pārkāpis noteikumus, sūtot surogātpastu vai augšupielādējot pielāgotas ādas.",
-    "bannedBodyBots": "Jūs esat bloķēts no spēles, jo esat pārkāpis noteikumus, sūtot surogātpastu vai augšupielādējot pielāgotus apvalkus, vai arī tāpēc, ka izmantojat robotprogrammatūras.",
+    "bannedBodyBots": "Jūs esat bloķēts no spēles, jo esat pārkāpis noteikumus, izmantojot robotprogrammatūras vai pielāgotus skriptus.",
     "unbanCode": "Jūsu atbloķēšanas kods ir"
   },
   "errors": {

@@ -112,7 +112,7 @@
     "oldBrowserLink": "Kliknij tutaj, aby zaktualizować przeglądarkę do nowszej wersji.",
     "bannedTitle": "Masz zakaz 😭",
     "bannedBody": "Zostałeś zablokowany w grze, ponieważ złamałeś zasady, spamując na czacie lub przesyłając niestandardowe skórki.",
-    "bannedBodyBots": "Zostałeś zablokowany w grze, ponieważ złamałeś zasady, spamując czat, przesyłając niestandardowe skórki, lub ponieważ korzystasz z botów.",
+    "bannedBodyBots": "Zostałeś zablokowany w grze, ponieważ złamałeś zasady, używając botów lub niestandardowych skryptów.",
     "unbanCode": "Twój kod do odblokowania to"
   },
   "errors": {

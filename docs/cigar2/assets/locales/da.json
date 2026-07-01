@@ -112,7 +112,7 @@
     "oldBrowserLink": "Klik venligst her for at opdatere din browser til en nyere version.",
     "bannedTitle": "Du er bandlyst 😭",
     "bannedBody": "Du er udelukket fra spillet, fordi du brød reglerne enten ved at spamme chatten eller mens du uploadede tilpassede skins.",
-    "bannedBodyBots": "Du er udelukket fra spillet, fordi du brød reglerne, enten spamming af chatten eller mens du uploadede tilpassede skins, eller fordi du bruger bots.",
+    "bannedBodyBots": "Du er udelukket fra spillet, fordi du brød reglerne ved at bruge bots eller brugerdefinerede scripts.",
     "unbanCode": "Din unban kode er"
   },
   "errors": {

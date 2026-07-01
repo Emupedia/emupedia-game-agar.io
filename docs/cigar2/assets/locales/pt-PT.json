@@ -112,7 +112,7 @@
     "oldBrowserLink": "Clique aqui para atualizar seu navegador para uma versão mais recente.",
     "bannedTitle": "Você está banido 😭",
     "bannedBody": "Você foi banido do jogo porque violou as regras ao enviar spam no bate-papo ou ao enviar skins personalizadas.",
-    "bannedBodyBots": "Você foi banido do jogo porque violou as regras, enviando spam no bate-papo ou enviando skins personalizadas ou porque está usando bots.",
+    "bannedBodyBots": "Você foi banido do jogo porque quebrou as regras usando bots ou scripts personalizados.",
     "unbanCode": "Seu código de cancelamento é"
   },
   "errors": {

@@ -112,7 +112,7 @@
     "oldBrowserLink": "Napsauta tätä päivittääksesi selaimesi uudempaan versioon.",
     "bannedTitle": "Olet bannattu 😭",
     "bannedBody": "Sinut on kielletty pelistä, koska rikoit sääntöjä joko lähettäessäsi roskapostia chatissa tai lataaessasi mukautettuja skinejä.",
-    "bannedBodyBots": "Sinut on kielletty pelistä, koska rikoit sääntöjä joko lähettäessäsi roskapostia chatissa tai lataaessasi mukautettuja skinejä tai koska käytät botteja.",
+    "bannedBodyBots": "Sinut on kielletty pelissä, koska rikoit sääntöjä käyttämällä botteja tai mukautettuja skriptejä.",
     "unbanCode": "Unban-koodisi on"
   },
   "errors": {

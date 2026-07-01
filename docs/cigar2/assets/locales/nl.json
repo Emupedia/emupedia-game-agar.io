@@ -112,7 +112,7 @@
     "oldBrowserLink": "Klik hier om uw browser bij te werken naar een nieuwere versie.",
     "bannedTitle": "Je bent verbannen 😭",
     "bannedBody": "Je bent verbannen uit het spel omdat je de regels hebt overtreden door de chat te spammen of tijdens het uploaden van aangepaste skins.",
-    "bannedBodyBots": "Je bent verbannen uit het spel omdat je de regels hebt overtreden door de chat te spammen of tijdens het uploaden van aangepaste skins, of omdat je bots gebruikt.",
+    "bannedBodyBots": "Je bent uitgesloten van het spel omdat je de regels hebt overtreden door bots of aangepaste scripts te gebruiken.",
     "unbanCode": "Uw unban-code is"
   },
   "errors": {

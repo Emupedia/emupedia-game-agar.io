@@ -112,7 +112,7 @@
     "oldBrowserLink": "Kliknite tukaj, če želite posodobiti svoj brskalnik na novejšo različico.",
     "bannedTitle": "Prepovedani ste 😭",
     "bannedBody": "Izključeni ste iz igre, ker ste prekršili pravila bodisi z neželeno pošto v klepetu bodisi med nalaganjem preoblek po meri.",
-    "bannedBodyBots": "Izključeni ste iz igre, ker ste prekršili pravila bodisi s pošiljanjem neželene pošte v klepet ali med nalaganjem preoblek po meri ali ker uporabljate robote.",
+    "bannedBodyBots": "Izključeni ste iz igre, ker ste kršili pravila z uporabo botov ali skriptov po meri.",
     "unbanCode": "Vaša koda za prepoved je"
   },
   "errors": {

@@ -112,7 +112,7 @@
     "oldBrowserLink": "Jekk jogħġbok ikklikkja hawn biex taġġorna l-Browser tiegħek għal verżjoni aktar ġdida.",
     "bannedTitle": "Inti pprojbit 😭",
     "bannedBody": "Inti pprojbit mil-logħba għax kisret ir-regoli jew spammja ċ-chat jew waqt li ttella' ġlud tad-dwana.",
-    "bannedBodyBots": "Inti pprojbit mil-logħba għax kisret ir-regoli jew spammja ċ-chat jew waqt li ttella' ġlud tad-dwana jew għax qed tuża bots.",
+    "bannedBodyBots": "Inti pprojbit mil-logħba għax kisret ir-regoli billi tuża bots jew skripts tad-dwana.",
     "unbanCode": "Il-kodiċi unban tiegħek huwa"
   },
   "errors": {

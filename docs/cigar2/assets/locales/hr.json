@@ -112,7 +112,7 @@
     "oldBrowserLink": "Kliknite ovdje kako biste ažurirali svoj preglednik na noviju verziju.",
     "bannedTitle": "Zabranjeni ste 😭",
     "bannedBody": "Zabranjeni ste iz igre jer ste prekršili pravila bilo slanjem neželjene pošte u chatu ili tijekom učitavanja prilagođenih skinova.",
-    "bannedBodyBots": "Zabranjen si iz igre jer si prekršio pravila bilo slanjem neželjene pošte u chatu ili tijekom učitavanja prilagođenih skinova ili zato što koristiš botove.",
+    "bannedBodyBots": "Zabranjen si iz igre jer si prekršio pravila korištenjem botova ili prilagođenih skripti.",
     "unbanCode": "Vaš kod za zabranu je"
   },
   "errors": {
