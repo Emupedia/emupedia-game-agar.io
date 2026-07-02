@@ -824,7 +824,7 @@
   var QKEY_UP_OP = 19;
   var ENABLE_SECOND_SOCKET = true;
   var RELAY_URL = "";
-  var WS2_URL = `wss://agar.${location.host}/ws2/`;
+  var WS2_URL = `wss://agar.emupedia.net/ws2/`;
   var PROTOCOL_VERSION = 6;
   var HANDSHAKE_KEY = 1;
   var SHARE_SKINS_VIA_CHAT = false;
@@ -1509,7 +1509,7 @@
     }
   };
 
-  // src/Camera.ts
+  // src/camera.ts
   function clampScale(scale) {
     if (scale < 0.04) return 0.04;
     if (scale > 2) return 2;

@@ -1,4 +1,4 @@
-import { Camera } from "./Camera";
+import { Camera } from "./camera";
 import type { Border } from "./protocol";
 import { currentProfile, settings } from "./settings";
 import type { RNode, World } from "./world";
