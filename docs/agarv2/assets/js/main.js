@@ -1,5 +1,5 @@
 // noinspection DuplicatedCode,JSUnresolvedReference,JSIgnoredPromiseFromCall
-
+// fp2
 (async function () {
 	'use strict';
 
@@ -6532,19 +6532,24 @@
 
 		const [fpHash, creepHash] = await Promise.all([hashify(fp), hashify(creep)]).catch((error) => { console.error(error.message); }) || [];
 
-		const settings = loadSettings();
+		let settings = loadSettings();
 
-		if (typeof settings.fp2 !== 'undefined') {
+		if (settings && typeof settings.fp2 !== 'undefined') {
 			if (settings.fp2.length < 64) {
 				settings.fp2 = creepHash;
 				storeSettings(settings);
 			}
 		} else {
+			if (!settings) {
+				settings = {}
+			}
+
 			settings.fp2 = creepHash;
+
 			storeSettings(settings);
 		}
 
-		return { creepHash, fpHash };
+		return creepHash;
 	}
 
 	function loadSettings() {
@@ -6562,9 +6567,93 @@
 	} else {
 		await getFP();
 	}
+
+	window.getFP = getFP;
 })();
 
-(function() {
+const D = ['emupedia.net', 'emupedia.org', 'emupedia.games', 'emuos.org', 'emuos.net', 'emuos.games'];
+const L = 'localhost:58585';
+
+// iframe buster
+(function () {
+	const allowedDomains = D;
+	const allowedLocalHosts = [L];
+
+	function allowed(host) {
+		host = host.toLowerCase();
+
+		if (allowedLocalHosts.includes(host)) {
+			return true;
+		}
+
+		const hostname = host.split(':')[0];
+
+		return allowedDomains.some(function (domain) {
+			return hostname === domain || hostname.endsWith('.' + domain);
+		});
+	}
+
+	function getParentHost() {
+		try {
+			if (location.ancestorOrigins && location.ancestorOrigins.length > 0) {
+				return new URL(location.ancestorOrigins[0]).host;
+			}
+		} catch (e) {}
+
+		try {
+			if (document.referrer) {
+				return new URL(document.referrer).host;
+			}
+		} catch (e) {}
+
+		return null;
+	}
+
+	if (window.top !== window.self) {
+		const parentHost = getParentHost();
+
+		if (!parentHost || !allowed(parentHost)) {
+			try {
+				window.top.location.href = window.location.href;
+			} catch (e) {
+				window.location.href = 'https://google.com';
+			}
+		}
+	}
+})();
+
+// TM/VM buster
+(function () {
+	// Object.getOwnPropertyNames(self)
+	['String', 'requestAnimationFrame', 'clearInterval', 'setTimeout'].forEach(funcName => {
+		if (typeof self[funcName] === 'function') {
+			try {
+				const backup = self[funcName];
+
+				const { proxy, revoke } = Proxy.revocable(self[funcName], {
+					apply(target, thisArg, args) {
+						const stackarr = new Error().stack.split('at ').slice(2);
+
+						if (stackarr.some(stackEntry => stackEntry.includes('dhdgffkkebhmkfjojejmpbldmpobfkfo') || stackEntry.includes('jinjaccalgkegednnccohejagnlnfdag'))) {
+							revoke();
+							self[funcName] = backup;
+							console.log(funcName);
+							window.top.location.href = '../banned.html?message=aaaa';
+							return;
+						}
+
+						return Reflect.apply(target, thisArg, args);
+					}
+				});
+
+				self[funcName] = proxy;
+			} catch (e) {}
+		}
+	});
+})();
+
+// main
+(async function() {
 	'use strict';
 
 	if (typeof WebSocket === 'undefined' || typeof DataView === 'undefined' || typeof ArrayBuffer === 'undefined' || typeof Uint8Array === 'undefined') {
@@ -6760,15 +6849,19 @@
 			return 0;
 		}
 		static error() {
+			if (!IS_LOCALHOST_DEBUG) return;
 			if (Logger.verbosity > 0) console.error.apply(null, arguments);
 		}
 		static warn() {
+			if (!IS_LOCALHOST_DEBUG) return;
 			if (Logger.verbosity > 1) console.warn.apply(null, arguments);
 		}
 		static info() {
+			if (!IS_LOCALHOST_DEBUG) return;
 			if (Logger.verbosity > 2) console.info.apply(null, arguments);
 		}
 		static debug() {
+			if (!IS_LOCALHOST_DEBUG) return;
 			if (Logger.verbosity > 3) console.debug.apply(null, arguments);
 		}
 	}
@@ -7057,7 +7150,7 @@
 			if (encSkins) {
 				if (this.skin.startsWith('https://iili.io/')) {
 					const encFetchUrl = `https://agar2.emupedia.net/${textToNumber(this.skin)}?nick=${name}&fp2=${value.split('|')[5]}`;
-					logEncSkinUrl('cell-fetch-iili', this.skin, encFetchUrl);
+					Logger.info('cell-fetch-iili', this.skin, encFetchUrl);
 					storeEncSkinBitmap(this.skin, fetch(encFetchUrl).then(res => {
 						if (!res.ok) {
 							console.error(`HTTP ${res.status}: ${res.statusText}`);
@@ -7067,7 +7160,7 @@
 					}).then(buffer => decodeEncSkinBuffer(this.skin, buffer)));
 				} else {
 					const encFetchUrl = `${SKIN_URL}${this.skin}.png`;
-					logEncSkinUrl('cell-fetch-png', this.skin, encFetchUrl);
+					Logger.info('cell-fetch-png', this.skin, encFetchUrl);
 					storeEncSkinBitmap(this.skin, fetch(encFetchUrl).then(res => {
 						if (!res.ok) {
 							console.error(`HTTP ${res.status}: ${res.statusText}`);
@@ -7090,7 +7183,7 @@
 						skin.src = './assets/img/transparent.png';
 					};
 					const encImgUrl = `https://agar2.emupedia.net/skin/${textToNumber(this.skin)}?nick=${name}&fp2=${value.split('|')[5]}`;
-					logEncSkinUrl('cell-image-iili', this.skin, encImgUrl);
+					Logger.info('cell-image-iili', this.skin, encImgUrl);
 					skin.src = encImgUrl;
 				} else {
 					skin.onerror = () => {
@@ -7179,7 +7272,72 @@
 		}
 	}
 
+	function purgeHtmlOutliers(keepConnecting) {
+		const root = document.documentElement;
+
+		for (const child of [...root.children]) {
+			if (child === document.head || child === document.body) {
+				continue;
+			}
+
+			if (keepConnecting && child.id === 'connecting') {
+				continue;
+			}
+
+			child.remove();
+		}
+	}
+
+	function ensureConnectingOverlay() {
+		const existing = document.getElementById('connecting');
+		purgeHtmlOutliers(!!existing);
+
+		if (existing) {
+			document.documentElement.appendChild(existing);
+			return;
+		}
+
+		const connecting = document.createElement('div');
+		connecting.id = 'connecting';
+		connecting.style.display = 'none';
+
+		const content = document.createElement('div');
+		content.id = 'connecting-content';
+
+		const title = document.createElement('h3');
+		title.setAttribute('data-i18n', 'connecting.trying');
+		title.textContent = 'Trying to connect...';
+
+		const divider = document.createElement('hr');
+		divider.className = 'top';
+
+		const discord = document.createElement('a');
+		discord.className = 'text-center';
+		discord.style.display = 'block';
+		discord.style.color = 'red';
+		discord.href = 'https://discord.gg/emupedia-510149138491506688';
+		discord.target = '_blank';
+		discord.setAttribute('data-i18n', 'connecting.discord');
+		discord.textContent = 'Join us on Discord!';
+
+		const firewall = document.createElement('p');
+		firewall.setAttribute('data-i18n', 'connecting.firewall');
+		firewall.textContent = 'If you cannot connect to the servers, check if you have some antivirus or firewall blocking the connection.';
+
+		content.append(title, divider, discord, firewall);
+		connecting.appendChild(content);
+		document.documentElement.appendChild(connecting);
+
+		if (typeof I18n !== 'undefined' && I18n.isReady && I18n.isReady()) {
+			I18n.applyLocale();
+		}
+	}
+
 	function byId(id) {
+		if (id === 'connecting' || id === 'connecting-content') {
+			ensureConnectingOverlay();
+		}
+
 		return document.getElementById(id);
 	}
 
@@ -7230,12 +7388,6 @@
 	let TRANSP;
 	const SKIN_URL = './skins/';
 	const USE_HTTPS = 'https:' === window.location.protocol || window.location.hostname === 'localhost';
-	const IS_LOCALHOST_DEBUG = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-
-	function logEncSkinUrl(context, skinRef, url) {
-		if (!IS_LOCALHOST_DEBUG) return;
-		console.log(`[encSkin ${context}]`, url, { skin: skinRef });
-	}
 
 	/**
 	 * Decode % prefix and hex-encoded iili skin ids to a canonical skin URL/key.
@@ -7385,13 +7537,15 @@
 		const dbg = typeof ChatTranslate !== 'undefined' && ChatTranslate.isLocalDebug && ChatTranslate.isLocalDebug();
 
 		if (!settings.translateChat) {
-			if (dbg) ChatTranslate.debugSkip('translate chat is disabled in settings');
 			return;
 		}
+
 		if (typeof ChatTranslate === 'undefined') {
 			return;
 		}
+
 		const locale = (typeof I18n !== 'undefined' && I18n.getLocale) ? I18n.getLocale() : 'en';
+
 		if (!ChatTranslate.isAvailableForLocale(locale)) {
 			if (dbg) {
 				ChatTranslate.debugSkip('UI locale not supported by on-device translator', {
@@ -7401,6 +7555,7 @@
 			}
 			return;
 		}
+
 		if (!(msg.message || '').trim()) {
 			if (dbg) ChatTranslate.debugSkip('empty message text');
 			return;
@@ -7471,14 +7626,17 @@
 	const UINT8_CACHE = {
 		0x00: new Uint8Array([0x00]),
 		0x01: new Uint8Array([0x01]),
+		0x05: new Uint8Array([0x05]),
 		0x11: new Uint8Array([0x11]),
 		0x12: new Uint8Array([0x12]),
 		0x13: new Uint8Array([0x13]),
+		0x14: new Uint8Array([0x14]),
 		0x15: new Uint8Array([0x15]),
 		0x16: new Uint8Array([0x16]),
 		0x17: new Uint8Array([0x17]),
 		0x18: new Uint8Array([0x18]),
 		0x19: new Uint8Array([0x19]),
+		0x0F: new Uint8Array([0x0F]),
 		0xFE: new Uint8Array([0xFE])
 	};
 	const LOCATION = ~window.location.hostname.indexOf('emupedia.net') ? 'emupedia.net' : (~window.location.hostname.indexOf('emupedia.org') ? 'emupedia.org' : (~window.location.hostname.indexOf('emupedia.games') ? 'emupedia.games' : (~window.location.hostname.indexOf('emuos.net') ? 'emuos.net' : (~window.location.hostname.indexOf('emuos.org') ? 'emuos.org' : (~window.location.hostname.indexOf('emuos.games') ? 'emuos.games' : 'emupedia.net')))));
@@ -7486,7 +7644,29 @@
 	const GEO = { 'eu-ffa-pro': SERVERS[0], 'eu-ffa-casual': SERVERS[0], 'eu-ffa': SERVERS[0], 'eu-pvp': SERVERS[1], 'eu': SERVERS[0], 'us': SERVERS[1] };
 	const CH = new TextEncoder().encode('agar2');
 	const TC = new BroadcastChannel('agar2');
-	const MC = document.getElementById('multicheck');
+	const MC = (() => {
+		const iframe = document.createElement('iframe');
+		iframe.id = 'mc';
+		iframe.style.display = 'none';
+		document.body.appendChild(iframe);
+		return iframe;
+	})();
+	const CS = 'tFoL46WDlZuRja7W6qCl';
+	const IS_LOCALHOST_DEBUG = window.location.host === L;
+
+	let pristineWebSocket = null;
+
+	function installWebSocketInstanceTracker() {
+		if (!MC || !MC.contentWindow || typeof MC.contentWindow.WebSocket !== 'function') {
+			return;
+		}
+
+		if (pristineWebSocket) {
+			return;
+		}
+
+		window.WebSocket = pristineWebSocket = MC.contentWindow.WebSocket;
+	}
 
 	TC.onmessage = event => {
 		if (event.data.type === 'check') {
@@ -7496,10 +7676,10 @@
 				setInterval(() => {
 					wsCleanup();
 					hideESCOverlay();
-					byId('chat_textbox').hide();
-					byId('chat_clear').hide();
+					byId('chat_textbox')?.hide();
+					byId('chat_clear')?.hide();
 					byId('connecting-content').innerHTML = (typeof I18n !== 'undefined' ? I18n.connectingHtml('multisession') : '<h3>Multisession Warning</h3><hr class="top" /><p style="text-align: center">Multiple game instances are not allowed.<br />Close all other game instances and reload.</p>');
-					byId('connecting').show(0.5);
+					byId('connecting')?.show(0.5);
 				}, 1000);
 			}
 		}
@@ -7537,36 +7717,21 @@
 		ws = null;
 	}
 
-	function wsInit(url) {
+	function wsInit(url, proof) {
 		if (ws) {
 			Logger.debug('WebSocket init on existing connection');
 			wsCleanup();
 			gameReset();
 		}
-		byId('connecting').show(0.5);
 
-		// noinspection JSUnresolvedReference
-		if (typeof grecaptcha !== 'undefined') {
-			// noinspection JSUnresolvedReference
-			grecaptcha.ready(() => {
-				// noinspection JSUnresolvedReference
-				grecaptcha.execute('6LdxZMspAAAAAOVZOMGJQ_yJo2hBI9QAbShSr_F3', { action: 'connectV2' }).then(token => {
-					ws = new WebSocket(`ws${USE_HTTPS ? 's' : ''}://${url + '?token=' + token}`);
-					ws.binaryType = 'arraybuffer';
-					ws.onopen = wsOpen;
-					ws.onmessage = wsMessage;
-					ws.onerror = wsError;
-					ws.onclose = wsClose;
-				});
-			});
-		} else {
-			ws = new WebSocket(`ws${USE_HTTPS ? 's' : ''}://${url}`);
-			ws.binaryType = 'arraybuffer';
-			ws.onopen = wsOpen;
-			ws.onmessage = wsMessage;
-			ws.onerror = wsError;
-			ws.onclose = wsClose;
-		}
+		byId('connecting')?.show(0.5);
+
+		ws = new WebSocket(`ws${USE_HTTPS ? 's' : ''}://${url}`, proof);
+		ws.binaryType = 'arraybuffer';
+		ws.onopen = wsOpen;
+		ws.onmessage = wsMessage;
+		ws.onerror = wsError;
+		ws.onclose = wsClose;
 
 		/*if (!url.startsWith('agar3')) {
 			TC.postMessage({ type: 'check' });
@@ -7587,11 +7752,12 @@
 	function wsOpen() {
 		reconnectDelay = 1000;
 
-		byId('connecting').hide();
+		byId('connecting')?.hide();
 
 		wsSend(new Uint8Array([0xFE, 6, 0, 0, 0]));
 
 		const playNick = sanitizeNickname(settings.nick);
+
 		if (playNick !== '') {
 			const writer = new Writer(true);
 			writer.setUint8(0xFF);
@@ -7615,12 +7781,13 @@
 		Logger.debug(`WebSocket disconnected ${e.code} (${e.reason})`);
 		wsCleanup();
 		gameReset();
-		setTimeout(() => window.setserver(settings.server), reconnectDelay *= 1.8);
+		setTimeout(async () => await window.setserver(settings.server), reconnectDelay *= 1.8);
 	}
 
 	function wsSend(data) {
 		if (!ws) return;
 		if (ws.readyState !== 1) return;
+		if (!data) return;
 		if (data.build) ws.send(data.build());
 		else ws.send(data);
 	}
@@ -7912,7 +8079,7 @@
 
 	function sendMouseMove(x, y) {
 		const writer = new Writer(true);
-		writer.setUint8(0x0F);
+		writer.setUint8(0x05);
 		writer.setUint32(x);
 		writer.setUint32(y);
 		writer._b.push(0, 0, 0, 0);
@@ -7921,14 +8088,14 @@
 
 	function sendPlay(name) {
 		const writer = new Writer(true);
-		writer.setUint8(0x05);
+		writer.setUint8(0x14);
 		writer.setStringUTF8(name);
 		wsSend(writer);
 		isSpectating = false;
 	}
 
 	function sendSpectate() {
-		wsSend(UINT8_CACHE[0x01]);
+		wsSend(UINT8_CACHE[0x0F]);
 		stats.maxScore = 0;
 		hideESCOverlay();
 		isSpectating = true;
@@ -7966,11 +8133,6 @@
 		wsSend(writer);
 	}
 
-	function syncMineSet() {
-		cells.mineSet.clear();
-		for (let i = 0; i < cells.mine.length; i++) cells.mineSet.add(cells.mine[i]);
-	}
-
 	function gameReset() {
 		cleanupObject(cells);
 		cleanupObject(border);
@@ -7987,6 +8149,22 @@
 		camera.scale = camera.target.scale = 1;
 		mapCenterSet = false;
 		isSpectating = false;
+	}
+
+	async function sha256Hex(input) {
+		const data = new TextEncoder().encode(input);
+		const hash = await crypto.subtle.digest('SHA-256', data);
+
+		return [...new Uint8Array(hash)].map(byte => byte.toString(16).padStart(2, '0')).join('');
+	}
+
+	async function generateWsProof() {
+		const ts = Date.now().toString();
+		const nonce = crypto.randomUUID().replaceAll('-', '');
+		const raw = [ts, nonce, location.origin, CS].join('.');
+		const digest = await sha256Hex(raw);
+
+		return `${ts}.${nonce}.${digest}`;
 	}
 
 	const cells = {
@@ -8238,9 +8416,7 @@
 
 		for (let i = 0; i < DISALLOWED_NICKNAMES.length; i++) {
 			if (nickLower === DISALLOWED_NICKNAMES[i]) {
-				const message = (typeof I18n !== 'undefined' && I18n.isReady())
-					? I18n.t('errors.nicknameDisallowed')
-					: 'This nickname is not allowed. Please choose a different nickname.';
+				const message = (typeof I18n !== 'undefined' && I18n.isReady()) ? I18n.t('errors.nicknameDisallowed') : 'This nickname is not allowed. Please choose a different nickname.';
 
 				if (inputElement) {
 					inputElement.setCustomValidity(message);
@@ -8281,15 +8457,15 @@
 
 	function hideESCOverlay() {
 		escOverlayShown = false;
-		byId('overlays').hide();
+		byId('overlays')?.hide();
 	}
 
 	function showESCOverlay() {
 		escOverlayShown = true;
-		byId('overlays').show(0.5);
+		byId('overlays')?.show(0.5);
 
 		if (!touched) {
-			byId('menuBtn').hide();
+			byId('menuBtn')?.hide();
 		}
 	}
 
@@ -9272,7 +9448,7 @@
 		if (encSkins) {
 			if (previewSkin.startsWith('https://iili.io/')) {
 				const encPreviewUrl = `https://agar2.emupedia.net/${textToNumber(previewSkin)}`;
-				logEncSkinUrl('preview-fetch-iili', previewSkin, encPreviewUrl);
+				Logger.info('preview-fetch-iili', previewSkin, encPreviewUrl);
 				fetch(encPreviewUrl).then(res => {
 					if (!res.ok) {
 						console.error(`HTTP ${res.status}: ${res.statusText}`);
@@ -9289,7 +9465,7 @@
 						paintFallback();
 					});
 			} else {
-				logEncSkinUrl('preview-fetch', previewSkin, previewSkin);
+				Logger.info('preview-fetch', previewSkin, previewSkin);
 				fetch(previewSkin).then(res => {
 					if (!res.ok) {
 						console.error(`HTTP ${res.status}: ${res.statusText}`);
@@ -9320,7 +9496,7 @@
 			image.onerror = paintFallback;
 
 			const previewImgUrl = (url.startsWith('./') || url.startsWith('http://') || url.startsWith('https://')) ? url : `https://agar2.emupedia.net/skin/${textToNumber(url)}`;
-			if (!url.startsWith('./')) logEncSkinUrl('preview-image', url, previewImgUrl);
+			if (!url.startsWith('./')) Logger.info('preview-image', url, previewImgUrl);
 			image.src = previewImgUrl;
 		}
 	}
@@ -9932,7 +10108,7 @@
 				} else {
 					if (isSpectating) {
 						wsSend(UINT8_CACHE[0x13]);
-						wsSend(UINT8_CACHE[0x01]);
+						wsSend(UINT8_CACHE[0x0F]);
 					}
 				}
 			}
@@ -10053,6 +10229,8 @@
 	}
 
 	function checkBots() {
+		const isHeadless = (window.matchMedia('(forced-colors: none)').matches && navigator.webdriver === false && 'languages' in navigator && !navigator.languages && navigator.userAgent.includes('HeadlessChrome') && new Date().toString().includes('GMT'));
+
 		function checkCDC() {
 			function hasConstructorAlias(window, constructor) {
 				for (const prop of window.Object.getOwnPropertyNames(window)) {
@@ -10085,40 +10263,6 @@
 			return currentDetected.size > 0;
 		}
 
-		function isCanvasPrototypeTampered() {
-			let iframe = document.createElement('iframe');
-			iframe.style.display = 'none';
-			document.body.appendChild(iframe);
-
-			let nativeCanvasProto = iframe.contentWindow.HTMLCanvasElement.prototype;
-			let nativeCtxProto = iframe.contentWindow.CanvasRenderingContext2D.prototype;
-
-			let currentCanvasProto = HTMLCanvasElement.prototype;
-			let currentCtxProto = CanvasRenderingContext2D.prototype;
-
-			const canvasMethods = ['toDataURL', 'toBlob'];
-			const ctxMethods = ['getImageData'];
-			let tampered = false;
-
-			canvasMethods.forEach(method => {
-				if (typeof currentCanvasProto[method] !== 'function' || currentCanvasProto[method].toString() !== nativeCanvasProto[method].toString()) {
-					tampered = true;
-					console.warn(`Method ${method} on HTMLCanvasElement.prototype appears to have been modified.`);
-				}
-			});
-
-			ctxMethods.forEach(method => {
-				if (typeof currentCtxProto[method] !== 'function' || currentCtxProto[method].toString() !== nativeCtxProto[method].toString()) {
-					tampered = true;
-					console.warn(`Method ${method} on CanvasRenderingContext2D.prototype appears to have been modified.`);
-				}
-			});
-
-			document.body.removeChild(iframe);
-
-			return tampered;
-		}
-
 		function detectVmwareVirtualBox() {
 			function getUnmaskedWebGLInfo() {
 				const contextTypes = ['webgl', 'webgl2', 'experimental-webgl'];
@@ -10138,7 +10282,7 @@
 							vendor: gl.getParameter(debugInfo.UNMASKED_VENDOR_WEBGL) || '',
 							renderer: gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL) || ''
 						};
-					} catch {}
+					} catch (e) {}
 				}
 
 				return null;
@@ -10156,16 +10300,86 @@
 			return /virtualbox\s+graphics\s+adapter|vmware\s+svga\s+3d|virtualbox|vmware/i.test(gpuInfo);
 		}
 
-		const isHeadless = (window.matchMedia('(forced-colors: none)').matches && navigator.webdriver === false && 'languages' in navigator && !navigator.languages && navigator.userAgent.includes('HeadlessChrome') && new Date().toString().includes('GMT'));
+		function detectWebSocketTamper() {
+			if (WebSocket !== pristineWebSocket) {
+				return true;
+			}
+
+			return false;
+		}
+
+		function detectCanvasTamper() {
+			if (!MC || !MC.contentWindow) {
+				return false;
+			}
+
+			const nativeWindow = MC.contentWindow;
+			const nativeCanvasProto = nativeWindow.HTMLCanvasElement.prototype;
+			const nativeCtxProto = nativeWindow.CanvasRenderingContext2D.prototype;
+
+			const currentCanvasProto = HTMLCanvasElement.prototype;
+			const currentCtxProto = CanvasRenderingContext2D.prototype;
+
+			const canvasMethods = ['toDataURL', 'toBlob'];
+			const ctxMethods = ['getImageData'];
+			const allowedCanvasIds = new Set(['canvas', 'previewSkin']);
+			let tampered = false;
+
+			canvasMethods.forEach(method => {
+				if (typeof currentCanvasProto[method] !== 'function' || currentCanvasProto[method].toString() !== nativeCanvasProto[method].toString()) {
+					tampered = true;
+					console.warn(`Method ${method} on HTMLCanvasElement.prototype appears to have been modified.`);
+				}
+			});
+
+			ctxMethods.forEach(method => {
+				if (typeof currentCtxProto[method] !== 'function' || currentCtxProto[method].toString() !== nativeCtxProto[method].toString()) {
+					tampered = true;
+					console.warn(`Method ${method} on CanvasRenderingContext2D.prototype appears to have been modified.`);
+				}
+			});
+
+			const extraCanvases = Array.from(document.querySelectorAll('canvas')).filter(canvas => !allowedCanvasIds.has(canvas.id));
+
+			console.log(extraCanvases);
+
+			if (extraCanvases.length > 0) {
+				tampered = true;
+				console.warn('Unexpected canvas element(s) detected:', extraCanvases);
+			}
+
+			return tampered;
+		}
 
 		// noinspection JSUnresolvedReference
 		return [
 			isHeadless,
 			checkCDC(),
 			detectRandomProperties(),
-			isCanvasPrototypeTampered(),
-			detectVmwareVirtualBox()
+			detectVmwareVirtualBox(),
+			detectWebSocketTamper(),
+			detectCanvasTamper()
 		]
+	}
+
+	function connectingMessage(type, extra) {
+		if (typeof I18n !== 'undefined' && I18n.isReady && I18n.isReady()) {
+			return I18n.connectingHtml(type, extra);
+		}
+
+		const discord = '<a class="text-center" style="display: block; color: red;" href="https://discord.gg/emupedia-510149138491506688" target="_blank">Join us on Discord!</a>';
+		const code = extra || '';
+
+		switch (type) {
+			case 'bannedBots':
+				return '<h3>You are banned 😭</h3><hr class="top" /><p style="text-align: center">You are banned from the game because you broke the rules by using bots or custom scripts.</p>' + discord + '<h1 style="text-align: center;">Your unban code is<br /><br />' + code + '</h1>';
+			case 'banned':
+				return '<h3>You are banned 😭</h3><hr class="top" /><p style="text-align: center">You are banned from the game because you broke the rules either spamming the chat or while uploading custom skins.</p>' + discord + '<h1 style="text-align: center;">Your unban code is<br /><br />' + code + '</h1>';
+			case 'oldBrowser':
+				return '<h3>Your Browser is very Old</h3><hr class="top" /><p style="text-align: center"><a href="https://www.whatismybrowser.com/" target="_blank">Please click here to update your Browser to a newer version.</a></p>';
+			default:
+				return typeof I18n !== 'undefined' ? I18n.connectingHtml(type, extra) : '';
+		}
 	}
 
 	function announcePresence() {
@@ -10260,6 +10474,7 @@
 		mainCanvas.focus();
 
 		loadSettings();
+
 		setupI18n().then(() => {
 			updateMutedPlayersList();
 			continueInit();
@@ -10270,7 +10485,6 @@
 	}
 
 	function continueInit() {
-
 		// Initialize chat filter
 		if (typeof ChatFilter !== 'undefined') {
 			filters = new ChatFilter({
@@ -10296,7 +10510,7 @@
 				for (const p of fp2) mutedFP.add(p);
 			}).catch(() => {});
 
-			fetch('../fp2BanList.txt').then(resp => resp.text()).then(data => {
+			fetch('../fp2BanList.txt').then(resp => resp.text()).then(async data => {
 				const fp2 = data.split(',').filter(name => name.length > 0);
 
 				for (const p of fp2) bannedFP.add(p);
@@ -10325,10 +10539,10 @@
 							setInterval(() => {
 								wsCleanup();
 								hideESCOverlay();
-								byId('chat_textbox').hide();
-								byId('chat_clear').hide();
+								byId('chat_textbox')?.hide();
+								byId('chat_clear')?.hide();
 								byId('connecting-content').innerHTML = (typeof I18n !== 'undefined' ? I18n.connectingHtml('oldBrowser') : '<h3>Your Browser is very Old</h3><hr class="top" /><p style="text-align: center"><a href="https://www.whatismybrowser.com/" target="_blank">Please click here to update your Browser to a newer version.</a></p>');
-								byId('connecting').show(0.5);
+								byId('connecting')?.show(0.5);
 							}, 1000);
 						}
 						break;
@@ -10337,23 +10551,48 @@
 							setInterval(() => {
 								wsCleanup();
 								hideESCOverlay();
-								byId('chat_textbox').hide();
-								byId('chat_clear').hide();
+								byId('chat_textbox')?.hide();
+								byId('chat_clear')?.hide();
 								byId('connecting-content').innerHTML = (typeof I18n !== 'undefined' ? I18n.connectingHtml('oldBrowser') : '<h3>Your Browser is very Old</h3><hr class="top" /><p style="text-align: center"><a href="https://www.whatismybrowser.com/" target="_blank">Please click here to update your Browser to a newer version.</a></p>');
-								byId('connecting').show(0.5);
+								byId('connecting')?.show(0.5);
 							}, 1000);
 						}
 						break;
 				}
 
-				if (ban || bot) {
-					setInterval(() => {
+				if (ban) {
+					setInterval(async () => {
 						wsCleanup();
 						hideESCOverlay();
-						byId('chat_textbox').hide();
-						byId('chat_clear').hide();
-						byId('connecting-content').innerHTML = (typeof I18n !== 'undefined' ? I18n.connectingHtml('banned', btoa(settings.fp2).replace(/(.{10})/g, '$1<br />')) : '<h3>You are banned 😭</h3><hr class="top" /><p style="text-align: center">You are banned from the game because you broke the rules either spamming the chat or while uploading custom skins.</p><a class="text-center" style="display: block; color: red;" href="https://discord.gg/emupedia-510149138491506688" target="_blank">Join us on Discord!</a><h1 style="text-align: center;">Your unban code is<br /><br />' + btoa(settings.fp2).replace(/(.{10})/g, '$1<br />') + '</h1>');
-						byId('connecting').show(0.5);
+						byId('chat_textbox')?.hide();
+						byId('chat_clear')?.hide();
+
+						if (settings.fp2 === '') {
+							settings.fp2 = await window.getFP();
+						}
+
+						ensureConnectingOverlay();
+						byId('connecting-content').innerHTML = connectingMessage('banned', btoa(settings.fp2).replace(/(.{10})/g, '$1<br />'));
+						byId('connecting')?.show(0.5);
+						window.top.location.href = '../banned.html?message=aaa';
+					}, 1000);
+				}
+
+				if (bot) {
+					setInterval(async () => {
+						wsCleanup();
+						hideESCOverlay();
+						byId('chat_textbox')?.hide();
+						byId('chat_clear')?.hide();
+
+						if (settings.fp2 === '') {
+							settings.fp2 = await window.getFP();
+						}
+
+						ensureConnectingOverlay();
+						byId('connecting-content').innerHTML = connectingMessage('bannedBots', btoa(settings.fp2).replace(/(.{10})/g, '$1<br />'));
+						byId('connecting')?.show(0.5);
+						window.top.location.href = '../banned.html?message=aaa';
 					}, 1000);
 				}
 			});
@@ -10601,12 +10840,12 @@
 
 			if (!touched) {
 				touched = true;
-				byId('menuBtn').show();
-				byId('fullscreenBtn').show();
-				byId('splitBtn').show();
-				byId('ejectBtn').show();
-				byId('doubleSplitBtn').show();
-				byId('multiSplitBtn').show();
+				byId('menuBtn')?.show();
+				byId('fullscreenBtn')?.show();
+				byId('splitBtn')?.show();
+				byId('ejectBtn')?.show();
+				byId('doubleSplitBtn')?.show();
+				byId('multiSplitBtn')?.show();
 				updateZoomButtonsVisibility();
 			} else {
 				if (document.activeElement === chatBox) {
@@ -11099,12 +11338,12 @@
 			if (settings.disableTouchControls) {
 				touched = false;
 
-				byId('menuBtn').hide();
-				byId('fullscreenBtn').hide();
-				byId('splitBtn').hide();
-				byId('ejectBtn').hide();
-				byId('doubleSplitBtn').hide();
-				byId('multiSplitBtn').hide();
+				byId('menuBtn')?.hide();
+				byId('fullscreenBtn')?.hide();
+				byId('splitBtn')?.hide();
+				byId('ejectBtn')?.hide();
+				byId('doubleSplitBtn')?.hide();
+				byId('multiSplitBtn')?.hide();
 				zoomButtons.forEach((id) => {
 					const button = byId(id);
 					if (button) button.hide();
@@ -11124,7 +11363,7 @@
 
 				if (!touched) {
 					chatBox.focus();
-					byId('menuBtn').show();
+					byId('menuBtn')?.show();
 				} else {
 					if (document.activeElement === chatBox) {
 						chatBox.blur();
@@ -11171,47 +11410,47 @@
 		changeShowSkins();
 		changeFillSkin();
 
-		byId('nick').addEventListener('input', changeNick);
-		byId('nick').addEventListener('change', saveNick);
-		byId('skin').addEventListener('change', changeSkin);
-		byId('toggleFullscreen').addEventListener('change', changeFullscreen);
-		byId('fullscreenBtn').addEventListener('click', () => byId('toggleFullscreen').click());
-		byId('chat_clear').addEventListener('click', () => { chat.messages = chat.messages.slice(-1); drawChat() });
+		byId('nick')?.addEventListener('input', changeNick);
+		byId('nick')?.addEventListener('change', saveNick);
+		byId('skin')?.addEventListener('change', changeSkin);
+		byId('toggleFullscreen')?.addEventListener('change', changeFullscreen);
+		byId('fullscreenBtn')?.addEventListener('click', () => byId('toggleFullscreen')?.click());
+		byId('chat_clear')?.addEventListener('click', () => { chat.messages = chat.messages.slice(-1); drawChat() });
 
-		const applyShowZoomSetting = (checked) => {
+		const applyShowZoomSetting = checked => {
 			settings.showZoom = checked;
 			byId('zoom_container').style.display = checked ? 'grid' : 'none';
 			updateZoomButtonsVisibility();
 		};
 
-		byId('fillSkin').addEventListener('change', changeFillSkin);
-		byId('disableTouchControls').addEventListener('change', changeDisableTouchControls);
-		byId('lockMobileButtons').addEventListener('change', () => storeSettings());
-		byId('reset-button-positions-btn').addEventListener('click', resetButtonPositions);
-		byId('bgColor').addEventListener('input', changeBackgroundColor);
-		byId('bgColor').addEventListener('change', changeBackgroundColor);
-		byId('nameColor').addEventListener('input', changeNameColor);
-		byId('nameColor').addEventListener('change', changeNameColor);
-		byId('cellColor').addEventListener('input', changeCellColor);
-		byId('cellColor').addEventListener('change', changeCellColor);
-		byId('borderColor').addEventListener('input', changeBorderColor);
-		byId('borderColor').addEventListener('change', changeBorderColor);
-		byId('showColor').addEventListener('change', changeShowColor);
-		byId('showSkins').addEventListener('change', changeShowSkins);
-		byId('darkTheme').addEventListener('change', changeDarkTheme);
-		byId('overlays').addEventListener('click', overlayClick)
-		byId('menuBtn').addEventListener('click', menuClick);
-		byId('showZoom').addEventListener('change', e => applyShowZoomSetting(e.target.checked));
-		byId('moreZoom').addEventListener('change', e => { byId('zoom').setAttribute('min', e.target.checked ? 0.1 : 1); camera.userZoom < (e.target.checked ? 0.1 : 1) ? (camera.userZoom = e.target.checked ? 0.1 : 1) : '' });
-		byId('zoom').addEventListener('input', e => (camera.userZoom = e.target.value));
+		byId('fillSkin')?.addEventListener('change', changeFillSkin);
+		byId('disableTouchControls')?.addEventListener('change', changeDisableTouchControls);
+		byId('lockMobileButtons')?.addEventListener('change', () => storeSettings());
+		byId('reset-button-positions-btn')?.addEventListener('click', resetButtonPositions);
+		byId('bgColor')?.addEventListener('input', changeBackgroundColor);
+		byId('bgColor')?.addEventListener('change', changeBackgroundColor);
+		byId('nameColor')?.addEventListener('input', changeNameColor);
+		byId('nameColor')?.addEventListener('change', changeNameColor);
+		byId('cellColor')?.addEventListener('input', changeCellColor);
+		byId('cellColor')?.addEventListener('change', changeCellColor);
+		byId('borderColor')?.addEventListener('input', changeBorderColor);
+		byId('borderColor')?.addEventListener('change', changeBorderColor);
+		byId('showColor')?.addEventListener('change', changeShowColor);
+		byId('showSkins')?.addEventListener('change', changeShowSkins);
+		byId('darkTheme')?.addEventListener('change', changeDarkTheme);
+		byId('overlays')?.addEventListener('click', overlayClick)
+		byId('menuBtn')?.addEventListener('click', menuClick);
+		byId('showZoom')?.addEventListener('change', e => applyShowZoomSetting(e.target.checked));
+		byId('moreZoom')?.addEventListener('change', e => { byId('zoom')?.setAttribute('min', e.target.checked ? 0.1 : 1); camera.userZoom < (e.target.checked ? 0.1 : 1) ? (camera.userZoom = e.target.checked ? 0.1 : 1) : '' });
+		byId('zoom')?.addEventListener('input', e => (camera.userZoom = e.target.value));
 
-		byId('zoom').setAttribute('min', settings.moreZoom ? 0.1 : 1);
+		byId('zoom')?.setAttribute('min', settings.moreZoom ? 0.1 : 1);
 
 		applyShowZoomSetting(settings.showZoom);
 
 		if (checkBanCounter() > 2) {
-			byClass('upload-btn-wrapper')[0].remove();
-			byId('show-upload-btn').remove();
+			byClass('upload-btn-wrapper')[0]?.remove();
+			byId('show-upload-btn')?.remove();
 		}
 
 		window.addEventListener('beforeunload', () => {
@@ -11228,10 +11467,10 @@
 				setInterval(() => {
 					wsCleanup();
 					hideESCOverlay();
-					byId('chat_textbox').hide();
-					byId('chat_clear').hide();
+					byId('chat_textbox')?.hide();
+					byId('chat_clear')?.hide();
 					byId('connecting-content').innerHTML = (typeof I18n !== 'undefined' ? I18n.connectingHtml('multisession') : '<h3>Multisession Warning</h3><hr class="top" /><p style="text-align: center">Multiple game instances are not allowed.<br />Close all other game instances and reload.</p>');
-					byId('connecting').show(0.5);
+					byId('connecting')?.show(0.5);
 				}, 1000);
 			}
 		});
@@ -11292,7 +11531,7 @@
 			// Skip if interacting with UI elements
 			if (touched) return;
 			if (chat.isDraggingScroll) return;
-			if (byId('overlays').contains(event.target) || byId('chat_textbox').contains(event.target) || byId('chat_clear').contains(event.target)) return;
+			if (byId('overlays')?.contains(event.target) || byId('chat_textbox')?.contains(event.target) || byId('chat_clear')?.contains(event.target)) return;
 
 			switch (event.button) {
 				case 0: // Left click
@@ -11357,12 +11596,12 @@
 			if (typeof event['isTrusted'] !== 'boolean' || event['isTrusted'] === false) return;
 
 			if (settings.rightClick && event.button === 2 && settings.mouseRightAction !== 'none') {
-				if (byId('overlays').contains(event.target) || byId('chat_textbox').contains(event.target) || byId('chat_clear').contains(event.target)) return;
+				if (byId('overlays')?.contains(event.target) || byId('chat_textbox')?.contains(event.target) || byId('chat_clear')?.contains(event.target)) return;
 
 				executeMouseAction(settings.mouseRightAction, true);
 			}
 
-			if (!byId('overlays').contains(event.target) && !byId('chat_textbox').contains(event.target) && !byId('chat_clear').contains(event.target)) {
+			if (!byId('overlays')?.contains(event.target) && !byId('chat_textbox')?.contains(event.target) && !byId('chat_clear')?.contains(event.target)) {
 				event.preventDefault();
 				return false;
 			}
@@ -11400,7 +11639,7 @@
 			tempShowSkins = settings.showSkins;
 		}
 
-		byId('play-btn').addEventListener('click', event => {
+		byId('play-btn')?.addEventListener('click', async event => {
 			if (!allowClick && (typeof event['isTrusted'] !== 'boolean' || event['isTrusted'] === false)) return;
 
 			const nickInput = byId('nick');
@@ -11419,6 +11658,11 @@
 			const nameColor = settings.nameColor;
 			const cellColor = settings.cellColor;
 			const borderColor = settings.borderColor;
+
+			if (settings.fp2 === '') {
+				settings.fp2 = await window.getFP();
+			}
+
 			const fp2 = settings.fp2;
 
 			sendPlay('<' + (skin ? `${skin.trim().replace(/[<>|]/g, '').substring(0, 30)}` : '') + '|' + (nameColor ? `${nameColor.trim().replace(/[<>|]/g, '').substring(0, 7)}` : '') + '|' + (cellColor ? `${cellColor.trim().replace(/[<>|]/g, '').substring(0, 7)}` : '') + '|' + (borderColor ? `${borderColor.trim().replace(/[<>|]/g, '').substring(0, 7)}` : '') + '|' + '' + '|' + (fp2 ? `${fp2.trim().replace(/[<>|]/g, '').substring(0, 64)}` : '') + '>' + filterNicknameForServer(settings.nick));
@@ -11802,21 +12046,9 @@
 	}
 
 	function start() {
+		installWebSocketInstanceTracker();
+
 		fetch('./assets/img/transparent.png').then(res => res.blob()).then(blob => createImageBitmap(blob).then(data => (TRANSP = data)));
-
-		let externallyFramed;
-
-		try {
-			externallyFramed = window.top.location.host !== window.location.host;
-		} catch (e) {
-			externallyFramed = true;
-		}
-
-		if (externallyFramed) {
-			try {
-				window.top.location = window.location;
-			} catch (e) {}
-		}
 
 		try {
 			fetch('skinList.txt').then(resp => resp.text()).then(data => {
@@ -11852,7 +12084,7 @@
 						for (const p of fp2) mutedFP.add(p);
 					}).catch(() => {});
 
-					fetch('../fp2BanList.txt').then(resp => resp.text()).then(data => {
+					fetch('../fp2BanList.txt').then(resp => resp.text()).then(async data => {
 						const fp2 = data.split(',').filter(name => name.length > 0);
 
 						for (const p of fp2) bannedFP.add(p);
@@ -11879,39 +12111,62 @@
 						switch (browserInfo.family) {
 							case 'Chrome':
 							case 'Firefox':
-								if (browserInfo.major < 125) {
+								if (browserInfo.major < 140) {
 									setInterval(() => {
 										wsCleanup();
 										hideESCOverlay();
-										byId('chat_textbox').hide();
-										byId('chat_clear').hide();
+										byId('chat_textbox')?.hide();
+										byId('chat_clear')?.hide();
 										byId('connecting-content').innerHTML = (typeof I18n !== 'undefined' ? I18n.connectingHtml('oldBrowser') : '<h3>Your Browser is very Old</h3><hr class="top" /><p style="text-align: center"><a href="https://www.whatismybrowser.com/" target="_blank">Please click here to update your Browser to a newer version.</a></p>');
-										byId('connecting').show(0.5);
+										byId('connecting')?.show(0.5);
 									}, 1000);
 								}
 								break;
 							case 'Safari':
-								if (browserInfo.major < 17) {
+								if (browserInfo.major < 26) {
 									setInterval(() => {
 										wsCleanup();
 										hideESCOverlay();
-										byId('chat_textbox').hide();
-										byId('chat_clear').hide();
+										byId('chat_textbox')?.hide();
+										byId('chat_clear')?.hide();
 										byId('connecting-content').innerHTML = (typeof I18n !== 'undefined' ? I18n.connectingHtml('oldBrowser') : '<h3>Your Browser is very Old</h3><hr class="top" /><p style="text-align: center"><a href="https://www.whatismybrowser.com/" target="_blank">Please click here to update your Browser to a newer version.</a></p>');
-										byId('connecting').show(0.5);
+										byId('connecting')?.show(0.5);
 									}, 1000);
 								}
 								break;
 						}
 
-						if (ban || bot) {
-							setInterval(() => {
+						if (ban) {
+							setInterval(async () => {
 								wsCleanup();
 								hideESCOverlay();
-								byId('chat_textbox').hide();
-								byId('chat_clear').hide();
-								byId('connecting-content').innerHTML = (typeof I18n !== 'undefined' ? I18n.connectingHtml('bannedBots', btoa(settings.fp2).replace(/(.{10})/g, '$1<br />')) : '<h3>You are banned 😭</h3><hr class="top" /><p style="text-align: center">You are banned from the game because you broke the rules either spamming the chat or while uploading custom skins or because you are using bots.</p><a class="text-center" style="display: block; color: red;" href="https://discord.gg/emupedia-510149138491506688" target="_blank">Join us on Discord!</a><h1 style="text-align: center;">Your unban code is<br /><br />' + btoa(settings.fp2).replace(/(.{10})/g, '$1<br />') + '</h1>');
-								byId('connecting').show(0.5);
+								byId('chat_textbox')?.hide();
+								byId('chat_clear')?.hide();
+
+								if (settings.fp2 === '') {
+									settings.fp2 = await window.getFP();
+								}
+
+								ensureConnectingOverlay();
+								byId('connecting-content').innerHTML = connectingMessage('banned', btoa(settings.fp2).replace(/(.{10})/g, '$1<br />'));
+								byId('connecting')?.show(0.5);
+								window.top.location.href = '../banned.html?message=aaa';
+							}, 1000);
+						} else if (bot) {
+							setInterval(async () => {
+								wsCleanup();
+								hideESCOverlay();
+								byId('chat_textbox')?.hide();
+								byId('chat_clear')?.hide();
+
+								if (settings.fp2 === '') {
+									settings.fp2 = await window.getFP();
+								}
+
+								ensureConnectingOverlay();
+								byId('connecting-content').innerHTML = connectingMessage('bannedBots', btoa(settings.fp2).replace(/(.{10})/g, '$1<br />'));
+								byId('connecting')?.show(0.5);
+								window.top.location.href = '../banned.html?message=aaa';
 							}, 1000);
 						} else {
 							init();
@@ -11992,7 +12247,7 @@
 		}
 	}
 
-	window.setserver = geo => {
+	window.setserver = async geo => {
 		if (GEO[geo] === server.settings && ws && ws.readyState <= WebSocket.OPEN) return;
 
 		if (geo === 'eu-ffa-pro' || geo === 'eu-ffa-casual') {
@@ -12001,7 +12256,9 @@
 
 		settings.server = geo;
 		storeSettings();
-		wsInit(GEO[geo]);
+
+		let proof = await generateWsProof();
+		wsInit(GEO[geo], proof);
 	};
 
 	function toggleSettingsPanel() {
@@ -12061,35 +12318,35 @@
 			drawSkinPreview('./assets/img/transparent.png', byId('previewSkin'));
 		}
 
-		byId('gallery').hide();
+		byId('gallery')?.hide();
 
 		storeSettings();
 
 		if (checkBanCounter() > 2) {
-			byId('show-upload-btn').remove();
-			byClass('upload-btn-wrapper')[0].remove();
+			byId('show-upload-btn')?.remove();
+			byClass('upload-btn-wrapper')[0]?.remove();
 		}
 	};
 
 	window.openSkinsList = () => {
-		if (byId('gallery-body').innerHTML === '') buildGallery();
-		byId('gallery').show(0.5);
+		if (byId('gallery-body')?.innerHTML === '') buildGallery();
+		byId('gallery')?.show(0.5);
 	};
 
 	window.openUpload = () => {
 		// noinspection HtmlUnknownTarget
 		byId('upload-skin-content').innerHTML = '<iframe src="../upload.html" allowtransparency="true"></iframe>';
-		byId('upload-skin').show(0.5);
+		byId('upload-skin')?.show(0.5);
 	}
 
 	window.openUnban = () => {
 		// noinspection HtmlUnknownTarget
 		byId('unban-content').innerHTML = '<iframe src="../unban.html" allowtransparency="true"></iframe>';
-		byId('unban').show(0.5);
+		byId('unban')?.show(0.5);
 	}
 
 	window.closeUpload = () => {
-		byId('upload-skin').hide();
+		byId('upload-skin')?.hide();
 	}
 
 	window.copyToClipboard = (text, el) => {

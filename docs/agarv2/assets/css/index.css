@@ -125,11 +125,11 @@ label#nick-list:after, label#skin-list:after {
 	z-index: 200;
 }
 
-#connecting, #upload-skin {
+#upload-skin {
 	z-index: 201;
 }
 
-#unban {
+#connecting, #unban {
 	z-index: 2147483647;
 }
 
