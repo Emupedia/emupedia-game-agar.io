@@ -1,0 +1,16 @@
+{
+  "name": "@hslo/agarv2mod",
+  "version": "0.2.0",
+  "private": true,
+  "type": "module",
+  "description": "Standalone multibox client for Agar.io v2 (Emupedia)",
+  "author": "Tony",
+  "scripts": {
+    "build": "node build.mjs",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "esbuild": "^0.24.2",
+    "typescript": "^5.6.3"
+  }
+}
