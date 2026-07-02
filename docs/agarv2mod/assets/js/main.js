@@ -236,6 +236,13 @@
         while (r.remaining >= 4) ownIds.push(r.u32());
         return { t: "own", ownIds };
       }
+      case 17: {
+        if (r.remaining < 12) return { t: "raw", op, len: buf.byteLength };
+        const x = r.f32();
+        const y = r.f32();
+        const scale = r.f32();
+        return { t: "camera", x, y, scale };
+      }
       case 49:
         return { t: "leaderboard", entries: decodeLeaderboard(r) };
       case 98: {
@@ -259,14 +266,20 @@
     return `${s}(${u.length}B)`;
   }
 
+  // src/timers.ts
+  var nativeSetInterval = window.setInterval.bind(window);
+  function agxInterval(fn, ms) {
+    return nativeSetInterval(fn, ms);
+  }
+
   // src/settings.ts
   var DEFAULT_BOX_COUNT = 2;
   var ACTION_LABELS = {
     split: "Split",
     eject: "Eject (single)",
     macroFeed: "Eject / feed (hold)",
-    doubleSplit: "Double split",
-    split16: "Split 16",
+    doubleSplit: "Double split (x2)",
+    split16: "Multi split (x4)",
     switchBox: "Switch box",
     respawn: "Respawn",
     pause: "Pause camera",
@@ -302,6 +315,7 @@
     animatedBorder: true,
     cellShadow: true,
     spawnEffects: true,
+    backgroundColor: "#0c0c16",
     backgroundUrl: "",
     activeOutline: "#ff3b30",
     inactiveOutline: "#ffffff"
@@ -311,7 +325,7 @@
     zoomMode: "auto",
     inactiveBoxStops: false,
     spectatorView: false,
-    animationDelay: 0,
+    drawDelay: 70,
     splitOp: 17,
     ejectOp: 21,
     chatOp: 98,
@@ -336,7 +350,7 @@
     return { name: typeof (p == null ? void 0 : p.name) === "string" ? p.name : "", hue: typeof (p == null ? void 0 : p.hue) === "number" ? p.hue : 200, skins };
   }
   function load() {
-    var _a, _b, _c;
+    var _a, _b, _c, _d, _e;
     const base = {
       profiles: defaultProfiles(),
       selected: 0,
@@ -351,6 +365,11 @@
       base.bindings = { ...DEFAULT_BINDINGS, ...(_a = o.bindings) != null ? _a : {} };
       base.theme = { ...DEFAULT_THEME, ...(_b = o.theme) != null ? _b : {} };
       base.game = { ...DEFAULT_GAME, ...(_c = o.game) != null ? _c : {} };
+      const legacyDelay = (_d = o.game) == null ? void 0 : _d.animationDelay;
+      if (typeof legacyDelay === "number" && typeof ((_e = o.game) == null ? void 0 : _e.drawDelay) !== "number") {
+        base.game.drawDelay = Math.max(20, Math.min(400, 70));
+      }
+      if (!base.theme.backgroundColor) base.theme.backgroundColor = DEFAULT_THEME.backgroundColor;
       if (localStorage.getItem(BINDINGS_VERSION_KEY) !== BINDINGS_VERSION) {
         base.bindings = { ...DEFAULT_BINDINGS };
         try {
@@ -429,12 +448,55 @@
   }
 
   // src/world.ts
+  var SKIN_PROXY = "https://agar2.emupedia.net/skin/";
+  function hexEncode(s) {
+    const enc = encodeURIComponent(s);
+    let out = "";
+    for (const ch of enc) out += ch.codePointAt(0).toString(16).padStart(2, "0");
+    return out;
+  }
+  function hexDecode(s) {
+    const pairs = s.match(/../g);
+    if (!pairs) return "";
+    let out = "";
+    for (const h of pairs) out += String.fromCodePoint(parseInt(h, 16));
+    try {
+      return decodeURIComponent(out);
+    } catch {
+      return out;
+    }
+  }
+  function resolveSkinUrl(raw, name) {
+    var _a;
+    if (!raw) return "";
+    const parts = raw.split("|");
+    let skin = parts[0].trim();
+    if (skin.startsWith("%")) skin = skin.slice(1);
+    if (skin.length >= 8 && skin.length % 2 === 0 && /^[0-9a-fA-F]+$/.test(skin)) {
+      const dec = hexDecode(skin);
+      if (dec.startsWith("https://iili.io/")) skin = dec;
+    }
+    if (!skin) return "";
+    if (skin.startsWith("https://iili.io/") && !skin.endsWith(".gif")) {
+      const fp2 = ((_a = parts[5]) != null ? _a : "").trim();
+      return `${SKIN_PROXY}${hexEncode(skin)}?nick=${encodeURIComponent(name)}&fp2=${encodeURIComponent(fp2)}`;
+    }
+    if (/^https?:\/\//i.test(skin)) return skin;
+    if (!/^[\w .-]+$/.test(skin)) return "";
+    try {
+      return new URL(`skins/${encodeURIComponent(skin)}.png`, location.href).href;
+    } catch {
+      return "";
+    }
+  }
   var World = class {
     constructor() {
       this.nodes = /* @__PURE__ */ new Map();
       this.ownIds = /* @__PURE__ */ new Set();
       this.border = { minX: -8e3, minY: -8e3, maxX: 8e3, maxY: 8e3 };
       this.leaderboard = [];
+      this.specCam = null;
+      this.spawnFxAt = -1e9;
       this.massAccum = 0;
     }
     get scrambleX() {
@@ -444,7 +506,8 @@
       return (this.border.minY + this.border.maxY) / 2;
     }
     apply(u) {
-      var _a, _b;
+      var _a, _b, _c, _d;
+      const now = performance.now();
       for (const e of u.eats) {
         this.nodes.delete(e.id);
         this.ownIds.delete(e.id);
@@ -462,8 +525,16 @@
             ex.b = n.color.b;
             ex.css = `rgb(${ex.r},${ex.g},${ex.b})`;
           }
-          if (n.name !== null) ex.name = n.name;
-          if (n.skin !== null) ex.skin = n.skin;
+          let reskin = false;
+          if (n.name !== null && n.name !== ex.name) {
+            ex.name = n.name;
+            reskin = true;
+          }
+          if (n.skin !== null && n.skin !== ex.skin) {
+            ex.skin = n.skin;
+            reskin = true;
+          }
+          if (reskin) ex.skinUrl = resolveSkinUrl(ex.skin, ex.name);
         } else {
           const cr = n.color ? n.color.r : 220;
           const cg = n.color ? n.color.g : 220;
@@ -480,6 +551,8 @@
             css: `rgb(${cr},${cg},${cb})`,
             name: (_a = n.name) != null ? _a : "",
             skin: (_b = n.skin) != null ? _b : "",
+            skinUrl: resolveSkinUrl((_c = n.skin) != null ? _c : "", (_d = n.name) != null ? _d : ""),
+            born: now,
             rx: n.x,
             ry: n.y,
             rsize: n.size,
@@ -494,14 +567,22 @@
       }
     }
     setOwn(ids) {
-      for (const id of ids) this.ownIds.add(id);
+      const now = performance.now();
+      for (const id of ids) {
+        if (!this.ownIds.has(id)) {
+          const n = this.nodes.get(id);
+          if (n) n.born = now;
+          this.ownIds.add(id);
+        }
+      }
     }
     clear() {
       this.nodes.clear();
       this.ownIds.clear();
     }
     step(dt) {
-      const k = 1 - Math.exp(-14 * dt);
+      const delay = Math.max(20, Math.min(400, settings.game.drawDelay || 70));
+      const k = 1 - Math.exp(-1e3 / delay * dt);
       this.massAccum += dt;
       const refreshMass = this.massAccum >= 0.5;
       if (refreshMass) this.massAccum = 0;
@@ -561,7 +642,6 @@
       this.pingSamples = [];
     }
     async connect() {
-      var _a;
       this.stopPing();
       let token;
       try {
@@ -571,10 +651,9 @@
         return;
       }
       this.log(`[agarv2mod] ${this.label}: connecting`, this.url.slice(0, 80), `proto=${token.slice(0, 13)}`);
-      const WS = (_a = window.__agarNativeWS) != null ? _a : window.WebSocket;
       let ws;
       try {
-        ws = new WS(this.url, token);
+        ws = new WebSocket(this.url, token);
       } catch (e) {
         this.log(`[agarv2mod] ${this.label}: connect threw`, e);
         return;
@@ -593,7 +672,7 @@
         this.open = true;
       });
       ws.addEventListener("message", (ev) => {
-        var _a2;
+        var _a;
         if (!(ev.data instanceof ArrayBuffer)) return;
         if (this.awaitingPong) {
           this.awaitingPong = false;
@@ -618,8 +697,11 @@
             case "leaderboard":
               this.world.leaderboard = e.entries;
               break;
+            case "camera":
+              this.world.specCam = { x: e.x, y: e.y, at: performance.now() };
+              break;
             case "chat":
-              (_a2 = this.onChat) == null ? void 0 : _a2.call(this, e.name, e.message, e.color);
+              (_a = this.onChat) == null ? void 0 : _a.call(this, e.name, e.message, e.color);
               break;
             case "clear":
               this.world.clear();
@@ -636,9 +718,9 @@
         this.log(`[agarv2mod] ${this.label}: closed code=${ev.code} reason=${ev.reason || "-"}`);
       });
       ws.addEventListener("error", () => this.log(`[agarv2mod] ${this.label}: socket error`));
-      this.pingTimer = window.setInterval(() => {
-        var _a2;
-        if (((_a2 = this.ws) == null ? void 0 : _a2.readyState) === WebSocket.OPEN) {
+      this.pingTimer = agxInterval(() => {
+        var _a;
+        if (((_a = this.ws) == null ? void 0 : _a.readyState) === WebSocket.OPEN) {
           try {
             this.lastPingAt = performance.now();
             this.awaitingPong = true;
@@ -710,8 +792,11 @@
     v.setUint32(9, 0, true);
     return b;
   }
-  function encodeOgarSpawn(nick, fp2, cellColor = "#ffffff", nameColor = "#ffffff", borderColor = "#ffffff") {
-    const s = `<${nick}|${cellColor}|${nameColor}|${borderColor}||${fp2}>${nick}`;
+  function tagField(v, max) {
+    return v.trim().replace(/[<>|]/g, "").slice(0, max);
+  }
+  function encodeOgarSpawn(nick, fp2, skin = "", nameColor = "#ffffff", cellColor = "#ffffff", borderColor = "#ffffff") {
+    const s = `<${tagField(skin, 30)}|${tagField(nameColor, 7)}|${tagField(cellColor, 7)}|${tagField(borderColor, 7)}||${tagField(fp2, 64)}>${nick}`;
     const utf8 = new TextEncoder().encode(s);
     const b = new ArrayBuffer(1 + utf8.length + 1);
     const bytes = new Uint8Array(b);
@@ -735,9 +820,11 @@
   var CHIP_COLORS = ["#22d3ee", "#fbbf24"];
   var MACRO_FEED_MS = 70;
   var SPECTATE_OP = 15;
+  var QKEY_DOWN_OP = 18;
+  var QKEY_UP_OP = 19;
   var ENABLE_SECOND_SOCKET = true;
   var RELAY_URL = "";
-  var WS2_URL = `wss://agar.emupedia.net/ws2/`;
+  var WS2_URL = `wss://agar.${location.host}/ws2/`;
   var PROTOCOL_VERSION = 6;
   var HANDSHAKE_KEY = 1;
   var SHARE_SKINS_VIA_CHAT = false;
@@ -765,7 +852,10 @@
       this.respawnStart = 0;
       this.paused = false;
       this.mode = "menu";
+      this.freeRoam = false;
       this.fps = 0;
+      this.onAllDead = null;
+      this.wasAlive = false;
       this.recentChat = /* @__PURE__ */ new Map();
       this.auxClient = null;
       this.warnedOps = false;
@@ -781,9 +871,9 @@
         this.mouseY = e.clientY;
       });
       this.chatNick = this.nick();
-      setInterval(() => this.tick(), 1e3 / 33);
-      setInterval(() => this.autoConnect(), 800);
-      setInterval(() => this.announceSkin(), 15e3);
+      agxInterval(() => this.tick(), 1e3 / 33);
+      agxInterval(() => this.autoConnect(), 800);
+      agxInterval(() => this.announceSkin(), 15e3);
     }
     attachOverlay(o) {
       this.overlay = o;
@@ -793,7 +883,7 @@
     }
     build255() {
       const name = new TextEncoder().encode(this.nick());
-      const out = new ArrayBuffer(5 + name.length);
+      const out = new ArrayBuffer(5 + name.length + 1);
       const ov = new DataView(out);
       ov.setUint8(0, 255);
       ov.setUint32(1, HANDSHAKE_KEY, true);
@@ -867,6 +957,11 @@
       var _a;
       this.mode = "playing";
       this.paused = false;
+      this.freeRoam = false;
+      if (settings.game.spectatorView) {
+        settings.game.spectatorView = false;
+        save();
+      }
       this.active = 0;
       this.syncChatNick();
       if ((_a = this.players[0].client) == null ? void 0 : _a.open) {
@@ -940,18 +1035,17 @@
     refreshChatNick() {
       this.syncChatNick();
     }
-    buildSpawn(nick) {
+    buildSpawn(nick, skin) {
       const fp2 = getFp2Sync();
       if (!fp2) return null;
-      const p = currentProfile();
-      const colors = profileColors(p.hue);
-      return encodeOgarSpawn(nick, fp2, colors.cellColor, colors.nameColor, colors.borderColor);
+      const colors = profileColors(currentProfile().hue);
+      return encodeOgarSpawn(nick, fp2, skin, colors.nameColor, colors.cellColor, colors.borderColor);
     }
     spawnBox(idx) {
       const p = this.players[idx];
       if (!p) return;
       const nick = this.nick();
-      const pkt = this.buildSpawn(nick);
+      const pkt = this.buildSpawn(nick, "");
       if (!pkt) {
         this.log("[agarv2mod] no fp2 yet - wait for fingerprint init");
         return;
@@ -967,14 +1061,40 @@
       this.log(`[agarv2mod] opcode-20 spawn box ${idx + 1} (nick="${nick}")`);
     }
     spectate() {
-      if (this.mode === "spectating") {
-        this.mode = "playing";
-        this.log("[agarv2mod] spectate off -> back to your boxes");
-      } else {
-        this.mode = "spectating";
-        this.paused = false;
-        this.log("[agarv2mod] spectate (aux socket) - follow top player");
+      if (this.mode === "spectating") return;
+      if (this.players.some((p) => this.alive(p))) {
+        this.log("[agarv2mod] spectate blocked - a box is still alive (it would keep starving)");
+        return;
       }
+      this.mode = "spectating";
+      this.paused = false;
+      this.freeRoam = false;
+      this.spectateWorld.specCam = null;
+      this.log("[agarv2mod] spectate (aux socket) - follow top player, press Q for free roam");
+    }
+    spectateOrRoam() {
+      var _a;
+      if (this.mode !== "spectating") {
+        this.spectate();
+        return;
+      }
+      this.freeRoam = !this.freeRoam;
+      const aux = this.auxClient;
+      if (((_a = aux == null ? void 0 : aux.ws) == null ? void 0 : _a.readyState) === WebSocket.OPEN) {
+        aux.send(this.oneByte(QKEY_DOWN_OP));
+        window.setTimeout(() => {
+          var _a2;
+          if (((_a2 = aux.ws) == null ? void 0 : _a2.readyState) === WebSocket.OPEN) aux.send(this.oneByte(QKEY_UP_OP));
+        }, 40);
+        if (!this.freeRoam) {
+          window.setTimeout(() => {
+            var _a2;
+            if (this.mode === "spectating" && ((_a2 = aux.ws) == null ? void 0 : _a2.readyState) === WebSocket.OPEN) aux.send(this.oneByte(SPECTATE_OP));
+          }, 90);
+        }
+      }
+      if (this.freeRoam) this.log("[agarv2mod] free roam - the camera flies toward your mouse");
+      else this.log("[agarv2mod] spectate - follow top player");
     }
     manageSpectate(now) {
       var _a;
@@ -983,7 +1103,7 @@
       const wantStream = this.mode === "spectating" || settings.game.spectatorView;
       if (wantStream) {
         if (!aux.worldEnabled) aux.worldEnabled = true;
-        if (!this.spectateKicked || aux.world.nodes.size === 0 && now - this.lastSpecKick > 3e3) {
+        if (!this.spectateKicked || !this.freeRoam && aux.world.nodes.size === 0 && now - this.lastSpecKick > 3e3) {
           this.spectateKicked = true;
           this.lastSpecKick = now;
           aux.send(this.oneByte(SPECTATE_OP));
@@ -999,6 +1119,8 @@
         aux.worldEnabled = false;
         aux.world.clear();
         this.spectateKicked = false;
+        aux.reconnect();
+        this.log("[agarv2mod] spectate off - aux socket recycled so the next spectate gets fresh cell colors");
       }
     }
     switchActive() {
@@ -1124,11 +1246,11 @@
       const now = performance.now();
       if (now - this.lastAnnounce < 7e3) return;
       this.lastAnnounce = now;
-      const aux = this.players.find((pl) => {
+      const box = this.players.find((pl) => {
         var _a, _b;
         return ((_b = (_a = pl.client) == null ? void 0 : _a.ws) == null ? void 0 : _b.readyState) === WebSocket.OPEN;
       });
-      if (aux == null ? void 0 : aux.client) aux.client.send(encodeChat(this.skinShare.encode(this.nick(), url), op));
+      if (box == null ? void 0 : box.client) box.client.send(encodeChat(this.skinShare.encode(this.nick(), url), op));
     }
     sharedSkin(name) {
       if (this.skinShare.size === 0 || !name) return "";
@@ -1182,6 +1304,7 @@
       o.showPellets = t.showPellets;
       o.animatedBorder = t.animatedBorder;
       o.spawnEffects = t.spawnEffects;
+      o.backgroundColor = t.backgroundColor;
       o.backgroundUrl = t.backgroundUrl;
       o.activeOutline = t.activeOutline;
       o.inactiveOutline = t.inactiveOutline;
@@ -1196,23 +1319,29 @@
       var _a, _b;
       if (this.paused) return null;
       if (this.mode === "spectating") {
-        return this.biggestInWorld(this.spectateWorld);
+        const w = this.spectateWorld;
+        if (this.freeRoam && w.specCam && performance.now() - w.specCam.at < 2500) {
+          return { cx: w.specCam.x - w.scrambleX, cy: w.specCam.y - w.scrambleY, radius: 300 };
+        }
+        return this.biggestInWorld(w);
       }
       if (settings.game.multiboxCamera === "center") {
-        let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity, has = false;
+        let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity, aliveBoxes = 0;
         for (const p of this.players) {
+          let any = false;
           for (const id of p.world.ownIds) {
             const n = p.world.nodes.get(id);
             if (!n) continue;
-            has = true;
+            any = true;
             const rx = n.rx - p.world.scrambleX, ry = n.ry - p.world.scrambleY;
             minX = Math.min(minX, rx - n.rsize);
             minY = Math.min(minY, ry - n.rsize);
             maxX = Math.max(maxX, rx + n.rsize);
             maxY = Math.max(maxY, ry + n.rsize);
           }
+          if (any) aliveBoxes++;
         }
-        if (has) return { cx: (minX + maxX) / 2, cy: (minY + maxY) / 2, radius: Math.max((maxX - minX) / 2, (maxY - minY) / 2) };
+        if (aliveBoxes >= 2) return { cx: (minX + maxX) / 2, cy: (minY + maxY) / 2, radius: Math.max((maxX - minX) / 2, (maxY - minY) / 2) };
       }
       return (_b = (_a = this.realOwnCenter(this.players[this.active])) != null ? _a : this.realOwnCenter(this.players[0])) != null ? _b : this.biggestCellReal();
     }
@@ -1250,11 +1379,12 @@
       return best;
     }
     pingMs() {
-      var _a, _b, _c;
-      const a = (_a = this.players[this.active]) == null ? void 0 : _a.client;
-      if (a && ((_b = a.ws) == null ? void 0 : _b.readyState) === WebSocket.OPEN && a.ping > 0) return a.ping;
+      var _a, _b, _c, _d;
       const aux = this.auxClient;
-      if (aux && ((_c = aux.ws) == null ? void 0 : _c.readyState) === WebSocket.OPEN && aux.ping > 0) return aux.ping;
+      if (this.mode === "spectating" && aux && ((_a = aux.ws) == null ? void 0 : _a.readyState) === WebSocket.OPEN && aux.ping > 0) return aux.ping;
+      const a = (_b = this.players[this.active]) == null ? void 0 : _b.client;
+      if (a && ((_c = a.ws) == null ? void 0 : _c.readyState) === WebSocket.OPEN && a.ping > 0) return a.ping;
+      if (aux && ((_d = aux.ws) == null ? void 0 : _d.readyState) === WebSocket.OPEN && aux.ping > 0) return aux.ping;
       return 0;
     }
     hud() {
@@ -1302,13 +1432,22 @@
       return `aux(chat/spec):${aux}  ${boxes}`;
     }
     tick() {
-      var _a;
+      var _a, _b;
       if (!this.overlay) return;
       this.spawnPending();
       this.manageSpectate(performance.now());
       if (!this.controllable(this.players[this.active])) this.active = 0;
       for (let i = 0; i < this.players.length; i++) {
         const al = this.alive(this.players[i]);
+        if (!this.aliveState[i] && al) {
+          const w = this.players[i].world;
+          w.spawnFxAt = performance.now();
+          for (const id of w.ownIds) {
+            const n = w.nodes.get(id);
+            if (n) n.born = w.spawnFxAt;
+          }
+          if (i === this.active) this.overlay.snapCamera();
+        }
         if (this.aliveState[i] && !al && i === this.active && i !== this.pendingRespawn) {
           const j = this.players.findIndex((p, k) => k !== i && this.controllable(p) && this.alive(p));
           if (j >= 0) {
@@ -1319,12 +1458,22 @@
         }
         this.aliveState[i] = al;
       }
+      const anyAlive = this.players.some((p) => this.alive(p));
+      if (this.wasAlive && !anyAlive && this.mode === "playing" && this.pendingRespawn === null) {
+        this.log("[agarv2mod] all boxes died - back to menu");
+        (_a = this.onAllDead) == null ? void 0 : _a.call(this);
+      }
+      this.wasAlive = anyAlive;
       const now = performance.now();
       if (this.macroFeedHeld && this.mode === "playing" && !this.paused && now - this.lastFeed > MACRO_FEED_MS) {
         this.lastFeed = now;
         this.eject();
       }
-      if (this.paused || this.mode === "spectating") return;
+      if (this.paused) return;
+      if (this.mode === "spectating") {
+        if (this.freeRoam) this.sendRoam();
+        return;
+      }
       this.tickN++;
       const cursor = this.overlay.screenToWorld(this.mouseX, this.mouseY);
       for (let i = 0; i < this.players.length; i++) {
@@ -1342,13 +1491,21 @@
           tx = c.cx;
           ty = c.cy;
         } else {
-          const a = (_a = this.aim[i]) != null ? _a : p.world.ownCenter() && { x: p.world.ownCenter().cx, y: p.world.ownCenter().cy };
+          const a = (_b = this.aim[i]) != null ? _b : p.world.ownCenter() && { x: p.world.ownCenter().cx, y: p.world.ownCenter().cy };
           if (!a) continue;
           tx = a.x;
           ty = a.y;
         }
         this.sendTo(p, encodeMove(tx, ty, this.moveFmt));
       }
+    }
+    sendRoam() {
+      var _a;
+      const aux = this.auxClient;
+      if (!aux || ((_a = aux.ws) == null ? void 0 : _a.readyState) !== WebSocket.OPEN || !this.overlay) return;
+      const cur = this.overlay.screenToWorld(this.mouseX, this.mouseY);
+      const w = this.spectateWorld;
+      aux.send(encodeMove(cur.x + w.scrambleX, cur.y + w.scrambleY, this.moveFmt));
     }
   };
 
@@ -1569,7 +1726,11 @@
       this.dbgFood = 0;
       this.dbgNodes = 0;
       this.visible = true;
+      this.disposed = false;
+      this.menuPoll = 0;
+      this.menuOpen = false;
       this.loop = () => {
+        if (this.disposed) return;
         this.raf = requestAnimationFrame(this.loop);
         const now = performance.now();
         const raw = now - this._rawLast;
@@ -1590,12 +1751,14 @@
           this._sinceEstimate = 0;
           this.estimateRefresh();
         }
-        let threshold = 0;
-        if (settings.game.autoFps) {
-          if (this.detectedFps > 0) threshold = 1e3 / this.detectedFps * 0.75;
-        } else if (settings.game.maxFps > 0) {
-          threshold = 1e3 / settings.game.maxFps - 0.4;
+        if (++this.menuPoll >= 20) {
+          this.menuPoll = 0;
+          this.menuOpen = !!document.querySelector(".agx-overlay.agx-open");
         }
+        let threshold = 0;
+        if (settings.game.autoFps && this.detectedFps > 0) threshold = 1e3 / this.detectedFps * 0.75;
+        if (settings.game.maxFps > 0) threshold = Math.max(threshold, 1e3 / settings.game.maxFps - 0.4);
+        if (this.menuOpen) threshold = Math.max(threshold, 1e3 / 60 - 0.4);
         if (threshold > 0 && now - this.last < threshold) return;
         if ((settings.game.renderScale || 1) !== this.lastScale) this.resize();
         const dt = Math.min((now - this.last) / 1e3, 0.1);
@@ -1604,8 +1767,7 @@
         this.layers = this.scene.layers();
         for (const l of this.layers) l.world.step(dt);
         this.frameCamera();
-        const responsiveness = 1 - 0.85 * (settings.game.animationDelay / 100);
-        this.camera.update(dt, responsiveness);
+        this.camera.update(dt, 1);
         if (this.visible) {
           const t0 = performance.now();
           this.draw(now);
@@ -1659,6 +1821,7 @@
       return this.camera.screenToWorld(sx, sy);
     }
     dispose() {
+      this.disposed = true;
       cancelAnimationFrame(this.raf);
       this.canvas.remove();
     }
@@ -1674,11 +1837,25 @@
       this.camera.setViewport(w, h);
     }
     estimateRefresh() {
+      var _a;
       const buf = this._rawDeltas;
       if (buf.length < 30) return;
-      const s = buf.slice().sort((a, b) => a - b);
-      const med = s[s.length >> 1];
-      if (med > 0) this.detectedFps = snapRefresh(1e3 / med);
+      const votes = /* @__PURE__ */ new Map();
+      for (let i = 1; i < buf.length; i++) {
+        const d = buf[i];
+        if (d < 2 || d > 100) continue;
+        if (Math.abs(d - buf[i - 1]) > d * 0.25) continue;
+        const hz = snapRefresh(1e3 / d);
+        votes.set(hz, ((_a = votes.get(hz)) != null ? _a : 0) + 1);
+      }
+      let best = 0, bestN = 0;
+      for (const [hz, n] of votes) {
+        if (n > bestN) {
+          best = hz;
+          bestN = n;
+        }
+      }
+      if (best > 0) this.detectedFps = best;
     }
     frameCamera() {
       const t = this.scene.cameraTarget();
@@ -1707,7 +1884,7 @@
       const theme = this.scene.themeFor();
       const border = this.scene.worldBorder();
       ctx.setTransform(1, 0, 0, 1, 0, 0);
-      ctx.fillStyle = "#0c0c16";
+      ctx.fillStyle = theme.backgroundColor || "#0c0c16";
       ctx.fillRect(0, 0, W, H);
       ctx.setTransform(
         this.camera.scale * this.dpr,
@@ -1747,12 +1924,14 @@
           const x = n.rx - sx;
           const y = n.ry - sy;
           const r = Math.max(n.rsize, minR);
-          if (x + r < vMinX || x - r > vMaxX || y + r < vMinY || y - r > vMaxY) continue;
+          let cullR = r;
+          if (time - n.born < 2e3 && Math.abs(n.born - layer.world.spawnFxAt) < 400 && own.has(n.id)) cullR = r * 31;
+          if (x + cullR < vMinX || x - cullR > vMaxX || y + cullR < vMinY || y - cullR > vMaxY) continue;
           if (n.isVirus) {
             if (seen.has(n.id)) continue;
             seen.add(n.id);
             let v = viruses[virusN];
-            if (!v) v = viruses[virusN] = { n, x, y, r, outline: null, skin: "", mine: false, virus: true };
+            if (!v) v = viruses[virusN] = { n, x, y, r, outline: null, skin: "", mine: false, virus: true, fx: false };
             else {
               v.n = n;
               v.x = x;
@@ -1762,6 +1941,7 @@
               v.skin = "";
               v.mine = false;
               v.virus = true;
+              v.fx = false;
             }
             virusN++;
           } else if (!n.name && n.rsize < 40) {
@@ -1784,7 +1964,8 @@
             let skin = "";
             if (mine && theme.customSkins) skin = prof.skins[boxIdx] || prof.skins.find((s) => !!s) || "";
             if (!skin && !mine && n.name) skin = this.scene.sharedSkin(n.name);
-            if (!skin && theme.gameSkins && n.skin) skin = n.skin;
+            if (!skin && theme.gameSkins && n.skinUrl) skin = n.skinUrl;
+            const fx = mine && Math.abs(n.born - layer.world.spawnFxAt) < 400 && time - n.born < 2e3;
             if (prev) {
               prev.n = n;
               prev.x = x;
@@ -1793,9 +1974,10 @@
               prev.outline = outline;
               prev.skin = skin;
               prev.mine = mine;
+              prev.fx = fx;
             } else {
               let c = cellPool[cellN];
-              if (!c) c = cellPool[cellN] = { n, x, y, r, outline, skin, mine, virus: false };
+              if (!c) c = cellPool[cellN] = { n, x, y, r, outline, skin, mine, virus: false, fx };
               else {
                 c.n = n;
                 c.x = x;
@@ -1805,6 +1987,7 @@
                 c.skin = skin;
                 c.mine = mine;
                 c.virus = false;
+                c.fx = fx;
               }
               cellN++;
               cellMap.set(n.id, c);
@@ -1908,7 +2091,7 @@
           if (dot) continue;
         }
         if (c.virus) this.drawVirus(c.n, c.x, c.y, c.r);
-        else this.drawCell(c.n, c.x, c.y, c.r, c.outline, c.skin, theme);
+        else this.drawCell(c.n, c.x, c.y, c.r, c.outline, c.skin, theme, time, c.fx);
       }
       ctx.setTransform(1, 0, 0, 1, 0, 0);
       if (theme.minimap) this.drawMinimap(border, layers, time);
@@ -1956,9 +2139,30 @@
       ctx.fillStyle = pelletColor || n.css;
       ctx.fill();
     }
-    drawCell(n, x, y, r, outline, skin, theme) {
+    drawCell(n, x, y, r, outline, skin, theme, time, fx) {
       const ctx = this.ctx;
       const rpx = r * this.camera.scale;
+      if (theme.spawnEffects && fx && rpx > 3) {
+        const age = time - n.born;
+        if (age >= 0 && age < 1800) {
+          const t01 = age / 1800;
+          const color = outline != null ? outline : "#67e8f9";
+          ctx.beginPath();
+          ctx.arc(x, y, r * (1 + 30 * t01), 0, Math.PI * 2);
+          ctx.lineWidth = Math.max(16 / this.camera.scale, r * 0.6) * (1 - t01) + 1e-3;
+          ctx.globalAlpha = 0.9 * (1 - t01);
+          ctx.strokeStyle = color;
+          ctx.stroke();
+          const t2 = Math.max(0, t01 - 0.15);
+          ctx.beginPath();
+          ctx.arc(x, y, r * (1 + 20 * t2), 0, Math.PI * 2);
+          ctx.lineWidth = Math.max(8 / this.camera.scale, r * 0.25) * (1 - t2) + 1e-3;
+          ctx.globalAlpha = 0.6 * (1 - t2);
+          ctx.strokeStyle = color;
+          ctx.stroke();
+          ctx.globalAlpha = 1;
+        }
+      }
       if (theme.shadows && rpx > 16) {
         ctx.beginPath();
         ctx.arc(x, y + r * 0.06, r, 0, Math.PI * 2);
@@ -2457,7 +2661,7 @@ ${body}`;
       const b = settings.bindings;
       return `TAB box 2 - ${keyLabel(b.split)} split - ${keyLabel(b.eject)} eject - ${keyLabel(b.respawn)} respawn - Esc menu`;
     };
-    setInterval(() => {
+    const timer = agxInterval(() => {
       const t = settings.theme;
       const hud2 = mb2.hud();
       if (!hudVisible) {
@@ -2469,7 +2673,7 @@ ${body}`;
           const pingText = hud2.ping ? ` - ping: ${hud2.ping}ms` : "";
           stat.replaceChildren(
             el("div", "", {}, [el("b", "", { textContent: `Mass ${formatMass(hud2.mass, t.massFormat)}` })]),
-            el("div", "", { textContent: `cells: ${hud2.cellCount} - fps: ${fpsText}${pingText}` })
+            el("div", "", { textContent: `cells: ${hud2.cellCount} - FPS: ${fpsText}${pingText}` })
           );
         }
         boxbar.replaceChildren();
@@ -2538,7 +2742,11 @@ ${body}`;
       },
       chatFocused: () => document.activeElement === chatInput,
       submitChat,
-      closeChat
+      closeChat,
+      dispose: () => {
+        clearInterval(timer);
+        for (const e of [stat, boxbar, lb, chatBox, log2, copyBtn]) e.remove();
+      }
     };
   }
 
@@ -2615,8 +2823,8 @@ ${body}`;
     function render(tab, body) {
       if (tab === "game") {
         body.append(segRow(
-          "Multibox camera",
-          [["single", "Active box"], ["center", "Both boxes"]],
+          "Multibox camera mode",
+          [["single", "Single"], ["center", "Center"]],
           () => settings.game.multiboxCamera,
           (v) => settings.game.multiboxCamera = v
         ));
@@ -2632,21 +2840,21 @@ ${body}`;
           () => settings.game.inactiveBoxStops,
           (v) => settings.game.inactiveBoxStops = v
         ));
-        const slider = el("input", "agx-slider", { type: "range", min: "0", max: "100", value: String(settings.game.animationDelay) });
-        const lbl = el("span", "", { textContent: `Animation delay ${settings.game.animationDelay}%` });
-        slider.addEventListener("input", () => {
-          settings.game.animationDelay = Number(slider.value);
-          lbl.textContent = `Animation delay ${slider.value}%`;
+        const dd = el("input", "agx-slider", { type: "range", min: "20", max: "300", value: String(settings.game.drawDelay) });
+        const ddLbl = el("span", "", { textContent: `Animation delay ${settings.game.drawDelay}ms` });
+        dd.addEventListener("input", () => {
+          settings.game.drawDelay = Number(dd.value);
+          ddLbl.textContent = `Animation delay ${dd.value}ms`;
           save();
         });
-        body.append(el("div", "agx-row", {}, [lbl, slider]));
-        body.append(el("div", "agx-note", { textContent: "Higher = smoother but laggier camera." }));
+        body.append(el("div", "agx-row", {}, [ddLbl, dd]));
+        body.append(el("div", "agx-note", { textContent: "How long cells take to glide to their server position. Lower = snappier, higher = smoother." }));
         body.append(toggleRow(
           "Auto FPS - match display refresh",
           () => settings.game.autoFps,
           (v) => settings.game.autoFps = v
         ));
-        body.append(el("div", "agx-note", { textContent: "Measures your monitor's refresh rate from the browser and caps the overlay to it. Turn off to set a fixed cap below." }));
+        body.append(el("div", "agx-note", { textContent: "Measures your monitor's refresh rate and caps the overlay to it. Max FPS below still applies on top (0 = off)." }));
         const fps = el("input", "agx-keybtn", { type: "number", min: "30", max: "360", value: String(settings.game.maxFps), style: "width:70px" });
         fps.addEventListener("change", () => {
           settings.game.maxFps = Math.max(0, Math.min(360, Number(fps.value) | 0));
@@ -2718,12 +2926,13 @@ ${body}`;
           (v) => t.pelletColor = v === "custom" ? t.pelletColor || "#88ccff" : ""
         ));
         body.append(colorRow("Pellet color (when Custom)", () => t.pelletColor || "#88ccff", (v) => t.pelletColor = v, "#88ccff"));
+        body.append(el("div", "agx-label", { textContent: "BACKGROUND" }));
+        body.append(colorRow("Background color", () => t.backgroundColor || "#0c0c16", (v) => t.backgroundColor = v, "#0c0c16"));
         const bg = el("input", "agx-input agx-skin", { value: t.backgroundUrl, placeholder: "Background image URL (optional)" });
         bg.addEventListener("input", () => {
           t.backgroundUrl = bg.value.trim();
           save();
         });
-        body.append(el("div", "agx-label", { textContent: "BACKGROUND" }));
         body.append(bg);
         body.append(el("div", "agx-label", { textContent: "HUD" }));
         body.append(toggleRow("Minimap", () => t.showMinimap, (v) => t.showMinimap = v));
@@ -2917,7 +3126,7 @@ ${body}`;
       if (tab === "play") renderPlay(body);
       else settingsTabs.render(tab, body);
     }
-    return { open, close, toggle, isOpen, capturing: () => settingsTabs.capturing() };
+    return { open, close, toggle, isOpen, capturing: () => settingsTabs.capturing(), dispose: () => overlay2.remove() };
   }
 
   // src/main.ts
@@ -2967,6 +3176,7 @@ ${logLines.join("\n")}`;
     });
     debugOpen = false;
     hud.setDebug(false);
+    mb.onAllDead = () => menu == null ? void 0 : menu.open();
     menu.open();
     if (!wired) {
       wired = true;
@@ -2982,6 +3192,24 @@ ${logLines.join("\n")}`;
   async function boot() {
     if (overlay && document.documentElement.contains(overlay.canvas)) return;
     if (!document.body) return;
+    if (overlay) {
+      try {
+        overlay.dispose();
+      } catch {
+      }
+      try {
+        hud == null ? void 0 : hud.dispose();
+      } catch {
+      }
+      try {
+        menu == null ? void 0 : menu.dispose();
+      } catch {
+      }
+      overlay = null;
+      menu = null;
+      hud = null;
+      log("[agarv2mod] UI detached - remounting");
+    }
     try {
       await ensureFp2();
       start();
@@ -2992,6 +3220,7 @@ ${logLines.join("\n")}`;
   }
   window.addEventListener("load", () => void boot());
   document.addEventListener("readystatechange", () => void boot());
+  agxInterval(() => void boot(), 500);
   void boot();
   function bindingFor(code) {
     return Object.keys(settings.bindings).find(
@@ -3081,7 +3310,7 @@ ${logLines.join("\n")}`;
         mb.togglePause();
         break;
       case "spectateToggle":
-        mb.spectate();
+        mb.spectateOrRoam();
         break;
       case "macroFeed":
         mb.setMacroFeed(true);
