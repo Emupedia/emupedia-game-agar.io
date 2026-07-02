@@ -195,6 +195,7 @@
 			wjQuery("#region").val(w);
 		}
 		Ha();
+		initDarkTheme();
 		setRegion(wjQuery("#region").val());
 		null == ws && w && showConnecting();
 		canvasResize();
@@ -776,7 +777,14 @@
 		if (Data.chat) {
 			if (clientData.chat < 2) wjQuery("#chat_textbox").hide(); else wjQuery("#chat_textbox").show();
 		}
-		if (Data.darkBG) showDarkTheme = (clientData.darkBG < 2) ? false : true;
+		if (Data.darkBG) {
+			if (clientData.darkBG == 0 || clientData.darkBG == 3) {
+				showDarkTheme = clientData.darkBG == 3;
+				applyDarkThemeUI(showDarkTheme);
+			} else {
+				initDarkTheme();
+			}
+		}
 		if (Data.skins) showSkin = (clientData.skins >= 2) ? true : false;
 		if (Data.grid) hideGrid = (clientData.grid >= 2) ? false : true;
 		if (Data.acid) xa = (clientData.acid < 2) ? false : true;
@@ -1431,8 +1439,50 @@
 	wHandle.setNames = function (arg) {
 		if (clientData.names != 0 && clientData.names != 3) showName = arg
 	};
-	wHandle.setDarkTheme = function (arg) {
-		if (clientData.darkBG != 0 && clientData.darkBG != 3) showDarkTheme = arg
+
+	function applyDarkThemeUI(enabled) {
+		if (enabled) {
+			wHandle.document.documentElement.classList.add('darkTheme');
+		} else {
+			wHandle.document.documentElement.classList.remove('darkTheme');
+		}
+
+		var darkCheckbox = wjQuery('#cdark');
+		if (darkCheckbox.length && !darkCheckbox.prop('disabled')) {
+			darkCheckbox.prop('checked', enabled);
+		}
+	}
+
+	function readDarkThemePreference() {
+		try {
+			var saved = wHandle.localStorage.getItem('agarv1-darkTheme');
+			if (saved === 'true') return true;
+			if (saved === 'false') return false;
+		} catch (e) {}
+
+		return wHandle.matchMedia('(prefers-color-scheme: dark)').matches;
+	}
+
+	function initDarkTheme() {
+		if (clientData.darkBG == 0 || clientData.darkBG == 3) {
+			return;
+		}
+
+		var enabled = readDarkThemePreference();
+		showDarkTheme = enabled;
+		applyDarkThemeUI(enabled);
+	}
+
+	wHandle.setDarkTheme = function (arg, skipSave) {
+		if (clientData.darkBG != 0 && clientData.darkBG != 3) {
+			showDarkTheme = arg;
+			applyDarkThemeUI(showDarkTheme);
+			if (!skipSave) {
+				try {
+					wHandle.localStorage.setItem('agarv1-darkTheme', showDarkTheme ? 'true' : 'false');
+				} catch (e) {}
+			}
+		}
 	};
 	wHandle.setSplitMacro = function (arg) {
 		if (clientData.sMacro != 0 && clientData.sMacro != 3) sMacro = arg ? 1 : 0
@@ -2099,4 +2149,25 @@
 
 		ctx.restore();
 	}
-})(window, window.jQuery);
+	})(window, window.jQuery);
+
+	(function (wHandle) {
+		var mq = wHandle.matchMedia('(prefers-color-scheme: dark)');
+		var onColorSchemeChange = function (event) {
+			try {
+				if (wHandle.localStorage.getItem('agarv1-darkTheme') !== null) {
+					return;
+				}
+			} catch (e) {}
+
+			if (typeof wHandle.setDarkTheme === 'function') {
+				wHandle.setDarkTheme(event.matches, true);
+			}
+		};
+
+		if (typeof mq.addEventListener === 'function') {
+			mq.addEventListener('change', onColorSchemeChange);
+		} else if (typeof mq.addListener === 'function') {
+			mq.addListener(onColorSchemeChange);
+		}
+	})(window);

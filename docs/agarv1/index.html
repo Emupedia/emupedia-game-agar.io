@@ -20,6 +20,18 @@
 
 		<title>Agar.io v1</title>
 
+		<script>
+			(function () {
+				var dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+				try {
+					var saved = localStorage.getItem('agarv1-darkTheme');
+					if (saved === 'true') dark = true;
+					else if (saved === 'false') dark = false;
+				} catch (e) {}
+				if (dark) document.documentElement.classList.add('darkTheme');
+			})();
+		</script>
+
 		<link rel="shortcut icon" href="https://emupedia.net/emupedia-game-agar.io/favicon.ico" />
 		<link rel="icon" type="image/x-icon" href="https://emupedia.net/emupedia-game-agar.io/favicon.ico" />
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:700" type="text/css" />
@@ -214,6 +226,45 @@
 			.grecaptcha-badge {
 				display: none;
 			}
+
+			#connecting-content {
+				width: 350px;
+				background-color: #fff;
+				margin: 100px auto;
+				border-radius: 15px;
+				padding: 5px 15px 5px 15px;
+			}
+
+			#connecting-content h3 {
+				text-align: center;
+			}
+
+			.darkTheme #helloDialog,
+			.darkTheme #connecting-content,
+			.darkTheme #gallery-content {
+				background-color: rgba(9, 13, 23, 0.6);
+				color: #fff;
+				border: 2px solid rgba(36, 51, 66, 0.9);
+				box-shadow: 0 0 9px #243342;
+			}
+
+			.darkTheme hr {
+				border-top-color: #fff;
+			}
+
+			.darkTheme #instructions,
+			.darkTheme #footer,
+			.darkTheme .text-muted {
+				color: #aaa;
+			}
+
+			.darkTheme #settings label {
+				color: #fff;
+			}
+
+			.darkTheme #gallery-content .skinName {
+				color: #fff;
+			}
 		</style>
 	</head>
 	<body>
@@ -277,7 +328,7 @@
 		</div>
 
 		<div id="connecting" style="display:none; position: absolute; left: 0; right: 0; top: 0; bottom: 0; z-index: 201; background-color: rgba(0,0,0,0.5);">
-			<div style="width: 350px; background-color: #fff; margin: 100px auto; border-radius: 15px; padding: 5px 15px 5px 15px;">
+			<div id="connecting-content">
 				<h3>Trying to connect...</h3><hr />
 				<a class="text-center" style="display: block; color: red;" href="https://discord.gg/emupedia-510149138491506688" target="_blank">Join us on Discord!</a>
 				<p>If you cannot connect to the servers, check if you have some antivirus or firewall blocking the connection.</p>
