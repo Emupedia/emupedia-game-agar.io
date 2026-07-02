@@ -3,15 +3,6 @@ export type MoveFormat = "i32" | "f64";
 const MOVE_OP = 5;
 const SPAWN_OP = 20;
 
-export function detectMoveFormat(sends: ArrayBuffer[]): MoveFormat {
-  for (const b of sends) {
-    if (b.byteLength < 1) continue;
-    if (new DataView(b).getUint8(0) !== MOVE_OP) continue;
-    return b.byteLength >= 17 ? "f64" : "i32";
-  }
-  return "i32";
-}
-
 export function encodeMove(x: number, y: number, fmt: MoveFormat): ArrayBuffer {
   if (fmt === "f64") {
     const b = new ArrayBuffer(21);
@@ -31,14 +22,19 @@ export function encodeMove(x: number, y: number, fmt: MoveFormat): ArrayBuffer {
   return b;
 }
 
+function tagField(v: string, max: number): string {
+  return v.trim().replace(/[<>|]/g, "").slice(0, max);
+}
+
 export function encodeOgarSpawn(
   nick: string,
   fp2: string,
-  cellColor = "#ffffff",
+  skin = "",
   nameColor = "#ffffff",
+  cellColor = "#ffffff",
   borderColor = "#ffffff",
 ): ArrayBuffer {
-  const s = `<${nick}|${cellColor}|${nameColor}|${borderColor}||${fp2}>${nick}`;
+  const s = `<${tagField(skin, 30)}|${tagField(nameColor, 7)}|${tagField(cellColor, 7)}|${tagField(borderColor, 7)}||${tagField(fp2, 64)}>${nick}`;
   const utf8 = new TextEncoder().encode(s);
   const b = new ArrayBuffer(1 + utf8.length + 1);
   const bytes = new Uint8Array(b);

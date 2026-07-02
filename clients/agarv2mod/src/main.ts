@@ -5,6 +5,7 @@ import { Overlay } from "./overlay";
 import { PacketLog } from "./packetlog";
 import { save, settings, type ActionKey } from "./settings";
 import { SkinShare } from "./skinshare";
+import { agxInterval } from "./timers";
 import { mountHud } from "./ui/hud";
 import { mountMenu } from "./ui/menu";
 import { injectStyles } from "./ui/styles";
@@ -56,6 +57,7 @@ function start() {
   });
   debugOpen = false;
   hud.setDebug(false);
+  mb.onAllDead = () => menu?.open();
   menu.open();
   if (!wired) {
     wired = true;
@@ -72,6 +74,15 @@ function start() {
 async function boot() {
   if (overlay && document.documentElement.contains(overlay.canvas)) return;
   if (!document.body) return;
+  if (overlay) {
+    try { overlay.dispose(); } catch {}
+    try { hud?.dispose(); } catch {}
+    try { menu?.dispose(); } catch {}
+    overlay = null;
+    menu = null;
+    hud = null;
+    log("[agarv2mod] UI detached - remounting");
+  }
   try {
     await ensureFp2();
     start();
@@ -83,6 +94,7 @@ async function boot() {
 
 window.addEventListener("load", () => void boot());
 document.addEventListener("readystatechange", () => void boot());
+agxInterval(() => void boot(), 500);
 void boot();
 
 function bindingFor(code: string): ActionKey | undefined {
@@ -182,7 +194,7 @@ function doAction(a: ActionKey) {
       mb.togglePause();
       break;
     case "spectateToggle":
-      mb.spectate();
+      mb.spectateOrRoam();
       break;
     case "macroFeed":
       mb.setMacroFeed(true);

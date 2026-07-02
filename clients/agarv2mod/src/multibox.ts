@@ -8,8 +8,9 @@ import {
 } from "./encode";
 import { getFp2Sync, profileColors } from "./fp2";
 import type { Overlay, Scene, SceneLayer, SceneTheme } from "./overlay";
-import { currentProfile, settings } from "./settings";
+import { currentProfile, save, settings } from "./settings";
 import type { SkinShare } from "./skinshare";
+import { agxInterval } from "./timers";
 import { World } from "./world";
 
 interface Player {
@@ -24,9 +25,11 @@ export type GameMode = "menu" | "playing" | "spectating";
 
 const MACRO_FEED_MS = 70;
 const SPECTATE_OP = 15;
+const QKEY_DOWN_OP = 18;
+const QKEY_UP_OP = 19;
 const ENABLE_SECOND_SOCKET = true;
 const RELAY_URL = "";
-const WS2_URL = `wss://agar.emupedia.net/ws2/`;
+const WS2_URL = `wss://agar.${location.host}/ws2/`;
 const PROTOCOL_VERSION = 6;
 const HANDSHAKE_KEY = 1;
 const SHARE_SKINS_VIA_CHAT = false;
@@ -53,7 +56,10 @@ export class Multibox implements Scene {
   private respawnStart = 0;
   paused = false;
   mode: GameMode = "menu";
+  freeRoam = false;
   fps = 0;
+  onAllDead: (() => void) | null = null;
+  private wasAlive = false;
 
   private recentChat = new Map<string, number>();
   private auxClient: SocketClient | null = null;
@@ -73,9 +79,9 @@ export class Multibox implements Scene {
       this.mouseY = e.clientY;
     });
     this.chatNick = this.nick();
-    setInterval(() => this.tick(), 1000 / 33);
-    setInterval(() => this.autoConnect(), 800);
-    setInterval(() => this.announceSkin(), 15_000);
+    agxInterval(() => this.tick(), 1000 / 33);
+    agxInterval(() => this.autoConnect(), 800);
+    agxInterval(() => this.announceSkin(), 15_000);
   }
 
   attachOverlay(o: Overlay) {
@@ -88,7 +94,7 @@ export class Multibox implements Scene {
 
   private build255(): ArrayBuffer {
     const name = new TextEncoder().encode(this.nick());
-    const out = new ArrayBuffer(5 + name.length);
+    const out = new ArrayBuffer(5 + name.length + 1);
     const ov = new DataView(out);
     ov.setUint8(0, 255);
     ov.setUint32(1, HANDSHAKE_KEY, true);
@@ -160,6 +166,11 @@ export class Multibox implements Scene {
   play() {
     this.mode = "playing";
     this.paused = false;
+    this.freeRoam = false;
+    if (settings.game.spectatorView) {
+      settings.game.spectatorView = false;
+      save();
+    }
     this.active = 0;
     this.syncChatNick();
     if (this.players[0].client?.open) {
@@ -228,19 +239,18 @@ export class Multibox implements Scene {
 
   refreshChatNick() { this.syncChatNick(); }
 
-  private buildSpawn(nick: string): ArrayBuffer | null {
+  private buildSpawn(nick: string, skin: string): ArrayBuffer | null {
     const fp2 = getFp2Sync();
     if (!fp2) return null;
-    const p = currentProfile();
-    const colors = profileColors(p.hue);
-    return encodeOgarSpawn(nick, fp2, colors.cellColor, colors.nameColor, colors.borderColor);
+    const colors = profileColors(currentProfile().hue);
+    return encodeOgarSpawn(nick, fp2, skin, colors.nameColor, colors.cellColor, colors.borderColor);
   }
 
   private spawnBox(idx: number) {
     const p = this.players[idx];
     if (!p) return;
     const nick = this.nick();
-    const pkt = this.buildSpawn(nick);
+    const pkt = this.buildSpawn(nick, "");
     if (!pkt) {
       this.log("[agarv2mod] no fp2 yet - wait for fingerprint init");
       return;
@@ -254,14 +264,38 @@ export class Multibox implements Scene {
   }
 
   spectate() {
-    if (this.mode === "spectating") {
-      this.mode = "playing";
-      this.log("[agarv2mod] spectate off -> back to your boxes");
-    } else {
-      this.mode = "spectating";
-      this.paused = false;
-      this.log("[agarv2mod] spectate (aux socket) - follow top player");
+    if (this.mode === "spectating") return;
+    if (this.players.some((p) => this.alive(p))) {
+      this.log("[agarv2mod] spectate blocked - a box is still alive (it would keep starving)");
+      return;
     }
+    this.mode = "spectating";
+    this.paused = false;
+    this.freeRoam = false;
+    this.spectateWorld.specCam = null;
+    this.log("[agarv2mod] spectate (aux socket) - follow top player, press Q for free roam");
+  }
+
+  spectateOrRoam() {
+    if (this.mode !== "spectating") {
+      this.spectate();
+      return;
+    }
+    this.freeRoam = !this.freeRoam;
+    const aux = this.auxClient;
+    if (aux?.ws?.readyState === WebSocket.OPEN) {
+      aux.send(this.oneByte(QKEY_DOWN_OP));
+      window.setTimeout(() => {
+        if (aux.ws?.readyState === WebSocket.OPEN) aux.send(this.oneByte(QKEY_UP_OP));
+      }, 40);
+      if (!this.freeRoam) {
+        window.setTimeout(() => {
+          if (this.mode === "spectating" && aux.ws?.readyState === WebSocket.OPEN) aux.send(this.oneByte(SPECTATE_OP));
+        }, 90);
+      }
+    }
+    if (this.freeRoam) this.log("[agarv2mod] free roam - the camera flies toward your mouse");
+    else this.log("[agarv2mod] spectate - follow top player");
   }
 
   private manageSpectate(now: number) {
@@ -270,7 +304,7 @@ export class Multibox implements Scene {
     const wantStream = this.mode === "spectating" || settings.game.spectatorView;
     if (wantStream) {
       if (!aux.worldEnabled) aux.worldEnabled = true;
-      if (!this.spectateKicked || (aux.world.nodes.size === 0 && now - this.lastSpecKick > 3000)) {
+      if (!this.spectateKicked || (!this.freeRoam && aux.world.nodes.size === 0 && now - this.lastSpecKick > 3000)) {
         this.spectateKicked = true;
         this.lastSpecKick = now;
         aux.send(this.oneByte(SPECTATE_OP));
@@ -285,6 +319,8 @@ export class Multibox implements Scene {
       aux.worldEnabled = false;
       aux.world.clear();
       this.spectateKicked = false;
+      aux.reconnect();
+      this.log("[agarv2mod] spectate off - aux socket recycled so the next spectate gets fresh cell colors");
     }
   }
 
@@ -385,8 +421,8 @@ export class Multibox implements Scene {
     const now = performance.now();
     if (now - this.lastAnnounce < 7000) return;
     this.lastAnnounce = now;
-    const aux = this.players.find((pl) => pl.client?.ws?.readyState === WebSocket.OPEN);
-    if (aux?.client) aux.client.send(encodeChat(this.skinShare.encode(this.nick(), url), op));
+    const box = this.players.find((pl) => pl.client?.ws?.readyState === WebSocket.OPEN);
+    if (box?.client) box.client.send(encodeChat(this.skinShare.encode(this.nick(), url), op));
   }
 
   sharedSkin(name: string): string {
@@ -429,7 +465,8 @@ export class Multibox implements Scene {
     o.massFormat = t.massFormat; o.ringSize = t.ringSize;
     o.pelletColor = t.pelletColor; o.showPellets = t.showPellets;
     o.animatedBorder = t.animatedBorder; o.spawnEffects = t.spawnEffects;
-    o.backgroundUrl = t.backgroundUrl; o.activeOutline = t.activeOutline; o.inactiveOutline = t.inactiveOutline;
+    o.backgroundColor = t.backgroundColor; o.backgroundUrl = t.backgroundUrl;
+    o.activeOutline = t.activeOutline; o.inactiveOutline = t.inactiveOutline;
     return o;
   }
 
@@ -442,21 +479,27 @@ export class Multibox implements Scene {
   cameraTarget() {
     if (this.paused) return null;
     if (this.mode === "spectating") {
-      return this.biggestInWorld(this.spectateWorld);
+      const w = this.spectateWorld;
+      if (this.freeRoam && w.specCam && performance.now() - w.specCam.at < 2500) {
+        return { cx: w.specCam.x - w.scrambleX, cy: w.specCam.y - w.scrambleY, radius: 300 };
+      }
+      return this.biggestInWorld(w);
     }
     if (settings.game.multiboxCamera === "center") {
-      let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity, has = false;
+      let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity, aliveBoxes = 0;
       for (const p of this.players) {
+        let any = false;
         for (const id of p.world.ownIds) {
           const n = p.world.nodes.get(id);
           if (!n) continue;
-          has = true;
+          any = true;
           const rx = n.rx - p.world.scrambleX, ry = n.ry - p.world.scrambleY;
           minX = Math.min(minX, rx - n.rsize); minY = Math.min(minY, ry - n.rsize);
           maxX = Math.max(maxX, rx + n.rsize); maxY = Math.max(maxY, ry + n.rsize);
         }
+        if (any) aliveBoxes++;
       }
-      if (has) return { cx: (minX + maxX) / 2, cy: (minY + maxY) / 2, radius: Math.max((maxX - minX) / 2, (maxY - minY) / 2) };
+      if (aliveBoxes >= 2) return { cx: (minX + maxX) / 2, cy: (minY + maxY) / 2, radius: Math.max((maxX - minX) / 2, (maxY - minY) / 2) };
     }
     return this.realOwnCenter(this.players[this.active]) ?? this.realOwnCenter(this.players[0]) ?? this.biggestCellReal();
   }
@@ -497,9 +540,10 @@ export class Multibox implements Scene {
   }
 
   private pingMs(): number {
+    const aux = this.auxClient;
+    if (this.mode === "spectating" && aux && aux.ws?.readyState === WebSocket.OPEN && aux.ping > 0) return aux.ping;
     const a = this.players[this.active]?.client;
     if (a && a.ws?.readyState === WebSocket.OPEN && a.ping > 0) return a.ping;
-    const aux = this.auxClient;
     if (aux && aux.ws?.readyState === WebSocket.OPEN && aux.ping > 0) return aux.ping;
     return 0;
   }
@@ -554,6 +598,15 @@ export class Multibox implements Scene {
 
     for (let i = 0; i < this.players.length; i++) {
       const al = this.alive(this.players[i]);
+      if (!this.aliveState[i] && al) {
+        const w = this.players[i].world;
+        w.spawnFxAt = performance.now();
+        for (const id of w.ownIds) {
+          const n = w.nodes.get(id);
+          if (n) n.born = w.spawnFxAt;
+        }
+        if (i === this.active) this.overlay.snapCamera();
+      }
       if (this.aliveState[i] && !al && i === this.active && i !== this.pendingRespawn) {
         const j = this.players.findIndex((p, k) => k !== i && this.controllable(p) && this.alive(p));
         if (j >= 0) { this.active = j; this.overlay.snapCamera(); this.log(`[agarv2mod] box ${i + 1} died -> switch to box ${j + 1}`); }
@@ -561,13 +614,24 @@ export class Multibox implements Scene {
       this.aliveState[i] = al;
     }
 
+    const anyAlive = this.players.some((p) => this.alive(p));
+    if (this.wasAlive && !anyAlive && this.mode === "playing" && this.pendingRespawn === null) {
+      this.log("[agarv2mod] all boxes died - back to menu");
+      this.onAllDead?.();
+    }
+    this.wasAlive = anyAlive;
+
     const now = performance.now();
     if (this.macroFeedHeld && this.mode === "playing" && !this.paused && now - this.lastFeed > MACRO_FEED_MS) {
       this.lastFeed = now;
       this.eject();
     }
 
-    if (this.paused || this.mode === "spectating") return;
+    if (this.paused) return;
+    if (this.mode === "spectating") {
+      if (this.freeRoam) this.sendRoam();
+      return;
+    }
 
     this.tickN++;
     const cursor = this.overlay.screenToWorld(this.mouseX, this.mouseY);
@@ -591,5 +655,13 @@ export class Multibox implements Scene {
       }
       this.sendTo(p, encodeMove(tx, ty, this.moveFmt));
     }
+  }
+
+  private sendRoam() {
+    const aux = this.auxClient;
+    if (!aux || aux.ws?.readyState !== WebSocket.OPEN || !this.overlay) return;
+    const cur = this.overlay.screenToWorld(this.mouseX, this.mouseY);
+    const w = this.spectateWorld;
+    aux.send(encodeMove(cur.x + w.scrambleX, cur.y + w.scrambleY, this.moveFmt));
   }
 }

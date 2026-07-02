@@ -13,6 +13,6 @@ const res = await build({
 });
 
 const code = res.outputFiles[0].text;
-mkdirSync("../docs/agarv2mod/assets/js", { recursive: true });
-writeFileSync("../docs/agarv2mod/assets/js/main.js", code);
+mkdirSync("../../docs/agarv2mod/assets/js", { recursive: true });
+writeFileSync("../../docs/agarv2mod/assets/js/main.js", code);
 console.log("[agarv2mod] emitted docs/agarv2mod/assets/js/main.js");

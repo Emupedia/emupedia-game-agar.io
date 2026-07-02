@@ -37,6 +37,7 @@ export interface ThemeSettings {
   animatedBorder: boolean;
   cellShadow: boolean;
   spawnEffects: boolean;
+  backgroundColor: string;
   backgroundUrl: string;
   activeOutline: string;
   inactiveOutline: string;
@@ -50,7 +51,7 @@ export interface GameSettings {
   zoomMode: ZoomMode;
   inactiveBoxStops: boolean;
   spectatorView: boolean;
-  animationDelay: number;
+  drawDelay: number;
   splitOp: number;
   ejectOp: number;
   chatOp: number;
@@ -63,8 +64,8 @@ export const ACTION_LABELS: Record<ActionKey, string> = {
   split: "Split",
   eject: "Eject (single)",
   macroFeed: "Eject / feed (hold)",
-  doubleSplit: "Double split",
-  split16: "Split 16",
+  doubleSplit: "Double split (x2)",
+  split16: "Multi split (x4)",
   switchBox: "Switch box",
   respawn: "Respawn",
   pause: "Pause camera",
@@ -102,6 +103,7 @@ export const DEFAULT_THEME: ThemeSettings = {
   animatedBorder: true,
   cellShadow: true,
   spawnEffects: true,
+  backgroundColor: "#0c0c16",
   backgroundUrl: "",
   activeOutline: "#ff3b30",
   inactiveOutline: "#ffffff",
@@ -112,7 +114,7 @@ export const DEFAULT_GAME: GameSettings = {
   zoomMode: "auto",
   inactiveBoxStops: false,
   spectatorView: false,
-  animationDelay: 0,
+  drawDelay: 70,
   splitOp: 17,
   ejectOp: 21,
   chatOp: 98,
@@ -163,6 +165,11 @@ function load(): Settings {
     base.bindings = { ...DEFAULT_BINDINGS, ...(o.bindings ?? {}) };
     base.theme = { ...DEFAULT_THEME, ...(o.theme ?? {}) };
     base.game = { ...DEFAULT_GAME, ...(o.game ?? {}) };
+    const legacyDelay = (o.game as { animationDelay?: number } | undefined)?.animationDelay;
+    if (typeof legacyDelay === "number" && typeof o.game?.drawDelay !== "number") {
+      base.game.drawDelay = Math.max(20, Math.min(400, 70));
+    }
+    if (!base.theme.backgroundColor) base.theme.backgroundColor = DEFAULT_THEME.backgroundColor;
     if (localStorage.getItem(BINDINGS_VERSION_KEY) !== BINDINGS_VERSION) {
       base.bindings = { ...DEFAULT_BINDINGS };
       try { localStorage.setItem(BINDINGS_VERSION_KEY, BINDINGS_VERSION); } catch {}
