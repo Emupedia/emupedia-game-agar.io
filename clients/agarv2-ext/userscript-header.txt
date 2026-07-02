@@ -1,0 +1,11 @@
+// ==UserScript==
+// @name         Multibox Extension for Agar v2 (Emupedia) (by Revenant)
+// @namespace    Multibox Extension for Agar v2 (Emupedia)
+// @version      0.2.0
+// @description  Play the dual mode/single mode via script (made by Revenant)
+// @author       Tony
+// @match        https://emupedia.net/emupedia-game-agar.io/cigar2*
+// @license      MIT
+// @run-at       document-start
+// @grant        none
+// ==/UserScript==

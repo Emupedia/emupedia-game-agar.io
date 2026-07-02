@@ -1,0 +1,15 @@
+{
+  "manifest_version": 3,
+  "name": "Multibox Extension for Agar v2 (Emupedia)",
+  "version": "0.2.0",
+  "description": "Play the dual mode/single mode via script",
+  "author": "Tony",
+  "content_scripts": [
+    {
+      "matches": ["https://emupedia.net/emupedia-game-agar.io/cigar2*"],
+      "js": ["content.js"],
+      "run_at": "document_start",
+      "world": "MAIN"
+    }
+  ]
+}
