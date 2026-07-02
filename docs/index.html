@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="minimal-ui, width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+		<meta name="description" content="Agar.io — choose and play any client version" />
+		<meta name="theme-color" content="#3b6ea5" id="theme-color-meta" />
+
+		<title>Agar.io</title>
+
+		<script>
+			(function () {
+				if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+					document.documentElement.classList.add('darkTheme');
+					var meta = document.getElementById('theme-color-meta');
+					if (meta) meta.setAttribute('content', '#090d17');
+				}
+
+				var clients = { agarv1: 1, agarv2: 1, agarv2mod: 1, agarv3: 1 };
+				var hash = location.hash.replace(/^#\/?/, '');
+				var saved = null;
+				try {
+					saved = localStorage.getItem('agar-client');
+				} catch (e) {}
+				if (clients[hash] || clients[saved]) {
+					document.documentElement.classList.add('launcher-autoload');
+				}
+			})();
+		</script>
+
+		<link rel="icon" type="image/svg+xml" href="agarv2/assets/img/favicon.svg" />
+		<link href="https://fonts.googleapis.com/css?family=Ubuntu:700" rel="stylesheet" type="text/css" />
+		<link href="agarv2/assets/css/bootstrap.min.css" rel="stylesheet" />
+
+		<style>
+			*, *::before, *::after {
+				box-sizing: border-box;
+			}
+
+			html, body {
+				height: 100%;
+				margin: 0;
+				padding: 0;
+				overflow: hidden;
+				font-family: Ubuntu, sans-serif;
+				font-size: 14px;
+			}
+
+			#app {
+				height: 100%;
+				position: relative;
+			}
+
+			html.launcher-autoload #picker {
+				opacity: 0;
+				visibility: hidden;
+				pointer-events: none;
+			}
+
+			/* ── Picker: game canvas + overlay + hello dialog ── */
+
+			#picker {
+				position: absolute;
+				inset: 0;
+				transition: opacity 0.25s ease, visibility 0.25s ease;
+			}
+
+			#picker.is-hidden {
+				opacity: 0;
+				visibility: hidden;
+				pointer-events: none;
+			}
+
+			.picker-bg {
+				position: absolute;
+				inset: 0;
+				background-color: #f2fbff;
+				background-image:
+					linear-gradient(rgba(0, 0, 0, 0.07) 1px, transparent 1px),
+					linear-gradient(90deg, rgba(0, 0, 0, 0.07) 1px, transparent 1px);
+				background-size: 50px 50px;
+			}
+
+			.picker-overlay {
+				position: absolute;
+				inset: 0;
+				background-color: rgba(0, 0, 0, 0.3);
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				overflow: auto;
+				padding: 24px 12px;
+				font-size: 14px;
+			}
+
+			#lobby-stack {
+				position: relative;
+				width: 350px;
+				height: 650px;
+				flex-shrink: 0;
+			}
+
+			#picker #helloDialog {
+				position: relative;
+				width: 350px;
+				height: 650px;
+				background-color: rgba(255, 255, 255, 0.91);
+				border-radius: 15px;
+				box-shadow: 0 0 9px #243342;
+			}
+
+			#picker #helloDialogContent {
+				padding: 5px 15px;
+				height: 642px;
+				overflow-y: auto;
+			}
+
+			#picker #gameplay,
+			#picker #news {
+				position: absolute;
+				top: 0;
+				width: 350px;
+				height: 650px;
+				background-color: rgba(255, 255, 255, 0.91);
+				border-radius: 15px;
+				padding: 5px 15px;
+				box-shadow: 0 0 9px #243342;
+			}
+
+			#picker #gameplay {
+				left: 105%;
+			}
+
+			#picker #news {
+				left: -105%;
+			}
+
+			#picker #news .text {
+				overflow-y: scroll;
+				height: 550px;
+				font-size: 15px;
+			}
+
+			#picker #gameplay .text {
+				overflow-y: scroll;
+				height: 335px;
+				font-size: 15px;
+			}
+
+			#picker h5 {
+				font-weight: bold;
+				font-size: 17px;
+			}
+
+			#picker ul {
+				padding-left: 20px;
+			}
+
+			#picker h2 {
+				margin-top: 0;
+				margin-bottom: 0;
+			}
+
+			#picker .title {
+				padding: 10px;
+				text-align: center;
+			}
+
+			#picker hr {
+				border-top: 2px solid #000;
+				margin-top: 15px;
+				margin-bottom: 15px;
+			}
+
+			#picker hr.top {
+				margin-top: 5px;
+			}
+
+			#picker .launcher-subtitle {
+				margin: 0;
+				font-size: 14px;
+				color: #555;
+			}
+
+			#picker .form-wrapper {
+				width: 100%;
+				display: flex;
+				gap: 10px;
+				align-items: flex-end;
+				margin-bottom: 10px;
+				clear: both;
+			}
+
+			#picker .client-choice {
+				display: block;
+			}
+
+			#picker .btn-play {
+				width: 100%;
+				display: block;
+				height: 35px;
+			}
+
+			#picker .client-desc {
+				margin: -4px 0 10px;
+				font-size: 13px;
+				line-height: 1.35;
+			}
+
+			#picker #footer {
+				text-align: center;
+				margin-bottom: 10px;
+				margin-top: -10px;
+			}
+
+			#picker .client-tag {
+				font-size: 11px;
+				font-weight: normal;
+				opacity: 0.85;
+			}
+
+			@media screen and (max-width: 1100px) {
+				#lobby-stack {
+					transform: scale(0.85);
+				}
+			}
+
+			@media screen and (max-width: 899px) {
+				#lobby-stack {
+					transform: scale(0.65);
+				}
+			}
+
+			@media screen and (max-width: 480px) {
+				#picker #gameplay,
+				#picker #news {
+					display: none;
+				}
+
+				#lobby-stack {
+					transform: scale(0.8);
+				}
+			}
+
+			/* ── Dark theme (matches agarv2) ── */
+
+			.darkTheme .picker-bg {
+				background-color: #111111;
+				background-image:
+					linear-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px),
+					linear-gradient(90deg, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+			}
+
+			.darkTheme #picker #helloDialog,
+			.darkTheme #picker #gameplay,
+			.darkTheme #picker #news {
+				background-color: rgba(9, 13, 23, 0.6);
+				color: #fff;
+				border: 2px solid rgba(36, 51, 66, 0.9);
+				box-shadow: 0 0 9px #243342;
+			}
+
+			.darkTheme #picker hr {
+				border-top-color: #fff;
+			}
+
+			.darkTheme #picker .text-muted,
+			.darkTheme #picker #footer {
+				color: #aaa;
+			}
+
+			.darkTheme #picker #gameplay .text a {
+				color: #fff;
+			}
+
+			.darkTheme #client-loading #connecting-content {
+				background-color: rgba(9, 13, 23, 0.6);
+				color: #fff;
+				border: 2px solid rgba(36, 51, 66, 0.9);
+				box-shadow: 0 0 9px #243342;
+			}
+
+			.darkTheme #client-loading hr {
+				border-top-color: #fff;
+			}
+
+			/* ── Embedded client host ── */
+
+			#client-host {
+				position: absolute;
+				inset: 0;
+				background: #000;
+				opacity: 0;
+				visibility: hidden;
+				transition: opacity 0.3s ease, visibility 0.3s ease;
+			}
+
+			#client-host.is-active {
+				opacity: 1;
+				visibility: visible;
+			}
+
+			#client-frame {
+				position: absolute;
+				inset: 0;
+				width: 100%;
+				height: 100%;
+				border: 0;
+				background: #000;
+			}
+
+			#client-loading {
+				position: absolute;
+				inset: 0;
+				background-color: rgba(0, 0, 0, 0.3);
+				z-index: 2;
+				display: flex;
+				align-items: flex-start;
+				justify-content: center;
+				padding-top: 100px;
+				transition: opacity 0.25s ease, visibility 0.25s ease;
+			}
+
+			#client-loading.is-hidden {
+				opacity: 0;
+				visibility: hidden;
+				pointer-events: none;
+			}
+
+			#client-loading #connecting-content {
+				width: 350px;
+				background-color: #fff;
+				border-radius: 15px;
+				padding: 5px 15px;
+				box-shadow: 0 0 9px #243342;
+			}
+
+			#client-loading h3 {
+				text-align: center;
+				margin-top: 10px;
+				margin-bottom: 10px;
+			}
+
+			#client-toolbar {
+				position: absolute;
+				top: 10px;
+				left: 50%;
+				transform: translateX(-50%);
+				z-index: 3;
+				display: flex;
+				align-items: center;
+				gap: 6px;
+				padding: 4px 6px;
+				background: rgba(0, 0, 0, 0.45);
+				border: 1px solid rgba(255, 255, 255, 0.15);
+				border-radius: 999px;
+				backdrop-filter: blur(6px);
+				-webkit-backdrop-filter: blur(6px);
+			}
+
+			#client-label {
+				background: rgba(0, 0, 0, 0.2);
+				color: #fff;
+				padding: 6px 10px;
+				border-radius: 4px;
+				font-size: 14px;
+				text-shadow: 1px 1px 2px #000;
+				white-space: nowrap;
+			}
+
+			#switch-client-btn {
+				height: 35px;
+				min-width: 35px;
+				padding: 6px 10px;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="app">
+			<section id="picker" aria-label="Client picker">
+				<div class="picker-bg" aria-hidden="true"></div>
+				<div class="picker-overlay">
+					<div id="lobby-stack">
+						<div id="helloDialog">
+							<div id="helloDialogContent">
+								<div>
+									<h2 class="title">Agar.io</h2>
+									<hr class="top" />
+									<a class="text-center" style="display: block; color: red;" href="https://discord.gg/emupedia-510149138491506688" target="_blank" rel="noopener noreferrer" id="discord-link">Join us on Discord if you have suggestions</a>
+								</div>
+
+								<div class="form-wrapper client-choice">
+									<button type="button" class="btn btn-play btn-info client-card" data-client="agarv1">
+										<i class="glyphicon glyphicon-play"></i>&nbsp;Agar.io v1 <span class="client-tag">(Classic)</span>
+									</button>
+								</div>
+								<p class="text-muted client-desc" id="desc-v1">Original legacy server and client with the classic look and feel.</p>
+
+								<div class="form-wrapper client-choice">
+									<button type="button" class="btn btn-play btn-primary client-card" data-client="agarv2">
+										<i class="glyphicon glyphicon-play"></i>&nbsp;Agar.io v2
+									</button>
+								</div>
+								<p class="text-muted client-desc" id="desc-v2">Enhanced server and client with mobile controls and more.</p>
+
+								<div class="form-wrapper client-choice">
+									<button type="button" class="btn btn-play btn-success client-card" data-client="agarv2mod">
+										<i class="glyphicon glyphicon-play"></i>&nbsp;Agar.io v2 - Multibox <span class="client-tag">(by Tony)</span>
+									</button>
+								</div>
+								<p class="text-muted client-desc" id="desc-v2mod">Standalone multibox client with custom renderer for v2 server, dual-box play and more.</p>
+
+								<div class="form-wrapper client-choice">
+									<button type="button" class="btn btn-play btn-warning client-card" data-client="agarv3">
+										<i class="glyphicon glyphicon-play"></i>&nbsp;Agar.io v3 <span class="client-tag">(Beta)</span>
+									</button>
+								</div>
+								<p class="text-muted client-desc" id="desc-v3">Next-generation server and client with experimental features.</p>
+
+								<hr />
+								<div id="footer" class="text-center text-muted">
+									<span>Have fun!</span>
+								</div>
+							</div>
+						</div>
+
+						<div id="gameplay">
+							<div>
+								<h2 class="title">Rules</h2>
+								<hr class="top" />
+								<p id="rule1">Don't upload forbbiden custom skins, especially if it's someone's face, you might get your skin banned or yourself banned from the game.</p>
+								<p id="rule2">Don't use other people's nicknames in chat or as your name in a derogatory way, you might get muted or banned from the game.</p>
+								<h2 class="title">Gameplay</h2>
+								<hr class="top" />
+								<div class="text"></div>
+							</div>
+						</div>
+
+						<div id="news">
+							<div>
+								<h2 class="title">News</h2>
+								<hr class="top" />
+								<div class="text"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<section id="client-host" aria-label="Game client" hidden>
+				<div id="client-loading" aria-live="polite">
+					<div id="connecting-content">
+						<h3 id="loading-text">Trying to connect...</h3>
+						<hr class="top" />
+						<p>Please wait while the client loads.</p>
+					</div>
+				</div>
+
+				<div id="client-toolbar">
+					<span id="client-label"></span>
+					<button type="button" class="btn btn-success" id="switch-client-btn" title="Switch client">
+						<i class="glyphicon glyphicon-th-list"></i>&nbsp;Switch
+					</button>
+				</div>
+
+				<div id="frame-container"></div>
+			</section>
+		</div>
+
+		<script>
+			(function () {
+				var LOCALES_BASE = 'agarv2/assets/locales/';
+				var FALLBACK_LOCALE = 'en';
+				var locale = FALLBACK_LOCALE;
+				var strings = {};
+
+				var CLIENTS = {
+					agarv1: { label: 'Agar.io v1', title: 'Agar.io v1 — Classic' },
+					agarv2: { label: 'Agar.io v2', title: 'Agar.io v2' },
+					agarv2mod: { label: 'Agar.io v2 - Multibox by Tony', title: 'Agar.io v2 - Multibox by Tony' },
+					agarv3: { label: 'Agar.io v3 Beta', title: 'Agar.io v3 Beta' }
+				};
+
+				var STORAGE_KEY = 'agar-client';
+				var picker = document.getElementById('picker');
+				var host = document.getElementById('client-host');
+				var frameContainer = document.getElementById('frame-container');
+				var loading = document.getElementById('client-loading');
+				var loadingText = document.getElementById('loading-text');
+				var clientLabel = document.getElementById('client-label');
+				var switchBtn = document.getElementById('switch-client-btn');
+				var activeClient = null;
+				var activeFrame = null;
+				var themeColorMeta = document.getElementById('theme-color-meta');
+
+				function applyColorScheme(isDark) {
+					document.documentElement.classList.toggle('darkTheme', isDark);
+					if (themeColorMeta) {
+						themeColorMeta.setAttribute('content', isDark ? '#090d17' : '#3b6ea5');
+					}
+				}
+
+				function initColorScheme() {
+					var mq = window.matchMedia('(prefers-color-scheme: dark)');
+					applyColorScheme(mq.matches);
+					if (typeof mq.addEventListener === 'function') {
+						mq.addEventListener('change', function (event) {
+							applyColorScheme(event.matches);
+						});
+					} else if (typeof mq.addListener === 'function') {
+						mq.addListener(function (event) {
+							applyColorScheme(event.matches);
+						});
+					}
+				}
+
+				initColorScheme();
+
+				function detectLocale() {
+					var tags = navigator.languages || [navigator.language || FALLBACK_LOCALE];
+					var known = ['en', 'es', 'tr', 'cs', 'bs', 'sr', 'sr-Latn', 'hr', 'mk', 'mk-Latn', 'sl', 'ro', 'it', 'fr', 'pt-BR', 'pt-PT', 'nl', 'de', 'sv', 'da', 'nb', 'nn', 'hu', 'fi', 'et', 'pl', 'lv', 'lt', 'mt', 'sk', 'bg', 'bg-Latn', 'el', 'ka', 'ka-Latn', 'ru', 'ru-Latn', 'uk'];
+					for (var i = 0; i < tags.length; i++) {
+						var raw = (tags[i] || '').trim();
+						if (!raw) continue;
+						var norm = raw.replace('_', '-');
+						var parts = norm.split('-');
+						var candidates = [norm];
+						if (parts.length > 1) {
+							candidates.push(parts[0] + '-' + parts[1].charAt(0).toUpperCase() + parts[1].slice(1).toLowerCase());
+							if (parts[1].toLowerCase() === 'latn') candidates.push(parts[0] + '-Latn');
+						}
+						candidates.push(parts[0]);
+						for (var j = 0; j < candidates.length; j++) {
+							if (known.indexOf(candidates[j]) !== -1) {
+								return candidates[j];
+							}
+						}
+					}
+					return FALLBACK_LOCALE;
+				}
+
+				function fetchLocale(code) {
+					return fetch(LOCALES_BASE + code + '.json').then(function (res) {
+						if (!res.ok) throw new Error('locale');
+						return res.json();
+					});
+				}
+
+				function renderGameplay() {
+					var container = document.querySelector('#gameplay .text');
+					var g = strings.gameplay;
+					if (!container || !g) return;
+
+					var html = '';
+					if (g.controlsIntro) {
+						html += '<p class="text-center">' + g.controlsIntro + '</p><hr />';
+					}
+					['objective', 'startingOut', 'movement', 'consumeSmaller', 'avoidLarger', 'splitting', 'ejectingMass', 'teamPlay', 'growDominate', 'viruses', 'beStrategic'].forEach(function (key) {
+						if (g[key]) html += g[key] + '<br /><br />';
+					});
+					if (g.closing) html += '<hr /><p class="text-center">' + g.closing + '</p><hr />';
+					if (g.goodLuck) html += '<h5 class="text-center">' + g.goodLuck + '</h5>';
+					container.innerHTML = html;
+				}
+
+				function formatNewsDate(dateStr) {
+					return dateStr;
+				}
+
+				function renderNews() {
+					var container = document.querySelector('#news .text');
+					if (!container || !strings.news || !strings.news.entries) return;
+
+					var html = '';
+					var entries = strings.news.entries;
+					for (var i = 0; i < entries.length; i++) {
+						var entry = entries[i];
+						if (i > 0) html += '<hr />';
+						html += '<b>' + formatNewsDate(entry.date) + '</b><ul>';
+						for (var j = 0; j < entry.items.length; j++) {
+							html += '<li>' + entry.items[j] + '</li>';
+						}
+						html += '</ul>';
+					}
+					container.innerHTML = html;
+				}
+
+				function applyLobbyStrings() {
+					var g = strings.gameplay;
+					var n = strings.news;
+					var l = strings.lobby;
+
+					if (l && l.discordSuggestions) {
+						document.getElementById('discord-link').textContent = l.discordSuggestions;
+					}
+
+					var gameplayTitles = document.querySelectorAll('#gameplay h2.title');
+					if (g) {
+						if (gameplayTitles[0] && g.rulesTitle) gameplayTitles[0].textContent = g.rulesTitle;
+						if (gameplayTitles[1] && g.gameplayTitle) gameplayTitles[1].textContent = g.gameplayTitle;
+						if (g.rule1) document.getElementById('rule1').textContent = g.rule1;
+						if (g.rule2) document.getElementById('rule2').textContent = g.rule2;
+					}
+
+					var newsTitle = document.querySelector('#news h2.title');
+					if (newsTitle && n && n.title) newsTitle.textContent = n.title;
+
+					renderGameplay();
+					renderNews();
+				}
+
+				function loadLobbyLocale() {
+					locale = detectLocale();
+					return fetchLocale(locale).catch(function () {
+						locale = FALLBACK_LOCALE;
+						return fetchLocale(FALLBACK_LOCALE);
+					}).then(function (data) {
+						strings = data;
+						document.documentElement.lang = locale;
+						applyLobbyStrings();
+					}).catch(function () {});
+				}
+
+				function isValidClient(id) {
+					return Object.prototype.hasOwnProperty.call(CLIENTS, id);
+				}
+
+				function saveClient(id) {
+					try {
+						localStorage.setItem(STORAGE_KEY, id);
+					} catch (e) {}
+				}
+
+				function readSavedClient() {
+					try {
+						var saved = localStorage.getItem(STORAGE_KEY);
+						return isValidClient(saved) ? saved : null;
+					} catch (e) {
+						return null;
+					}
+				}
+
+				function readHashClient() {
+					var hash = location.hash.replace(/^#\/?/, '');
+					return isValidClient(hash) ? hash : null;
+				}
+
+				function setHash(id) {
+					var next = id ? '#' + id : '';
+					if (location.hash !== next) {
+						history.pushState({ client: id || null }, '', next || location.pathname + location.search);
+					}
+				}
+
+				function destroyFrame() {
+					if (activeFrame) {
+						activeFrame.remove();
+						activeFrame = null;
+					}
+					frameContainer.textContent = '';
+				}
+
+				function showLoading(label) {
+					loadingText.textContent = 'Loading ' + label + '...';
+					loading.classList.remove('is-hidden');
+				}
+
+				function hideLoading() {
+					loading.classList.add('is-hidden');
+				}
+
+				function loadClient(id, options) {
+					options = options || {};
+					if (!isValidClient(id)) {
+						return;
+					}
+
+					var meta = CLIENTS[id];
+					activeClient = id;
+					saveClient(id);
+
+					if (!options.skipHash) {
+						setHash(id);
+					}
+
+					document.title = meta.title;
+					clientLabel.textContent = meta.label;
+					host.hidden = false;
+					picker.classList.add('is-hidden');
+					host.classList.add('is-active');
+					showLoading(meta.label);
+					destroyFrame();
+
+					var frame = document.createElement('iframe');
+					frame.id = 'client-frame';
+					frame.src = id + '/';
+					frame.title = meta.title;
+					frame.setAttribute('allow', 'fullscreen');
+					frame.setAttribute('loading', 'eager');
+
+					frame.addEventListener('load', function () {
+						hideLoading();
+					});
+
+					activeFrame = frame;
+					frameContainer.appendChild(frame);
+				}
+
+				function showPicker(options) {
+					options = options || {};
+					activeClient = null;
+					destroyFrame();
+					hideLoading();
+					host.classList.remove('is-active');
+					host.hidden = true;
+					picker.classList.remove('is-hidden');
+					document.documentElement.classList.remove('launcher-autoload');
+					document.title = 'Agar.io';
+
+					if (!options.skipHash) {
+						setHash(null);
+					}
+				}
+
+				document.querySelectorAll('.client-card').forEach(function (button) {
+					button.addEventListener('click', function () {
+						loadClient(button.dataset.client);
+					});
+				});
+
+				switchBtn.addEventListener('click', function () {
+					showPicker();
+				});
+
+				window.addEventListener('popstate', function (event) {
+					var client = (event.state && event.state.client) || readHashClient();
+					if (client && isValidClient(client)) {
+						loadClient(client, { skipHash: true });
+					} else {
+						showPicker({ skipHash: true });
+					}
+				});
+
+				document.addEventListener('keydown', function (event) {
+					if (event.key === 'Escape' && activeClient) {
+						showPicker();
+					}
+				});
+
+				function bootLauncher() {
+					var initial = readHashClient() || readSavedClient();
+					document.documentElement.classList.remove('launcher-autoload');
+
+					if (initial) {
+						history.replaceState({ client: initial }, '', '#' + initial);
+						loadClient(initial, { skipHash: true });
+					} else {
+						history.replaceState({ client: null }, '', location.pathname + location.search);
+					}
+				}
+
+				bootLauncher();
+				loadLobbyLocale();
+			})();
+		</script>
+	</body>
+</html>
