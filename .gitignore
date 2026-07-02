@@ -1,5 +1,7 @@
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 
+/docs/agarv1/skins
+/docs/agarv2/skins
 /docs/agarv2/scripts
 /docs/agarv3/skins
 /docs/skins2
