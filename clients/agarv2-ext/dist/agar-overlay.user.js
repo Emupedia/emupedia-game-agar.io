@@ -9,13 +9,2801 @@
 // @run-at       document-start
 // @grant        none
 // ==/UserScript==
-"use strict";(()=>{var Ft=Object.defineProperty;var Rt=(r,e,t)=>e in r?Ft(r,e,{enumerable:!0,configurable:!0,writable:!0,value:t}):r[e]=t;var d=(r,e,t)=>Rt(r,typeof e!="symbol"?e+"":e,t);var ye=class{constructor(){d(this,"msgs",[]);d(this,"rev",0)}add(e,t,s){this.msgs.push({name:e,message:t,color:s,t:Date.now()}),this.msgs.length>100&&this.msgs.shift(),this.rev++}};var Qe="i32",Ne=class{constructor(e){d(this,"view");d(this,"off",0);this.view=new DataView(e)}get remaining(){return this.view.byteLength-this.off}u8(){let e=this.view.getUint8(this.off);return this.off+=1,e}u16(){let e=this.view.getUint16(this.off,!0);return this.off+=2,e}i16(){let e=this.view.getInt16(this.off,!0);return this.off+=2,e}u32(){let e=this.view.getUint32(this.off,!0);return this.off+=4,e}i32(){let e=this.view.getInt32(this.off,!0);return this.off+=4,e}f32(){let e=this.view.getFloat32(this.off,!0);return this.off+=4,e}f64(){let e=this.view.getFloat64(this.off,!0);return this.off+=8,e}coord(){return Qe==="i16"?this.i16():this.i32()}str8(){let e=[];for(;!(this.remaining<1);){let t=this.u8();if(t===0)break;e.push(t)}return Wt(e)}str16(){let e="";for(;!(this.remaining<2);){let t=this.u16();if(t===0)break;e+=String.fromCharCode(t)}return e}},Ze=typeof TextDecoder!="undefined"?new TextDecoder:null;function Wt(r){if(Ze)return Ze.decode(new Uint8Array(r));let e="";for(let t of r)e+=String.fromCharCode(t);return e}function Dt(r){let e=Qe==="i16"?2:4,t=[],s=r.remaining>=2?r.u16():0;for(let i=0;i<s&&r.remaining>=8;i++)t.push({by:r.u32(),id:r.u32()});let n=[];for(;!(r.remaining<4);){let i=r.u32();if(i===0||r.remaining<e*2+3)break;let o=r.coord(),p=r.coord(),c=r.u16(),h=r.u8();if(h&128){if(r.remaining<1)break;r.u8()}let w=(h&1)!==0,y=null;if(h&2){if(r.remaining<3)break;y={r:r.u8(),g:r.u8(),b:r.u8()}}let M=h&4?r.str8():null,E=h&8?r.str8():null;n.push({id:i,x:o,y:p,size:c,isVirus:w,color:y,name:E,skin:M})}let a=[],l=r.remaining>=2?r.u16():0;for(let i=0;i<l&&r.remaining>=4;i++)a.push(r.u32());return{eats:t,updates:n,removes:a}}function zt(r){return{minX:r.f64(),minY:r.f64(),maxX:r.f64(),maxY:r.f64()}}function Ut(r){let e=[],t=r.u32();if(t>100)return e;for(let s=0;s<t&&r.remaining>=4;s++){let n=r.u32();e.push({id:n,name:r.str8()})}return e}function ie(r){let e=new Ne(r),t=e.u8();switch(t){case 16:return{t:"world",world:Dt(e)};case 64:return{t:"border",border:zt(e)};case 32:{let s=[];for(;e.remaining>=4;)s.push(e.u32());return{t:"own",ownIds:s}}case 49:return{t:"leaderboard",entries:Ut(e)};case 98:{let s=e.u8(),n=e.u8(),a=e.u8(),l=e.u8(),i=e.str8(),o=e.str8();return{t:"chat",name:i,message:o,color:`rgb(${n},${a},${l})`}}case 20:return{t:"clear"};default:return{t:"raw",op:t,len:r.byteLength}}}function se(r,e=48){let t=new Uint8Array(r),s=Math.min(t.length,e),n="";for(let a=0;a<s;a++)n+=t[a].toString(16).padStart(2,"0")+" ";return`${n}(${t.length}B)`}var _e={split:"Split",eject:"Eject (single)",macroFeed:"Eject / feed (hold)",doubleSplit:"Double split",split16:"Split 16",switchBox:"Switch box",respawn:"Respawn",pause:"Pause camera",spectateToggle:"Spectate: follow #1 / free",togglePellets:"Hide / show pellets"},de={split:"Space",eject:"",macroFeed:"KeyE",doubleSplit:"KeyG",split16:"KeyT",switchBox:"Tab",respawn:"Backquote",pause:"KeyP",spectateToggle:"KeyQ",togglePellets:"KeyX"},Ie={showGrid:!0,showMinimap:!0,showLeaderboard:!0,showMass:!0,showKillFeed:!0,showChat:!0,showNames:!0,customSkins:!1,gameSkins:!1,massFormat:"auto",ringSize:1,pelletColor:"",showPellets:!0,animatedBorder:!0,cellShadow:!0,spawnEffects:!0,backgroundUrl:"",activeOutline:"#ff3b30",inactiveOutline:"#ffffff"},Be={multiboxCamera:"single",zoomMode:"auto",inactiveBoxStops:!1,spectatorView:!1,animationDelay:0,splitOp:17,ejectOp:21,chatOp:98,autoFps:!0,maxFps:144,renderScale:1},rt=()=>({name:"",hue:200,skins:Array.from({length:2},()=>"")}),at=()=>Array.from({length:9},rt),it="agar-ext-settings",et="agar-ext-bindv",tt="4",nt="agar-ext-chatopfix",st="agar-ext-specoff";function ot(r){let e=Array.isArray(r==null?void 0:r.skins)?r.skins.slice(0,2):[];for(;e.length<2;)e.push("");return{name:typeof(r==null?void 0:r.name)=="string"?r.name:"",hue:typeof(r==null?void 0:r.hue)=="number"?r.hue:200,skins:e}}function Ht(){var e,t,s;let r={profiles:at(),selected:0,bindings:{...de},theme:{...Ie},game:{...Be}};try{let n=JSON.parse(localStorage.getItem(it)||"{}");if(Array.isArray(n.profiles)&&n.profiles.length&&(r.profiles=n.profiles.map(ot)),typeof n.selected=="number"&&(r.selected=Math.max(0,Math.min(8,n.selected))),r.bindings={...de,...(e=n.bindings)!=null?e:{}},r.theme={...Ie,...(t=n.theme)!=null?t:{}},r.game={...Be,...(s=n.game)!=null?s:{}},localStorage.getItem(et)!==tt){r.bindings={...de};try{localStorage.setItem(et,tt)}catch{}}if(localStorage.getItem(nt)!=="1"){r.game.chatOp=98;try{localStorage.setItem(nt,"1")}catch{}}if(localStorage.getItem(st)!=="1"){r.game.spectatorView=!1;try{localStorage.setItem(st,"1")}catch{}}}catch{}return r}var u=Ht();I();function I(){try{localStorage.setItem(it,JSON.stringify(u))}catch{}}function oe(){var r;return(r=u.profiles[u.selected])!=null?r:rt()}function lt(){return JSON.stringify(u,null,2)}function ct(r){var e,t,s;try{let n=JSON.parse(r);return u.profiles=Array.isArray(n.profiles)&&n.profiles.length?n.profiles.map(ot):at(),u.selected=typeof n.selected=="number"?Math.max(0,Math.min(8,n.selected)):0,u.bindings={...de,...(e=n.bindings)!=null?e:{}},u.theme={...Ie,...(t=n.theme)!=null?t:{}},u.game={...Be,...(s=n.game)!=null?s:{}},I(),!0}catch{return!1}}function me(r,e){let t=Math.round(r),s=n=>`${(n/1e3).toFixed(1)}k`;return e==="full"?t.toLocaleString():e==="short"?t>=1e3?s(t):String(t):t>=1e4?s(t):t.toLocaleString()}function pe(r){if(!r)return"-";if(r==="Space")return"Space";if(r==="Tab")return"TAB";if(r==="Backquote")return"~";if(r.startsWith("Mouse")){let e=Number(r.slice(5));return e===0?"LMB":e===1?"MMB":e===2?"RMB":`Mouse${e+1}`}return r.replace(/^Key/,"").replace(/^Digit/,"").replace(/^Arrow/,"")}var dt=/agar\.emupedia\.net|\/ws2\b/i;function Kt(r){let e=new EventTarget;return{url:r,readyState:0,binaryType:"arraybuffer",bufferedAmount:0,extensions:"",protocol:"",onopen:null,onmessage:null,onerror:null,onclose:null,send(){},close(){},addEventListener:(...s)=>e.addEventListener(...s),removeEventListener:(...s)=>e.removeEventListener(...s),dispatchEvent:s=>e.dispatchEvent(s),CONNECTING:0,OPEN:1,CLOSING:2,CLOSED:3}}function Xt(r){try{if(r.byteLength<5)return null;let e=(oe().name||"An unnamed cell").slice(0,15),t=new DataView(r).getUint32(1,!0),s=new TextEncoder().encode(e),n=new ArrayBuffer(5+s.length+1),a=new DataView(n);return a.setUint8(0,255),a.setUint32(1,t,!0),new Uint8Array(n).set(s,5),n}catch{return null}}function pt(r,e,t,s,n,a,l){let i=window.WebSocket;if(i.__agarHooked)return;let o=0,p=0,c=null;function h(w,y){let M=String(w);if(dt.test(M)&&t.blocked)return s("[agar-ext] WS1 reconnect suppressed (inert stub - no connection)"),Kt(M);let E=y!==void 0?new i(w,y):new i(w);if(dt.test(M)){c=E,r.clear(),e.attached=!0,e.url=M,e.wsProtocol=Array.isArray(y)?y[0]:y,s("[agar-ext] hooked game socket:",M,e.wsProtocol?`subprotocol=${e.wsProtocol.slice(0,13)}`:"(no subprotocol)");try{E.binaryType="arraybuffer"}catch{}let L=E.send.bind(E);t.sendRaw=C=>{E.readyState===E.OPEN&&(n.add(">*",C),L(C))},E.send=C=>{let v=C instanceof ArrayBuffer?C:ArrayBuffer.isView(C)?C.buffer.slice(C.byteOffset,C.byteOffset+C.byteLength):null;if(v&&v.byteLength){let k=new Uint8Array(v)[0];if(k===255){let A=Xt(v);A&&(v=A,C=A)}if(n.add(">",v),e.sends.some(A=>A.byteLength&&new Uint8Array(A)[0]===k)||(e.sends.push(v.slice(0)),s(`[agar-ext] capture op ${k}`,se(v))),t.suppressSpawn&&k===20||t.suppressMove&&k===5||t.suppressAction&&(k===15||k===18))return}return L(C)},E.addEventListener("message",C=>{if(E!==c||!(C.data instanceof ArrayBuffer))return;let v=C.data;if(n.add("<",v),!(!u.game.spectatorView&&v.byteLength&&new Uint8Array(v)[0]!==98))try{let k=ie(v);switch(e.frames++,k.t){case"world":r.apply(k.world),p<3&&(s(`[agar-ext] world: +${k.world.updates.length} ~ -${k.world.removes.length}`,k.world.updates.slice(0,3)),p++);break;case"border":r.border=k.border,s("[agar-ext] border",k.border);break;case"own":r.setOwn(k.ownIds),s("[agar-ext] own ids",k.ownIds);break;case"leaderboard":r.leaderboard=k.entries;break;case"chat":break;case"clear":r.clear();break;case"raw":e.unknownOps.has(k.op)||(e.unknownOps.add(k.op),s("[agar-ext] unknown op",k.op,se(v)));break}}catch(k){s("[agar-ext] decode error",k,se(v))}}),E.addEventListener("close",C=>{E===c&&s(`[agar-ext] GAME socket closed code=${C.code} reason=${C.reason||"-"}`)})}return E}h.prototype=i.prototype,h.CONNECTING=i.CONNECTING,h.OPEN=i.OPEN,h.CLOSING=i.CLOSING,h.CLOSED=i.CLOSED,h.__agarHooked=!0,window.__agarNativeWS=i,window.WebSocket=h,s("[agar-ext] WebSocket hook installed")}var q=class{constructor(){d(this,"nodes",new Map);d(this,"ownIds",new Set);d(this,"border",{minX:-8e3,minY:-8e3,maxX:8e3,maxY:8e3});d(this,"leaderboard",[]);d(this,"massAccum",0)}get scrambleX(){return(this.border.minX+this.border.maxX)/2}get scrambleY(){return(this.border.minY+this.border.maxY)/2}apply(e){var t,s;for(let n of e.eats)this.nodes.delete(n.id),this.ownIds.delete(n.id);for(let n of e.updates){let a=this.nodes.get(n.id);if(a)a.x=n.x,a.y=n.y,a.size=n.size,a.isVirus=n.isVirus,n.color&&(a.r=n.color.r,a.g=n.color.g,a.b=n.color.b,a.css=`rgb(${a.r},${a.g},${a.b})`),n.name!==null&&(a.name=n.name),n.skin!==null&&(a.skin=n.skin);else{let l=n.color?n.color.r:220,i=n.color?n.color.g:220,o=n.color?n.color.b:220;this.nodes.set(n.id,{id:n.id,x:n.x,y:n.y,size:n.size,isVirus:n.isVirus,r:l,g:i,b:o,css:`rgb(${l},${i},${o})`,name:(t=n.name)!=null?t:"",skin:(s=n.skin)!=null?s:"",rx:n.x,ry:n.y,rsize:n.size,dispMass:n.size*n.size/100,massStr:n.name||n.size>=40?me(n.size*n.size/100,u.theme.massFormat):""})}}for(let n of e.removes)this.nodes.delete(n),this.ownIds.delete(n)}setOwn(e){for(let t of e)this.ownIds.add(t)}clear(){this.nodes.clear(),this.ownIds.clear()}step(e){let t=1-Math.exp(-14*e);this.massAccum+=e;let s=this.massAccum>=.5;s&&(this.massAccum=0);for(let n of this.nodes.values())n.rx+=(n.x-n.rx)*t,n.ry+=(n.y-n.ry)*t,n.rsize+=(n.size-n.rsize)*t,s&&(n.dispMass=n.size*n.size/100,(n.name||n.rsize>=40)&&(n.massStr=me(n.dispMass,u.theme.massFormat)))}ownCenter(){let e=0,t=0,s=0,n=0;for(let a of this.ownIds){let l=this.nodes.get(a);l&&(e+=l.rx,t+=l.ry,s++,n=Math.max(n,l.rsize))}return s?{cx:e/s,cy:t/s,radius:n}:null}};var jt=new Uint8Array([254]).buffer,Gt=5e3,Yt="tFoL46WDlZuRja7W6qCl";async function Vt(r){let e=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(r));return[...new Uint8Array(e)].map(t=>t.toString(16).padStart(2,"0")).join("")}async function qt(){let r=Date.now().toString(),e=crypto.randomUUID().replaceAll("-",""),t=await Vt([r,e,location.origin,Yt].join("."));return`${r}.${e}.${t}`}var fe=class{constructor(e,t,s,n,a){this.label=e;this.url=t;this.handshake=s;this.log=n;this.onChat=a;d(this,"ws",null);d(this,"world",new q);d(this,"open",!1);d(this,"worldEnabled",!0);d(this,"ping",0);d(this,"pingTimer",0);d(this,"lastPingAt",0);d(this,"awaitingPong",!1);d(this,"pingSamples",[])}async connect(){var n;this.stopPing();let e;try{e=await qt()}catch(a){this.log(`[agar-ext] ${this.label}: token mint failed`,a);return}this.log(`[agar-ext] ${this.label}: connecting`,this.url.slice(0,80),`proto=${e.slice(0,13)}`);let t=(n=window.__agarNativeWS)!=null?n:window.WebSocket,s;try{s=new t(this.url,e)}catch(a){this.log(`[agar-ext] ${this.label}: connect threw`,a);return}s.binaryType="arraybuffer",this.ws=s,s.addEventListener("open",()=>{this.log(`[agar-ext] ${this.label}: open - replaying ${this.handshake.length} handshake packet(s)`);for(let a of this.handshake)try{s.send(a)}catch(l){this.log(`${this.label} send err`,l)}this.open=!0}),s.addEventListener("message",a=>{var l;if(a.data instanceof ArrayBuffer){if(this.awaitingPong){this.awaitingPong=!1;let i=performance.now()-this.lastPingAt;this.pingSamples.push(i),this.pingSamples.length>8&&this.pingSamples.shift(),this.ping=Math.round(Math.min(...this.pingSamples))}if(!(!this.worldEnabled&&new Uint8Array(a.data)[0]===16))try{let i=ie(a.data);switch(i.t){case"world":this.world.apply(i.world);break;case"border":this.world.border=i.border;break;case"own":this.world.setOwn(i.ownIds);break;case"leaderboard":this.world.leaderboard=i.entries;break;case"chat":(l=this.onChat)==null||l.call(this,i.name,i.message,i.color);break;case"clear":this.world.clear();break;case"raw":break}}catch(i){this.log(`[agar-ext] ${this.label}: decode error`,i,se(a.data))}}}),s.addEventListener("close",a=>{this.ws===s&&(this.open=!1),this.log(`[agar-ext] ${this.label}: closed code=${a.code} reason=${a.reason||"-"}`)}),s.addEventListener("error",()=>this.log(`[agar-ext] ${this.label}: socket error`)),this.pingTimer=window.setInterval(()=>{var a;if(((a=this.ws)==null?void 0:a.readyState)===WebSocket.OPEN)try{this.lastPingAt=performance.now(),this.awaitingPong=!0,this.ws.send(jt)}catch{}},Gt)}stopPing(){this.pingTimer&&(clearInterval(this.pingTimer),this.pingTimer=0),this.awaitingPong=!1}setHandshake(e){this.handshake=e}reconnect(){var e;this.log(`[agar-ext] ${this.label}: leaving + rejoining`);try{(e=this.ws)==null||e.close()}catch{}this.ws=null,this.open=!1,this.world.clear(),this.connect()}hasCell(){for(let e of this.world.ownIds)if(this.world.nodes.has(e))return!0;return!1}send(e){this.ws&&this.ws.readyState===WebSocket.OPEN&&this.ws.send(e)}close(){var e;this.stopPing();try{(e=this.ws)==null||e.close()}catch{}this.ws=null,this.open=!1}};function Fe(r,e,t){if(t==="f64"){let a=new ArrayBuffer(21),l=new DataView(a);return l.setUint8(0,5),l.setFloat64(1,r,!0),l.setFloat64(9,e,!0),l.setUint32(17,0,!0),a}let s=new ArrayBuffer(13),n=new DataView(s);return n.setUint8(0,5),n.setInt32(1,Math.round(r),!0),n.setInt32(5,Math.round(e),!0),n.setUint32(9,0,!0),s}function ut(r,e,t="#ffffff",s="#ffffff",n="#ffffff"){let a=`<${r}|${t}|${s}|${n}||${e}>${r}`,l=new TextEncoder().encode(a),i=new ArrayBuffer(1+l.length+1),o=new Uint8Array(i);return o[0]=20,o.set(l,1),o[1+l.length]=0,i}function Re(r,e){let t=new TextEncoder().encode(r),s=new ArrayBuffer(2+t.length+1),n=new Uint8Array(s);return n[0]=e,n[1]=0,n.set(t,2),n[2+t.length]=0,s}var ht=["#22d3ee","#fbbf24"],Jt=70,gt=15,mt=!0,ft="",bt=`wss://agar.${location.host}/ws2/`,Zt=6,Qt=1,en=!1,ve=class{constructor(e,t,s,n,a,l){this.link=t;this.stats=s;this.log=n;this.skinShare=a;this.chat=l;d(this,"players");d(this,"active",0);d(this,"overlay",null);d(this,"moveFmt","i32");d(this,"mouseX",0);d(this,"mouseY",0);d(this,"aim",[]);d(this,"aliveState",[]);d(this,"tickN",0);d(this,"connecting",!1);d(this,"spectateWorld");d(this,"macroFeedHeld",!1);d(this,"lastFeed",0);d(this,"lastAnnounce",0);d(this,"chatNick","");d(this,"lastSpecKick",0);d(this,"spectateKicked",!1);d(this,"pendingRespawn",null);d(this,"respawnStart",0);d(this,"paused",!1);d(this,"mode","menu");d(this,"fps",0);d(this,"ws1Cut",!1);d(this,"recentChat",new Map);d(this,"auxClient",null);d(this,"warnedOps",!1);d(this,"_layers",[]);d(this,"_theme",{});this.spectateWorld=new q,this.players=[{world:new q,client:null,deployed:!1},{world:new q,client:null,deployed:!1}],window.addEventListener("mousemove",i=>{this.mouseX=i.clientX,this.mouseY=i.clientY}),this.link.suppressMove=!0,this.link.suppressSpawn=!0,this.link.suppressAction=!1,this.chatNick=this.nick(),setInterval(()=>this.tick(),1e3/33),setInterval(()=>this.autoConnect(),800),setInterval(()=>this.announceSkin(),15e3)}attachOverlay(e){this.overlay=e}build254(){return new Uint8Array([254,Zt,0,0,0]).buffer}build255(){let e=new TextEncoder().encode(this.nick()),t=new ArrayBuffer(5+e.length),s=new DataView(t);return s.setUint8(0,255),s.setUint32(1,Qt,!0),new Uint8Array(t).set(e,5),t}autoConnect(){var a,l,i,o;if(this.connecting)return;let e=this.build254(),t=this.build255(),s=(l=(a=this.auxClient)==null?void 0:a.ws)==null?void 0:l.readyState;if(s!==WebSocket.OPEN&&s!==WebSocket.CONNECTING){this.connecting=!0,this.connectAux(e,t).finally(()=>this.connecting=!1);return}let n=mt?this.players.length:1;for(let p=0;p<n;p++){let c=(o=(i=this.players[p].client)==null?void 0:i.ws)==null?void 0:o.readyState;if(!(c===WebSocket.OPEN||c===WebSocket.CONNECTING)){this.connecting=!0,this.connectBox(p,e,t).finally(()=>this.connecting=!1);return}}}async connectAux(e,t){let s=ft||bt,n=new fe("AUX",s,[e,t],this.log,(a,l,i)=>this.ingestChat(a,l,i));n.worldEnabled=!1,this.auxClient=n,this.spectateWorld=n.world,await n.connect(),this.log("[agar-ext] aux (chat/spectate) socket connecting")}async connectBox(e,t,s){let n=ft||bt,a=new fe(`P${e+1}`,n,[t,s],this.log);a.worldEnabled=!1,this.players[e]={world:a.world,client:a,deployed:!1},await a.connect(),this.log(`[agar-ext] box ${e+1} socket connecting (handshake only - Play/TAB to deploy)`)}ingestChat(e,t,s){if(this.skinShare.ingest(t)||/antispam/i.test(t))return;let n=performance.now(),a=e+" "+t,l=this.recentChat.get(a);if(!(l!==void 0&&n-l<5e3)){if(this.recentChat.set(a,n),this.recentChat.size>128)for(let[i,o]of this.recentChat)n-o>8e3&&this.recentChat.delete(i);this.chat.add(e,t,s)}}nick(){return(oe().name||"An unnamed cell").slice(0,15)}alive(e){for(let t of e.world.ownIds)if(e.world.nodes.has(t))return!0;return!1}play(){var e;this.mode="playing",this.paused=!1,this.active=0,this.syncChatNick(),(e=this.players[0].client)!=null&&e.open?this.spawnBox(0):(this.pendingRespawn=0,this.respawnStart=performance.now(),this.log("[agar-ext] Play: box 1 socket still connecting - will spawn when ready"))}respawn(){let e=this.activeMass();if(e>500){this.log(`[agar-ext] quick respawn blocked - box mass ${Math.round(e)} > 500 (too big to risk)`);return}this.mode="playing",this.paused=!1,this.leaveAndRejoin(this.active)}activeMass(){let e=this.players[this.active];if(!e)return 0;let t=0;for(let s of e.world.ownIds){let n=e.world.nodes.get(s);n&&(t+=n.dispMass)}return t}leaveAndRejoin(e){let t=this.players[e];if(!(t!=null&&t.client)){this.log(`[agar-ext] quick respawn box ${e+1}: not connected yet`);return}this.pendingRespawn=e,this.respawnStart=performance.now(),this.log(`[agar-ext] quick respawn box ${e+1}: leaving server...`),t.client.reconnect()}spawnPending(){var n,a;if(this.pendingRespawn===null)return;let e=this.pendingRespawn,t=this.players[e],s=performance.now()-this.respawnStart;(n=t==null?void 0:t.client)!=null&&n.open&&s>250?(this.pendingRespawn=null,this.active=e,this.spawnBox(e),(a=this.overlay)==null||a.snapCamera(),this.log(`[agar-ext] quick respawn box ${e+1}: rejoined -> spawned`)):s>9e3&&(this.pendingRespawn=null,this.log(`[agar-ext] quick respawn box ${e+1}: timed out waiting to reconnect`))}gameSettings(){try{return JSON.parse(localStorage.getItem("settings")||"{}")}catch{return{}}}setGameNick(e){let t=!1;try{let s=this.gameSettings();s.nick!==e&&(s.nick=e,localStorage.setItem("settings",JSON.stringify(s)),t=!0)}catch{}try{let s=document.querySelector("#nick");s&&s.value!==e&&(s.value=e)}catch{}return t}syncChatNick(){let e=this.nick();if(this.setGameNick(e),e!==this.chatNick){this.chatNick=e;let t=this.auxClient;t&&(t.setHandshake([this.build254(),this.build255()]),t.reconnect()),this.log(`[agar-ext] chat nick -> "${e}"`)}}refreshChatNick(){this.syncChatNick()}buildSpawn(e){let t=this.gameSettings(),s=typeof t.fp2=="string"?t.fp2:"";if(!s)return null;let n=a=>typeof t[a]=="string"?t[a]:"#ffffff";return ut(e,s,n("cellColor"),n("nameColor"),n("borderColor"))}spawnBox(e){let t=this.players[e];if(!t)return;let s=this.nick(),n=this.buildSpawn(s);if(!n){this.log("[agar-ext] no fp2 in localStorage['settings'] - cannot spawn");return}if(!t.client){this.log(`[agar-ext] box ${e+1} not connected yet - cannot spawn`);return}t.client.worldEnabled=!0,t.client.send(n),t.deployed=!0,this.announceSkin(),this.log(`[agar-ext] opcode-20 spawn box ${e+1} (nick="${s}")`)}spectate(){this.mode==="spectating"?(this.mode="playing",this.log("[agar-ext] spectate off -> back to your boxes")):(this.mode="spectating",this.paused=!1,this.log("[agar-ext] spectate (aux socket) - follow top player"))}manageSpectate(e){var n;let t=this.auxClient;if(!t||((n=t.ws)==null?void 0:n.readyState)!==WebSocket.OPEN)return;this.mode==="spectating"||u.game.spectatorView?(t.worldEnabled||(t.worldEnabled=!0),(!this.spectateKicked||t.world.nodes.size===0&&e-this.lastSpecKick>3e3)&&(this.spectateKicked=!0,this.lastSpecKick=e,t.send(this.oneByte(gt)),window.setTimeout(()=>{var a;(this.mode==="spectating"||u.game.spectatorView)&&((a=t.ws)==null?void 0:a.readyState)===WebSocket.OPEN&&t.send(this.oneByte(gt))},300),this.log("[agar-ext] spectate: requesting aux stream (follow-leader)"))):t.worldEnabled&&(t.worldEnabled=!1,t.world.clear(),this.spectateKicked=!1)}cutWs1(){var e;if(!this.ws1Cut){this.ws1Cut=!0,this.link.blocked=!0;try{(e=this.link.ws)==null||e.close()}catch{}this.log("[agar-ext] WS1 (game socket) CUT - chat now on our sockets; game does no more WS work (fixes freezes)")}}switchActive(){var n;if(!mt){this.log("[agar-ext] single-socket mode - box 2 disabled");return}let e=this.players.length,t=-1;for(let a=1;a<=e;a++){let l=(this.active+a)%e;if(this.controllable(this.players[l])){t=l;break}}if(t<0){this.log("[agar-ext] no other box connected yet");return}this.active=t;let s=this.players[t];this.alive(s)||this.spawnBox(t),u.game.multiboxCamera==="single"&&((n=this.overlay)==null||n.snapCamera()),this.log(`[agar-ext] active -> box ${this.active+1}`)}sendTo(e,t){var s;(s=e.client)==null||s.send(t)}sendActive(e){this.sendTo(this.players[this.active],e)}oneByte(e){return new Uint8Array([e]).buffer}split(){let e=u.game.splitOp;e>0?this.sendActive(this.oneByte(e)):this.warnOps()}eject(){let e=u.game.ejectOp;e>0?this.sendActive(this.oneByte(e)):this.warnOps()}warnOps(){this.warnedOps||(this.warnedOps=!0,this.log("[agar-ext] split/eject opcode not set - Settings -> Controls (or read it from the packet log)"))}macroSplit(e){let t=u.game.splitOp;if(t<=0){this.warnOps();return}let s=this.active,n=this.players[s],a=this.aim[s];this.log(`[agar-ext] macro split x${e} on box ${s+1} (op ${t})`);for(let l=0;l<e;l++)window.setTimeout(()=>{this.controllable(n)&&(a&&this.sendTo(n,Fe(a.x,a.y,this.moveFmt)),this.sendTo(n,this.oneByte(t)))},l*60)}doubleSplit(){this.macroSplit(2)}split16(){this.macroSplit(4)}setMacroFeed(e){this.macroFeedHeld=e,e&&(this.lastFeed=0,this.eject())}togglePause(){this.paused=!this.paused}sendChat(e){var i,o,p,c;let t=e.trim().slice(0,200);if(!t)return;let s=u.game.chatOp;if(s<=0){this.log("[agar-ext] chat opcode not set (Settings -> Controls)");return}let n=this.nick();this.recentChat.set(n+" "+t,performance.now()),this.chat.add(n,t,"#67e8f9");let a=Re(t,s);if(((o=(i=this.auxClient)==null?void 0:i.ws)==null?void 0:o.readyState)===WebSocket.OPEN){this.auxClient.send(a),this.log(`[agar-ext] chat -> "${t}" (op ${s}, aux)`);return}let l=this.players.find(h=>{var w,y;return((y=(w=h.client)==null?void 0:w.ws)==null?void 0:y.readyState)===WebSocket.OPEN});l?(l.client.send(a),this.log(`[agar-ext] chat -> "${t}" (op ${s}, box)`)):((c=(p=this.link).sendRaw)==null||c.call(p,a),this.log(`[agar-ext] chat -> "${t}" (op ${s}, WS1 - aux not up yet)`))}announceSkin(){if(!en||!u.theme.customSkins||this.mode!=="playing")return;let e=(oe().skins.find(n=>!!n)||"").trim();if(!e)return;let t=u.game.chatOp;if(t<=0||!this.link.sendRaw)return;let s=performance.now();s-this.lastAnnounce<7e3||(this.lastAnnounce=s,this.link.sendRaw(Re(this.skinShare.encode(this.nick(),e),t)))}sharedSkin(e){return this.skinShare.size===0||!e?"":this.skinShare.get(e)}controllable(e){var t,s;return((s=(t=e.client)==null?void 0:t.ws)==null?void 0:s.readyState)===WebSocket.OPEN}running(){return this.mode!=="menu"}layers(){var s;let e=this._layers,t=0;for(let n=0;n<this.players.length;n++){let a=e[t];a?(a.world=this.players[n].world,a.active=n===this.active):a=e[t]={world:this.players[n].world,active:n===this.active},t++}if((s=this.auxClient)!=null&&s.worldEnabled){let n=e[t];n?(n.world=this.spectateWorld,n.active=!1):n=e[t]={world:this.spectateWorld,active:!1},t++}return e.length=t,e}themeFor(){let e=u.theme,t=this._theme;return t.grid=e.showGrid,t.names=e.showNames,t.mass=e.showMass,t.minimap=e.showMinimap,t.shadows=e.cellShadow,t.customSkins=e.customSkins,t.gameSkins=e.gameSkins,t.massFormat=e.massFormat,t.ringSize=e.ringSize,t.pelletColor=e.pelletColor,t.showPellets=e.showPellets,t.animatedBorder=e.animatedBorder,t.spawnEffects=e.spawnEffects,t.backgroundUrl=e.backgroundUrl,t.activeOutline=e.activeOutline,t.inactiveOutline=e.inactiveOutline,t}realOwnCenter(e){let t=e.world.ownCenter();return t?{cx:t.cx-e.world.scrambleX,cy:t.cy-e.world.scrambleY,radius:t.radius}:null}cameraTarget(){var e,t;if(this.paused)return null;if(this.mode==="spectating")return this.biggestInWorld(this.spectateWorld);if(u.game.multiboxCamera==="center"){let s=1/0,n=1/0,a=-1/0,l=-1/0,i=!1;for(let o of this.players)for(let p of o.world.ownIds){let c=o.world.nodes.get(p);if(!c)continue;i=!0;let h=c.rx-o.world.scrambleX,w=c.ry-o.world.scrambleY;s=Math.min(s,h-c.rsize),n=Math.min(n,w-c.rsize),a=Math.max(a,h+c.rsize),l=Math.max(l,w+c.rsize)}if(i)return{cx:(s+a)/2,cy:(n+l)/2,radius:Math.max((a-s)/2,(l-n)/2)}}return(t=(e=this.realOwnCenter(this.players[this.active]))!=null?e:this.realOwnCenter(this.players[0]))!=null?t:this.biggestCellReal()}worldBorder(){let e=this.players[this.active].world;return{minX:e.border.minX-e.scrambleX,minY:e.border.minY-e.scrambleY,maxX:e.border.maxX-e.scrambleX,maxY:e.border.maxY-e.scrambleY}}leaderboard(){let e=this.players[0].world.leaderboard;return e.length?e:this.spectateWorld.leaderboard}biggestInWorld(e){let t=null;for(let s of e.nodes.values())s.isVirus||!s.name&&s.rsize<40||(!t||s.rsize>t.radius)&&(t={cx:s.rx-e.scrambleX,cy:s.ry-e.scrambleY,radius:s.rsize});return t}biggestCellReal(){let e=null,t=this.players.map(s=>s.world);this.mode==="spectating"&&t.push(this.spectateWorld);for(let s of t)for(let n of s.nodes.values())n.isVirus||!n.name&&n.rsize<40||(!e||n.rsize>e.radius)&&(e={cx:n.rx-s.scrambleX,cy:n.ry-s.scrambleY,radius:n.rsize});return e}pingMs(){var s,n,a;let e=(s=this.players[this.active])==null?void 0:s.client;if(e&&((n=e.ws)==null?void 0:n.readyState)===WebSocket.OPEN&&e.ping>0)return e.ping;let t=this.auxClient;return t&&((a=t.ws)==null?void 0:a.readyState)===WebSocket.OPEN&&t.ping>0?t.ping:0}hud(){var s,n;let e=0,t=this.players.map((a,l)=>{let i=0,o=0;for(let p of a.world.ownIds){let c=a.world.nodes.get(p);c&&(i+=c.dispMass,o++)}return e+=o,{label:`${l+1}`,alive:o>0,connected:this.controllable(a),active:l===this.active,mass:Math.round(i),color:ht[l%ht.length]}});return{active:this.active,boxCount:this.players.length,cellCount:e,mass:(n=(s=t[this.active])==null?void 0:s.mass)!=null?n:0,ping:this.pingMs(),players:t}}get status(){var n,a;let e=(a=(n=this.auxClient)==null?void 0:n.ws)==null?void 0:a.readyState,t=e===WebSocket.OPEN?"open":e===WebSocket.CONNECTING?"conn":"down",s=this.players.map((l,i)=>{var h,w;let o=(w=(h=l.client)==null?void 0:h.ws)==null?void 0:w.readyState,p=o===WebSocket.OPEN?"open":o===WebSocket.CONNECTING?"conn":"closed",c=[...l.world.ownIds].filter(y=>l.world.nodes.has(y)).length;return`${i===this.active?">":" "}${i+1}:${p}(${c})`}).join("  ");return`aux(chat/spec):${t}  ${s}`}tick(){var s,n,a;if(!this.overlay)return;!this.ws1Cut&&((n=(s=this.auxClient)==null?void 0:s.ws)==null?void 0:n.readyState)===WebSocket.OPEN&&this.cutWs1(),this.spawnPending(),this.manageSpectate(performance.now()),this.controllable(this.players[this.active])||(this.active=0);for(let l=0;l<this.players.length;l++){let i=this.alive(this.players[l]);if(this.aliveState[l]&&!i&&l===this.active&&l!==this.pendingRespawn){let o=this.players.findIndex((p,c)=>c!==l&&this.controllable(p)&&this.alive(p));o>=0&&(this.active=o,this.overlay.snapCamera(),this.log(`[agar-ext] box ${l+1} died -> switch to box ${o+1}`))}this.aliveState[l]=i}let e=performance.now();if(this.macroFeedHeld&&this.mode==="playing"&&!this.paused&&e-this.lastFeed>Jt&&(this.lastFeed=e,this.eject()),this.paused||this.mode==="spectating")return;this.tickN++;let t=this.overlay.screenToWorld(this.mouseX,this.mouseY);for(let l=0;l<this.players.length;l++){let i=this.players[l];if(!this.controllable(i)||l!==this.active&&this.tickN%4!==0)continue;let o,p;if(l===this.active)o=t.x+i.world.scrambleX,p=t.y+i.world.scrambleY,this.aim[l]={x:o,y:p};else if(u.game.inactiveBoxStops){let c=i.world.ownCenter();if(!c)continue;o=c.cx,p=c.cy}else{let c=(a=this.aim[l])!=null?a:i.world.ownCenter()&&{x:i.world.ownCenter().cx,y:i.world.ownCenter().cy};if(!c)continue;o=c.x,p=c.y}this.sendTo(i,Fe(o,p,this.moveFmt))}}};var ke=class{constructor(){d(this,"x",0);d(this,"y",0);d(this,"scale",.25);d(this,"targetX",0);d(this,"targetY",0);d(this,"targetScale",.25);d(this,"viewportW",1);d(this,"viewportH",1);d(this,"snapNext",!1)}setViewport(e,t){this.viewportW=e,this.viewportH=t}snap(){this.snapNext=!0}pan(e,t){let s=e/this.scale,n=t/this.scale;this.x-=s,this.targetX-=s,this.y-=n,this.targetY-=n}frame(e,t,s,n){this.targetX=(e+s)/2,this.targetY=(t+n)/2;let a=1200,l=s-e+a*2,i=n-t+a*2,o=this.viewportW/l,p=this.viewportH/i;this.targetScale=Math.max(.03,Math.min(.55,Math.min(o,p)))}focus(e,t,s){this.targetX=e,this.targetY=t,this.targetScale=xt(s)}setTargetScale(e){this.targetScale=xt(e)}update(e,t=1){if(this.snapNext){this.x=this.targetX,this.y=this.targetY,this.scale=this.targetScale,this.snapNext=!1;return}let s=1-Math.exp(-8*t*e);this.x+=(this.targetX-this.x)*s,this.y+=(this.targetY-this.y)*s;let n=1-Math.exp(-4*t*e);this.scale+=(this.targetScale-this.scale)*n}screenToWorld(e,t){return{x:this.x+(e-this.viewportW/2)/this.scale,y:this.y+(t-this.viewportH/2)/this.scale}}};function xt(r){return r<.04?.04:r>2?2:r}var tn=3e4,nn=11e3,wt=600,yt=1200,sn=240,vt=Array.from({length:64},(r,e)=>{let t=(e>>4)*85,s=(e>>2&3)*85,n=(e&3)*85;return`rgb(${t},${s},${n})`}),We=class{constructor(){d(this,"images",new Map);d(this,"failed",new Set)}get(e){if(!e||this.failed.has(e))return null;let t=this.images.get(e);return t?t.complete&&t.naturalWidth>0?t:null:(t=new Image,t.onerror=()=>this.failed.add(e),t.src=e,this.images.set(e,t),null)}},ee=class ee{constructor(){d(this,"map",new Map);d(this,"builtThisFrame",0)}beginFrame(){this.builtThisFrame=0}get(e){let t=this.map.get(e);if(t)return t;if(this.builtThisFrame>=ee.MAX_PER_FRAME)return null;let s=ee.measure;if(!s&&(s=ee.measure=document.createElement("canvas").getContext("2d"),!s))return null;let n=ee.REF,a=Math.ceil(n*.35),l=`${n}px system-ui, sans-serif`;s.font=l;let i=Math.max(1,Math.ceil(s.measureText(e).width))+a*2,o=n+a*2,p=document.createElement("canvas");p.width=i,p.height=o;let c=p.getContext("2d");if(!c)return null;c.font=l,c.textAlign="center",c.textBaseline="middle",c.lineWidth=Math.max(2,n*.12),c.strokeStyle="rgba(0,0,0,0.5)",c.fillStyle="rgba(255,255,255,0.95)",c.strokeText(e,i/2,o/2),c.fillText(e,i/2,o/2),this.map.size>400&&this.map.clear();let h={canvas:p,hScale:o/n,aspect:i/o};return this.map.set(e,h),this.builtThisFrame++,h}};d(ee,"REF",44),d(ee,"measure",null),d(ee,"MAX_PER_FRAME",2);var De=ee,ze=class{constructor(e=100){d(this,"samplerIndex",0);d(this,"sampler");d(this,"size",0);d(this,"average",0);this.sampler=new Float32Array(e)}reset(){this.samplerIndex=0,this.size=0,this.average=0,this.sampler.fill(0)}step(e){this.sampler[this.samplerIndex]=Math.round(e),this.samplerIndex=(this.samplerIndex+1)%this.sampler.length,this.size<this.sampler.length&&this.size++;let t=0;for(let s=0;s<this.size;s++)t+=this.sampler[s];return this.average=this.size?Math.round(t/this.size):0,this.average}},rn=[30,48,50,60,72,75,90,100,120,144,165,240,360];function an(r){let e=60,t=1/0;for(let s of rn){let n=Math.abs(s-r);n<t&&(t=n,e=s)}return t<=e*.1?e:Math.max(30,Math.min(360,Math.round(r)))}var Se=class{constructor(e){this.scene=e;d(this,"canvas");d(this,"ctx");d(this,"camera",new ke);d(this,"dpr",Math.min(window.devicePixelRatio||1,2));d(this,"lastScale",1);d(this,"raf",0);d(this,"last",performance.now());d(this,"userZoom",1);d(this,"images",new We);d(this,"names",new De);d(this,"layers",[]);d(this,"_food",[]);d(this,"_viruses",[]);d(this,"_cellPool",[]);d(this,"_cells",[]);d(this,"_cellMap",new Map);d(this,"_seen",new Set);d(this,"_foodBuckets",Array.from({length:64},()=>[]));d(this,"_cellBuckets",Array.from({length:64},()=>[]));d(this,"fps",0);d(this,"fpsSampler",new ze(100));d(this,"stalls",0);d(this,"lastStallMs",0);d(this,"detectedFps",0);d(this,"_rawLast",performance.now());d(this,"_rawDeltas",[]);d(this,"_rawIdx",0);d(this,"_sinceEstimate",0);d(this,"drawMs",0);d(this,"dbgCells",0);d(this,"dbgFood",0);d(this,"dbgNodes",0);d(this,"visible",!0);d(this,"loop",()=>{this.raf=requestAnimationFrame(this.loop);let e=performance.now(),t=e-this._rawLast;if(this._rawLast=e,t>=100&&t<2e3&&(this.stalls++,this.lastStallMs=Math.round(t)),t>0&&t<100){let l=this._rawDeltas;l.length<180?l.push(t):(l[this._rawIdx]=t,this._rawIdx=(this._rawIdx+1)%180)}++this._sinceEstimate>=60&&(this._sinceEstimate=0,this.estimateRefresh());let s=0;if(u.game.autoFps?this.detectedFps>0&&(s=1e3/this.detectedFps*.75):u.game.maxFps>0&&(s=1e3/u.game.maxFps-.4),s>0&&e-this.last<s)return;(u.game.renderScale||1)!==this.lastScale&&this.resize();let n=Math.min((e-this.last)/1e3,.1);this.last=e,n>0&&(this.fps=this.fpsSampler.step(1/n)),this.layers=this.scene.layers();for(let l of this.layers)l.world.step(n);this.frameCamera();let a=1-.85*(u.game.animationDelay/100);if(this.camera.update(n,a),this.visible){let l=performance.now();this.draw(e),this.drawMs+=(performance.now()-l-this.drawMs)*.1}});d(this,"_miniCanvas",null);d(this,"_miniCtx",null);d(this,"_miniAt",0);d(this,"_miniSize",0);this.canvas=document.createElement("canvas"),Object.assign(this.canvas.style,{position:"fixed",left:"0",top:"0",zIndex:"2147483640",pointerEvents:"none"});let t=this.canvas.getContext("2d",{alpha:!1});if(!t)throw new Error("2d context unavailable");this.ctx=t,this.resize(),window.addEventListener("resize",()=>this.resize()),window.addEventListener("wheel",s=>{this.userZoom*=s.deltaY<0?1.12:.89,this.userZoom=Math.max(.2,Math.min(5,this.userZoom))},{passive:!0}),document.addEventListener("visibilitychange",()=>{document.hidden||(this._rawDeltas.length=0,this._rawIdx=0,this._rawLast=performance.now())}),document.documentElement.appendChild(this.canvas),this.loop.__hsloKeep=!0,this.raf=requestAnimationFrame(this.loop)}setVisible(e){this.visible=e,this.canvas.style.display=e?"block":"none"}snapCamera(){this.camera.snap()}screenToWorld(e,t){return this.camera.screenToWorld(e,t)}dispose(){cancelAnimationFrame(this.raf),this.canvas.remove()}resize(){let e=window.innerWidth,t=window.innerHeight;this.lastScale=u.game.renderScale||1,this.dpr=Math.min(window.devicePixelRatio||1,2)*this.lastScale,this.canvas.width=Math.floor(e*this.dpr),this.canvas.height=Math.floor(t*this.dpr),this.canvas.style.width=`${e}px`,this.canvas.style.height=`${t}px`,this.camera.setViewport(e,t)}estimateRefresh(){let e=this._rawDeltas;if(e.length<30)return;let t=e.slice().sort((n,a)=>n-a),s=t[t.length>>1];s>0&&(this.detectedFps=an(1e3/s))}frameCamera(){let e=this.scene.cameraTarget();if(!e)return;let t=this.camera.viewportH/1080*.32*this.userZoom,s,n;if(u.game.zoomMode==="manual")s=t,n=tn;else{let l=Math.max(e.radius,32);s=Math.pow(Math.min(64/l,1),.4)*t,n=nn}let a=window.innerWidth/n;s<a&&(s=a),this.camera.focus(e.cx,e.cy,s)}draw(e){let t=this.ctx;this.names.beginFrame();let s=this.canvas.width,n=this.canvas.height,a=this.scene.themeFor(),l=this.scene.worldBorder();t.setTransform(1,0,0,1,0,0),t.fillStyle="#0c0c16",t.fillRect(0,0,s,n),t.setTransform(this.camera.scale*this.dpr,0,0,this.camera.scale*this.dpr,s/2-this.camera.x*this.camera.scale*this.dpr,n/2-this.camera.y*this.camera.scale*this.dpr),this.drawBackground(a,l),a.grid&&this.drawGrid(l),this.drawBorder(a,l,e);let i=s/(2*this.camera.scale*this.dpr),o=n/(2*this.camera.scale*this.dpr),p=this.camera.x-i,c=this.camera.x+i,h=this.camera.y-o,w=this.camera.y+o,y=2/(this.camera.scale*this.dpr),M=a.showPellets,E=this._food,L=0,C=this._viruses,v=0,k=this._cellPool,A=0,$=this._cellMap;$.clear();let f=this._seen;f.clear();let _=oe(),P=this.layers;for(let b=0;b<P.length;b++){let m=P[b],R=m.world.ownIds,D=m.world.scrambleX,te=m.world.scrambleY;for(let B of m.world.nodes.values()){let Z=B.rx-D,Q=B.ry-te,j=Math.max(B.rsize,y);if(!(Z+j<p||Z-j>c||Q+j<h||Q-j>w))if(B.isVirus){if(f.has(B.id))continue;f.add(B.id);let N=C[v];N?(N.n=B,N.x=Z,N.y=Q,N.r=j,N.outline=null,N.skin="",N.mine=!1,N.virus=!0):N=C[v]={n:B,x:Z,y:Q,r:j,outline:null,skin:"",mine:!1,virus:!0},v++}else if(!B.name&&B.rsize<40){if(!M||f.has(B.id))continue;f.add(B.id);let N=E[L];N?(N.n=B,N.x=Z,N.y=Q,N.r=j):N=E[L]={n:B,x:Z,y:Q,r:j},L++}else{let N=R.has(B.id),V=$.get(B.id);if(V&&V.mine&&!N)continue;let Pe=N?m.active?a.activeOutline:a.inactiveOutline:null,ne="";if(N&&a.customSkins&&(ne=_.skins[b]||_.skins.find(K=>!!K)||""),!ne&&!N&&B.name&&(ne=this.scene.sharedSkin(B.name)),!ne&&a.gameSkins&&B.skin&&(ne=B.skin),V)V.n=B,V.x=Z,V.y=Q,V.r=j,V.outline=Pe,V.skin=ne,V.mine=N;else{let K=k[A];K?(K.n=B,K.x=Z,K.y=Q,K.r=j,K.outline=Pe,K.skin=ne,K.mine=N,K.virus=!1):K=k[A]={n:B,x:Z,y:Q,r:j,outline:Pe,skin:ne,mine:N,virus:!1},A++,$.set(B.id,K)}}}}let S=this._cells,O=0;for(let b of $.values())S[O++]=b;for(let b=0;b<v;b++)S[O++]=C[b];S.length=O,S.sort((b,m)=>b.r-m.r),L>yt&&(E.length=L,E.sort((b,m)=>m.r-b.r),L=yt),this.dbgCells=Math.min(O,wt),this.dbgFood=L;let z=0;for(let b=0;b<P.length;b++)z+=P[b].world.nodes.size;this.dbgNodes=z;let ae=a.pelletColor,U=14*this.camera.scale*this.dpr;if(ae){t.beginPath();for(let b=0;b<L;b++){let m=E[b];t.moveTo(m.x+m.r,m.y),t.arc(m.x,m.y,m.r,0,Math.PI*2)}t.fillStyle=ae,t.fill()}else if(U<6){let b=this._foodBuckets;for(let m=0;m<b.length;m++)b[m].length=0;for(let m=0;m<L;m++){let R=E[m],D=R.n.r>>6<<4|R.n.g>>6<<2|R.n.b>>6;b[D].push(R)}for(let m=0;m<b.length;m++){let R=b[m];if(R.length){t.beginPath();for(let D=0;D<R.length;D++){let te=R[D];t.moveTo(te.x+te.r,te.y),t.arc(te.x,te.y,te.r,0,Math.PI*2)}t.fillStyle=vt[m],t.fill()}}}else for(let b=0;b<L;b++){let m=E[b];this.drawDisc(m.n,m.x,m.y,m.r,"")}let H=Math.max(0,S.length-wt),Y=this.camera.scale,Ve=0;for(let b=H;b<S.length;b++){let m=S[b];!m.virus&&!m.outline&&!m.skin&&Ve++}let qe=Math.max(0,Ve-sn),he=this._cellBuckets;for(let b=0;b<he.length;b++)he[b].length=0;let ge=0,Je=!1;for(let b=H;b<S.length;b++){let m=S[b];if(m.virus||m.outline||m.skin)continue;let R=m.r*Y<=6||ge<qe;ge++,R&&(he[m.n.r>>6<<4|m.n.g>>6<<2|m.n.b>>6].push(m),Je=!0)}if(Je)for(let b=0;b<he.length;b++){let m=he[b];if(m.length){t.beginPath();for(let R=0;R<m.length;R++){let D=m[R];t.moveTo(D.x+D.r,D.y),t.arc(D.x,D.y,D.r,0,Math.PI*2)}t.fillStyle=vt[b],t.fill()}}ge=0;for(let b=H;b<S.length;b++){let m=S[b];if(!m.virus&&!m.outline&&!m.skin){let R=m.r*Y<=6||ge<qe;if(ge++,R)continue}m.virus?this.drawVirus(m.n,m.x,m.y,m.r):this.drawCell(m.n,m.x,m.y,m.r,m.outline,m.skin,a)}t.setTransform(1,0,0,1,0,0),a.minimap&&this.drawMinimap(l,P,e)}drawBackground(e,t){if(!e.backgroundUrl)return;let s=this.images.get(e.backgroundUrl);s&&(this.ctx.globalAlpha=.5,this.ctx.drawImage(s,t.minX,t.minY,t.maxX-t.minX,t.maxY-t.minY),this.ctx.globalAlpha=1)}drawGrid(e){let t=this.ctx,s=250,n=this.canvas.width/(2*this.camera.scale*this.dpr)+s,a=this.canvas.height/(2*this.camera.scale*this.dpr)+s,l=Math.max(e.minX,Math.floor((this.camera.x-n)/s)*s),i=Math.min(e.maxX,this.camera.x+n),o=Math.max(e.minY,Math.floor((this.camera.y-a)/s)*s),p=Math.min(e.maxY,this.camera.y+a);t.lineWidth=1/this.camera.scale,t.strokeStyle="rgba(255,255,255,0.04)",t.beginPath();for(let c=l;c<=i;c+=s)t.moveTo(c,o),t.lineTo(c,p);for(let c=o;c<=p;c+=s)t.moveTo(l,c),t.lineTo(i,c);t.stroke()}drawBorder(e,t,s){let n=this.ctx;n.lineWidth=10/this.camera.scale,n.strokeStyle=e.animatedBorder?`hsl(${s/30%360}, 70%, 55%)`:"rgba(255,80,80,0.55)",n.strokeRect(t.minX,t.minY,t.maxX-t.minX,t.maxY-t.minY)}drawDisc(e,t,s,n,a){let l=this.ctx;l.beginPath(),l.arc(t,s,n,0,Math.PI*2),l.fillStyle=a||e.css,l.fill()}drawCell(e,t,s,n,a,l,i){let o=this.ctx,p=n*this.camera.scale;i.shadows&&p>16&&(o.beginPath(),o.arc(t,s+n*.06,n,0,Math.PI*2),o.fillStyle="rgba(0,0,0,0.18)",o.fill()),o.beginPath(),o.arc(t,s,n,0,Math.PI*2),o.fillStyle=e.css,o.fill();let c=l?this.images.get(l):null;if(c&&(o.save(),o.beginPath(),o.arc(t,s,n,0,Math.PI*2),o.clip(),o.drawImage(c,t-n,s-n,n*2,n*2),o.restore()),(a||p>6)&&(o.lineWidth=(a?6*i.ringSize:3)/this.camera.scale,o.strokeStyle=a!=null?a:"rgba(0,0,0,0.22)",o.beginPath(),o.arc(t,s,n,0,Math.PI*2),o.stroke()),p>22){if(o.fillStyle="rgba(255,255,255,0.95)",o.textAlign="center",o.textBaseline="middle",i.names&&e.name&&p>30){let h=this.names.get(e.name);if(h){let y=Math.max(11,n*.32)*h.hScale,M=y*h.aspect;o.drawImage(h.canvas,t-M/2,s-n*.12-y/2,M,y)}}i.mass&&(o.font=`${Math.max(9,n*.26)}px system-ui, sans-serif`,o.fillText(e.massStr,t,s+n*.22))}}drawVirus(e,t,s,n){let a=this.ctx,l=28,i=n,o=n*.9;a.beginPath();for(let p=0;p<l*2;p++){let c=p%2===0?i:o,h=Math.PI*p/l,w=t+Math.cos(h)*c,y=s+Math.sin(h)*c;p===0?a.moveTo(w,y):a.lineTo(w,y)}a.closePath(),a.fillStyle=e.r||e.g||e.b?e.css:"rgba(45,200,90,0.95)",a.fill(),a.lineWidth=Math.max(2,n*.05),a.strokeStyle="rgba(20,120,50,1)",a.stroke()}drawMinimap(e,t,s){var $;let n=this.ctx,a=Math.round(150*this.dpr),l=12*this.dpr,i=this.canvas.width-a-l,o=this.canvas.height-a-l,p=e.maxX-e.minX||1,c=e.maxY-e.minY||1;if(!this._miniCanvas||this._miniSize!==a){let f=($=this._miniCanvas)!=null?$:this._miniCanvas=document.createElement("canvas");f.width=f.height=a,this._miniCtx=f.getContext("2d"),this._miniSize=a,this._miniAt=0}let h=this._miniCtx;if(s-this._miniAt>120){this._miniAt=s,h.clearRect(0,0,a,a),h.fillStyle="rgba(0,0,0,0.35)",h.fillRect(0,0,a,a),h.strokeStyle="rgba(255,255,255,0.15)",h.lineWidth=1,h.strokeRect(.5,.5,a-1,a-1),h.fillStyle="rgba(255,255,255,0.35)";for(let f of t){let _=f.world.ownIds,P=f.world.scrambleX,S=f.world.scrambleY;for(let O of f.world.nodes.values()){if(O.isVirus||!O.name&&O.rsize<40||_.has(O.id))continue;let z=(O.rx-P-e.minX)/p*a,ae=(O.ry-S-e.minY)/c*a;h.fillRect(z-1,ae-1,2,2)}}}n.drawImage(this._miniCanvas,i,o);let w=f=>i+(f-e.minX)/p*a,y=f=>o+(f-e.minY)/c*a,M=this.scene.themeFor();for(let f of t){let _=f.world.ownIds,P=f.world.scrambleX,S=f.world.scrambleY;n.fillStyle=f.active?M.activeOutline:M.inactiveOutline;for(let O of _){let z=f.world.nodes.get(O);z&&(n.beginPath(),n.arc(w(z.rx-P),y(z.ry-S),3*this.dpr,0,Math.PI*2),n.fill())}}let E=this.canvas.width/(2*this.camera.scale*this.dpr),L=this.canvas.height/(2*this.camera.scale*this.dpr),C=Math.max(i,w(this.camera.x-E)),v=Math.max(o,y(this.camera.y-L)),k=Math.min(i+a,w(this.camera.x+E)),A=Math.min(o+a,y(this.camera.y+L));n.strokeStyle="rgba(255,255,255,0.85)",n.lineWidth=1.5*this.dpr,n.strokeRect(C,v,Math.max(2,k-C),Math.max(2,A-v))}};var kt=typeof TextDecoder!="undefined"?new TextDecoder:null;function le(r,e){let t=[],s=e;for(;s<r.byteLength;s++){let a=r.getUint8(s);if(a===0){s++;break}t.push(a)}return{s:kt?kt.decode(new Uint8Array(t)):String.fromCharCode(...t),next:s}}function on(r,e){if(!e.byteLength)return"(empty)";let t=new DataView(e),s=t.getUint8(0),n=e.byteLength,a=i=>i+4<=n?t.getUint32(i,!0):0,l=i=>i+4<=n?t.getInt32(i,!0):0;if(r==="<")switch(s){case 16:try{let i=ie(e);if(i.t==="world")return`UPDATE-NODES eats=${i.world.eats.length} nodes=${i.world.updates.length} removes=${i.world.removes.length}`}catch{}return"UPDATE-NODES (?)";case 32:{let i=[];for(let o=1;o+4<=n;o+=4)i.push(a(o));return`OWN-CELL id=${i.join(",")}`}case 64:{let i=p=>p+8<=n?t.getFloat64(p,!0):0,o=n>33?le(t,33).s:"";return`BORDER [${i(1)|0},${i(9)|0},${i(17)|0},${i(25)|0}]${o?` "${o}"`:""}`}case 49:try{let i=ie(e);if(i.t==="leaderboard"){let o=i.entries.map(p=>p.name||"-");return`LEADERBOARD ${i.entries.length}: ${o.slice(0,6).join(", ")}${o.length>6?" ...":""}`}}catch{}return"LEADERBOARD";case 20:return"CLEAR-NODES";case 98:{let i=t.getUint8(2),o=t.getUint8(3),p=t.getUint8(4),c=le(t,5),h=le(t,c.next);return`CHAT [${i},${o},${p}] ${c.s}: "${h.s}"`}case 254:return n>1&&t.getUint8(1)===123?`STATUS ${le(t,1).s.slice(0,140)}`:`op254 (${n}B)`;default:return`op${s} (${n}B)`}switch(s){case 254:return n===5?`SET-PROTOCOL v${a(1)}`:"PING";case 255:return`HANDSHAKE key=${a(1)} nick="${le(t,5).s}"`;case 20:return`SPAWN ${le(t,1).s}`;case 5:return n>=21?`MOVE(f64) x=${t.getFloat64(1,!0)|0} y=${t.getFloat64(9,!0)|0}`:`MOVE x=${l(1)} y=${l(5)}`;case 0:return`SPAWN-LEGACY(op0) "${le(t,1).s}"  [wrong opcode for this server]`;case 1:return"SPECTATE(op1)";case 15:return`CLIENT-15 (split/eject?) ${n}B`;case 18:return`CLIENT-18 (split/eject?) ${n}B`;case 17:return"SPLIT(op17?)";case 21:return"EJECT(op21?)";default:return`op${s} (${n}B)`}}var Ee=class{constructor(){d(this,"recs",[]);d(this,"counts",new Map);d(this,"cap",4e3);d(this,"enabled",!1)}setEnabled(e){this.enabled=e,e||(this.recs.length=0)}add(e,t){var l;if(!t||!t.byteLength)return;let s=new Uint8Array(t)[0],n=`${e}${s}`,a=((l=this.counts.get(n))!=null?l:0)+1;this.counts.set(n,a),this.enabled&&((s===16||s===5||s===49||s===254)&&a>8&&a%250!==0||(this.recs.push({t:Date.now(),dir:e,op:s,len:t.byteLength,buf:t.slice(0,1024)}),this.recs.length>this.cap&&this.recs.shift()))}summary(){return[...this.counts.entries()].sort().map(([e,t])=>`${e}x${t}`).join("  ")}line(e){return`${new Date(e.t).toISOString().slice(11,23)} ${e.dir} ${on(e.dir,e.buf)}`}tail(e){return this.recs.slice(-e).map(t=>this.line(t))}dump(){let e=`=== agar-ext packet log (${this.recs.length} recs) - LIVE OgarII opcode map ===
+"use strict";
+(() => {
+  var Yt = Object.defineProperty;
+  var jt = (r, e, t) =>
+    e in r
+      ? Yt(r, e, { enumerable: !0, configurable: !0, writable: !0, value: t })
+      : (r[e] = t);
+  var d = (r, e, t) => jt(r, typeof e != "symbol" ? e + "" : e, t);
+  var Se = class {
+    constructor() {
+      d(this, "msgs", []);
+      d(this, "rev", 0);
+    }
+    add(e, t, n) {
+      (this.msgs.push({ name: e, message: t, color: n, t: Date.now() }),
+        this.msgs.length > 100 && this.msgs.shift(),
+        this.rev++);
+    }
+  };
+  var ot = "i32",
+    We = class {
+      constructor(e) {
+        d(this, "view");
+        d(this, "off", 0);
+        this.view = new DataView(e);
+      }
+      get remaining() {
+        return this.view.byteLength - this.off;
+      }
+      u8() {
+        let e = this.view.getUint8(this.off);
+        return ((this.off += 1), e);
+      }
+      u16() {
+        let e = this.view.getUint16(this.off, !0);
+        return ((this.off += 2), e);
+      }
+      i16() {
+        let e = this.view.getInt16(this.off, !0);
+        return ((this.off += 2), e);
+      }
+      u32() {
+        let e = this.view.getUint32(this.off, !0);
+        return ((this.off += 4), e);
+      }
+      i32() {
+        let e = this.view.getInt32(this.off, !0);
+        return ((this.off += 4), e);
+      }
+      f32() {
+        let e = this.view.getFloat32(this.off, !0);
+        return ((this.off += 4), e);
+      }
+      f64() {
+        let e = this.view.getFloat64(this.off, !0);
+        return ((this.off += 8), e);
+      }
+      coord() {
+        return ot === "i16" ? this.i16() : this.i32();
+      }
+      str8() {
+        let e = [];
+        for (; !(this.remaining < 1); ) {
+          let t = this.u8();
+          if (t === 0) break;
+          e.push(t);
+        }
+        return Gt(e);
+      }
+      str16() {
+        let e = "";
+        for (; !(this.remaining < 2); ) {
+          let t = this.u16();
+          if (t === 0) break;
+          e += String.fromCharCode(t);
+        }
+        return e;
+      }
+    },
+    at = typeof TextDecoder != "undefined" ? new TextDecoder() : null;
+  function Gt(r) {
+    if (at) return at.decode(new Uint8Array(r));
+    let e = "";
+    for (let t of r) e += String.fromCharCode(t);
+    return e;
+  }
+  function Vt(r) {
+    let e = ot === "i16" ? 2 : 4,
+      t = [],
+      n = r.remaining >= 2 ? r.u16() : 0;
+    for (let o = 0; o < n && r.remaining >= 8; o++)
+      t.push({ by: r.u32(), id: r.u32() });
+    let s = [];
+    for (; !(r.remaining < 4); ) {
+      let o = r.u32();
+      if (o === 0 || r.remaining < e * 2 + 3) break;
+      let l = r.coord(),
+        p = r.coord(),
+        i = r.u16(),
+        u = r.u8();
+      if (u & 128) {
+        if (r.remaining < 1) break;
+        r.u8();
+      }
+      let f = (u & 1) !== 0,
+        b = null;
+      if (u & 2) {
+        if (r.remaining < 3) break;
+        b = { r: r.u8(), g: r.u8(), b: r.u8() };
+      }
+      let M = u & 4 ? r.str8() : null,
+        y = u & 8 ? r.str8() : null;
+      s.push({
+        id: o,
+        x: l,
+        y: p,
+        size: i,
+        isVirus: f,
+        color: b,
+        name: y,
+        skin: M,
+      });
+    }
+    let a = [],
+      c = r.remaining >= 2 ? r.u16() : 0;
+    for (let o = 0; o < c && r.remaining >= 4; o++) a.push(r.u32());
+    return { eats: t, updates: s, removes: a };
+  }
+  function qt(r) {
+    return { minX: r.f64(), minY: r.f64(), maxX: r.f64(), maxY: r.f64() };
+  }
+  function Jt(r) {
+    let e = [],
+      t = r.u32();
+    if (t > 100) return e;
+    for (let n = 0; n < t && r.remaining >= 4; n++) {
+      let s = r.u32();
+      e.push({ id: s, name: r.str8() });
+    }
+    return e;
+  }
+  function ie(r) {
+    let e = new We(r),
+      t = e.u8();
+    switch (t) {
+      case 16:
+        return { t: "world", world: Vt(e) };
+      case 64:
+        return { t: "border", border: qt(e) };
+      case 32: {
+        let n = [];
+        for (; e.remaining >= 4; ) n.push(e.u32());
+        return { t: "own", ownIds: n };
+      }
+      case 17: {
+        if (e.remaining < 12) return { t: "raw", op: t, len: r.byteLength };
+        let n = e.f32(),
+          s = e.f32(),
+          a = e.f32();
+        return { t: "camera", x: n, y: s, scale: a };
+      }
+      case 49:
+        return { t: "leaderboard", entries: Jt(e) };
+      case 98: {
+        let n = e.u8(),
+          s = e.u8(),
+          a = e.u8(),
+          c = e.u8(),
+          o = e.str8(),
+          l = e.str8();
+        return { t: "chat", name: o, message: l, color: `rgb(${s},${a},${c})` };
+      }
+      case 20:
+        return { t: "clear" };
+      default:
+        return { t: "raw", op: t, len: r.byteLength };
+    }
+  }
+  function ae(r, e = 48) {
+    let t = new Uint8Array(r),
+      n = Math.min(t.length, e),
+      s = "";
+    for (let a = 0; a < n; a++) s += t[a].toString(16).padStart(2, "0") + " ";
+    return `${s}(${t.length}B)`;
+  }
+  var ze = {
+      split: "Split",
+      eject: "Eject (single)",
+      macroFeed: "Eject / feed (hold)",
+      doubleSplit: "Double split (x2)",
+      split16: "Multi split (x4)",
+      switchBox: "Switch box",
+      respawn: "Respawn",
+      pause: "Pause camera",
+      spectateToggle: "Spectate: follow #1 / free",
+      togglePellets: "Hide / show pellets",
+    },
+    pe = {
+      split: "Space",
+      eject: "",
+      macroFeed: "KeyE",
+      doubleSplit: "KeyG",
+      split16: "KeyT",
+      switchBox: "Tab",
+      respawn: "Backquote",
+      pause: "KeyP",
+      spectateToggle: "KeyQ",
+      togglePellets: "KeyX",
+    },
+    De = {
+      showGrid: !0,
+      showMinimap: !0,
+      showLeaderboard: !0,
+      showMass: !0,
+      showKillFeed: !0,
+      showChat: !0,
+      showNames: !0,
+      customSkins: !1,
+      gameSkins: !1,
+      massFormat: "auto",
+      ringSize: 1,
+      pelletColor: "",
+      showPellets: !0,
+      animatedBorder: !0,
+      cellShadow: !0,
+      spawnEffects: !0,
+      backgroundColor: "#0c0c16",
+      backgroundUrl: "",
+      activeOutline: "#ff3b30",
+      inactiveOutline: "#ffffff",
+    },
+    Ue = {
+      multiboxCamera: "single",
+      zoomMode: "auto",
+      inactiveBoxStops: !1,
+      spectatorView: !1,
+      drawDelay: 70,
+      splitOp: 17,
+      ejectOp: 21,
+      chatOp: 98,
+      autoFps: !0,
+      maxFps: 144,
+      renderScale: 1,
+    },
+    pt = () => ({
+      name: "",
+      hue: 200,
+      skins: Array.from({ length: 2 }, () => ""),
+    }),
+    ut = () => Array.from({ length: 9 }, pt),
+    ht = "agar-ext-settings",
+    it = "agar-ext-bindv",
+    lt = "4",
+    ct = "agar-ext-chatopfix",
+    dt = "agar-ext-specoff";
+  function mt(r) {
+    let e = Array.isArray(r == null ? void 0 : r.skins)
+      ? r.skins.slice(0, 2)
+      : [];
+    for (; e.length < 2; ) e.push("");
+    return {
+      name: typeof (r == null ? void 0 : r.name) == "string" ? r.name : "",
+      hue: typeof (r == null ? void 0 : r.hue) == "number" ? r.hue : 200,
+      skins: e,
+    };
+  }
+  function Zt() {
+    var e, t, n;
+    let r = {
+      profiles: ut(),
+      selected: 0,
+      bindings: { ...pe },
+      theme: { ...De },
+      game: { ...Ue },
+    };
+    try {
+      let s = JSON.parse(localStorage.getItem(ht) || "{}");
+      if (
+        (Array.isArray(s.profiles) &&
+          s.profiles.length &&
+          (r.profiles = s.profiles.map(mt)),
+        typeof s.selected == "number" &&
+          (r.selected = Math.max(0, Math.min(8, s.selected))),
+        (r.bindings = { ...pe, ...((e = s.bindings) != null ? e : {}) }),
+        (r.theme = { ...De, ...((t = s.theme) != null ? t : {}) }),
+        (r.game = { ...Ue, ...((n = s.game) != null ? n : {}) }),
+        localStorage.getItem(it) !== lt)
+      ) {
+        r.bindings = { ...pe };
+        try {
+          localStorage.setItem(it, lt);
+        } catch {}
+      }
+      if (localStorage.getItem(ct) !== "1") {
+        r.game.chatOp = 98;
+        try {
+          localStorage.setItem(ct, "1");
+        } catch {}
+      }
+      if (localStorage.getItem(dt) !== "1") {
+        r.game.spectatorView = !1;
+        try {
+          localStorage.setItem(dt, "1");
+        } catch {}
+      }
+    } catch {}
+    return r;
+  }
+  var h = Zt();
+  _();
+  function _() {
+    try {
+      localStorage.setItem(ht, JSON.stringify(h));
+    } catch {}
+  }
+  function le() {
+    var r;
+    return (r = h.profiles[h.selected]) != null ? r : pt();
+  }
+  function gt() {
+    return JSON.stringify(h, null, 2);
+  }
+  function ft(r) {
+    var e, t, n;
+    try {
+      let s = JSON.parse(r);
+      return (
+        (h.profiles =
+          Array.isArray(s.profiles) && s.profiles.length
+            ? s.profiles.map(mt)
+            : ut()),
+        (h.selected =
+          typeof s.selected == "number"
+            ? Math.max(0, Math.min(8, s.selected))
+            : 0),
+        (h.bindings = { ...pe, ...((e = s.bindings) != null ? e : {}) }),
+        (h.theme = { ...De, ...((t = s.theme) != null ? t : {}) }),
+        (h.game = { ...Ue, ...((n = s.game) != null ? n : {}) }),
+        _(),
+        !0
+      );
+    } catch {
+      return !1;
+    }
+  }
+  function be(r, e) {
+    let t = Math.round(r),
+      n = (s) => `${(s / 1e3).toFixed(1)}k`;
+    return e === "full"
+      ? t.toLocaleString()
+      : e === "short"
+        ? t >= 1e3
+          ? n(t)
+          : String(t)
+        : t >= 1e4
+          ? n(t)
+          : t.toLocaleString();
+  }
+  function ue(r) {
+    if (!r) return "-";
+    if (r === "Space") return "Space";
+    if (r === "Tab") return "TAB";
+    if (r === "Backquote") return "~";
+    if (r.startsWith("Mouse")) {
+      let e = Number(r.slice(5));
+      return e === 0
+        ? "LMB"
+        : e === 1
+          ? "MMB"
+          : e === 2
+            ? "RMB"
+            : `Mouse${e + 1}`;
+    }
+    return r
+      .replace(/^Key/, "")
+      .replace(/^Digit/, "")
+      .replace(/^Arrow/, "");
+  }
+  var bt = /agar\.emupedia\.net|\/ws2\b/i;
+  function Qt(r) {
+    let e = new EventTarget();
+    return {
+      url: r,
+      readyState: 0,
+      binaryType: "arraybuffer",
+      bufferedAmount: 0,
+      extensions: "",
+      protocol: "",
+      onopen: null,
+      onmessage: null,
+      onerror: null,
+      onclose: null,
+      send() {},
+      close() {},
+      addEventListener: (...n) => e.addEventListener(...n),
+      removeEventListener: (...n) => e.removeEventListener(...n),
+      dispatchEvent: (n) => e.dispatchEvent(n),
+      CONNECTING: 0,
+      OPEN: 1,
+      CLOSING: 2,
+      CLOSED: 3,
+    };
+  }
+  function en(r) {
+    try {
+      if (r.byteLength < 5) return null;
+      let e = (le().name || "An unnamed cell").slice(0, 15),
+        t = new DataView(r).getUint32(1, !0),
+        n = new TextEncoder().encode(e),
+        s = new ArrayBuffer(5 + n.length + 1),
+        a = new DataView(s);
+      return (
+        a.setUint8(0, 255),
+        a.setUint32(1, t, !0),
+        new Uint8Array(s).set(n, 5),
+        s
+      );
+    } catch {
+      return null;
+    }
+  }
+  function xt(r, e, t, n, s, a, c) {
+    let o = window.WebSocket;
+    if (o.__agarHooked) return;
+    let l = 0,
+      p = 0,
+      i = null;
+    function u(f, b) {
+      let M = String(f);
+      if (bt.test(M) && t.blocked)
+        return (
+          n("[agar-ext] WS1 reconnect suppressed (inert stub - no connection)"),
+          Qt(M)
+        );
+      let y = b !== void 0 ? new o(f, b) : new o(f);
+      if (bt.test(M)) {
+        ((i = y),
+          r.clear(),
+          (e.attached = !0),
+          (e.url = M),
+          (e.wsProtocol = Array.isArray(b) ? b[0] : b),
+          n(
+            "[agar-ext] hooked game socket:",
+            M,
+            e.wsProtocol
+              ? `subprotocol=${e.wsProtocol.slice(0, 13)}`
+              : "(no subprotocol)",
+          ));
+        try {
+          y.binaryType = "arraybuffer";
+        } catch {}
+        let T = y.send.bind(y);
+        ((t.sendRaw = (A) => {
+          y.readyState === y.OPEN && (s.add(">*", A), T(A));
+        }),
+          (y.send = (A) => {
+            let v =
+              A instanceof ArrayBuffer
+                ? A
+                : ArrayBuffer.isView(A)
+                  ? A.buffer.slice(A.byteOffset, A.byteOffset + A.byteLength)
+                  : null;
+            if (v && v.byteLength) {
+              let k = new Uint8Array(v)[0];
+              if (k === 255) {
+                let L = en(v);
+                L && ((v = L), (A = L));
+              }
+              if (
+                (s.add(">", v),
+                e.sends.some(
+                  (L) => L.byteLength && new Uint8Array(L)[0] === k,
+                ) ||
+                  (e.sends.push(v.slice(0)),
+                  n(`[agar-ext] capture op ${k}`, ae(v))),
+                (t.suppressSpawn && k === 20) ||
+                  (t.suppressMove && k === 5) ||
+                  (t.suppressAction && (k === 15 || k === 18)))
+              )
+                return;
+            }
+            return T(A);
+          }),
+          y.addEventListener("message", (A) => {
+            if (y !== i || !(A.data instanceof ArrayBuffer)) return;
+            let v = A.data;
+            if (
+              (s.add("<", v),
+              !(
+                !h.game.spectatorView &&
+                v.byteLength &&
+                new Uint8Array(v)[0] !== 98
+              ))
+            )
+              try {
+                let k = ie(v);
+                switch ((e.frames++, k.t)) {
+                  case "world":
+                    (r.apply(k.world),
+                      p < 3 &&
+                        (n(
+                          `[agar-ext] world: +${k.world.updates.length} ~ -${k.world.removes.length}`,
+                          k.world.updates.slice(0, 3),
+                        ),
+                        p++));
+                    break;
+                  case "border":
+                    ((r.border = k.border), n("[agar-ext] border", k.border));
+                    break;
+                  case "own":
+                    (r.setOwn(k.ownIds), n("[agar-ext] own ids", k.ownIds));
+                    break;
+                  case "leaderboard":
+                    r.leaderboard = k.entries;
+                    break;
+                  case "chat":
+                    break;
+                  case "clear":
+                    r.clear();
+                    break;
+                  case "raw":
+                    e.unknownOps.has(k.op) ||
+                      (e.unknownOps.add(k.op),
+                      n("[agar-ext] unknown op", k.op, ae(v)));
+                    break;
+                }
+              } catch (k) {
+                n("[agar-ext] decode error", k, ae(v));
+              }
+          }),
+          y.addEventListener("close", (A) => {
+            y === i &&
+              n(
+                `[agar-ext] GAME socket closed code=${A.code} reason=${A.reason || "-"}`,
+              );
+          }));
+      }
+      return y;
+    }
+    ((u.prototype = o.prototype),
+      (u.CONNECTING = o.CONNECTING),
+      (u.OPEN = o.OPEN),
+      (u.CLOSING = o.CLOSING),
+      (u.CLOSED = o.CLOSED),
+      (u.__agarHooked = !0),
+      (window.__agarNativeWS = o),
+      (window.WebSocket = u),
+      n("[agar-ext] WebSocket hook installed"));
+  }
+  var tn = window.setInterval.bind(window),
+    Ce = [],
+    wt = !1;
+  function Y(r, e) {
+    return tn(r, e);
+  }
+  function He(r) {
+    let e = r.setInterval.bind(r),
+      t = r.clearInterval.bind(r),
+      n = (s, a, ...c) => {
+        let o = e(s, a, ...c);
+        return (wt ? t(o) : Ce.push({ clear: t, id: o }), o);
+      };
+    try {
+      r.setInterval = n;
+    } catch {}
+  }
+  function yt() {
+    wt = !0;
+    let r = Ce.length;
+    for (let e of Ce)
+      try {
+        e.clear(e.id);
+      } catch {}
+    return ((Ce.length = 0), r);
+  }
+  var nn = "https://agar2.emupedia.net/skin/";
+  function sn(r) {
+    let e = encodeURIComponent(r),
+      t = "";
+    for (let n of e) t += n.codePointAt(0).toString(16).padStart(2, "0");
+    return t;
+  }
+  function rn(r) {
+    let e = r.match(/../g);
+    if (!e) return "";
+    let t = "";
+    for (let n of e) t += String.fromCodePoint(parseInt(n, 16));
+    try {
+      return decodeURIComponent(t);
+    } catch {
+      return t;
+    }
+  }
+  function vt(r, e) {
+    var s;
+    if (!r) return "";
+    let t = r.split("|"),
+      n = t[0].trim();
+    if (
+      (n.startsWith("%") && (n = n.slice(1)),
+      n.length >= 8 && n.length % 2 === 0 && /^[0-9a-fA-F]+$/.test(n))
+    ) {
+      let a = rn(n);
+      a.startsWith("https://iili.io/") && (n = a);
+    }
+    if (!n) return "";
+    if (n.startsWith("https://iili.io/") && !n.endsWith(".gif")) {
+      let a = ((s = t[5]) != null ? s : "").trim();
+      return `${nn}${sn(n)}?nick=${encodeURIComponent(e)}&fp2=${encodeURIComponent(a)}`;
+    }
+    if (/^https?:\/\//i.test(n)) return n;
+    if (!/^[\w .-]+$/.test(n)) return "";
+    try {
+      return new URL(`skins/${encodeURIComponent(n)}.png`, location.href).href;
+    } catch {
+      return "";
+    }
+  }
+  var q = class {
+    constructor() {
+      d(this, "nodes", new Map());
+      d(this, "ownIds", new Set());
+      d(this, "border", { minX: -8e3, minY: -8e3, maxX: 8e3, maxY: 8e3 });
+      d(this, "leaderboard", []);
+      d(this, "specCam", null);
+      d(this, "spawnFxAt", -1e9);
+      d(this, "massAccum", 0);
+    }
+    get scrambleX() {
+      return (this.border.minX + this.border.maxX) / 2;
+    }
+    get scrambleY() {
+      return (this.border.minY + this.border.maxY) / 2;
+    }
+    apply(e) {
+      var n, s, a, c;
+      let t = performance.now();
+      for (let o of e.eats) (this.nodes.delete(o.id), this.ownIds.delete(o.id));
+      for (let o of e.updates) {
+        let l = this.nodes.get(o.id);
+        if (l) {
+          ((l.x = o.x),
+            (l.y = o.y),
+            (l.size = o.size),
+            (l.isVirus = o.isVirus),
+            o.color &&
+              ((l.r = o.color.r),
+              (l.g = o.color.g),
+              (l.b = o.color.b),
+              (l.css = `rgb(${l.r},${l.g},${l.b})`)));
+          let p = !1;
+          (o.name !== null &&
+            o.name !== l.name &&
+            ((l.name = o.name), (p = !0)),
+            o.skin !== null &&
+              o.skin !== l.skin &&
+              ((l.skin = o.skin), (p = !0)),
+            p && (l.skinUrl = vt(l.skin, l.name)));
+        } else {
+          let p = o.color ? o.color.r : 220,
+            i = o.color ? o.color.g : 220,
+            u = o.color ? o.color.b : 220;
+          this.nodes.set(o.id, {
+            id: o.id,
+            x: o.x,
+            y: o.y,
+            size: o.size,
+            isVirus: o.isVirus,
+            r: p,
+            g: i,
+            b: u,
+            css: `rgb(${p},${i},${u})`,
+            name: (n = o.name) != null ? n : "",
+            skin: (s = o.skin) != null ? s : "",
+            skinUrl: vt(
+              (a = o.skin) != null ? a : "",
+              (c = o.name) != null ? c : "",
+            ),
+            born: t,
+            rx: o.x,
+            ry: o.y,
+            rsize: o.size,
+            dispMass: (o.size * o.size) / 100,
+            massStr:
+              o.name || o.size >= 40
+                ? be((o.size * o.size) / 100, h.theme.massFormat)
+                : "",
+          });
+        }
+      }
+      for (let o of e.removes) (this.nodes.delete(o), this.ownIds.delete(o));
+    }
+    setOwn(e) {
+      let t = performance.now();
+      for (let n of e)
+        if (!this.ownIds.has(n)) {
+          let s = this.nodes.get(n);
+          (s && (s.born = t), this.ownIds.add(n));
+        }
+    }
+    clear() {
+      (this.nodes.clear(), this.ownIds.clear());
+    }
+    step(e) {
+      let t = Math.max(20, Math.min(400, h.game.drawDelay || 70)),
+        n = 1 - Math.exp((-1e3 / t) * e);
+      this.massAccum += e;
+      let s = this.massAccum >= 0.5;
+      s && (this.massAccum = 0);
+      for (let a of this.nodes.values())
+        ((a.rx += (a.x - a.rx) * n),
+          (a.ry += (a.y - a.ry) * n),
+          (a.rsize += (a.size - a.rsize) * n),
+          s &&
+            ((a.dispMass = (a.size * a.size) / 100),
+            (a.name || a.rsize >= 40) &&
+              (a.massStr = be(a.dispMass, h.theme.massFormat))));
+    }
+    ownCenter() {
+      let e = 0,
+        t = 0,
+        n = 0,
+        s = 0;
+      for (let a of this.ownIds) {
+        let c = this.nodes.get(a);
+        c && ((e += c.rx), (t += c.ry), n++, (s = Math.max(s, c.rsize)));
+      }
+      return n ? { cx: e / n, cy: t / n, radius: s } : null;
+    }
+  };
+  var an = new Uint8Array([254]).buffer,
+    on = 5e3,
+    ln = "tFoL46WDlZuRja7W6qCl";
+  async function cn(r) {
+    let e = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(r));
+    return [...new Uint8Array(e)]
+      .map((t) => t.toString(16).padStart(2, "0"))
+      .join("");
+  }
+  async function dn() {
+    let r = Date.now().toString(),
+      e = crypto.randomUUID().replaceAll("-", ""),
+      t = await cn([r, e, location.origin, ln].join("."));
+    return `${r}.${e}.${t}`;
+  }
+  var xe = class {
+    constructor(e, t, n, s, a) {
+      this.label = e;
+      this.url = t;
+      this.handshake = n;
+      this.log = s;
+      this.onChat = a;
+      d(this, "ws", null);
+      d(this, "world", new q());
+      d(this, "open", !1);
+      d(this, "worldEnabled", !0);
+      d(this, "ping", 0);
+      d(this, "pingTimer", 0);
+      d(this, "lastPingAt", 0);
+      d(this, "awaitingPong", !1);
+      d(this, "pingSamples", []);
+    }
+    async connect() {
+      var s;
+      this.stopPing();
+      let e;
+      try {
+        e = await dn();
+      } catch (a) {
+        this.log(`[agar-ext] ${this.label}: token mint failed`, a);
+        return;
+      }
+      this.log(
+        `[agar-ext] ${this.label}: connecting`,
+        this.url.slice(0, 80),
+        `proto=${e.slice(0, 13)}`,
+      );
+      let t = (s = window.__agarNativeWS) != null ? s : window.WebSocket,
+        n;
+      try {
+        n = new t(this.url, e);
+      } catch (a) {
+        this.log(`[agar-ext] ${this.label}: connect threw`, a);
+        return;
+      }
+      ((n.binaryType = "arraybuffer"),
+        (this.ws = n),
+        n.addEventListener("open", () => {
+          this.log(
+            `[agar-ext] ${this.label}: open - replaying ${this.handshake.length} handshake packet(s)`,
+          );
+          for (let a of this.handshake)
+            try {
+              n.send(a);
+            } catch (c) {
+              this.log(`${this.label} send err`, c);
+            }
+          this.open = !0;
+        }),
+        n.addEventListener("message", (a) => {
+          var c;
+          if (a.data instanceof ArrayBuffer) {
+            if (this.awaitingPong) {
+              this.awaitingPong = !1;
+              let o = performance.now() - this.lastPingAt;
+              (this.pingSamples.push(o),
+                this.pingSamples.length > 8 && this.pingSamples.shift(),
+                (this.ping = Math.round(Math.min(...this.pingSamples))));
+            }
+            if (!(!this.worldEnabled && new Uint8Array(a.data)[0] === 16))
+              try {
+                let o = ie(a.data);
+                switch (o.t) {
+                  case "world":
+                    this.world.apply(o.world);
+                    break;
+                  case "border":
+                    this.world.border = o.border;
+                    break;
+                  case "own":
+                    this.world.setOwn(o.ownIds);
+                    break;
+                  case "leaderboard":
+                    this.world.leaderboard = o.entries;
+                    break;
+                  case "camera":
+                    this.world.specCam = {
+                      x: o.x,
+                      y: o.y,
+                      at: performance.now(),
+                    };
+                    break;
+                  case "chat":
+                    (c = this.onChat) == null ||
+                      c.call(this, o.name, o.message, o.color);
+                    break;
+                  case "clear":
+                    this.world.clear();
+                    break;
+                  case "raw":
+                    break;
+                }
+              } catch (o) {
+                this.log(
+                  `[agar-ext] ${this.label}: decode error`,
+                  o,
+                  ae(a.data),
+                );
+              }
+          }
+        }),
+        n.addEventListener("close", (a) => {
+          (this.ws === n && (this.open = !1),
+            this.log(
+              `[agar-ext] ${this.label}: closed code=${a.code} reason=${a.reason || "-"}`,
+            ));
+        }),
+        n.addEventListener("error", () =>
+          this.log(`[agar-ext] ${this.label}: socket error`),
+        ),
+        (this.pingTimer = Y(() => {
+          var a;
+          if (
+            ((a = this.ws) == null ? void 0 : a.readyState) === WebSocket.OPEN
+          )
+            try {
+              ((this.lastPingAt = performance.now()),
+                (this.awaitingPong = !0),
+                this.ws.send(an));
+            } catch {}
+        }, on)));
+    }
+    stopPing() {
+      (this.pingTimer && (clearInterval(this.pingTimer), (this.pingTimer = 0)),
+        (this.awaitingPong = !1));
+    }
+    setHandshake(e) {
+      this.handshake = e;
+    }
+    reconnect() {
+      var e;
+      this.log(`[agar-ext] ${this.label}: leaving + rejoining`);
+      try {
+        (e = this.ws) == null || e.close();
+      } catch {}
+      ((this.ws = null), (this.open = !1), this.world.clear(), this.connect());
+    }
+    hasCell() {
+      for (let e of this.world.ownIds) if (this.world.nodes.has(e)) return !0;
+      return !1;
+    }
+    send(e) {
+      this.ws && this.ws.readyState === WebSocket.OPEN && this.ws.send(e);
+    }
+    close() {
+      var e;
+      this.stopPing();
+      try {
+        (e = this.ws) == null || e.close();
+      } catch {}
+      ((this.ws = null), (this.open = !1));
+    }
+  };
+  function Ee(r, e, t) {
+    if (t === "f64") {
+      let a = new ArrayBuffer(21),
+        c = new DataView(a);
+      return (
+        c.setUint8(0, 5),
+        c.setFloat64(1, r, !0),
+        c.setFloat64(9, e, !0),
+        c.setUint32(17, 0, !0),
+        a
+      );
+    }
+    let n = new ArrayBuffer(13),
+      s = new DataView(n);
+    return (
+      s.setUint8(0, 5),
+      s.setInt32(1, Math.round(r), !0),
+      s.setInt32(5, Math.round(e), !0),
+      s.setUint32(9, 0, !0),
+      n
+    );
+  }
+  function we(r, e) {
+    return r.trim().replace(/[<>|]/g, "").slice(0, e);
+  }
+  function kt(r, e, t = "", n = "#ffffff", s = "#ffffff", a = "#ffffff") {
+    let c = `<${we(t, 30)}|${we(n, 7)}|${we(s, 7)}|${we(a, 7)}||${we(e, 64)}>${r}`,
+      o = new TextEncoder().encode(c),
+      l = new ArrayBuffer(1 + o.length + 1),
+      p = new Uint8Array(l);
+    return ((p[0] = 20), p.set(o, 1), (p[1 + o.length] = 0), l);
+  }
+  function Ke(r, e) {
+    let t = new TextEncoder().encode(r),
+      n = new ArrayBuffer(2 + t.length + 1),
+      s = new Uint8Array(n);
+    return ((s[0] = e), (s[1] = 0), s.set(t, 2), (s[2 + t.length] = 0), n);
+  }
+  var St = ["#22d3ee", "#fbbf24"],
+    pn = 70,
+    Xe = 15,
+    un = 18,
+    hn = 19,
+    Ct = !0,
+    Et = "",
+    Mt = `wss://agar.${location.host}/ws2/`,
+    mn = 6,
+    gn = 1,
+    fn = !1,
+    Me = class {
+      constructor(e, t, n, s, a, c) {
+        this.link = t;
+        this.stats = n;
+        this.log = s;
+        this.skinShare = a;
+        this.chat = c;
+        d(this, "players");
+        d(this, "active", 0);
+        d(this, "overlay", null);
+        d(this, "moveFmt", "i32");
+        d(this, "mouseX", 0);
+        d(this, "mouseY", 0);
+        d(this, "aim", []);
+        d(this, "aliveState", []);
+        d(this, "tickN", 0);
+        d(this, "connecting", !1);
+        d(this, "spectateWorld");
+        d(this, "macroFeedHeld", !1);
+        d(this, "lastFeed", 0);
+        d(this, "lastAnnounce", 0);
+        d(this, "chatNick", "");
+        d(this, "lastSpecKick", 0);
+        d(this, "spectateKicked", !1);
+        d(this, "pendingRespawn", null);
+        d(this, "respawnStart", 0);
+        d(this, "paused", !1);
+        d(this, "mode", "menu");
+        d(this, "freeRoam", !1);
+        d(this, "fps", 0);
+        d(this, "onAllDead", null);
+        d(this, "wasAlive", !1);
+        d(this, "ws1Cut", !1);
+        d(this, "recentChat", new Map());
+        d(this, "auxClient", null);
+        d(this, "warnedOps", !1);
+        d(this, "_layers", []);
+        d(this, "_theme", {});
+        ((this.spectateWorld = new q()),
+          (this.players = [
+            { world: new q(), client: null, deployed: !1 },
+            { world: new q(), client: null, deployed: !1 },
+          ]),
+          window.addEventListener("mousemove", (o) => {
+            ((this.mouseX = o.clientX), (this.mouseY = o.clientY));
+          }),
+          (this.link.suppressMove = !0),
+          (this.link.suppressSpawn = !0),
+          (this.link.suppressAction = !1),
+          (this.chatNick = this.nick()),
+          Y(() => this.tick(), 1e3 / 33),
+          Y(() => this.autoConnect(), 800),
+          Y(() => this.announceSkin(), 15e3));
+      }
+      attachOverlay(e) {
+        this.overlay = e;
+      }
+      build254() {
+        return new Uint8Array([254, mn, 0, 0, 0]).buffer;
+      }
+      build255() {
+        let e = new TextEncoder().encode(this.nick()),
+          t = new ArrayBuffer(5 + e.length + 1),
+          n = new DataView(t);
+        return (
+          n.setUint8(0, 255),
+          n.setUint32(1, gn, !0),
+          new Uint8Array(t).set(e, 5),
+          t
+        );
+      }
+      autoConnect() {
+        var a, c, o, l;
+        if (this.connecting) return;
+        let e = this.build254(),
+          t = this.build255(),
+          n =
+            (c = (a = this.auxClient) == null ? void 0 : a.ws) == null
+              ? void 0
+              : c.readyState;
+        if (n !== WebSocket.OPEN && n !== WebSocket.CONNECTING) {
+          ((this.connecting = !0),
+            this.connectAux(e, t).finally(() => (this.connecting = !1)));
+          return;
+        }
+        let s = Ct ? this.players.length : 1;
+        for (let p = 0; p < s; p++) {
+          let i =
+            (l = (o = this.players[p].client) == null ? void 0 : o.ws) == null
+              ? void 0
+              : l.readyState;
+          if (!(i === WebSocket.OPEN || i === WebSocket.CONNECTING)) {
+            ((this.connecting = !0),
+              this.connectBox(p, e, t).finally(() => (this.connecting = !1)));
+            return;
+          }
+        }
+      }
+      async connectAux(e, t) {
+        let n = Et || Mt,
+          s = new xe("AUX", n, [e, t], this.log, (a, c, o) =>
+            this.ingestChat(a, c, o),
+          );
+        ((s.worldEnabled = !1),
+          (this.auxClient = s),
+          (this.spectateWorld = s.world),
+          await s.connect(),
+          this.log("[agar-ext] aux (chat/spectate) socket connecting"));
+      }
+      async connectBox(e, t, n) {
+        let s = Et || Mt,
+          a = new xe(`P${e + 1}`, s, [t, n], this.log);
+        ((a.worldEnabled = !1),
+          (this.players[e] = { world: a.world, client: a, deployed: !1 }),
+          await a.connect(),
+          this.log(
+            `[agar-ext] box ${e + 1} socket connecting (handshake only - Play/TAB to deploy)`,
+          ));
+      }
+      ingestChat(e, t, n) {
+        if (this.skinShare.ingest(t) || /antispam/i.test(t)) return;
+        let s = performance.now(),
+          a = e + " " + t,
+          c = this.recentChat.get(a);
+        if (!(c !== void 0 && s - c < 5e3)) {
+          if ((this.recentChat.set(a, s), this.recentChat.size > 128))
+            for (let [o, l] of this.recentChat)
+              s - l > 8e3 && this.recentChat.delete(o);
+          this.chat.add(e, t, n);
+        }
+      }
+      nick() {
+        return (le().name || "An unnamed cell").slice(0, 15);
+      }
+      alive(e) {
+        for (let t of e.world.ownIds) if (e.world.nodes.has(t)) return !0;
+        return !1;
+      }
+      play() {
+        var e;
+        ((this.mode = "playing"),
+          (this.paused = !1),
+          (this.freeRoam = !1),
+          h.game.spectatorView && ((h.game.spectatorView = !1), _()),
+          (this.active = 0),
+          this.syncChatNick(),
+          (e = this.players[0].client) != null && e.open
+            ? this.spawnBox(0)
+            : ((this.pendingRespawn = 0),
+              (this.respawnStart = performance.now()),
+              this.log(
+                "[agar-ext] Play: box 1 socket still connecting - will spawn when ready",
+              )));
+      }
+      respawn() {
+        let e = this.activeMass();
+        if (e > 500) {
+          this.log(
+            `[agar-ext] quick respawn blocked - box mass ${Math.round(e)} > 500 (too big to risk)`,
+          );
+          return;
+        }
+        ((this.mode = "playing"),
+          (this.paused = !1),
+          this.leaveAndRejoin(this.active));
+      }
+      activeMass() {
+        let e = this.players[this.active];
+        if (!e) return 0;
+        let t = 0;
+        for (let n of e.world.ownIds) {
+          let s = e.world.nodes.get(n);
+          s && (t += s.dispMass);
+        }
+        return t;
+      }
+      leaveAndRejoin(e) {
+        let t = this.players[e];
+        if (!(t != null && t.client)) {
+          this.log(`[agar-ext] quick respawn box ${e + 1}: not connected yet`);
+          return;
+        }
+        ((this.pendingRespawn = e),
+          (this.respawnStart = performance.now()),
+          this.log(`[agar-ext] quick respawn box ${e + 1}: leaving server...`),
+          t.client.reconnect());
+      }
+      spawnPending() {
+        var s, a;
+        if (this.pendingRespawn === null) return;
+        let e = this.pendingRespawn,
+          t = this.players[e],
+          n = performance.now() - this.respawnStart;
+        (s = t == null ? void 0 : t.client) != null && s.open && n > 250
+          ? ((this.pendingRespawn = null),
+            (this.active = e),
+            this.spawnBox(e),
+            (a = this.overlay) == null || a.snapCamera(),
+            this.log(
+              `[agar-ext] quick respawn box ${e + 1}: rejoined -> spawned`,
+            ))
+          : n > 9e3 &&
+            ((this.pendingRespawn = null),
+            this.log(
+              `[agar-ext] quick respawn box ${e + 1}: timed out waiting to reconnect`,
+            ));
+      }
+      gameSettings() {
+        try {
+          return JSON.parse(localStorage.getItem("settings") || "{}");
+        } catch {
+          return {};
+        }
+      }
+      setGameNick(e) {
+        let t = !1;
+        try {
+          let n = this.gameSettings();
+          n.nick !== e &&
+            ((n.nick = e),
+            localStorage.setItem("settings", JSON.stringify(n)),
+            (t = !0));
+        } catch {}
+        try {
+          let n = document.querySelector("#nick");
+          n && n.value !== e && (n.value = e);
+        } catch {}
+        return t;
+      }
+      syncChatNick() {
+        let e = this.nick();
+        if ((this.setGameNick(e), e !== this.chatNick)) {
+          this.chatNick = e;
+          let t = this.auxClient;
+          (t &&
+            (t.setHandshake([this.build254(), this.build255()]), t.reconnect()),
+            this.log(`[agar-ext] chat nick -> "${e}"`));
+        }
+      }
+      refreshChatNick() {
+        this.syncChatNick();
+      }
+      buildSpawn(e, t) {
+        let n = this.gameSettings(),
+          s = typeof n.fp2 == "string" ? n.fp2 : "";
+        if (!s) return null;
+        let a = (c) => (typeof n[c] == "string" ? n[c] : "#ffffff");
+        return kt(e, s, t, a("nameColor"), a("cellColor"), a("borderColor"));
+      }
+      spawnBox(e) {
+        let t = this.players[e];
+        if (!t) return;
+        let n = this.nick(),
+          s = this.buildSpawn(n, "");
+        if (!s) {
+          this.log(
+            "[agar-ext] no fp2 in localStorage['settings'] - cannot spawn",
+          );
+          return;
+        }
+        if (!t.client) {
+          this.log(`[agar-ext] box ${e + 1} not connected yet - cannot spawn`);
+          return;
+        }
+        ((t.client.worldEnabled = !0),
+          t.client.send(s),
+          (t.deployed = !0),
+          this.announceSkin(),
+          this.log(`[agar-ext] opcode-20 spawn box ${e + 1} (nick="${n}")`));
+      }
+      spectate() {
+        if (this.mode !== "spectating") {
+          if (this.players.some((e) => this.alive(e))) {
+            this.log(
+              "[agar-ext] spectate blocked - a box is still alive (it would keep starving)",
+            );
+            return;
+          }
+          ((this.mode = "spectating"),
+            (this.paused = !1),
+            (this.freeRoam = !1),
+            (this.spectateWorld.specCam = null),
+            this.log(
+              "[agar-ext] spectate (aux socket) - follow top player, press Q for free roam",
+            ));
+        }
+      }
+      spectateOrRoam() {
+        var t;
+        if (this.mode !== "spectating") {
+          this.spectate();
+          return;
+        }
+        this.freeRoam = !this.freeRoam;
+        let e = this.auxClient;
+        (((t = e == null ? void 0 : e.ws) == null ? void 0 : t.readyState) ===
+          WebSocket.OPEN &&
+          (e.send(this.oneByte(un)),
+          window.setTimeout(() => {
+            var n;
+            ((n = e.ws) == null ? void 0 : n.readyState) === WebSocket.OPEN &&
+              e.send(this.oneByte(hn));
+          }, 40),
+          this.freeRoam ||
+            window.setTimeout(() => {
+              var n;
+              this.mode === "spectating" &&
+                ((n = e.ws) == null ? void 0 : n.readyState) ===
+                  WebSocket.OPEN &&
+                e.send(this.oneByte(Xe));
+            }, 90)),
+          this.freeRoam
+            ? this.log(
+                "[agar-ext] free roam - the camera flies toward your mouse",
+              )
+            : this.log("[agar-ext] spectate - follow top player"));
+      }
+      manageSpectate(e) {
+        var s;
+        let t = this.auxClient;
+        if (
+          !t ||
+          ((s = t.ws) == null ? void 0 : s.readyState) !== WebSocket.OPEN
+        )
+          return;
+        this.mode === "spectating" || h.game.spectatorView
+          ? (t.worldEnabled || (t.worldEnabled = !0),
+            (!this.spectateKicked ||
+              (!this.freeRoam &&
+                t.world.nodes.size === 0 &&
+                e - this.lastSpecKick > 3e3)) &&
+              ((this.spectateKicked = !0),
+              (this.lastSpecKick = e),
+              t.send(this.oneByte(Xe)),
+              window.setTimeout(() => {
+                var a;
+                (this.mode === "spectating" || h.game.spectatorView) &&
+                  ((a = t.ws) == null ? void 0 : a.readyState) ===
+                    WebSocket.OPEN &&
+                  t.send(this.oneByte(Xe));
+              }, 300),
+              this.log(
+                "[agar-ext] spectate: requesting aux stream (follow-leader)",
+              )))
+          : t.worldEnabled &&
+            ((t.worldEnabled = !1),
+            t.world.clear(),
+            (this.spectateKicked = !1),
+            t.reconnect(),
+            this.log(
+              "[agar-ext] spectate off - aux socket recycled so the next spectate gets fresh cell colors",
+            ));
+      }
+      cutWs1() {
+        var e;
+        if (!this.ws1Cut) {
+          ((this.ws1Cut = !0), (this.link.blocked = !0));
+          try {
+            (e = this.link.ws) == null || e.close();
+          } catch {}
+          this.log(
+            "[agar-ext] WS1 (game socket) CUT - chat now on our sockets; game does no more WS work (fixes freezes)",
+          );
+        }
+      }
+      switchActive() {
+        var s;
+        if (!Ct) {
+          this.log("[agar-ext] single-socket mode - box 2 disabled");
+          return;
+        }
+        let e = this.players.length,
+          t = -1;
+        for (let a = 1; a <= e; a++) {
+          let c = (this.active + a) % e;
+          if (this.controllable(this.players[c])) {
+            t = c;
+            break;
+          }
+        }
+        if (t < 0) {
+          this.log("[agar-ext] no other box connected yet");
+          return;
+        }
+        this.active = t;
+        let n = this.players[t];
+        (this.alive(n) || this.spawnBox(t),
+          h.game.multiboxCamera === "single" &&
+            ((s = this.overlay) == null || s.snapCamera()),
+          this.log(`[agar-ext] active -> box ${this.active + 1}`));
+      }
+      sendTo(e, t) {
+        var n;
+        (n = e.client) == null || n.send(t);
+      }
+      sendActive(e) {
+        this.sendTo(this.players[this.active], e);
+      }
+      oneByte(e) {
+        return new Uint8Array([e]).buffer;
+      }
+      split() {
+        let e = h.game.splitOp;
+        e > 0 ? this.sendActive(this.oneByte(e)) : this.warnOps();
+      }
+      eject() {
+        let e = h.game.ejectOp;
+        e > 0 ? this.sendActive(this.oneByte(e)) : this.warnOps();
+      }
+      warnOps() {
+        this.warnedOps ||
+          ((this.warnedOps = !0),
+          this.log(
+            "[agar-ext] split/eject opcode not set - Settings -> Controls (or read it from the packet log)",
+          ));
+      }
+      macroSplit(e) {
+        let t = h.game.splitOp;
+        if (t <= 0) {
+          this.warnOps();
+          return;
+        }
+        let n = this.active,
+          s = this.players[n],
+          a = this.aim[n];
+        this.log(`[agar-ext] macro split x${e} on box ${n + 1} (op ${t})`);
+        for (let c = 0; c < e; c++)
+          window.setTimeout(() => {
+            this.controllable(s) &&
+              (a && this.sendTo(s, Ee(a.x, a.y, this.moveFmt)),
+              this.sendTo(s, this.oneByte(t)));
+          }, c * 60);
+      }
+      doubleSplit() {
+        this.macroSplit(2);
+      }
+      split16() {
+        this.macroSplit(4);
+      }
+      setMacroFeed(e) {
+        ((this.macroFeedHeld = e), e && ((this.lastFeed = 0), this.eject()));
+      }
+      togglePause() {
+        this.paused = !this.paused;
+      }
+      sendChat(e) {
+        var o, l, p, i;
+        let t = e.trim().slice(0, 200);
+        if (!t) return;
+        let n = h.game.chatOp;
+        if (n <= 0) {
+          this.log("[agar-ext] chat opcode not set (Settings -> Controls)");
+          return;
+        }
+        let s = this.nick();
+        (this.recentChat.set(s + " " + t, performance.now()),
+          this.chat.add(s, t, "#67e8f9"));
+        let a = Ke(t, n);
+        if (
+          ((l = (o = this.auxClient) == null ? void 0 : o.ws) == null
+            ? void 0
+            : l.readyState) === WebSocket.OPEN
+        ) {
+          (this.auxClient.send(a),
+            this.log(`[agar-ext] chat -> "${t}" (op ${n}, aux)`));
+          return;
+        }
+        let c = this.players.find((u) => {
+          var f, b;
+          return (
+            ((b = (f = u.client) == null ? void 0 : f.ws) == null
+              ? void 0
+              : b.readyState) === WebSocket.OPEN
+          );
+        });
+        c
+          ? (c.client.send(a),
+            this.log(`[agar-ext] chat -> "${t}" (op ${n}, box)`))
+          : ((i = (p = this.link).sendRaw) == null || i.call(p, a),
+            this.log(
+              `[agar-ext] chat -> "${t}" (op ${n}, WS1 - aux not up yet)`,
+            ));
+      }
+      announceSkin() {
+        if (!fn || !h.theme.customSkins || this.mode !== "playing") return;
+        let e = (le().skins.find((s) => !!s) || "").trim();
+        if (!e) return;
+        let t = h.game.chatOp;
+        if (t <= 0 || !this.link.sendRaw) return;
+        let n = performance.now();
+        n - this.lastAnnounce < 7e3 ||
+          ((this.lastAnnounce = n),
+          this.link.sendRaw(Ke(this.skinShare.encode(this.nick(), e), t)));
+      }
+      sharedSkin(e) {
+        return this.skinShare.size === 0 || !e ? "" : this.skinShare.get(e);
+      }
+      controllable(e) {
+        var t, n;
+        return (
+          ((n = (t = e.client) == null ? void 0 : t.ws) == null
+            ? void 0
+            : n.readyState) === WebSocket.OPEN
+        );
+      }
+      running() {
+        return this.mode !== "menu";
+      }
+      layers() {
+        var n;
+        let e = this._layers,
+          t = 0;
+        for (let s = 0; s < this.players.length; s++) {
+          let a = e[t];
+          (a
+            ? ((a.world = this.players[s].world),
+              (a.active = s === this.active))
+            : (a = e[t] =
+                { world: this.players[s].world, active: s === this.active }),
+            t++);
+        }
+        if ((n = this.auxClient) != null && n.worldEnabled) {
+          let s = e[t];
+          (s
+            ? ((s.world = this.spectateWorld), (s.active = !1))
+            : (s = e[t] = { world: this.spectateWorld, active: !1 }),
+            t++);
+        }
+        return ((e.length = t), e);
+      }
+      themeFor() {
+        let e = h.theme,
+          t = this._theme;
+        return (
+          (t.grid = e.showGrid),
+          (t.names = e.showNames),
+          (t.mass = e.showMass),
+          (t.minimap = e.showMinimap),
+          (t.shadows = e.cellShadow),
+          (t.customSkins = e.customSkins),
+          (t.gameSkins = e.gameSkins),
+          (t.massFormat = e.massFormat),
+          (t.ringSize = e.ringSize),
+          (t.pelletColor = e.pelletColor),
+          (t.showPellets = e.showPellets),
+          (t.animatedBorder = e.animatedBorder),
+          (t.spawnEffects = e.spawnEffects),
+          (t.backgroundColor = e.backgroundColor),
+          (t.backgroundUrl = e.backgroundUrl),
+          (t.activeOutline = e.activeOutline),
+          (t.inactiveOutline = e.inactiveOutline),
+          t
+        );
+      }
+      realOwnCenter(e) {
+        let t = e.world.ownCenter();
+        return t
+          ? {
+              cx: t.cx - e.world.scrambleX,
+              cy: t.cy - e.world.scrambleY,
+              radius: t.radius,
+            }
+          : null;
+      }
+      cameraTarget() {
+        var e, t;
+        if (this.paused) return null;
+        if (this.mode === "spectating") {
+          let n = this.spectateWorld;
+          return this.freeRoam &&
+            n.specCam &&
+            performance.now() - n.specCam.at < 2500
+            ? {
+                cx: n.specCam.x - n.scrambleX,
+                cy: n.specCam.y - n.scrambleY,
+                radius: 300,
+              }
+            : this.biggestInWorld(n);
+        }
+        if (h.game.multiboxCamera === "center") {
+          let n = 1 / 0,
+            s = 1 / 0,
+            a = -1 / 0,
+            c = -1 / 0,
+            o = 0;
+          for (let l of this.players) {
+            let p = !1;
+            for (let i of l.world.ownIds) {
+              let u = l.world.nodes.get(i);
+              if (!u) continue;
+              p = !0;
+              let f = u.rx - l.world.scrambleX,
+                b = u.ry - l.world.scrambleY;
+              ((n = Math.min(n, f - u.rsize)),
+                (s = Math.min(s, b - u.rsize)),
+                (a = Math.max(a, f + u.rsize)),
+                (c = Math.max(c, b + u.rsize)));
+            }
+            p && o++;
+          }
+          if (o >= 2)
+            return {
+              cx: (n + a) / 2,
+              cy: (s + c) / 2,
+              radius: Math.max((a - n) / 2, (c - s) / 2),
+            };
+        }
+        return (t =
+          (e = this.realOwnCenter(this.players[this.active])) != null
+            ? e
+            : this.realOwnCenter(this.players[0])) != null
+          ? t
+          : this.biggestCellReal();
+      }
+      worldBorder() {
+        let e = this.players[this.active].world;
+        return {
+          minX: e.border.minX - e.scrambleX,
+          minY: e.border.minY - e.scrambleY,
+          maxX: e.border.maxX - e.scrambleX,
+          maxY: e.border.maxY - e.scrambleY,
+        };
+      }
+      leaderboard() {
+        let e = this.players[0].world.leaderboard;
+        return e.length ? e : this.spectateWorld.leaderboard;
+      }
+      biggestInWorld(e) {
+        let t = null;
+        for (let n of e.nodes.values())
+          n.isVirus ||
+            (!n.name && n.rsize < 40) ||
+            ((!t || n.rsize > t.radius) &&
+              (t = {
+                cx: n.rx - e.scrambleX,
+                cy: n.ry - e.scrambleY,
+                radius: n.rsize,
+              }));
+        return t;
+      }
+      biggestCellReal() {
+        let e = null,
+          t = this.players.map((n) => n.world);
+        this.mode === "spectating" && t.push(this.spectateWorld);
+        for (let n of t)
+          for (let s of n.nodes.values())
+            s.isVirus ||
+              (!s.name && s.rsize < 40) ||
+              ((!e || s.rsize > e.radius) &&
+                (e = {
+                  cx: s.rx - n.scrambleX,
+                  cy: s.ry - n.scrambleY,
+                  radius: s.rsize,
+                }));
+        return e;
+      }
+      pingMs() {
+        var n, s, a, c;
+        let e = this.auxClient;
+        if (
+          this.mode === "spectating" &&
+          e &&
+          ((n = e.ws) == null ? void 0 : n.readyState) === WebSocket.OPEN &&
+          e.ping > 0
+        )
+          return e.ping;
+        let t = (s = this.players[this.active]) == null ? void 0 : s.client;
+        return t &&
+          ((a = t.ws) == null ? void 0 : a.readyState) === WebSocket.OPEN &&
+          t.ping > 0
+          ? t.ping
+          : e &&
+              ((c = e.ws) == null ? void 0 : c.readyState) === WebSocket.OPEN &&
+              e.ping > 0
+            ? e.ping
+            : 0;
+      }
+      hud() {
+        var n, s;
+        let e = 0,
+          t = this.players.map((a, c) => {
+            let o = 0,
+              l = 0;
+            for (let p of a.world.ownIds) {
+              let i = a.world.nodes.get(p);
+              i && ((o += i.dispMass), l++);
+            }
+            return (
+              (e += l),
+              {
+                label: `${c + 1}`,
+                alive: l > 0,
+                connected: this.controllable(a),
+                active: c === this.active,
+                mass: Math.round(o),
+                color: St[c % St.length],
+              }
+            );
+          });
+        return {
+          active: this.active,
+          boxCount: this.players.length,
+          cellCount: e,
+          mass:
+            (s = (n = t[this.active]) == null ? void 0 : n.mass) != null
+              ? s
+              : 0,
+          ping: this.pingMs(),
+          players: t,
+        };
+      }
+      get status() {
+        var s, a;
+        let e =
+            (a = (s = this.auxClient) == null ? void 0 : s.ws) == null
+              ? void 0
+              : a.readyState,
+          t =
+            e === WebSocket.OPEN
+              ? "open"
+              : e === WebSocket.CONNECTING
+                ? "conn"
+                : "down",
+          n = this.players
+            .map((c, o) => {
+              var u, f;
+              let l =
+                  (f = (u = c.client) == null ? void 0 : u.ws) == null
+                    ? void 0
+                    : f.readyState,
+                p =
+                  l === WebSocket.OPEN
+                    ? "open"
+                    : l === WebSocket.CONNECTING
+                      ? "conn"
+                      : "closed",
+                i = [...c.world.ownIds].filter((b) =>
+                  c.world.nodes.has(b),
+                ).length;
+              return `${o === this.active ? ">" : " "}${o + 1}:${p}(${i})`;
+            })
+            .join("  ");
+        return `aux(chat/spec):${t}  ${n}`;
+      }
+      tick() {
+        var s, a, c, o;
+        if (!this.overlay) return;
+        (!this.ws1Cut &&
+          ((a = (s = this.auxClient) == null ? void 0 : s.ws) == null
+            ? void 0
+            : a.readyState) === WebSocket.OPEN &&
+          this.cutWs1(),
+          this.spawnPending(),
+          this.manageSpectate(performance.now()),
+          this.controllable(this.players[this.active]) || (this.active = 0));
+        for (let l = 0; l < this.players.length; l++) {
+          let p = this.alive(this.players[l]);
+          if (!this.aliveState[l] && p) {
+            let i = this.players[l].world;
+            i.spawnFxAt = performance.now();
+            for (let u of i.ownIds) {
+              let f = i.nodes.get(u);
+              f && (f.born = i.spawnFxAt);
+            }
+            l === this.active && this.overlay.snapCamera();
+          }
+          if (
+            this.aliveState[l] &&
+            !p &&
+            l === this.active &&
+            l !== this.pendingRespawn
+          ) {
+            let i = this.players.findIndex(
+              (u, f) => f !== l && this.controllable(u) && this.alive(u),
+            );
+            i >= 0 &&
+              ((this.active = i),
+              this.overlay.snapCamera(),
+              this.log(
+                `[agar-ext] box ${l + 1} died -> switch to box ${i + 1}`,
+              ));
+          }
+          this.aliveState[l] = p;
+        }
+        let e = this.players.some((l) => this.alive(l));
+        (this.wasAlive &&
+          !e &&
+          this.mode === "playing" &&
+          this.pendingRespawn === null &&
+          (this.log("[agar-ext] all boxes died - back to menu"),
+          (c = this.onAllDead) == null || c.call(this)),
+          (this.wasAlive = e));
+        let t = performance.now();
+        if (
+          (this.macroFeedHeld &&
+            this.mode === "playing" &&
+            !this.paused &&
+            t - this.lastFeed > pn &&
+            ((this.lastFeed = t), this.eject()),
+          this.paused)
+        )
+          return;
+        if (this.mode === "spectating") {
+          this.freeRoam && this.sendRoam();
+          return;
+        }
+        this.tickN++;
+        let n = this.overlay.screenToWorld(this.mouseX, this.mouseY);
+        for (let l = 0; l < this.players.length; l++) {
+          let p = this.players[l];
+          if (
+            !this.controllable(p) ||
+            (l !== this.active && this.tickN % 4 !== 0)
+          )
+            continue;
+          let i, u;
+          if (l === this.active)
+            ((i = n.x + p.world.scrambleX),
+              (u = n.y + p.world.scrambleY),
+              (this.aim[l] = { x: i, y: u }));
+          else if (h.game.inactiveBoxStops) {
+            let f = p.world.ownCenter();
+            if (!f) continue;
+            ((i = f.cx), (u = f.cy));
+          } else {
+            let f =
+              (o = this.aim[l]) != null
+                ? o
+                : p.world.ownCenter() && {
+                    x: p.world.ownCenter().cx,
+                    y: p.world.ownCenter().cy,
+                  };
+            if (!f) continue;
+            ((i = f.x), (u = f.y));
+          }
+          this.sendTo(p, Ee(i, u, this.moveFmt));
+        }
+      }
+      sendRoam() {
+        var s;
+        let e = this.auxClient;
+        if (
+          !e ||
+          ((s = e.ws) == null ? void 0 : s.readyState) !== WebSocket.OPEN ||
+          !this.overlay
+        )
+          return;
+        let t = this.overlay.screenToWorld(this.mouseX, this.mouseY),
+          n = this.spectateWorld;
+        e.send(Ee(t.x + n.scrambleX, t.y + n.scrambleY, this.moveFmt));
+      }
+    };
+  var Ae = class {
+    constructor() {
+      d(this, "x", 0);
+      d(this, "y", 0);
+      d(this, "scale", 0.25);
+      d(this, "targetX", 0);
+      d(this, "targetY", 0);
+      d(this, "targetScale", 0.25);
+      d(this, "viewportW", 1);
+      d(this, "viewportH", 1);
+      d(this, "snapNext", !1);
+    }
+    setViewport(e, t) {
+      ((this.viewportW = e), (this.viewportH = t));
+    }
+    snap() {
+      this.snapNext = !0;
+    }
+    pan(e, t) {
+      let n = e / this.scale,
+        s = t / this.scale;
+      ((this.x -= n), (this.targetX -= n), (this.y -= s), (this.targetY -= s));
+    }
+    frame(e, t, n, s) {
+      ((this.targetX = (e + n) / 2), (this.targetY = (t + s) / 2));
+      let a = 1200,
+        c = n - e + a * 2,
+        o = s - t + a * 2,
+        l = this.viewportW / c,
+        p = this.viewportH / o;
+      this.targetScale = Math.max(0.03, Math.min(0.55, Math.min(l, p)));
+    }
+    focus(e, t, n) {
+      ((this.targetX = e), (this.targetY = t), (this.targetScale = At(n)));
+    }
+    setTargetScale(e) {
+      this.targetScale = At(e);
+    }
+    update(e, t = 1) {
+      if (this.snapNext) {
+        ((this.x = this.targetX),
+          (this.y = this.targetY),
+          (this.scale = this.targetScale),
+          (this.snapNext = !1));
+        return;
+      }
+      let n = 1 - Math.exp(-8 * t * e);
+      ((this.x += (this.targetX - this.x) * n),
+        (this.y += (this.targetY - this.y) * n));
+      let s = 1 - Math.exp(-4 * t * e);
+      this.scale += (this.targetScale - this.scale) * s;
+    }
+    screenToWorld(e, t) {
+      return {
+        x: this.x + (e - this.viewportW / 2) / this.scale,
+        y: this.y + (t - this.viewportH / 2) / this.scale,
+      };
+    }
+  };
+  function At(r) {
+    return r < 0.04 ? 0.04 : r > 2 ? 2 : r;
+  }
+  var bn = 3e4,
+    xn = 11e3,
+    Tt = 600,
+    Ot = 1200,
+    wn = 240,
+    Lt = Array.from({ length: 64 }, (r, e) => {
+      let t = (e >> 4) * 85,
+        n = ((e >> 2) & 3) * 85,
+        s = (e & 3) * 85;
+      return `rgb(${t},${n},${s})`;
+    }),
+    Ye = class {
+      constructor() {
+        d(this, "images", new Map());
+        d(this, "failed", new Set());
+      }
+      get(e) {
+        if (!e || this.failed.has(e)) return null;
+        let t = this.images.get(e);
+        return t
+          ? t.complete && t.naturalWidth > 0
+            ? t
+            : null
+          : ((t = new Image()),
+            (t.onerror = () => this.failed.add(e)),
+            (t.src = e),
+            this.images.set(e, t),
+            null);
+      }
+    },
+    ne = class ne {
+      constructor() {
+        d(this, "map", new Map());
+        d(this, "builtThisFrame", 0);
+      }
+      beginFrame() {
+        this.builtThisFrame = 0;
+      }
+      get(e) {
+        let t = this.map.get(e);
+        if (t) return t;
+        if (this.builtThisFrame >= ne.MAX_PER_FRAME) return null;
+        let n = ne.measure;
+        if (
+          !n &&
+          ((n = ne.measure = document.createElement("canvas").getContext("2d")),
+          !n)
+        )
+          return null;
+        let s = ne.REF,
+          a = Math.ceil(s * 0.35),
+          c = `${s}px system-ui, sans-serif`;
+        n.font = c;
+        let o = Math.max(1, Math.ceil(n.measureText(e).width)) + a * 2,
+          l = s + a * 2,
+          p = document.createElement("canvas");
+        ((p.width = o), (p.height = l));
+        let i = p.getContext("2d");
+        if (!i) return null;
+        ((i.font = c),
+          (i.textAlign = "center"),
+          (i.textBaseline = "middle"),
+          (i.lineWidth = Math.max(2, s * 0.12)),
+          (i.strokeStyle = "rgba(0,0,0,0.5)"),
+          (i.fillStyle = "rgba(255,255,255,0.95)"),
+          i.strokeText(e, o / 2, l / 2),
+          i.fillText(e, o / 2, l / 2),
+          this.map.size > 400 && this.map.clear());
+        let u = { canvas: p, hScale: l / s, aspect: o / l };
+        return (this.map.set(e, u), this.builtThisFrame++, u);
+      }
+    };
+  (d(ne, "REF", 44), d(ne, "measure", null), d(ne, "MAX_PER_FRAME", 2));
+  var je = ne,
+    Ge = class {
+      constructor(e = 100) {
+        d(this, "samplerIndex", 0);
+        d(this, "sampler");
+        d(this, "size", 0);
+        d(this, "average", 0);
+        this.sampler = new Float32Array(e);
+      }
+      reset() {
+        ((this.samplerIndex = 0),
+          (this.size = 0),
+          (this.average = 0),
+          this.sampler.fill(0));
+      }
+      step(e) {
+        ((this.sampler[this.samplerIndex] = Math.round(e)),
+          (this.samplerIndex = (this.samplerIndex + 1) % this.sampler.length),
+          this.size < this.sampler.length && this.size++);
+        let t = 0;
+        for (let n = 0; n < this.size; n++) t += this.sampler[n];
+        return (
+          (this.average = this.size ? Math.round(t / this.size) : 0),
+          this.average
+        );
+      }
+    },
+    yn = [30, 48, 50, 60, 72, 75, 90, 100, 120, 144, 165, 240, 360];
+  function vn(r) {
+    let e = 60,
+      t = 1 / 0;
+    for (let n of yn) {
+      let s = Math.abs(n - r);
+      s < t && ((t = s), (e = n));
+    }
+    return t <= e * 0.1 ? e : Math.max(30, Math.min(360, Math.round(r)));
+  }
+  var Te = class {
+    constructor(e) {
+      this.scene = e;
+      d(this, "canvas");
+      d(this, "ctx");
+      d(this, "camera", new Ae());
+      d(this, "dpr", Math.min(window.devicePixelRatio || 1, 2));
+      d(this, "lastScale", 1);
+      d(this, "raf", 0);
+      d(this, "last", performance.now());
+      d(this, "userZoom", 1);
+      d(this, "images", new Ye());
+      d(this, "names", new je());
+      d(this, "layers", []);
+      d(this, "_food", []);
+      d(this, "_viruses", []);
+      d(this, "_cellPool", []);
+      d(this, "_cells", []);
+      d(this, "_cellMap", new Map());
+      d(this, "_seen", new Set());
+      d(
+        this,
+        "_foodBuckets",
+        Array.from({ length: 64 }, () => []),
+      );
+      d(
+        this,
+        "_cellBuckets",
+        Array.from({ length: 64 }, () => []),
+      );
+      d(this, "fps", 0);
+      d(this, "fpsSampler", new Ge(100));
+      d(this, "stalls", 0);
+      d(this, "lastStallMs", 0);
+      d(this, "detectedFps", 0);
+      d(this, "_rawLast", performance.now());
+      d(this, "_rawDeltas", []);
+      d(this, "_rawIdx", 0);
+      d(this, "_sinceEstimate", 0);
+      d(this, "drawMs", 0);
+      d(this, "dbgCells", 0);
+      d(this, "dbgFood", 0);
+      d(this, "dbgNodes", 0);
+      d(this, "visible", !0);
+      d(this, "disposed", !1);
+      d(this, "menuPoll", 0);
+      d(this, "menuOpen", !1);
+      d(this, "loop", () => {
+        if (this.disposed) return;
+        this.raf = requestAnimationFrame(this.loop);
+        let e = performance.now(),
+          t = e - this._rawLast;
+        if (
+          ((this._rawLast = e),
+          t >= 100 &&
+            t < 2e3 &&
+            (this.stalls++, (this.lastStallMs = Math.round(t))),
+          t > 0 && t < 100)
+        ) {
+          let a = this._rawDeltas;
+          a.length < 180
+            ? a.push(t)
+            : ((a[this._rawIdx] = t),
+              (this._rawIdx = (this._rawIdx + 1) % 180));
+        }
+        (++this._sinceEstimate >= 60 &&
+          ((this._sinceEstimate = 0), this.estimateRefresh()),
+          ++this.menuPoll >= 20 &&
+            ((this.menuPoll = 0),
+            (this.menuOpen = !!document.querySelector(
+              ".agx-overlay.agx-open",
+            ))));
+        let n = 0;
+        if (
+          (h.game.autoFps &&
+            this.detectedFps > 0 &&
+            (n = (1e3 / this.detectedFps) * 0.75),
+          h.game.maxFps > 0 && (n = Math.max(n, 1e3 / h.game.maxFps - 0.4)),
+          this.menuOpen && (n = Math.max(n, 1e3 / 60 - 0.4)),
+          n > 0 && e - this.last < n)
+        )
+          return;
+        (h.game.renderScale || 1) !== this.lastScale && this.resize();
+        let s = Math.min((e - this.last) / 1e3, 0.1);
+        ((this.last = e),
+          s > 0 && (this.fps = this.fpsSampler.step(1 / s)),
+          (this.layers = this.scene.layers()));
+        for (let a of this.layers) a.world.step(s);
+        if ((this.frameCamera(), this.camera.update(s, 1), this.visible)) {
+          let a = performance.now();
+          (this.draw(e),
+            (this.drawMs += (performance.now() - a - this.drawMs) * 0.1));
+        }
+      });
+      d(this, "_miniCanvas", null);
+      d(this, "_miniCtx", null);
+      d(this, "_miniAt", 0);
+      d(this, "_miniSize", 0);
+      ((this.canvas = document.createElement("canvas")),
+        Object.assign(this.canvas.style, {
+          position: "fixed",
+          left: "0",
+          top: "0",
+          zIndex: "2147483640",
+          pointerEvents: "none",
+        }));
+      let t = this.canvas.getContext("2d", { alpha: !1 });
+      if (!t) throw new Error("2d context unavailable");
+      ((this.ctx = t),
+        this.resize(),
+        window.addEventListener("resize", () => this.resize()),
+        window.addEventListener(
+          "wheel",
+          (n) => {
+            ((this.userZoom *= n.deltaY < 0 ? 1.12 : 0.89),
+              (this.userZoom = Math.max(0.2, Math.min(5, this.userZoom))));
+          },
+          { passive: !0 },
+        ),
+        document.addEventListener("visibilitychange", () => {
+          document.hidden ||
+            ((this._rawDeltas.length = 0),
+            (this._rawIdx = 0),
+            (this._rawLast = performance.now()));
+        }),
+        document.documentElement.appendChild(this.canvas),
+        (this.loop.__hsloKeep = !0),
+        (this.raf = requestAnimationFrame(this.loop)));
+    }
+    setVisible(e) {
+      ((this.visible = e), (this.canvas.style.display = e ? "block" : "none"));
+    }
+    snapCamera() {
+      this.camera.snap();
+    }
+    screenToWorld(e, t) {
+      return this.camera.screenToWorld(e, t);
+    }
+    dispose() {
+      ((this.disposed = !0),
+        cancelAnimationFrame(this.raf),
+        this.canvas.remove());
+    }
+    resize() {
+      let e = window.innerWidth,
+        t = window.innerHeight;
+      ((this.lastScale = h.game.renderScale || 1),
+        (this.dpr = Math.min(window.devicePixelRatio || 1, 2) * this.lastScale),
+        (this.canvas.width = Math.floor(e * this.dpr)),
+        (this.canvas.height = Math.floor(t * this.dpr)),
+        (this.canvas.style.width = `${e}px`),
+        (this.canvas.style.height = `${t}px`),
+        this.camera.setViewport(e, t));
+    }
+    estimateRefresh() {
+      var a;
+      let e = this._rawDeltas;
+      if (e.length < 30) return;
+      let t = new Map();
+      for (let c = 1; c < e.length; c++) {
+        let o = e[c];
+        if (o < 2 || o > 100 || Math.abs(o - e[c - 1]) > o * 0.25) continue;
+        let l = vn(1e3 / o);
+        t.set(l, ((a = t.get(l)) != null ? a : 0) + 1);
+      }
+      let n = 0,
+        s = 0;
+      for (let [c, o] of t) o > s && ((n = c), (s = o));
+      n > 0 && (this.detectedFps = n);
+    }
+    frameCamera() {
+      let e = this.scene.cameraTarget();
+      if (!e) return;
+      let t = (this.camera.viewportH / 1080) * 0.32 * this.userZoom,
+        n,
+        s;
+      if (h.game.zoomMode === "manual") ((n = t), (s = bn));
+      else {
+        let c = Math.max(e.radius, 32);
+        ((n = Math.pow(Math.min(64 / c, 1), 0.4) * t), (s = xn));
+      }
+      let a = window.innerWidth / s;
+      (n < a && (n = a), this.camera.focus(e.cx, e.cy, n));
+    }
+    draw(e) {
+      let t = this.ctx;
+      this.names.beginFrame();
+      let n = this.canvas.width,
+        s = this.canvas.height,
+        a = this.scene.themeFor(),
+        c = this.scene.worldBorder();
+      (t.setTransform(1, 0, 0, 1, 0, 0),
+        (t.fillStyle = a.backgroundColor || "#0c0c16"),
+        t.fillRect(0, 0, n, s),
+        t.setTransform(
+          this.camera.scale * this.dpr,
+          0,
+          0,
+          this.camera.scale * this.dpr,
+          n / 2 - this.camera.x * this.camera.scale * this.dpr,
+          s / 2 - this.camera.y * this.camera.scale * this.dpr,
+        ),
+        this.drawBackground(a, c),
+        a.grid && this.drawGrid(c),
+        this.drawBorder(a, c, e));
+      let o = n / (2 * this.camera.scale * this.dpr),
+        l = s / (2 * this.camera.scale * this.dpr),
+        p = this.camera.x - o,
+        i = this.camera.x + o,
+        u = this.camera.y - l,
+        f = this.camera.y + l,
+        b = 2 / (this.camera.scale * this.dpr),
+        M = a.showPellets,
+        y = this._food,
+        T = 0,
+        A = this._viruses,
+        v = 0,
+        k = this._cellPool,
+        L = 0,
+        R = this._cellMap;
+      R.clear();
+      let S = this._seen;
+      S.clear();
+      let C = le(),
+        I = this.layers;
+      for (let x = 0; x < I.length; x++) {
+        let g = I[x],
+          W = g.world.ownIds,
+          U = g.world.scrambleX,
+          se = g.world.scrambleY;
+        for (let P of g.world.nodes.values()) {
+          let Q = P.rx - U,
+            ee = P.ry - se,
+            te = Math.max(P.rsize, b),
+            fe = te;
+          if (
+            (e - P.born < 2e3 &&
+              Math.abs(P.born - g.world.spawnFxAt) < 400 &&
+              W.has(P.id) &&
+              (fe = te * 31),
+            !(Q + fe < p || Q - fe > i || ee + fe < u || ee - fe > f))
+          )
+            if (P.isVirus) {
+              if (S.has(P.id)) continue;
+              S.add(P.id);
+              let N = A[v];
+              (N
+                ? ((N.n = P),
+                  (N.x = Q),
+                  (N.y = ee),
+                  (N.r = te),
+                  (N.outline = null),
+                  (N.skin = ""),
+                  (N.mine = !1),
+                  (N.virus = !0),
+                  (N.fx = !1))
+                : (N = A[v] =
+                    {
+                      n: P,
+                      x: Q,
+                      y: ee,
+                      r: te,
+                      outline: null,
+                      skin: "",
+                      mine: !1,
+                      virus: !0,
+                      fx: !1,
+                    }),
+                v++);
+            } else if (!P.name && P.rsize < 40) {
+              if (!M || S.has(P.id)) continue;
+              S.add(P.id);
+              let N = y[T];
+              (N
+                ? ((N.n = P), (N.x = Q), (N.y = ee), (N.r = te))
+                : (N = y[T] = { n: P, x: Q, y: ee, r: te }),
+                T++);
+            } else {
+              let N = W.has(P.id),
+                G = R.get(P.id);
+              if (G && G.mine && !N) continue;
+              let Be = N
+                  ? g.active
+                    ? a.activeOutline
+                    : a.inactiveOutline
+                  : null,
+                re = "";
+              (N &&
+                a.customSkins &&
+                (re = C.skins[x] || C.skins.find((z) => !!z) || ""),
+                !re && !N && P.name && (re = this.scene.sharedSkin(P.name)),
+                !re && a.gameSkins && P.skinUrl && (re = P.skinUrl));
+              let Fe =
+                N &&
+                Math.abs(P.born - g.world.spawnFxAt) < 400 &&
+                e - P.born < 2e3;
+              if (G)
+                ((G.n = P),
+                  (G.x = Q),
+                  (G.y = ee),
+                  (G.r = te),
+                  (G.outline = Be),
+                  (G.skin = re),
+                  (G.mine = N),
+                  (G.fx = Fe));
+              else {
+                let z = k[L];
+                (z
+                  ? ((z.n = P),
+                    (z.x = Q),
+                    (z.y = ee),
+                    (z.r = te),
+                    (z.outline = Be),
+                    (z.skin = re),
+                    (z.mine = N),
+                    (z.virus = !1),
+                    (z.fx = Fe))
+                  : (z = k[L] =
+                      {
+                        n: P,
+                        x: Q,
+                        y: ee,
+                        r: te,
+                        outline: Be,
+                        skin: re,
+                        mine: N,
+                        virus: !1,
+                        fx: Fe,
+                      }),
+                  L++,
+                  R.set(P.id, z));
+              }
+            }
+        }
+      }
+      let $ = this._cells,
+        E = 0;
+      for (let x of R.values()) $[E++] = x;
+      for (let x = 0; x < v; x++) $[E++] = A[x];
+      (($.length = E),
+        $.sort((x, g) => x.r - g.r),
+        T > Ot && ((y.length = T), y.sort((x, g) => g.r - x.r), (T = Ot)),
+        (this.dbgCells = Math.min(E, Tt)),
+        (this.dbgFood = T));
+      let F = 0;
+      for (let x = 0; x < I.length; x++) F += I[x].world.nodes.size;
+      this.dbgNodes = F;
+      let Z = a.pelletColor,
+        H = 14 * this.camera.scale * this.dpr;
+      if (Z) {
+        t.beginPath();
+        for (let x = 0; x < T; x++) {
+          let g = y[x];
+          (t.moveTo(g.x + g.r, g.y), t.arc(g.x, g.y, g.r, 0, Math.PI * 2));
+        }
+        ((t.fillStyle = Z), t.fill());
+      } else if (H < 6) {
+        let x = this._foodBuckets;
+        for (let g = 0; g < x.length; g++) x[g].length = 0;
+        for (let g = 0; g < T; g++) {
+          let W = y[g],
+            U = ((W.n.r >> 6) << 4) | ((W.n.g >> 6) << 2) | (W.n.b >> 6);
+          x[U].push(W);
+        }
+        for (let g = 0; g < x.length; g++) {
+          let W = x[g];
+          if (W.length) {
+            t.beginPath();
+            for (let U = 0; U < W.length; U++) {
+              let se = W[U];
+              (t.moveTo(se.x + se.r, se.y),
+                t.arc(se.x, se.y, se.r, 0, Math.PI * 2));
+            }
+            ((t.fillStyle = Lt[g]), t.fill());
+          }
+        }
+      } else
+        for (let x = 0; x < T; x++) {
+          let g = y[x];
+          this.drawDisc(g.n, g.x, g.y, g.r, "");
+        }
+      let K = Math.max(0, $.length - Tt),
+        V = this.camera.scale,
+        nt = 0;
+      for (let x = K; x < $.length; x++) {
+        let g = $[x];
+        !g.virus && !g.outline && !g.skin && nt++;
+      }
+      let st = Math.max(0, nt - wn),
+        me = this._cellBuckets;
+      for (let x = 0; x < me.length; x++) me[x].length = 0;
+      let ge = 0,
+        rt = !1;
+      for (let x = K; x < $.length; x++) {
+        let g = $[x];
+        if (g.virus || g.outline || g.skin) continue;
+        let W = g.r * V <= 6 || ge < st;
+        (ge++,
+          W &&
+            (me[((g.n.r >> 6) << 4) | ((g.n.g >> 6) << 2) | (g.n.b >> 6)].push(
+              g,
+            ),
+            (rt = !0)));
+      }
+      if (rt)
+        for (let x = 0; x < me.length; x++) {
+          let g = me[x];
+          if (g.length) {
+            t.beginPath();
+            for (let W = 0; W < g.length; W++) {
+              let U = g[W];
+              (t.moveTo(U.x + U.r, U.y), t.arc(U.x, U.y, U.r, 0, Math.PI * 2));
+            }
+            ((t.fillStyle = Lt[x]), t.fill());
+          }
+        }
+      ge = 0;
+      for (let x = K; x < $.length; x++) {
+        let g = $[x];
+        if (!g.virus && !g.outline && !g.skin) {
+          let W = g.r * V <= 6 || ge < st;
+          if ((ge++, W)) continue;
+        }
+        g.virus
+          ? this.drawVirus(g.n, g.x, g.y, g.r)
+          : this.drawCell(g.n, g.x, g.y, g.r, g.outline, g.skin, a, e, g.fx);
+      }
+      (t.setTransform(1, 0, 0, 1, 0, 0),
+        a.minimap && this.drawMinimap(c, I, e));
+    }
+    drawBackground(e, t) {
+      if (!e.backgroundUrl) return;
+      let n = this.images.get(e.backgroundUrl);
+      n &&
+        ((this.ctx.globalAlpha = 0.5),
+        this.ctx.drawImage(n, t.minX, t.minY, t.maxX - t.minX, t.maxY - t.minY),
+        (this.ctx.globalAlpha = 1));
+    }
+    drawGrid(e) {
+      let t = this.ctx,
+        n = 250,
+        s = this.canvas.width / (2 * this.camera.scale * this.dpr) + n,
+        a = this.canvas.height / (2 * this.camera.scale * this.dpr) + n,
+        c = Math.max(e.minX, Math.floor((this.camera.x - s) / n) * n),
+        o = Math.min(e.maxX, this.camera.x + s),
+        l = Math.max(e.minY, Math.floor((this.camera.y - a) / n) * n),
+        p = Math.min(e.maxY, this.camera.y + a);
+      ((t.lineWidth = 1 / this.camera.scale),
+        (t.strokeStyle = "rgba(255,255,255,0.04)"),
+        t.beginPath());
+      for (let i = c; i <= o; i += n) (t.moveTo(i, l), t.lineTo(i, p));
+      for (let i = l; i <= p; i += n) (t.moveTo(c, i), t.lineTo(o, i));
+      t.stroke();
+    }
+    drawBorder(e, t, n) {
+      let s = this.ctx;
+      ((s.lineWidth = 10 / this.camera.scale),
+        (s.strokeStyle = e.animatedBorder
+          ? `hsl(${(n / 30) % 360}, 70%, 55%)`
+          : "rgba(255,80,80,0.55)"),
+        s.strokeRect(t.minX, t.minY, t.maxX - t.minX, t.maxY - t.minY));
+    }
+    drawDisc(e, t, n, s, a) {
+      let c = this.ctx;
+      (c.beginPath(),
+        c.arc(t, n, s, 0, Math.PI * 2),
+        (c.fillStyle = a || e.css),
+        c.fill());
+    }
+    drawCell(e, t, n, s, a, c, o, l, p) {
+      let i = this.ctx,
+        u = s * this.camera.scale;
+      if (o.spawnEffects && p && u > 3) {
+        let b = l - e.born;
+        if (b >= 0 && b < 1800) {
+          let M = b / 1800,
+            y = a != null ? a : "#67e8f9";
+          (i.beginPath(),
+            i.arc(t, n, s * (1 + 30 * M), 0, Math.PI * 2),
+            (i.lineWidth =
+              Math.max(16 / this.camera.scale, s * 0.6) * (1 - M) + 0.001),
+            (i.globalAlpha = 0.9 * (1 - M)),
+            (i.strokeStyle = y),
+            i.stroke());
+          let T = Math.max(0, M - 0.15);
+          (i.beginPath(),
+            i.arc(t, n, s * (1 + 20 * T), 0, Math.PI * 2),
+            (i.lineWidth =
+              Math.max(8 / this.camera.scale, s * 0.25) * (1 - T) + 0.001),
+            (i.globalAlpha = 0.6 * (1 - T)),
+            (i.strokeStyle = y),
+            i.stroke(),
+            (i.globalAlpha = 1));
+        }
+      }
+      (o.shadows &&
+        u > 16 &&
+        (i.beginPath(),
+        i.arc(t, n + s * 0.06, s, 0, Math.PI * 2),
+        (i.fillStyle = "rgba(0,0,0,0.18)"),
+        i.fill()),
+        i.beginPath(),
+        i.arc(t, n, s, 0, Math.PI * 2),
+        (i.fillStyle = e.css),
+        i.fill());
+      let f = c ? this.images.get(c) : null;
+      if (
+        (f &&
+          (i.save(),
+          i.beginPath(),
+          i.arc(t, n, s, 0, Math.PI * 2),
+          i.clip(),
+          i.drawImage(f, t - s, n - s, s * 2, s * 2),
+          i.restore()),
+        (a || u > 6) &&
+          ((i.lineWidth = (a ? 6 * o.ringSize : 3) / this.camera.scale),
+          (i.strokeStyle = a != null ? a : "rgba(0,0,0,0.22)"),
+          i.beginPath(),
+          i.arc(t, n, s, 0, Math.PI * 2),
+          i.stroke()),
+        u > 22)
+      ) {
+        if (
+          ((i.fillStyle = "rgba(255,255,255,0.95)"),
+          (i.textAlign = "center"),
+          (i.textBaseline = "middle"),
+          o.names && e.name && u > 30)
+        ) {
+          let b = this.names.get(e.name);
+          if (b) {
+            let y = Math.max(11, s * 0.32) * b.hScale,
+              T = y * b.aspect;
+            i.drawImage(b.canvas, t - T / 2, n - s * 0.12 - y / 2, T, y);
+          }
+        }
+        o.mass &&
+          ((i.font = `${Math.max(9, s * 0.26)}px system-ui, sans-serif`),
+          i.fillText(e.massStr, t, n + s * 0.22));
+      }
+    }
+    drawVirus(e, t, n, s) {
+      let a = this.ctx,
+        c = 28,
+        o = s,
+        l = s * 0.9;
+      a.beginPath();
+      for (let p = 0; p < c * 2; p++) {
+        let i = p % 2 === 0 ? o : l,
+          u = (Math.PI * p) / c,
+          f = t + Math.cos(u) * i,
+          b = n + Math.sin(u) * i;
+        p === 0 ? a.moveTo(f, b) : a.lineTo(f, b);
+      }
+      (a.closePath(),
+        (a.fillStyle = e.r || e.g || e.b ? e.css : "rgba(45,200,90,0.95)"),
+        a.fill(),
+        (a.lineWidth = Math.max(2, s * 0.05)),
+        (a.strokeStyle = "rgba(20,120,50,1)"),
+        a.stroke());
+    }
+    drawMinimap(e, t, n) {
+      var R;
+      let s = this.ctx,
+        a = Math.round(150 * this.dpr),
+        c = 12 * this.dpr,
+        o = this.canvas.width - a - c,
+        l = this.canvas.height - a - c,
+        p = e.maxX - e.minX || 1,
+        i = e.maxY - e.minY || 1;
+      if (!this._miniCanvas || this._miniSize !== a) {
+        let S =
+          (R = this._miniCanvas) != null
+            ? R
+            : (this._miniCanvas = document.createElement("canvas"));
+        ((S.width = S.height = a),
+          (this._miniCtx = S.getContext("2d")),
+          (this._miniSize = a),
+          (this._miniAt = 0));
+      }
+      let u = this._miniCtx;
+      if (n - this._miniAt > 120) {
+        ((this._miniAt = n),
+          u.clearRect(0, 0, a, a),
+          (u.fillStyle = "rgba(0,0,0,0.35)"),
+          u.fillRect(0, 0, a, a),
+          (u.strokeStyle = "rgba(255,255,255,0.15)"),
+          (u.lineWidth = 1),
+          u.strokeRect(0.5, 0.5, a - 1, a - 1),
+          (u.fillStyle = "rgba(255,255,255,0.35)"));
+        for (let S of t) {
+          let C = S.world.ownIds,
+            I = S.world.scrambleX,
+            $ = S.world.scrambleY;
+          for (let E of S.world.nodes.values()) {
+            if (E.isVirus || (!E.name && E.rsize < 40) || C.has(E.id)) continue;
+            let F = ((E.rx - I - e.minX) / p) * a,
+              Z = ((E.ry - $ - e.minY) / i) * a;
+            u.fillRect(F - 1, Z - 1, 2, 2);
+          }
+        }
+      }
+      s.drawImage(this._miniCanvas, o, l);
+      let f = (S) => o + ((S - e.minX) / p) * a,
+        b = (S) => l + ((S - e.minY) / i) * a,
+        M = this.scene.themeFor();
+      for (let S of t) {
+        let C = S.world.ownIds,
+          I = S.world.scrambleX,
+          $ = S.world.scrambleY;
+        s.fillStyle = S.active ? M.activeOutline : M.inactiveOutline;
+        for (let E of C) {
+          let F = S.world.nodes.get(E);
+          F &&
+            (s.beginPath(),
+            s.arc(f(F.rx - I), b(F.ry - $), 3 * this.dpr, 0, Math.PI * 2),
+            s.fill());
+        }
+      }
+      let y = this.canvas.width / (2 * this.camera.scale * this.dpr),
+        T = this.canvas.height / (2 * this.camera.scale * this.dpr),
+        A = Math.max(o, f(this.camera.x - y)),
+        v = Math.max(l, b(this.camera.y - T)),
+        k = Math.min(o + a, f(this.camera.x + y)),
+        L = Math.min(l + a, b(this.camera.y + T));
+      ((s.strokeStyle = "rgba(255,255,255,0.85)"),
+        (s.lineWidth = 1.5 * this.dpr),
+        s.strokeRect(A, v, Math.max(2, k - A), Math.max(2, L - v)));
+    }
+  };
+  var $t = typeof TextDecoder != "undefined" ? new TextDecoder() : null;
+  function ce(r, e) {
+    let t = [],
+      n = e;
+    for (; n < r.byteLength; n++) {
+      let a = r.getUint8(n);
+      if (a === 0) {
+        n++;
+        break;
+      }
+      t.push(a);
+    }
+    return {
+      s: $t ? $t.decode(new Uint8Array(t)) : String.fromCharCode(...t),
+      next: n,
+    };
+  }
+  function kn(r, e) {
+    if (!e.byteLength) return "(empty)";
+    let t = new DataView(e),
+      n = t.getUint8(0),
+      s = e.byteLength,
+      a = (o) => (o + 4 <= s ? t.getUint32(o, !0) : 0),
+      c = (o) => (o + 4 <= s ? t.getInt32(o, !0) : 0);
+    if (r === "<")
+      switch (n) {
+        case 16:
+          try {
+            let o = ie(e);
+            if (o.t === "world")
+              return `UPDATE-NODES eats=${o.world.eats.length} nodes=${o.world.updates.length} removes=${o.world.removes.length}`;
+          } catch {}
+          return "UPDATE-NODES (?)";
+        case 32: {
+          let o = [];
+          for (let l = 1; l + 4 <= s; l += 4) o.push(a(l));
+          return `OWN-CELL id=${o.join(",")}`;
+        }
+        case 64: {
+          let o = (p) => (p + 8 <= s ? t.getFloat64(p, !0) : 0),
+            l = s > 33 ? ce(t, 33).s : "";
+          return `BORDER [${o(1) | 0},${o(9) | 0},${o(17) | 0},${o(25) | 0}]${l ? ` "${l}"` : ""}`;
+        }
+        case 49:
+          try {
+            let o = ie(e);
+            if (o.t === "leaderboard") {
+              let l = o.entries.map((p) => p.name || "-");
+              return `LEADERBOARD ${o.entries.length}: ${l.slice(0, 6).join(", ")}${l.length > 6 ? " ..." : ""}`;
+            }
+          } catch {}
+          return "LEADERBOARD";
+        case 20:
+          return "CLEAR-NODES";
+        case 98: {
+          let o = t.getUint8(2),
+            l = t.getUint8(3),
+            p = t.getUint8(4),
+            i = ce(t, 5),
+            u = ce(t, i.next);
+          return `CHAT [${o},${l},${p}] ${i.s}: "${u.s}"`;
+        }
+        case 254:
+          return s > 1 && t.getUint8(1) === 123
+            ? `STATUS ${ce(t, 1).s.slice(0, 140)}`
+            : `op254 (${s}B)`;
+        default:
+          return `op${n} (${s}B)`;
+      }
+    switch (n) {
+      case 254:
+        return s === 5 ? `SET-PROTOCOL v${a(1)}` : "PING";
+      case 255:
+        return `HANDSHAKE key=${a(1)} nick="${ce(t, 5).s}"`;
+      case 20:
+        return `SPAWN ${ce(t, 1).s}`;
+      case 5:
+        return s >= 21
+          ? `MOVE(f64) x=${t.getFloat64(1, !0) | 0} y=${t.getFloat64(9, !0) | 0}`
+          : `MOVE x=${c(1)} y=${c(5)}`;
+      case 0:
+        return `SPAWN-LEGACY(op0) "${ce(t, 1).s}"  [wrong opcode for this server]`;
+      case 1:
+        return "SPECTATE(op1)";
+      case 15:
+        return `CLIENT-15 (split/eject?) ${s}B`;
+      case 18:
+        return `CLIENT-18 (split/eject?) ${s}B`;
+      case 17:
+        return "SPLIT(op17?)";
+      case 21:
+        return "EJECT(op21?)";
+      default:
+        return `op${n} (${s}B)`;
+    }
+  }
+  var Oe = class {
+    constructor() {
+      d(this, "recs", []);
+      d(this, "counts", new Map());
+      d(this, "cap", 4e3);
+      d(this, "enabled", !1);
+    }
+    setEnabled(e) {
+      ((this.enabled = e), e || (this.recs.length = 0));
+    }
+    add(e, t) {
+      var c;
+      if (!t || !t.byteLength) return;
+      let n = new Uint8Array(t)[0],
+        s = `${e}${n}`,
+        a = ((c = this.counts.get(s)) != null ? c : 0) + 1;
+      (this.counts.set(s, a),
+        this.enabled &&
+          (((n === 16 || n === 5 || n === 49 || n === 254) &&
+            a > 8 &&
+            a % 250 !== 0) ||
+            (this.recs.push({
+              t: Date.now(),
+              dir: e,
+              op: n,
+              len: t.byteLength,
+              buf: t.slice(0, 1024),
+            }),
+            this.recs.length > this.cap && this.recs.shift())));
+    }
+    summary() {
+      return [...this.counts.entries()]
+        .sort()
+        .map(([e, t]) => `${e}x${t}`)
+        .join("  ");
+    }
+    line(e) {
+      return `${new Date(e.t).toISOString().slice(11, 23)} ${e.dir} ${kn(e.dir, e.buf)}`;
+    }
+    tail(e) {
+      return this.recs.slice(-e).map((t) => this.line(t));
+    }
+    dump() {
+      let e = `=== agar-ext packet log (${this.recs.length} recs) - LIVE OgarII opcode map ===
 legend: > game sent - >* we sent - < server received
 client ops: 254=set-protocol 255=handshake 20=SPAWN(+token) 5=MOVE  -  server: 16=nodes 32=own-cell 64=border 49=leaderboard 98=chat 254=status
 summary: ${this.summary()}
-`,t=this.recs.map(s=>`${this.line(s)}   ${se(s.buf,48)}`).join(`
-`);return`${e}
-${t}`}};var Ce="~hsk~";var Me=class{constructor(){d(this,"map",new Map);d(this,"seq",0)}encode(e,t){let s=(this.seq=this.seq+1&65535).toString(36);return`${Ce}${s} ${t} ${e}`}isMarker(e){return e.startsWith(Ce)}ingest(e){if(!e.startsWith(Ce))return!1;let t=e.slice(Ce.length),s=t.indexOf(" ");if(s<0)return!0;let n=t.indexOf(" ",s+1);if(n<0)return!0;let a=t.slice(s+1,n).trim(),l=t.slice(n+1);return a?this.map.set(l,{url:a,t:Date.now()}):this.map.delete(l),!0}get(e){let t=this.map.get(e);return t?Date.now()-t.t>6e4?(this.map.delete(e),""):t.url:""}get size(){return this.map.size}};var St=`
+`,
+        t = this.recs.map((n) => `${this.line(n)}   ${ae(n.buf, 48)}`).join(`
+`);
+      return `${e}
+${t}`;
+    }
+  };
+  var Le = "~hsk~";
+  var $e = class {
+    constructor() {
+      d(this, "map", new Map());
+      d(this, "seq", 0);
+    }
+    encode(e, t) {
+      let n = (this.seq = (this.seq + 1) & 65535).toString(36);
+      return `${Le}${n} ${t} ${e}`;
+    }
+    isMarker(e) {
+      return e.startsWith(Le);
+    }
+    ingest(e) {
+      if (!e.startsWith(Le)) return !1;
+      let t = e.slice(Le.length),
+        n = t.indexOf(" ");
+      if (n < 0) return !0;
+      let s = t.indexOf(" ", n + 1);
+      if (s < 0) return !0;
+      let a = t.slice(n + 1, s).trim(),
+        c = t.slice(s + 1);
+      return (
+        a ? this.map.set(c, { url: a, t: Date.now() }) : this.map.delete(c),
+        !0
+      );
+    }
+    get(e) {
+      let t = this.map.get(e);
+      return t
+        ? Date.now() - t.t > 6e4
+          ? (this.map.delete(e), "")
+          : t.url
+        : "";
+    }
+    get size() {
+      return this.map.size;
+    }
+  };
+  var Pt = `
 .agx-root, .agx-hud { font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; color: #e2e8f0; }
 .agx-overlay {
   position: fixed; inset: 0; z-index: 2147483646; display: none;
@@ -90,7 +2878,7 @@ ${t}`}};var Ce="~hsk~";var Me=class{constructor(){d(this,"map",new Map);d(this,"
 .agx-btn:hover { border-color: rgba(34,211,238,0.4); }
 .agx-x { position: absolute; top: 16px; right: 16px; width: 30px; height: 30px; border: none; border-radius: 8px; cursor: pointer;
   background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.7); font-size: 16px; }
-.agx-slider { width: 150px; }
+.agx-slider { width: 300px; max-width: 45%; }
 .agx-color { width: 40px; height: 26px; border: none; background: none; padding: 0; cursor: pointer; }
 .agx-note { font-size: 11px; color: rgba(255,255,255,0.4); margin: 6px 0; }
 
@@ -126,9 +2914,1273 @@ ${t}`}};var Ce="~hsk~";var Me=class{constructor(){d(this,"map",new Map);d(this,"
 .agx-chat-input { pointer-events: auto; width: 100%; box-sizing: border-box; padding: 7px 10px; border-radius: 9px;
   border: 1px solid rgba(255,255,255,0.12); background: rgba(10,10,18,0.82); color: #fff; font: 13px system-ui; }
 .agx-chat-input:focus { outline: none; border-color: rgba(34,211,238,0.6); background: rgba(10,10,18,0.95); }
-`,Et=!1;function Ct(){if(Et)return;Et=!0;try{let e=new CSSStyleSheet;e.replaceSync(St),document.adoptedStyleSheets=[...document.adoptedStyleSheets,e];return}catch{}let r=document.createElement("style");r.textContent=St,(document.head||document.documentElement).appendChild(r)}function g(r,e="",t={},s=[]){let n=document.createElement(r);e&&(n.className=e);let{style:a,...l}=t;Object.assign(n,l),a&&(n.style.cssText=a);for(let i of s)n.append(i);return n}function Mt(r){let{mb:e,overlay:t,logLines:s,stats:n,packets:a,chat:l,copyText:i}=r,o=!1,p=!0,c=g("div","agx-hud agx-stats"),h=g("div","agx-hud agx-boxbar"),w=g("div","agx-hud agx-lb"),y=g("div","agx-hud agx-log"),M=g("button","agx-hud agx-copybtn",{textContent:"Copy logs",title:"Copy packet transcript + log to clipboard"});M.addEventListener("click",()=>{var P;let f=i(),_=()=>{M.textContent="Copied",setTimeout(()=>M.textContent="Copy logs",1500)};(P=navigator.clipboard)==null||P.writeText(f).then(_,()=>{let S=document.createElement("textarea");S.value=f,S.style.cssText="position:fixed;left:-9999px",document.documentElement.append(S),S.select();try{document.execCommand("copy"),_()}catch{M.textContent="copy failed - see console",console.log(f)}S.remove()})});let E=g("div","agx-chat-msgs"),L=g("input","agx-chat-input",{placeholder:"Press Enter to chat...",maxLength:200}),C=g("div","agx-hud agx-chat",{},[E,L]),v=()=>{let f=L.value.trim().slice(0,200);L.value="",f&&e.sendChat(f),L.blur()},k=()=>{L.value="",L.blur()};document.documentElement.append(c,h,w,C,y,M);let A=-1,$=()=>{let f=u.bindings;return`TAB box 2 - ${pe(f.split)} split - ${pe(f.eject)} eject - ${pe(f.respawn)} respawn - Esc menu`};return setInterval(()=>{let f=u.theme,_=e.hud();if(!p)c.style.display=h.style.display=w.style.display=C.style.display="none";else{if(c.style.display=f.showMass?"block":"none",f.showMass){let S=`${Math.round(t.fps)}${t.detectedFps?` / ${t.detectedFps}Hz`:""}`,O=_.ping?` - ping: ${_.ping}ms`:"";c.replaceChildren(g("div","",{},[g("b","",{textContent:`Mass ${me(_.mass,f.massFormat)}`})]),g("div","",{textContent:`cells: ${_.cellCount} - fps: ${S}${O}`}))}h.replaceChildren(),_.players.forEach(S=>{let O=g("div","agx-chip",{textContent:S.label}),z=S.active?f.activeOutline:"rgba(255,255,255,0.15)";Object.assign(O.style,{borderColor:z,background:S.active?"rgba(255,255,255,0.08)":"rgba(0,0,0,0.4)",color:S.alive?S.active?"#fff":"rgba(255,255,255,0.7)":"#ef4444",opacity:S.connected?"1":"0.4",textDecoration:S.alive?"none":"line-through"}),h.append(O)}),h.append(g("span","agx-hint",{textContent:$()}));let P=f.showLeaderboard?e.leaderboard():[];if(w.style.display=P.length?"block":"none",P.length&&(w.replaceChildren(g("div","agx-lb-h",{textContent:"Leaderboard"})),P.slice(0,10).forEach((S,O)=>{w.append(g("div",`agx-lb-row${S.id?" agx-me":""}`,{textContent:`${O+1}. ${S.name||"An unnamed cell"}`}))})),C.style.display=f.showChat?"flex":"none",f.showChat&&l.rev!==A){A=l.rev;let S=E.scrollTop+E.clientHeight>=E.scrollHeight-4;E.replaceChildren(...l.msgs.map(O=>g("div","agx-chat-line",{},[g("span","agx-chat-name",{textContent:`${O.name||"-"}: `,style:`color:${O.color}`}),g("span","",{textContent:O.message})]))),S&&(E.scrollTop=E.scrollHeight)}}y.style.display=o?"block":"none",M.style.display=o?"block":"none",o&&(y.textContent=[`${n.attached?"hooked":"waiting"} - ${e.status}`,`packets: ${a.summary()||"(none yet)"}`,"-- recent (decoded) --",...a.tail(8),...s.slice(-3)].filter(Boolean).join(`
-`))},200),{setDebug:f=>{o=f,a.setEnabled(f)},setVisible:f=>{p=f,f||(k(),C.style.display="none")},focusChat:()=>{u.theme.showChat&&L.focus()},chatFocused:()=>document.activeElement===L,submitChat:v,closeChat:k}}var ln=Object.keys(_e);function At(r){let e=null;window.addEventListener("keydown",l=>{e&&(l.preventDefault(),l.stopPropagation(),l.code==="Backspace"||l.code==="Delete"?(u.bindings[e]="",I()):l.code!=="Escape"&&(u.bindings[e]=l.code,I()),e=null,r())},!0),window.addEventListener("mousedown",l=>{e&&(l.preventDefault(),l.stopPropagation(),u.bindings[e]="Mouse"+l.button,I(),e=null,r())},!0);function t(l,i,o){let p=g("div",`agx-switch${i()?" agx-on":""}`),c=g("div","agx-row",{},[g("span","",{textContent:l}),p]);return c.style.cursor="pointer",c.addEventListener("click",()=>{o(!i()),I(),p.classList.toggle("agx-on",i())}),c}function s(l,i,o,p){let c=g("div","agx-seg"),h=()=>Array.from(c.children).forEach((y,M)=>y.classList.toggle("agx-on",i[M][0]===o()));i.forEach(([y,M])=>{let E=g("button","",{textContent:M});E.addEventListener("click",()=>{p(y),I(),h()}),c.append(E)}),h();let w=g("div","agx-row",{},[g("span","",{textContent:l})]);return w.append(c),w}function n(l,i,o,p){let c=g("input","agx-color",{type:"color",value:i()});c.addEventListener("input",()=>{o(c.value),I()});let h=g("button","agx-keybtn",{textContent:"reset"});h.addEventListener("click",()=>{o(p),c.value=p,I()});let w=g("div","",{style:"display:flex;gap:6px;align-items:center"},[c,h]);return g("div","agx-row",{},[g("span","",{textContent:l}),w])}function a(l,i){if(l==="game"){i.append(s("Multibox camera",[["single","Active box"],["center","Both boxes"]],()=>u.game.multiboxCamera,h=>u.game.multiboxCamera=h)),i.append(s("Zoom",[["auto","Auto-fit"],["manual","Manual"]],()=>u.game.zoomMode,h=>u.game.zoomMode=h)),i.append(g("div","agx-note",{textContent:"Manual: scroll the mouse wheel to zoom; the camera still follows your box."})),i.append(t("Inactive box stops at last cursor",()=>u.game.inactiveBoxStops,h=>u.game.inactiveBoxStops=h));let o=g("input","agx-slider",{type:"range",min:"0",max:"100",value:String(u.game.animationDelay)}),p=g("span","",{textContent:`Animation delay ${u.game.animationDelay}%`});o.addEventListener("input",()=>{u.game.animationDelay=Number(o.value),p.textContent=`Animation delay ${o.value}%`,I()}),i.append(g("div","agx-row",{},[p,o])),i.append(g("div","agx-note",{textContent:"Higher = smoother but laggier camera."})),i.append(t("Auto FPS - match display refresh",()=>u.game.autoFps,h=>u.game.autoFps=h)),i.append(g("div","agx-note",{textContent:"Measures your monitor's refresh rate from the browser and caps the overlay to it. Turn off to set a fixed cap below."}));let c=g("input","agx-keybtn",{type:"number",min:"30",max:"360",value:String(u.game.maxFps),style:"width:70px"});c.addEventListener("change",()=>{u.game.maxFps=Math.max(0,Math.min(360,Number(c.value)|0)),I()}),i.append(g("div","agx-row",{},[g("span","",{textContent:"Max FPS - manual (0 = uncapped)"}),c])),i.append(s("Resolution",[["1","100%"],["0.75","75%"],["0.5","50%"]],()=>String(u.game.renderScale===.5?.5:u.game.renderScale===.75?.75:1),h=>u.game.renderScale=Number(h))),i.append(g("div","agx-note",{textContent:"Lower = sharper-but-slower -> softer-but-faster. Big FPS win on high-DPI screens."}))}else if(l==="controls"){i.append(g("div","agx-note",{textContent:"Click a binding, then press a key or click a mouse button to set it. Backspace clears, Esc cancels."}));for(let c of ln){let h=g("button",`agx-keybtn${e===c?" agx-cap":""}`,{textContent:e===c?"press a key / mouse...":pe(u.bindings[c])});h.addEventListener("click",()=>{e=c,r()}),i.append(g("div","agx-row",{},[g("span","",{textContent:_e[c]}),h]))}let o=g("button","agx-btn",{textContent:"Reset to defaults"});o.addEventListener("click",()=>{u.bindings={...de},I(),r()}),i.append(o),i.append(g("div","agx-note",{textContent:"Advanced - split/eject WIRE opcodes (read from the [L] packet log: -> op=N when the game splits/ejects):"}));let p=(c,h,w)=>{let y=g("input","agx-keybtn",{type:"number",value:String(h()),style:"width:70px"});y.addEventListener("change",()=>{w(Math.max(0,Math.min(255,Number(y.value)|0))),I()}),i.append(g("div","agx-row",{},[g("span","",{textContent:c}),y]))};p("Split opcode",()=>u.game.splitOp,c=>u.game.splitOp=c),p("Eject opcode",()=>u.game.ejectOp,c=>u.game.ejectOp=c),p("Chat opcode",()=>u.game.chatOp,c=>u.game.chatOp=c)}else if(l==="theme"){let o=u.theme;i.append(t("Animated border",()=>o.animatedBorder,c=>o.animatedBorder=c)),i.append(t("Cell shadows",()=>o.cellShadow,c=>o.cellShadow=c)),i.append(t("Spawn effects",()=>o.spawnEffects,c=>o.spawnEffects=c)),i.append(t("Background grid",()=>o.showGrid,c=>o.showGrid=c)),i.append(t("Cell names",()=>o.showNames,c=>o.showNames=c)),i.append(t("Custom skins (your skin URL on all your cells)",()=>o.customSkins,c=>o.customSkins=c)),i.append(t("Game skins (server-provided)",()=>o.gameSkins,c=>o.gameSkins=c)),i.append(n("Active box outline",()=>o.activeOutline,c=>o.activeOutline=c,"#ff3b30")),i.append(n("Inactive box outline",()=>o.inactiveOutline,c=>o.inactiveOutline=c,"#ffffff")),i.append(s("Ring size",[["thin","Thin"],["normal","Normal"],["thick","Thick"]],()=>o.ringSize<=.6?"thin":o.ringSize>=1.6?"thick":"normal",c=>o.ringSize=c==="thin"?.5:c==="thick"?2:1)),i.append(t("Show pellets (X) - off for FPS",()=>o.showPellets,c=>o.showPellets=c)),i.append(s("Pellets",[["game","Game colors"],["custom","Custom"]],()=>o.pelletColor?"custom":"game",c=>o.pelletColor=c==="custom"?o.pelletColor||"#88ccff":"")),i.append(n("Pellet color (when Custom)",()=>o.pelletColor||"#88ccff",c=>o.pelletColor=c,"#88ccff"));let p=g("input","agx-input agx-skin",{value:o.backgroundUrl,placeholder:"Background image URL (optional)"});p.addEventListener("input",()=>{o.backgroundUrl=p.value.trim(),I()}),i.append(g("div","agx-label",{textContent:"BACKGROUND"})),i.append(p),i.append(g("div","agx-label",{textContent:"HUD"})),i.append(t("Minimap",()=>o.showMinimap,c=>o.showMinimap=c)),i.append(t("Leaderboard",()=>o.showLeaderboard,c=>o.showLeaderboard=c)),i.append(t("Mass / stats",()=>o.showMass,c=>o.showMass=c)),i.append(s("Mass format",[["auto","Auto"],["short","Short"],["full","Full"]],()=>o.massFormat,c=>o.massFormat=c)),i.append(t("Kill feed",()=>o.showKillFeed,c=>o.showKillFeed=c)),i.append(t("Chat",()=>o.showChat,c=>o.showChat=c))}else{let o=g("button","agx-btn",{textContent:"Export settings (.hsf.json)"});o.addEventListener("click",()=>{let h=new Blob([lt()],{type:"application/json"}),w=g("a","",{href:URL.createObjectURL(h),download:"hslo-agar-ext.hsf.json"});w.click(),setTimeout(()=>URL.revokeObjectURL(w.href),1e3)});let p=g("input","",{type:"file",accept:".json,.hsf,application/json",style:"display:none"});p.addEventListener("change",()=>{var w;let h=(w=p.files)==null?void 0:w[0];h&&h.text().then(y=>{ct(y)?r():alert("Import failed: invalid settings file")})});let c=g("button","agx-btn",{textContent:"Import settings..."});c.addEventListener("click",()=>p.click()),i.append(o,c,p)}}return{render:a,capturing:()=>e!==null}}var cn="min(960px, 94vw)",dn="min(640px, 65vh)",pn="24px",un=[["play","Game"],["game","Settings"],["controls","Controls"],["theme","Theme"],["data","Data"]];function Lt(r){let e=g("div","agx-card",{style:`width:${cn};height:${dn};border-radius:${pn}`}),t=g("div","agx-overlay",{},[e]);t.addEventListener("click",v=>{v.target===t&&p()}),document.documentElement.appendChild(t);let s=At(()=>C()),n="play",a=null,l=v=>t.classList.toggle("agx-open",v),i=()=>t.classList.contains("agx-open"),o=v=>{v&&(n=v),a=null,C(),l(!0)},p=()=>l(!1),c=()=>i()?p():o(),h=()=>u.profiles[u.selected];function w(){I(),r.play(),p()}function y(){r.spectate(),p()}function M(v,k){let A=(k.skins.find($=>!!$)||"").trim();A?(v.classList.add("agx-has-skin"),v.style.backgroundImage=`url("${A.replace(/"/g,"%22")}")`):(v.classList.remove("agx-has-skin"),v.style.backgroundImage="")}function E(v,k){var _;let A=u.profiles[v],$=g("div","agx-skinpop"),f=g("button","agx-x",{textContent:"x"});f.addEventListener("click",()=>{a=null,C()}),$.append(g("div","agx-skinpop-h",{},[g("span","",{textContent:`${A.name||`Profile ${v+1}`} skins`}),f]));for(let P=0;P<2;P++){let S=g("input","agx-input agx-skin",{value:(_=A.skins[P])!=null?_:"",placeholder:`Box ${P+1} skin URL`});S.addEventListener("input",()=>{A.skins[P]=S.value.trim(),I(),k&&M(k,A)}),$.append(S)}return $}function L(v){var ae;let k=g("div","agx-game"),A=[],$=g("div","agx-game-left");$.append(g("h1","agx-title",{textContent:"Agar.io"})),$.append(g("p","agx-sub",{textContent:"Custom overlay - Play & Spectate"})),$.append(g("div","agx-label",{textContent:"NICKNAME",style:"text-align:center"}));let f=g("input","agx-input agx-nick",{value:h().name,placeholder:"An unnamed cell",maxLength:15});f.addEventListener("input",()=>{h().name=f.value.slice(0,15),I()}),f.addEventListener("change",()=>{h().name=f.value.slice(0,15),I(),r.refreshChatNick()}),f.addEventListener("keydown",U=>{U.key==="Enter"&&w()}),$.append(f),$.append(g("div","agx-label",{textContent:"SKINS - image URL per box",style:"text-align:center"}));for(let U=0;U<2;U++){let H=g("input","agx-input agx-skin",{value:(ae=h().skins[U])!=null?ae:"",placeholder:`Box ${U+1} skin URL`});H.addEventListener("input",()=>{h().skins[U]=H.value.trim(),I();let Y=A[u.selected];Y&&M(Y,h())}),$.append(H)}let _=g("div","agx-playrow"),P=g("button","agx-play",{textContent:"Play"});P.addEventListener("click",w);let S=g("button","agx-spectate",{textContent:"Spectate"});S.addEventListener("click",y),_.append(P,S),$.append(_);let O=g("div","agx-game-right");O.append(g("div","agx-label",{textContent:"PROFILES"}));let z=g("div","agx-pcircles");u.profiles.forEach((U,H)=>{let Y=g("button",`agx-pcircle${H===u.selected?" agx-sel":""}`,{textContent:U.name?U.name[0].toUpperCase():String(H+1)});M(Y,U),Y.addEventListener("click",()=>{u.selected=H,I(),a=a===H?null:H,C()}),A.push(Y),z.append(Y)}),O.append(z),a!==null&&O.append(E(a,A[a])),k.append($,O),v.append(k)}function C(){e.replaceChildren();let v=g("div","agx-tabs");for(let[A,$]of un){let f=g("button",`agx-tab${A===n?" agx-on":""}`,{textContent:$});f.addEventListener("click",()=>{n=A,a=null,C()}),v.append(f)}e.append(v);let k=g("div","agx-body");e.append(k),n==="play"?L(k):s.render(n,k)}return{open:o,close:p,toggle:c,isOpen:i,capturing:()=>s.capturing()}}var Pt=new q,He={attached:!1,url:"",frames:0,unknownOps:new Set,sends:[]},xe={ws:null,suppressMove:!1,suppressAction:!1,suppressSpawn:!1,sendRaw:null,blocked:!1},be=[];function X(...r){be.push(r.map(e=>typeof e=="string"?e:hn(e)).join(" ")),be.length>30&&be.shift(),console.log(...r)}function hn(r){try{return JSON.stringify(r)}catch{return String(r)}}var Ke=new Ee,Xe=new ye,Nt=new Me;pt(Pt,He,xe,X,Ke,Xe,Nt);var W=new ve(Pt,xe,He,X,Nt,Xe),je=new Set,we=!1;function Ge(r){try{r.onclose=null,r.onerror=null,r.onmessage=null}catch{}try{r.close()}catch{}}function Ot(r){je.add(r),we&&setTimeout(()=>Ge(r),0)}function It(){try{let r=document.getElementById("multicheck"),e=r==null?void 0:r.contentWindow,t=e==null?void 0:e.WebSocket,s=t==null?void 0:t.prototype;if(!s||s.__agxHooked)return;s.__agxHooked=!0;let n=s.send;s.send=function(l){if(Ot(this),!we)return n.call(this,l)};let a=Object.getOwnPropertyDescriptor(s,"binaryType");if(a!=null&&a.get&&(a!=null&&a.set)){let l=a.get,i=a.set;Object.defineProperty(s,"binaryType",{configurable:!0,enumerable:a.enumerable,get(){return l.call(this)},set(o){Ot(this),i.call(this,o)}})}X("[agar-ext] iframe game-socket hooked")}catch{}}setInterval(It,100);It();var Bt=0,Ue=0;try{"PerformanceObserver"in window&&new PerformanceObserver(e=>{var t,s,n;for(let a of e.getEntries()){if(a.duration<80)continue;Bt++,Ue=Math.max(Ue,Math.round(a.duration));let l=((t=xe.ws)==null?void 0:t.readyState)===WebSocket.OPEN?"open":"down";X(`[freeze] main thread blocked ${Math.round(a.duration)}ms | nodes=${(s=x==null?void 0:x.dbgNodes)!=null?s:0} cells=${(n=x==null?void 0:x.dbgCells)!=null?n:0} ws1=${l} gameKilled=${ue}`)}}).observe({entryTypes:["longtask"]})}catch{}function gn(){return`${Ke.dump()}
+`,
+    It = !1;
+  function Nt() {
+    if (It) return;
+    It = !0;
+    try {
+      let e = new CSSStyleSheet();
+      (e.replaceSync(Pt),
+        (document.adoptedStyleSheets = [...document.adoptedStyleSheets, e]));
+      return;
+    } catch {}
+    let r = document.createElement("style");
+    ((r.textContent = Pt),
+      (document.head || document.documentElement).appendChild(r));
+  }
+  function m(r, e = "", t = {}, n = []) {
+    let s = document.createElement(r);
+    e && (s.className = e);
+    let { style: a, ...c } = t;
+    (Object.assign(s, c), a && (s.style.cssText = a));
+    for (let o of n) s.append(o);
+    return s;
+  }
+  function _t(r) {
+    let {
+        mb: e,
+        overlay: t,
+        logLines: n,
+        stats: s,
+        packets: a,
+        chat: c,
+        copyText: o,
+      } = r,
+      l = !1,
+      p = !0,
+      i = m("div", "agx-hud agx-stats"),
+      u = m("div", "agx-hud agx-boxbar"),
+      f = m("div", "agx-hud agx-lb"),
+      b = m("div", "agx-hud agx-log"),
+      M = m("button", "agx-hud agx-copybtn", {
+        textContent: "Copy logs",
+        title: "Copy packet transcript + log to clipboard",
+      });
+    M.addEventListener("click", () => {
+      var $;
+      let C = o(),
+        I = () => {
+          ((M.textContent = "Copied"),
+            setTimeout(() => (M.textContent = "Copy logs"), 1500));
+        };
+      ($ = navigator.clipboard) == null ||
+        $.writeText(C).then(I, () => {
+          let E = document.createElement("textarea");
+          ((E.value = C),
+            (E.style.cssText = "position:fixed;left:-9999px"),
+            document.documentElement.append(E),
+            E.select());
+          try {
+            (document.execCommand("copy"), I());
+          } catch {
+            ((M.textContent = "copy failed - see console"), console.log(C));
+          }
+          E.remove();
+        });
+    });
+    let y = m("div", "agx-chat-msgs"),
+      T = m("input", "agx-chat-input", {
+        placeholder: "Press Enter to chat...",
+        maxLength: 200,
+      }),
+      A = m("div", "agx-hud agx-chat", {}, [y, T]),
+      v = () => {
+        let C = T.value.trim().slice(0, 200);
+        ((T.value = ""), C && e.sendChat(C), T.blur());
+      },
+      k = () => {
+        ((T.value = ""), T.blur());
+      };
+    document.documentElement.append(i, u, f, A, b, M);
+    let L = -1,
+      R = () => {
+        let C = h.bindings;
+        return `TAB box 2 - ${ue(C.split)} split - ${ue(C.eject)} eject - ${ue(C.respawn)} respawn - Esc menu`;
+      },
+      S = Y(() => {
+        let C = h.theme,
+          I = e.hud();
+        if (!p)
+          i.style.display =
+            u.style.display =
+            f.style.display =
+            A.style.display =
+              "none";
+        else {
+          if (((i.style.display = C.showMass ? "block" : "none"), C.showMass)) {
+            let E = `${Math.round(t.fps)}${t.detectedFps ? ` / ${t.detectedFps}Hz` : ""}`,
+              F = I.ping ? ` - ping: ${I.ping}ms` : "";
+            i.replaceChildren(
+              m("div", "", {}, [
+                m("b", "", { textContent: `Mass ${be(I.mass, C.massFormat)}` }),
+              ]),
+              m("div", "", {
+                textContent: `cells: ${I.cellCount} - FPS: ${E}${F}`,
+              }),
+            );
+          }
+          (u.replaceChildren(),
+            I.players.forEach((E) => {
+              let F = m("div", "agx-chip", { textContent: E.label }),
+                Z = E.active ? C.activeOutline : "rgba(255,255,255,0.15)";
+              (Object.assign(F.style, {
+                borderColor: Z,
+                background: E.active
+                  ? "rgba(255,255,255,0.08)"
+                  : "rgba(0,0,0,0.4)",
+                color: E.alive
+                  ? E.active
+                    ? "#fff"
+                    : "rgba(255,255,255,0.7)"
+                  : "#ef4444",
+                opacity: E.connected ? "1" : "0.4",
+                textDecoration: E.alive ? "none" : "line-through",
+              }),
+                u.append(F));
+            }),
+            u.append(m("span", "agx-hint", { textContent: R() })));
+          let $ = C.showLeaderboard ? e.leaderboard() : [];
+          if (
+            ((f.style.display = $.length ? "block" : "none"),
+            $.length &&
+              (f.replaceChildren(
+                m("div", "agx-lb-h", { textContent: "Leaderboard" }),
+              ),
+              $.slice(0, 10).forEach((E, F) => {
+                f.append(
+                  m("div", `agx-lb-row${E.id ? " agx-me" : ""}`, {
+                    textContent: `${F + 1}. ${E.name || "An unnamed cell"}`,
+                  }),
+                );
+              })),
+            (A.style.display = C.showChat ? "flex" : "none"),
+            C.showChat && c.rev !== L)
+          ) {
+            L = c.rev;
+            let E = y.scrollTop + y.clientHeight >= y.scrollHeight - 4;
+            (y.replaceChildren(
+              ...c.msgs.map((F) =>
+                m("div", "agx-chat-line", {}, [
+                  m("span", "agx-chat-name", {
+                    textContent: `${F.name || "-"}: `,
+                    style: `color:${F.color}`,
+                  }),
+                  m("span", "", { textContent: F.message }),
+                ]),
+              ),
+            ),
+              E && (y.scrollTop = y.scrollHeight));
+          }
+        }
+        ((b.style.display = l ? "block" : "none"),
+          (M.style.display = l ? "block" : "none"),
+          l &&
+            (b.textContent = [
+              `${s.attached ? "hooked" : "waiting"} - ${e.status}`,
+              `packets: ${a.summary() || "(none yet)"}`,
+              "-- recent (decoded) --",
+              ...a.tail(8),
+              ...n.slice(-3),
+            ].filter(Boolean).join(`
+`)));
+      }, 200);
+    return {
+      setDebug: (C) => {
+        ((l = C), a.setEnabled(C));
+      },
+      setVisible: (C) => {
+        ((p = C), C || (k(), (A.style.display = "none")));
+      },
+      focusChat: () => {
+        h.theme.showChat && T.focus();
+      },
+      chatFocused: () => document.activeElement === T,
+      submitChat: v,
+      closeChat: k,
+      dispose: () => {
+        clearInterval(S);
+        for (let C of [i, u, f, A, b, M]) C.remove();
+      },
+    };
+  }
+  var Sn = Object.keys(ze);
+  function Rt(r) {
+    let e = null;
+    (window.addEventListener(
+      "keydown",
+      (c) => {
+        e &&
+          (c.preventDefault(),
+          c.stopPropagation(),
+          c.code === "Backspace" || c.code === "Delete"
+            ? ((h.bindings[e] = ""), _())
+            : c.code !== "Escape" && ((h.bindings[e] = c.code), _()),
+          (e = null),
+          r());
+      },
+      !0,
+    ),
+      window.addEventListener(
+        "mousedown",
+        (c) => {
+          e &&
+            (c.preventDefault(),
+            c.stopPropagation(),
+            (h.bindings[e] = "Mouse" + c.button),
+            _(),
+            (e = null),
+            r());
+        },
+        !0,
+      ));
+    function t(c, o, l) {
+      let p = m("div", `agx-switch${o() ? " agx-on" : ""}`),
+        i = m("div", "agx-row", {}, [m("span", "", { textContent: c }), p]);
+      return (
+        (i.style.cursor = "pointer"),
+        i.addEventListener("click", () => {
+          (l(!o()), _(), p.classList.toggle("agx-on", o()));
+        }),
+        i
+      );
+    }
+    function n(c, o, l, p) {
+      let i = m("div", "agx-seg"),
+        u = () =>
+          Array.from(i.children).forEach((b, M) =>
+            b.classList.toggle("agx-on", o[M][0] === l()),
+          );
+      (o.forEach(([b, M]) => {
+        let y = m("button", "", { textContent: M });
+        (y.addEventListener("click", () => {
+          (p(b), _(), u());
+        }),
+          i.append(y));
+      }),
+        u());
+      let f = m("div", "agx-row", {}, [m("span", "", { textContent: c })]);
+      return (f.append(i), f);
+    }
+    function s(c, o, l, p) {
+      let i = m("input", "agx-color", { type: "color", value: o() });
+      i.addEventListener("input", () => {
+        (l(i.value), _());
+      });
+      let u = m("button", "agx-keybtn", { textContent: "reset" });
+      u.addEventListener("click", () => {
+        (l(p), (i.value = p), _());
+      });
+      let f = m(
+        "div",
+        "",
+        { style: "display:flex;gap:6px;align-items:center" },
+        [i, u],
+      );
+      return m("div", "agx-row", {}, [m("span", "", { textContent: c }), f]);
+    }
+    function a(c, o) {
+      if (c === "game") {
+        (o.append(
+          n(
+            "Multibox camera mode",
+            [
+              ["single", "Single"],
+              ["center", "Center"],
+            ],
+            () => h.game.multiboxCamera,
+            (u) => (h.game.multiboxCamera = u),
+          ),
+        ),
+          o.append(
+            n(
+              "Zoom",
+              [
+                ["auto", "Auto-fit"],
+                ["manual", "Manual"],
+              ],
+              () => h.game.zoomMode,
+              (u) => (h.game.zoomMode = u),
+            ),
+          ),
+          o.append(
+            m("div", "agx-note", {
+              textContent:
+                "Manual: scroll the mouse wheel to zoom; the camera still follows your box.",
+            }),
+          ),
+          o.append(
+            t(
+              "Inactive box stops at last cursor",
+              () => h.game.inactiveBoxStops,
+              (u) => (h.game.inactiveBoxStops = u),
+            ),
+          ));
+        let l = m("input", "agx-slider", {
+            type: "range",
+            min: "20",
+            max: "300",
+            value: String(h.game.drawDelay),
+          }),
+          p = m("span", "", {
+            textContent: `Animation delay ${h.game.drawDelay}ms`,
+          });
+        (l.addEventListener("input", () => {
+          ((h.game.drawDelay = Number(l.value)),
+            (p.textContent = `Animation delay ${l.value}ms`),
+            _());
+        }),
+          o.append(m("div", "agx-row", {}, [p, l])),
+          o.append(
+            m("div", "agx-note", {
+              textContent:
+                "How long cells take to glide to their server position. Lower = snappier, higher = smoother.",
+            }),
+          ),
+          o.append(
+            t(
+              "Auto FPS - match display refresh",
+              () => h.game.autoFps,
+              (u) => (h.game.autoFps = u),
+            ),
+          ),
+          o.append(
+            m("div", "agx-note", {
+              textContent:
+                "Measures your monitor's refresh rate and caps the overlay to it. Max FPS below still applies on top (0 = off).",
+            }),
+          ));
+        let i = m("input", "agx-keybtn", {
+          type: "number",
+          min: "30",
+          max: "360",
+          value: String(h.game.maxFps),
+          style: "width:70px",
+        });
+        (i.addEventListener("change", () => {
+          ((h.game.maxFps = Math.max(0, Math.min(360, Number(i.value) | 0))),
+            _());
+        }),
+          o.append(
+            m("div", "agx-row", {}, [
+              m("span", "", { textContent: "Max FPS - manual (0 = uncapped)" }),
+              i,
+            ]),
+          ),
+          o.append(
+            n(
+              "Resolution",
+              [
+                ["1", "100%"],
+                ["0.75", "75%"],
+                ["0.5", "50%"],
+              ],
+              () =>
+                String(
+                  h.game.renderScale === 0.5
+                    ? 0.5
+                    : h.game.renderScale === 0.75
+                      ? 0.75
+                      : 1,
+                ),
+              (u) => (h.game.renderScale = Number(u)),
+            ),
+          ),
+          o.append(
+            m("div", "agx-note", {
+              textContent:
+                "Lower = sharper-but-slower -> softer-but-faster. Big FPS win on high-DPI screens.",
+            }),
+          ));
+      } else if (c === "controls") {
+        o.append(
+          m("div", "agx-note", {
+            textContent:
+              "Click a binding, then press a key or click a mouse button to set it. Backspace clears, Esc cancels.",
+          }),
+        );
+        for (let i of Sn) {
+          let u = m("button", `agx-keybtn${e === i ? " agx-cap" : ""}`, {
+            textContent: e === i ? "press a key / mouse..." : ue(h.bindings[i]),
+          });
+          (u.addEventListener("click", () => {
+            ((e = i), r());
+          }),
+            o.append(
+              m("div", "agx-row", {}, [
+                m("span", "", { textContent: ze[i] }),
+                u,
+              ]),
+            ));
+        }
+        let l = m("button", "agx-btn", { textContent: "Reset to defaults" });
+        (l.addEventListener("click", () => {
+          ((h.bindings = { ...pe }), _(), r());
+        }),
+          o.append(l),
+          o.append(
+            m("div", "agx-note", {
+              textContent:
+                "Advanced - split/eject WIRE opcodes (read from the [L] packet log: -> op=N when the game splits/ejects):",
+            }),
+          ));
+        let p = (i, u, f) => {
+          let b = m("input", "agx-keybtn", {
+            type: "number",
+            value: String(u()),
+            style: "width:70px",
+          });
+          (b.addEventListener("change", () => {
+            (f(Math.max(0, Math.min(255, Number(b.value) | 0))), _());
+          }),
+            o.append(
+              m("div", "agx-row", {}, [m("span", "", { textContent: i }), b]),
+            ));
+        };
+        (p(
+          "Split opcode",
+          () => h.game.splitOp,
+          (i) => (h.game.splitOp = i),
+        ),
+          p(
+            "Eject opcode",
+            () => h.game.ejectOp,
+            (i) => (h.game.ejectOp = i),
+          ),
+          p(
+            "Chat opcode",
+            () => h.game.chatOp,
+            (i) => (h.game.chatOp = i),
+          ));
+      } else if (c === "theme") {
+        let l = h.theme;
+        (o.append(
+          t(
+            "Animated border",
+            () => l.animatedBorder,
+            (i) => (l.animatedBorder = i),
+          ),
+        ),
+          o.append(
+            t(
+              "Cell shadows",
+              () => l.cellShadow,
+              (i) => (l.cellShadow = i),
+            ),
+          ),
+          o.append(
+            t(
+              "Spawn effects",
+              () => l.spawnEffects,
+              (i) => (l.spawnEffects = i),
+            ),
+          ),
+          o.append(
+            t(
+              "Background grid",
+              () => l.showGrid,
+              (i) => (l.showGrid = i),
+            ),
+          ),
+          o.append(
+            t(
+              "Cell names",
+              () => l.showNames,
+              (i) => (l.showNames = i),
+            ),
+          ),
+          o.append(
+            t(
+              "Custom skins (your skin URL on all your cells)",
+              () => l.customSkins,
+              (i) => (l.customSkins = i),
+            ),
+          ),
+          o.append(
+            t(
+              "Game skins (server-provided)",
+              () => l.gameSkins,
+              (i) => (l.gameSkins = i),
+            ),
+          ),
+          o.append(
+            s(
+              "Active box outline",
+              () => l.activeOutline,
+              (i) => (l.activeOutline = i),
+              "#ff3b30",
+            ),
+          ),
+          o.append(
+            s(
+              "Inactive box outline",
+              () => l.inactiveOutline,
+              (i) => (l.inactiveOutline = i),
+              "#ffffff",
+            ),
+          ),
+          o.append(
+            n(
+              "Ring size",
+              [
+                ["thin", "Thin"],
+                ["normal", "Normal"],
+                ["thick", "Thick"],
+              ],
+              () =>
+                l.ringSize <= 0.6
+                  ? "thin"
+                  : l.ringSize >= 1.6
+                    ? "thick"
+                    : "normal",
+              (i) => (l.ringSize = i === "thin" ? 0.5 : i === "thick" ? 2 : 1),
+            ),
+          ),
+          o.append(
+            t(
+              "Show pellets (X) - off for FPS",
+              () => l.showPellets,
+              (i) => (l.showPellets = i),
+            ),
+          ),
+          o.append(
+            n(
+              "Pellets",
+              [
+                ["game", "Game colors"],
+                ["custom", "Custom"],
+              ],
+              () => (l.pelletColor ? "custom" : "game"),
+              (i) =>
+                (l.pelletColor =
+                  i === "custom" ? l.pelletColor || "#88ccff" : ""),
+            ),
+          ),
+          o.append(
+            s(
+              "Pellet color (when Custom)",
+              () => l.pelletColor || "#88ccff",
+              (i) => (l.pelletColor = i),
+              "#88ccff",
+            ),
+          ),
+          o.append(m("div", "agx-label", { textContent: "BACKGROUND" })),
+          o.append(
+            s(
+              "Background color",
+              () => l.backgroundColor || "#0c0c16",
+              (i) => (l.backgroundColor = i),
+              "#0c0c16",
+            ),
+          ));
+        let p = m("input", "agx-input agx-skin", {
+          value: l.backgroundUrl,
+          placeholder: "Background image URL (optional)",
+        });
+        (p.addEventListener("input", () => {
+          ((l.backgroundUrl = p.value.trim()), _());
+        }),
+          o.append(p),
+          o.append(m("div", "agx-label", { textContent: "HUD" })),
+          o.append(
+            t(
+              "Minimap",
+              () => l.showMinimap,
+              (i) => (l.showMinimap = i),
+            ),
+          ),
+          o.append(
+            t(
+              "Leaderboard",
+              () => l.showLeaderboard,
+              (i) => (l.showLeaderboard = i),
+            ),
+          ),
+          o.append(
+            t(
+              "Mass / stats",
+              () => l.showMass,
+              (i) => (l.showMass = i),
+            ),
+          ),
+          o.append(
+            n(
+              "Mass format",
+              [
+                ["auto", "Auto"],
+                ["short", "Short"],
+                ["full", "Full"],
+              ],
+              () => l.massFormat,
+              (i) => (l.massFormat = i),
+            ),
+          ),
+          o.append(
+            t(
+              "Kill feed",
+              () => l.showKillFeed,
+              (i) => (l.showKillFeed = i),
+            ),
+          ),
+          o.append(
+            t(
+              "Chat",
+              () => l.showChat,
+              (i) => (l.showChat = i),
+            ),
+          ));
+      } else {
+        let l = m("button", "agx-btn", {
+          textContent: "Export settings (.hsf.json)",
+        });
+        l.addEventListener("click", () => {
+          let u = new Blob([gt()], { type: "application/json" }),
+            f = m("a", "", {
+              href: URL.createObjectURL(u),
+              download: "hslo-agar-ext.hsf.json",
+            });
+          (f.click(), setTimeout(() => URL.revokeObjectURL(f.href), 1e3));
+        });
+        let p = m("input", "", {
+          type: "file",
+          accept: ".json,.hsf,application/json",
+          style: "display:none",
+        });
+        p.addEventListener("change", () => {
+          var f;
+          let u = (f = p.files) == null ? void 0 : f[0];
+          u &&
+            u.text().then((b) => {
+              ft(b) ? r() : alert("Import failed: invalid settings file");
+            });
+        });
+        let i = m("button", "agx-btn", { textContent: "Import settings..." });
+        (i.addEventListener("click", () => p.click()), o.append(l, i, p));
+      }
+    }
+    return { render: a, capturing: () => e !== null };
+  }
+  var Cn = "min(960px, 94vw)",
+    En = "min(640px, 65vh)",
+    Mn = "24px",
+    An = [
+      ["play", "Game"],
+      ["game", "Settings"],
+      ["controls", "Controls"],
+      ["theme", "Theme"],
+      ["data", "Data"],
+    ];
+  function Ft(r) {
+    let e = m("div", "agx-card", {
+        style: `width:${Cn};height:${En};border-radius:${Mn}`,
+      }),
+      t = m("div", "agx-overlay", {}, [e]);
+    (t.addEventListener("click", (v) => {
+      v.target === t && p();
+    }),
+      document.documentElement.appendChild(t));
+    let n = Rt(() => A()),
+      s = "play",
+      a = null,
+      c = (v) => t.classList.toggle("agx-open", v),
+      o = () => t.classList.contains("agx-open"),
+      l = (v) => {
+        (v && (s = v), (a = null), A(), c(!0));
+      },
+      p = () => c(!1),
+      i = () => (o() ? p() : l()),
+      u = () => h.profiles[h.selected];
+    function f() {
+      (_(), r.play(), p());
+    }
+    function b() {
+      (r.spectate(), p());
+    }
+    function M(v, k) {
+      let L = (k.skins.find((R) => !!R) || "").trim();
+      L
+        ? (v.classList.add("agx-has-skin"),
+          (v.style.backgroundImage = `url("${L.replace(/"/g, "%22")}")`))
+        : (v.classList.remove("agx-has-skin"), (v.style.backgroundImage = ""));
+    }
+    function y(v, k) {
+      var C;
+      let L = h.profiles[v],
+        R = m("div", "agx-skinpop"),
+        S = m("button", "agx-x", { textContent: "x" });
+      (S.addEventListener("click", () => {
+        ((a = null), A());
+      }),
+        R.append(
+          m("div", "agx-skinpop-h", {}, [
+            m("span", "", {
+              textContent: `${L.name || `Profile ${v + 1}`} skins`,
+            }),
+            S,
+          ]),
+        ));
+      for (let I = 0; I < 2; I++) {
+        let $ = m("input", "agx-input agx-skin", {
+          value: (C = L.skins[I]) != null ? C : "",
+          placeholder: `Box ${I + 1} skin URL`,
+        });
+        ($.addEventListener("input", () => {
+          ((L.skins[I] = $.value.trim()), _(), k && M(k, L));
+        }),
+          R.append($));
+      }
+      return R;
+    }
+    function T(v) {
+      var Z;
+      let k = m("div", "agx-game"),
+        L = [],
+        R = m("div", "agx-game-left");
+      (R.append(m("h1", "agx-title", { textContent: "Agar.io" })),
+        R.append(
+          m("p", "agx-sub", {
+            textContent: "Custom overlay - Play & Spectate",
+          }),
+        ),
+        R.append(
+          m("div", "agx-label", {
+            textContent: "NICKNAME",
+            style: "text-align:center",
+          }),
+        ));
+      let S = m("input", "agx-input agx-nick", {
+        value: u().name,
+        placeholder: "An unnamed cell",
+        maxLength: 15,
+      });
+      (S.addEventListener("input", () => {
+        ((u().name = S.value.slice(0, 15)), _());
+      }),
+        S.addEventListener("change", () => {
+          ((u().name = S.value.slice(0, 15)), _(), r.refreshChatNick());
+        }),
+        S.addEventListener("keydown", (H) => {
+          H.key === "Enter" && f();
+        }),
+        R.append(S),
+        R.append(
+          m("div", "agx-label", {
+            textContent: "SKINS - image URL per box",
+            style: "text-align:center",
+          }),
+        ));
+      for (let H = 0; H < 2; H++) {
+        let K = m("input", "agx-input agx-skin", {
+          value: (Z = u().skins[H]) != null ? Z : "",
+          placeholder: `Box ${H + 1} skin URL`,
+        });
+        (K.addEventListener("input", () => {
+          ((u().skins[H] = K.value.trim()), _());
+          let V = L[h.selected];
+          V && M(V, u());
+        }),
+          R.append(K));
+      }
+      let C = m("div", "agx-playrow"),
+        I = m("button", "agx-play", { textContent: "Play" });
+      I.addEventListener("click", f);
+      let $ = m("button", "agx-spectate", { textContent: "Spectate" });
+      ($.addEventListener("click", b), C.append(I, $), R.append(C));
+      let E = m("div", "agx-game-right");
+      E.append(m("div", "agx-label", { textContent: "PROFILES" }));
+      let F = m("div", "agx-pcircles");
+      (h.profiles.forEach((H, K) => {
+        let V = m(
+          "button",
+          `agx-pcircle${K === h.selected ? " agx-sel" : ""}`,
+          { textContent: H.name ? H.name[0].toUpperCase() : String(K + 1) },
+        );
+        (M(V, H),
+          V.addEventListener("click", () => {
+            ((h.selected = K), _(), (a = a === K ? null : K), A());
+          }),
+          L.push(V),
+          F.append(V));
+      }),
+        E.append(F),
+        a !== null && E.append(y(a, L[a])),
+        k.append(R, E),
+        v.append(k));
+    }
+    function A() {
+      e.replaceChildren();
+      let v = m("div", "agx-tabs");
+      for (let [L, R] of An) {
+        let S = m("button", `agx-tab${L === s ? " agx-on" : ""}`, {
+          textContent: R,
+        });
+        (S.addEventListener("click", () => {
+          ((s = L), (a = null), A());
+        }),
+          v.append(S));
+      }
+      e.append(v);
+      let k = m("div", "agx-body");
+      (e.append(k), s === "play" ? T(k) : n.render(s, k));
+    }
+    return {
+      open: l,
+      close: p,
+      toggle: i,
+      isOpen: o,
+      capturing: () => n.capturing(),
+      dispose: () => t.remove(),
+    };
+  }
+  He(window);
+  var Ut = new q(),
+    qe = { attached: !1, url: "", frames: 0, unknownOps: new Set(), sends: [] },
+    ve = {
+      ws: null,
+      suppressMove: !1,
+      suppressAction: !1,
+      suppressSpawn: !1,
+      sendRaw: null,
+      blocked: !1,
+    },
+    ye = [];
+  function X(...r) {
+    (ye.push(r.map((e) => (typeof e == "string" ? e : Tn(e))).join(" ")),
+      ye.length > 30 && ye.shift(),
+      console.log(...r));
+  }
+  function Tn(r) {
+    try {
+      return JSON.stringify(r);
+    } catch {
+      return String(r);
+    }
+  }
+  var Je = new Oe(),
+    Ze = new Se(),
+    zt = new $e();
+  xt(Ut, qe, ve, X, Je, Ze, zt);
+  var D = new Me(Ut, ve, qe, X, zt, Ze),
+    Qe = new Set(),
+    ke = !1;
+  function et(r) {
+    try {
+      ((r.onclose = null), (r.onerror = null), (r.onmessage = null));
+    } catch {}
+    try {
+      r.close();
+    } catch {}
+  }
+  function Wt(r) {
+    (Qe.add(r), ke && setTimeout(() => et(r), 0));
+  }
+  function Ht() {
+    try {
+      let r = document.getElementById("multicheck"),
+        e = r == null ? void 0 : r.contentWindow;
+      e && !e.__agxTimersHooked && ((e.__agxTimersHooked = !0), He(e));
+      let t = e == null ? void 0 : e.WebSocket,
+        n = t == null ? void 0 : t.prototype;
+      if (!n || n.__agxHooked) return;
+      n.__agxHooked = !0;
+      let s = n.send;
+      n.send = function (c) {
+        if ((Wt(this), !ke)) return s.call(this, c);
+      };
+      let a = Object.getOwnPropertyDescriptor(n, "binaryType");
+      if (a != null && a.get && a != null && a.set) {
+        let c = a.get,
+          o = a.set;
+        Object.defineProperty(n, "binaryType", {
+          configurable: !0,
+          enumerable: a.enumerable,
+          get() {
+            return c.call(this);
+          },
+          set(l) {
+            (Wt(this), o.call(this, l));
+          },
+        });
+      }
+      X("[agar-ext] iframe game-socket hooked");
+    } catch {}
+  }
+  Y(Ht, 100);
+  Ht();
+  var Kt = 0,
+    Ve = 0;
+  try {
+    "PerformanceObserver" in window &&
+      new PerformanceObserver((e) => {
+        var t, n, s;
+        for (let a of e.getEntries()) {
+          if (a.duration < 80) continue;
+          (Kt++, (Ve = Math.max(Ve, Math.round(a.duration))));
+          let c =
+            ((t = ve.ws) == null ? void 0 : t.readyState) === WebSocket.OPEN
+              ? "open"
+              : "down";
+          X(
+            `[freeze] main thread blocked ${Math.round(a.duration)}ms | nodes=${(n = w == null ? void 0 : w.dbgNodes) != null ? n : 0} cells=${(s = w == null ? void 0 : w.dbgCells) != null ? s : 0} ws1=${c} gameKilled=${he}`,
+          );
+        }
+      }).observe({ entryTypes: ["longtask"] });
+  } catch {}
+  function On() {
+    return `${Je.dump()}
 
 === text log ===
-${be.join(`
-`)}`}var x=null,T=null,F=null,G=!0,Le=!0,Ae=!1,re=null,$t=!1,ce=window.requestAnimationFrame.bind(window),Te=!1,ue=!1,mn=1879048192,J=null;window.requestAnimationFrame=r=>{if(r.__hsloKeep)return ce(r);if(G){if(ue)return J=r,++mn;if(Te)return window.setTimeout(()=>r(performance.now()),1e3/15)}return ce(r)};for(let r of["String","requestAnimationFrame"])try{Object.defineProperty(window,r,{value:window[r],writable:!1,configurable:!1})}catch{}window.__hslo={killGameRender(r=!0){if(ue=r,r&&(Te=!1),X(`[agar-ext] game render ${r?"KILLED (no draw)":"revived"}`),!r&&J){let e=J;J=null,ce(e)}},freezeGame(r=!0){if(Te=r,r&&(ue=!1),X(`[agar-ext] game render ${r?"throttled -> 15fps":"full"}`),J){let e=J;J=null,ce(e)}},killWS1(){we=!0;for(let r of je)Ge(r);X("[agar-ext] WS1 killed (iframe game socket closed, reconnect suppressed)")},reviveWS1(){we=!1,X("[agar-ext] WS1 revive: kill disabled (game may reconnect)")},fps:()=>{var r;return Math.round((r=x==null?void 0:x.fps)!=null?r:0)},perf(){let r=[],e=performance.now(),t=0,s=()=>{var a,l,i,o,p,c,h,w;let n=performance.now();if(r.push(n-e),e=n,++t<60)ce(s);else{r.sort((E,L)=>E-L);let y=r[r.length>>1],M=r[2];X(`[perf] RAF median ${y.toFixed(1)}ms (~${Math.round(1e3/y)}fps ceiling), fastest ${M.toFixed(1)}ms (~${Math.round(1e3/M)}fps) | overlay ${Math.round((a=x==null?void 0:x.fps)!=null?a:0)}fps, draw ${((l=x==null?void 0:x.drawMs)!=null?l:0).toFixed(2)}ms | cells ${(i=x==null?void 0:x.dbgCells)!=null?i:0}, food ${(o=x==null?void 0:x.dbgFood)!=null?o:0}, nodes ${(p=x==null?void 0:x.dbgNodes)!=null?p:0} | gameKilled=${ue} gameThrottled=${Te} takeover=${G} autoFps=${u.game.autoFps} detectedHz=${(c=x==null?void 0:x.detectedFps)!=null?c:0} maxFps=${u.game.maxFps} | stalls=${(h=x==null?void 0:x.stalls)!=null?h:0} lastStall=${(w=x==null?void 0:x.lastStallMs)!=null?w:0}ms longTasks=${Bt} worstTask=${Ue}ms`)}};return ce(s),"sampling 60 frames... result prints to the console (and the [L] log) shortly"}};var fn=setInterval(()=>{x&&(clearInterval(fn),setTimeout(()=>{ue=!0,we=!0;for(let r of je)Ge(r);X("[agar-ext] game render killed + WS1 cut (overlay owns the screen)")},2e3))},250);function bn(){if(x)return;Ct(),x=new Se(W),W.attachOverlay(x),Oe(),T=Lt(W),F=Mt({mb:W,overlay:x,logLines:be,stats:He,packets:Ke,chat:Xe,copyText:gn}),Ae=!1,F.setDebug(!1),T.open();let r=0,e=()=>{r||(r=window.setTimeout(()=>{r=0,Oe()},400))};document.body&&new MutationObserver(e).observe(document.body,{childList:!0,subtree:!0}),$t||($t=!0,window.addEventListener("keydown",kn,!0),window.addEventListener("keyup",Sn,!0),window.addEventListener("mousedown",En,!0),window.addEventListener("mouseup",Cn,!0),window.addEventListener("contextmenu",t=>{G&&!(T!=null&&T.isOpen())&&Ye("Mouse2")&&t.preventDefault()},!0))}function xn(r){if(G=r,Le=r,xe.suppressMove=r,xe.suppressSpawn=r,x==null||x.setVisible(r),F==null||F.setVisible(r),Oe(),r)yn(),T==null||T.open();else{if(J){let e=J;J=null,ce(e)}T==null||T.close(),wn("OBSERVE MODE - use the game's own menu. Press O for the extension overlay - Esc for its menu.")}}function wn(r){re||(re=document.createElement("div"),re.className="agx-hud agx-banner",document.documentElement.appendChild(re)),re.textContent=r,re.style.display="block"}function yn(){re&&(re.style.display="none")}function $e(){if(!(x&&document.documentElement.contains(x.canvas))&&document.body){x&&(x=null,T=null,F=null,X("[agar-ext] UI detached - remounting into live document"));try{bn()}catch(r){x=null,console.error("[agar-ext] start() failed:",r)}}}window.addEventListener("load",$e);document.addEventListener("readystatechange",$e);setInterval($e,500);$e();function Oe(){for(let r of Array.from(document.querySelectorAll("canvas"))){if(x&&r===x.canvas)continue;let e=r.style;e.opacity="",e.display=Le?"none":""}document.body&&(document.body.style.pointerEvents=G?"none":""),vn(G)}function vn(r){if(document.body)for(let e of Array.from(document.body.children)){let t=e.tagName;t==="SCRIPT"||t==="STYLE"||t==="LINK"||t==="NOSCRIPT"||/recaptcha|grecaptcha/i.test(`${e.id} ${e.className}`)||t==="CANVAS"||e.querySelector("canvas")||(e.style.display=r?"none":"")}}function Ye(r){return Object.keys(u.bindings).find(e=>u.bindings[e]===r)}function kn(r){if(T!=null&&T.capturing())return;if(F!=null&&F.chatFocused()){r.stopImmediatePropagation(),r.code==="Enter"?(r.preventDefault(),F.submitChat()):r.code==="Escape"&&(r.preventDefault(),F.closeChat());return}let e=r.target,t=(e==null?void 0:e.tagName)==="INPUT"||(e==null?void 0:e.tagName)==="TEXTAREA";if(G&&r.code==="Enter"&&!t&&!(T!=null&&T.isOpen())){r.preventDefault(),r.stopImmediatePropagation(),F==null||F.focusChat();return}if(r.code==="Escape"){r.preventDefault(),T==null||T.toggle();return}if(!(t||T!=null&&T.isOpen())){if(G){let s=Ye(r.code);if(s){r.preventDefault(),r.stopImmediatePropagation(),_t(s);return}}if(r.code==="KeyO"||r.code==="KeyL"||r.code==="KeyG"||r.code==="KeyC"){G&&r.stopImmediatePropagation(),r.code==="KeyO"?xn(!G):r.code==="KeyL"?(Ae=!Ae,F==null||F.setDebug(Ae)):r.code==="KeyG"?(Le=!Le,Oe()):r.code==="KeyC"&&Mn();return}}}function Sn(r){u.bindings.macroFeed===r.code&&W.setMacroFeed(!1)}function En(r){if(T!=null&&T.capturing()||T!=null&&T.isOpen()||!G||F!=null&&F.chatFocused())return;let e=Ye("Mouse"+r.button);e&&(r.preventDefault(),r.stopImmediatePropagation(),_t(e))}function Cn(r){u.bindings.macroFeed==="Mouse"+r.button&&W.setMacroFeed(!1)}function _t(r){switch(r){case"switchBox":W.switchActive();break;case"split":W.split();break;case"eject":W.eject();break;case"doubleSplit":W.doubleSplit();break;case"split16":W.split16();break;case"respawn":W.respawn();break;case"pause":W.togglePause();break;case"spectateToggle":W.spectate();break;case"macroFeed":W.setMacroFeed(!0);break;case"togglePellets":u.theme.showPellets=!u.theme.showPellets,I(),X(`[agar-ext] pellets ${u.theme.showPellets?"shown":"hidden"}`);break}}function Mn(){u.game.multiboxCamera=u.game.multiboxCamera==="center"?"single":"center",I(),u.game.multiboxCamera==="single"&&(x==null||x.snapCamera()),X(`[agar-ext] camera -> ${u.game.multiboxCamera}`)}})();
+${ye.join(`
+`)}`;
+  }
+  var w = null,
+    O = null,
+    B = null,
+    j = !0,
+    Ne = !0,
+    Pe = !1,
+    oe = null,
+    Dt = !1,
+    de = window.requestAnimationFrame.bind(window),
+    Ie = !1,
+    he = !1,
+    Ln = 1879048192,
+    J = null;
+  window.requestAnimationFrame = (r) => {
+    if (r.__hsloKeep) return de(r);
+    if (j) {
+      if (he) return ((J = r), ++Ln);
+      if (Ie) return window.setTimeout(() => r(performance.now()), 1e3 / 15);
+    }
+    return de(r);
+  };
+  for (let r of ["String", "requestAnimationFrame"])
+    try {
+      Object.defineProperty(window, r, {
+        value: window[r],
+        writable: !1,
+        configurable: !1,
+      });
+    } catch {}
+  window.__hslo = {
+    killGameRender(r = !0) {
+      if (
+        ((he = r),
+        r && (Ie = !1),
+        X(`[agar-ext] game render ${r ? "KILLED (no draw)" : "revived"}`),
+        !r && J)
+      ) {
+        let e = J;
+        ((J = null), de(e));
+      }
+    },
+    freezeGame(r = !0) {
+      if (
+        ((Ie = r),
+        r && (he = !1),
+        X(`[agar-ext] game render ${r ? "throttled -> 15fps" : "full"}`),
+        J)
+      ) {
+        let e = J;
+        ((J = null), de(e));
+      }
+    },
+    killWS1() {
+      ke = !0;
+      for (let r of Qe) et(r);
+      X(
+        "[agar-ext] WS1 killed (iframe game socket closed, reconnect suppressed)",
+      );
+    },
+    reviveWS1() {
+      ((ke = !1),
+        X("[agar-ext] WS1 revive: kill disabled (game may reconnect)"));
+    },
+    fps: () => {
+      var r;
+      return Math.round((r = w == null ? void 0 : w.fps) != null ? r : 0);
+    },
+    perf() {
+      let r = [],
+        e = performance.now(),
+        t = 0,
+        n = () => {
+          var a, c, o, l, p, i, u, f;
+          let s = performance.now();
+          if ((r.push(s - e), (e = s), ++t < 60)) de(n);
+          else {
+            r.sort((y, T) => y - T);
+            let b = r[r.length >> 1],
+              M = r[2];
+            X(
+              `[perf] RAF median ${b.toFixed(1)}ms (~${Math.round(1e3 / b)}fps ceiling), fastest ${M.toFixed(1)}ms (~${Math.round(1e3 / M)}fps) | overlay ${Math.round((a = w == null ? void 0 : w.fps) != null ? a : 0)}fps, draw ${((c = w == null ? void 0 : w.drawMs) != null ? c : 0).toFixed(2)}ms | cells ${(o = w == null ? void 0 : w.dbgCells) != null ? o : 0}, food ${(l = w == null ? void 0 : w.dbgFood) != null ? l : 0}, nodes ${(p = w == null ? void 0 : w.dbgNodes) != null ? p : 0} | gameKilled=${he} gameThrottled=${Ie} takeover=${j} autoFps=${h.game.autoFps} detectedHz=${(i = w == null ? void 0 : w.detectedFps) != null ? i : 0} maxFps=${h.game.maxFps} | stalls=${(u = w == null ? void 0 : w.stalls) != null ? u : 0} lastStall=${(f = w == null ? void 0 : w.lastStallMs) != null ? f : 0}ms longTasks=${Kt} worstTask=${Ve}ms`,
+            );
+          }
+        };
+      return (
+        de(n),
+        "sampling 60 frames... result prints to the console (and the [L] log) shortly"
+      );
+    },
+  };
+  var $n = Y(() => {
+    w &&
+      (clearInterval($n),
+      setTimeout(() => {
+        ((he = !0), (ke = !0));
+        for (let e of Qe) et(e);
+        let r = yt();
+        X(
+          `[agar-ext] game render killed + WS1 cut + ${r} game timers cleared (overlay owns the screen)`,
+        );
+      }, 2e3));
+  }, 250);
+  function Pn() {
+    if (w) return;
+    (Nt(),
+      (w = new Te(D)),
+      D.attachOverlay(w),
+      _e(),
+      (O = Ft(D)),
+      (B = _t({
+        mb: D,
+        overlay: w,
+        logLines: ye,
+        stats: qe,
+        packets: Je,
+        chat: Ze,
+        copyText: On,
+      })),
+      (Pe = !1),
+      B.setDebug(!1),
+      (D.onAllDead = () => {
+        j && (O == null || O.open());
+      }),
+      O.open());
+    let r = 0,
+      e = () => {
+        r ||
+          (r = window.setTimeout(() => {
+            ((r = 0), _e());
+          }, 400));
+      };
+    (document.body &&
+      new MutationObserver(e).observe(document.body, {
+        childList: !0,
+        subtree: !0,
+      }),
+      Dt ||
+        ((Dt = !0),
+        window.addEventListener("keydown", Bn, !0),
+        window.addEventListener("keyup", Fn, !0),
+        window.addEventListener("mousedown", Wn, !0),
+        window.addEventListener("mouseup", Dn, !0),
+        window.addEventListener(
+          "contextmenu",
+          (t) => {
+            j &&
+              !(O != null && O.isOpen()) &&
+              tt("Mouse2") &&
+              t.preventDefault();
+          },
+          !0,
+        )));
+  }
+  function In(r) {
+    if (
+      ((j = r),
+      (Ne = r),
+      (ve.suppressMove = r),
+      (ve.suppressSpawn = r),
+      w == null || w.setVisible(r),
+      B == null || B.setVisible(r),
+      _e(),
+      r)
+    )
+      (_n(), O == null || O.open());
+    else {
+      if (J) {
+        let e = J;
+        ((J = null), de(e));
+      }
+      (O == null || O.close(),
+        Nn(
+          "OBSERVE MODE - use the game's own menu. Press O for the extension overlay - Esc for its menu.",
+        ));
+    }
+  }
+  function Nn(r) {
+    (oe ||
+      ((oe = document.createElement("div")),
+      (oe.className = "agx-hud agx-banner"),
+      document.documentElement.appendChild(oe)),
+      (oe.textContent = r),
+      (oe.style.display = "block"));
+  }
+  function _n() {
+    oe && (oe.style.display = "none");
+  }
+  function Re() {
+    if (!(w && document.documentElement.contains(w.canvas)) && document.body) {
+      if (w) {
+        try {
+          w.dispose();
+        } catch {}
+        try {
+          B == null || B.dispose();
+        } catch {}
+        try {
+          O == null || O.dispose();
+        } catch {}
+        ((w = null),
+          (O = null),
+          (B = null),
+          X("[agar-ext] UI detached - remounting into live document"));
+      }
+      try {
+        Pn();
+      } catch (r) {
+        ((w = null), console.error("[agar-ext] start() failed:", r));
+      }
+    }
+  }
+  window.addEventListener("load", Re);
+  document.addEventListener("readystatechange", Re);
+  Y(Re, 500);
+  Re();
+  function _e() {
+    for (let r of Array.from(document.querySelectorAll("canvas"))) {
+      if (w && r === w.canvas) continue;
+      let e = r.style;
+      ((e.opacity = ""), (e.display = Ne ? "none" : ""));
+    }
+    (document.body && (document.body.style.pointerEvents = j ? "none" : ""),
+      Rn(j));
+  }
+  function Rn(r) {
+    if (document.body)
+      for (let e of Array.from(document.body.children)) {
+        let t = e.tagName;
+        t === "SCRIPT" ||
+          t === "STYLE" ||
+          t === "LINK" ||
+          t === "NOSCRIPT" ||
+          /recaptcha|grecaptcha/i.test(`${e.id} ${e.className}`) ||
+          t === "CANVAS" ||
+          e.querySelector("canvas") ||
+          (e.style.display = r ? "none" : "");
+      }
+  }
+  function tt(r) {
+    return Object.keys(h.bindings).find((e) => h.bindings[e] === r);
+  }
+  function Bn(r) {
+    if (O != null && O.capturing()) return;
+    if (B != null && B.chatFocused()) {
+      (r.stopImmediatePropagation(),
+        r.code === "Enter"
+          ? (r.preventDefault(), B.submitChat())
+          : r.code === "Escape" && (r.preventDefault(), B.closeChat()));
+      return;
+    }
+    let e = r.target,
+      t =
+        (e == null ? void 0 : e.tagName) === "INPUT" ||
+        (e == null ? void 0 : e.tagName) === "TEXTAREA";
+    if (j && r.code === "Enter" && !t && !(O != null && O.isOpen())) {
+      (r.preventDefault(),
+        r.stopImmediatePropagation(),
+        B == null || B.focusChat());
+      return;
+    }
+    if (r.code === "Escape") {
+      (r.preventDefault(), O == null || O.toggle());
+      return;
+    }
+    if (!(t || (O != null && O.isOpen()))) {
+      if (j) {
+        let n = tt(r.code);
+        if (n) {
+          (r.preventDefault(), r.stopImmediatePropagation(), Xt(n));
+          return;
+        }
+      }
+      if (
+        r.code === "KeyO" ||
+        r.code === "KeyL" ||
+        r.code === "KeyG" ||
+        r.code === "KeyC"
+      ) {
+        (j && r.stopImmediatePropagation(),
+          r.code === "KeyO"
+            ? In(!j)
+            : r.code === "KeyL"
+              ? ((Pe = !Pe), B == null || B.setDebug(Pe))
+              : r.code === "KeyG"
+                ? ((Ne = !Ne), _e())
+                : r.code === "KeyC" && Un());
+        return;
+      }
+    }
+  }
+  function Fn(r) {
+    h.bindings.macroFeed === r.code && D.setMacroFeed(!1);
+  }
+  function Wn(r) {
+    if (
+      (O != null && O.capturing()) ||
+      (O != null && O.isOpen()) ||
+      !j ||
+      (B != null && B.chatFocused())
+    )
+      return;
+    let e = tt("Mouse" + r.button);
+    e && (r.preventDefault(), r.stopImmediatePropagation(), Xt(e));
+  }
+  function Dn(r) {
+    h.bindings.macroFeed === "Mouse" + r.button && D.setMacroFeed(!1);
+  }
+  function Xt(r) {
+    switch (r) {
+      case "switchBox":
+        D.switchActive();
+        break;
+      case "split":
+        D.split();
+        break;
+      case "eject":
+        D.eject();
+        break;
+      case "doubleSplit":
+        D.doubleSplit();
+        break;
+      case "split16":
+        D.split16();
+        break;
+      case "respawn":
+        D.respawn();
+        break;
+      case "pause":
+        D.togglePause();
+        break;
+      case "spectateToggle":
+        D.spectateOrRoam();
+        break;
+      case "macroFeed":
+        D.setMacroFeed(!0);
+        break;
+      case "togglePellets":
+        ((h.theme.showPellets = !h.theme.showPellets),
+          _(),
+          X(`[agar-ext] pellets ${h.theme.showPellets ? "shown" : "hidden"}`));
+        break;
+    }
+  }
+  function Un() {
+    ((h.game.multiboxCamera =
+      h.game.multiboxCamera === "center" ? "single" : "center"),
+      _(),
+      h.game.multiboxCamera === "single" && (w == null || w.snapCamera()),
+      X(`[agar-ext] camera -> ${h.game.multiboxCamera}`));
+  }
+})();

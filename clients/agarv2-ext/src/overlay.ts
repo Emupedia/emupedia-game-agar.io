@@ -22,6 +22,7 @@ export interface SceneTheme {
   showPellets: boolean;
   animatedBorder: boolean;
   spawnEffects: boolean;
+  backgroundColor: string;
   backgroundUrl: string;
   activeOutline: string;
   inactiveOutline: string;
@@ -139,7 +140,7 @@ function snapRefresh(fps: number): number {
 }
 
 interface FoodEntry { n: RNode; x: number; y: number; r: number; }
-interface CellEntry { n: RNode; x: number; y: number; r: number; outline: string | null; skin: string; mine: boolean; virus: boolean; }
+interface CellEntry { n: RNode; x: number; y: number; r: number; outline: string | null; skin: string; mine: boolean; virus: boolean; fx: boolean; }
 
 export class Overlay {
   canvas: HTMLCanvasElement;
@@ -175,6 +176,9 @@ export class Overlay {
   dbgFood = 0;
   dbgNodes = 0;
   visible = true;
+  private disposed = false;
+  private menuPoll = 0;
+  private menuOpen = false;
 
   constructor(private scene: Scene) {
     this.canvas = document.createElement("canvas");
@@ -221,6 +225,7 @@ export class Overlay {
   }
 
   dispose() {
+    this.disposed = true;
     cancelAnimationFrame(this.raf);
     this.canvas.remove();
   }
@@ -238,6 +243,7 @@ export class Overlay {
   }
 
   private loop = () => {
+    if (this.disposed) return;
     this.raf = requestAnimationFrame(this.loop);
     const now = performance.now();
     const raw = now - this._rawLast; this._rawLast = now;
@@ -249,12 +255,14 @@ export class Overlay {
     }
     if (++this._sinceEstimate >= 60) { this._sinceEstimate = 0; this.estimateRefresh(); }
 
-    let threshold = 0;
-    if (settings.game.autoFps) {
-      if (this.detectedFps > 0) threshold = (1000 / this.detectedFps) * 0.75;
-    } else if (settings.game.maxFps > 0) {
-      threshold = 1000 / settings.game.maxFps - 0.4;
+    if (++this.menuPoll >= 20) {
+      this.menuPoll = 0;
+      this.menuOpen = !!document.querySelector(".agx-overlay.agx-open");
     }
+    let threshold = 0;
+    if (settings.game.autoFps && this.detectedFps > 0) threshold = (1000 / this.detectedFps) * 0.75;
+    if (settings.game.maxFps > 0) threshold = Math.max(threshold, 1000 / settings.game.maxFps - 0.4);
+    if (this.menuOpen) threshold = Math.max(threshold, 1000 / 60 - 0.4);
     if (threshold > 0 && now - this.last < threshold) return;
     if ((settings.game.renderScale || 1) !== this.lastScale) this.resize();
     const dt = Math.min((now - this.last) / 1000, 0.1);
@@ -263,8 +271,7 @@ export class Overlay {
     this.layers = this.scene.layers();
     for (const l of this.layers) l.world.step(dt);
     this.frameCamera();
-    const responsiveness = 1 - 0.85 * (settings.game.animationDelay / 100);
-    this.camera.update(dt, responsiveness);
+    this.camera.update(dt, 1);
     if (this.visible) {
       const t0 = performance.now();
       this.draw(now);
@@ -275,9 +282,19 @@ export class Overlay {
   private estimateRefresh() {
     const buf = this._rawDeltas;
     if (buf.length < 30) return;
-    const s = buf.slice().sort((a, b) => a - b);
-    const med = s[s.length >> 1];
-    if (med > 0) this.detectedFps = snapRefresh(1000 / med);
+    const votes = new Map<number, number>();
+    for (let i = 1; i < buf.length; i++) {
+      const d = buf[i];
+      if (d < 2 || d > 100) continue;
+      if (Math.abs(d - buf[i - 1]) > d * 0.25) continue;
+      const hz = snapRefresh(1000 / d);
+      votes.set(hz, (votes.get(hz) ?? 0) + 1);
+    }
+    let best = 0, bestN = 0;
+    for (const [hz, n] of votes) {
+      if (n > bestN) { best = hz; bestN = n; }
+    }
+    if (best > 0) this.detectedFps = best;
   }
 
   private frameCamera() {
@@ -309,7 +326,7 @@ export class Overlay {
     const border = this.scene.worldBorder();
 
     ctx.setTransform(1, 0, 0, 1, 0, 0);
-    ctx.fillStyle = "#0c0c16";
+    ctx.fillStyle = theme.backgroundColor || "#0c0c16";
     ctx.fillRect(0, 0, W, H);
 
     ctx.setTransform(
@@ -349,13 +366,15 @@ export class Overlay {
         const x = n.rx - sx;
         const y = n.ry - sy;
         const r = Math.max(n.rsize, minR);
-        if (x + r < vMinX || x - r > vMaxX || y + r < vMinY || y - r > vMaxY) continue;
+        let cullR = r;
+        if (time - n.born < 2000 && Math.abs(n.born - layer.world.spawnFxAt) < 400 && own.has(n.id)) cullR = r * 31;
+        if (x + cullR < vMinX || x - cullR > vMaxX || y + cullR < vMinY || y - cullR > vMaxY) continue;
         if (n.isVirus) {
           if (seen.has(n.id)) continue;
           seen.add(n.id);
           let v = viruses[virusN];
-          if (!v) v = viruses[virusN] = { n, x, y, r, outline: null, skin: "", mine: false, virus: true };
-          else { v.n = n; v.x = x; v.y = y; v.r = r; v.outline = null; v.skin = ""; v.mine = false; v.virus = true; }
+          if (!v) v = viruses[virusN] = { n, x, y, r, outline: null, skin: "", mine: false, virus: true, fx: false };
+          else { v.n = n; v.x = x; v.y = y; v.r = r; v.outline = null; v.skin = ""; v.mine = false; v.virus = true; v.fx = false; }
           virusN++;
         } else if (!n.name && n.rsize < 40) {
           if (!drawFood || seen.has(n.id)) continue;
@@ -372,13 +391,14 @@ export class Overlay {
           let skin = "";
           if (mine && theme.customSkins) skin = prof.skins[boxIdx] || prof.skins.find((s) => !!s) || "";
           if (!skin && !mine && n.name) skin = this.scene.sharedSkin(n.name);
-          if (!skin && theme.gameSkins && n.skin) skin = n.skin;
+          if (!skin && theme.gameSkins && n.skinUrl) skin = n.skinUrl;
+          const fx = mine && Math.abs(n.born - layer.world.spawnFxAt) < 400 && time - n.born < 2000;
           if (prev) {
-            prev.n = n; prev.x = x; prev.y = y; prev.r = r; prev.outline = outline; prev.skin = skin; prev.mine = mine;
+            prev.n = n; prev.x = x; prev.y = y; prev.r = r; prev.outline = outline; prev.skin = skin; prev.mine = mine; prev.fx = fx;
           } else {
             let c = cellPool[cellN];
-            if (!c) c = cellPool[cellN] = { n, x, y, r, outline, skin, mine, virus: false };
-            else { c.n = n; c.x = x; c.y = y; c.r = r; c.outline = outline; c.skin = skin; c.mine = mine; c.virus = false; }
+            if (!c) c = cellPool[cellN] = { n, x, y, r, outline, skin, mine, virus: false, fx };
+            else { c.n = n; c.x = x; c.y = y; c.r = r; c.outline = outline; c.skin = skin; c.mine = mine; c.virus = false; c.fx = fx; }
             cellN++;
             cellMap.set(n.id, c);
           }
@@ -466,7 +486,7 @@ export class Overlay {
         if (dot) continue;
       }
       if (c.virus) this.drawVirus(c.n, c.x, c.y, c.r);
-      else this.drawCell(c.n, c.x, c.y, c.r, c.outline, c.skin, theme);
+      else this.drawCell(c.n, c.x, c.y, c.r, c.outline, c.skin, theme, time, c.fx);
     }
 
     ctx.setTransform(1, 0, 0, 1, 0, 0);
@@ -516,9 +536,30 @@ export class Overlay {
     ctx.fill();
   }
 
-  private drawCell(n: RNode, x: number, y: number, r: number, outline: string | null, skin: string, theme: SceneTheme) {
+  private drawCell(n: RNode, x: number, y: number, r: number, outline: string | null, skin: string, theme: SceneTheme, time: number, fx: boolean) {
     const ctx = this.ctx;
     const rpx = r * this.camera.scale;
+    if (theme.spawnEffects && fx && rpx > 3) {
+      const age = time - n.born;
+      if (age >= 0 && age < 1800) {
+        const t01 = age / 1800;
+        const color = outline ?? "#67e8f9";
+        ctx.beginPath();
+        ctx.arc(x, y, r * (1 + 30 * t01), 0, Math.PI * 2);
+        ctx.lineWidth = Math.max(16 / this.camera.scale, r * 0.6) * (1 - t01) + 0.001;
+        ctx.globalAlpha = 0.9 * (1 - t01);
+        ctx.strokeStyle = color;
+        ctx.stroke();
+        const t2 = Math.max(0, t01 - 0.15);
+        ctx.beginPath();
+        ctx.arc(x, y, r * (1 + 20 * t2), 0, Math.PI * 2);
+        ctx.lineWidth = Math.max(8 / this.camera.scale, r * 0.25) * (1 - t2) + 0.001;
+        ctx.globalAlpha = 0.6 * (1 - t2);
+        ctx.strokeStyle = color;
+        ctx.stroke();
+        ctx.globalAlpha = 1;
+      }
+    }
     if (theme.shadows && rpx > 16) {
       ctx.beginPath();
       ctx.arc(x, y + r * 0.06, r, 0, Math.PI * 2);

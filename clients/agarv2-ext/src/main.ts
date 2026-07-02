@@ -5,10 +5,13 @@ import { Overlay } from "./overlay";
 import { PacketLog } from "./packetlog";
 import { save, settings, type ActionKey } from "./settings";
 import { SkinShare } from "./skinshare";
+import { agxInterval, killGameIntervals, trackIntervalsOf } from "./timers";
 import { mountHud } from "./ui/hud";
 import { mountMenu } from "./ui/menu";
 import { injectStyles } from "./ui/styles";
 import { World } from "./world";
+
+trackIntervalsOf(window);
 
 const world = new World();
 const stats: HookStats = {
@@ -63,7 +66,11 @@ function grabGameSocket(ws: WebSocket) {
 function hookIframeSocket() {
   try {
     const iframe = document.getElementById("multicheck") as HTMLIFrameElement | null;
-    const cw = iframe?.contentWindow as (Window & { WebSocket?: typeof WebSocket }) | null | undefined;
+    const cw = iframe?.contentWindow as (Window & typeof globalThis & { WebSocket?: typeof WebSocket; __agxTimersHooked?: boolean }) | null | undefined;
+    if (cw && !cw.__agxTimersHooked) {
+      cw.__agxTimersHooked = true;
+      trackIntervalsOf(cw);
+    }
     const WS = cw?.WebSocket;
     const proto = WS?.prototype as (WebSocket & { __agxHooked?: boolean }) | undefined;
     if (!proto || proto.__agxHooked) return;
@@ -87,7 +94,7 @@ function hookIframeSocket() {
     log("[agar-ext] iframe game-socket hooked");
   } catch {}
 }
-setInterval(hookIframeSocket, 100);
+agxInterval(hookIframeSocket, 100);
 hookIframeSocket();
 
 let longTasks = 0;
@@ -186,14 +193,15 @@ for (const key of ["String", "requestAnimationFrame"] as const) {
   },
 };
 
-const throttleStart = setInterval(() => {
+const throttleStart = agxInterval(() => {
   if (!overlay) return;
   clearInterval(throttleStart);
   setTimeout(() => {
     killGameRAF = true;
     killWs1 = true;
     for (const ws of gameSockets) closeGameSocket(ws);
-    log("[agar-ext] game render killed + WS1 cut (overlay owns the screen)");
+    const cleared = killGameIntervals();
+    log(`[agar-ext] game render killed + WS1 cut + ${cleared} game timers cleared (overlay owns the screen)`);
   }, 2000);
 }, 250);
 
@@ -215,6 +223,9 @@ function start() {
   });
   debugOpen = false;
   hud.setDebug(false);
+  mb.onAllDead = () => {
+    if (takeover) menu?.open();
+  };
   menu.open();
   let muPass = 0;
   const reapply = () => {
@@ -271,6 +282,9 @@ function boot() {
   if (overlay && document.documentElement.contains(overlay.canvas)) return;
   if (!document.body) return;
   if (overlay) {
+    try { overlay.dispose(); } catch {}
+    try { hud?.dispose(); } catch {}
+    try { menu?.dispose(); } catch {}
     overlay = null;
     menu = null;
     hud = null;
@@ -285,7 +299,7 @@ function boot() {
 }
 window.addEventListener("load", boot);
 document.addEventListener("readystatechange", boot);
-setInterval(boot, 500);
+agxInterval(boot, 500);
 boot();
 
 function applyGameCanvasVisibility() {
@@ -422,7 +436,7 @@ function doAction(a: ActionKey) {
       mb.togglePause();
       break;
     case "spectateToggle":
-      mb.spectate();
+      mb.spectateOrRoam();
       break;
     case "macroFeed":
       mb.setMacroFeed(true);

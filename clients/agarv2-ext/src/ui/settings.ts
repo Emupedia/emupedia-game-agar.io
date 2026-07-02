@@ -71,21 +71,21 @@ export function createSettingsTabs(rerender: () => void): SettingsTabs {
 
   function render(tab: SettingsTab, body: HTMLElement) {
     if (tab === "game") {
-      body.append(segRow("Multibox camera", [["single", "Active box"], ["center", "Both boxes"]],
+      body.append(segRow("Multibox camera mode", [["single", "Single"], ["center", "Center"]],
         () => settings.game.multiboxCamera, (v) => (settings.game.multiboxCamera = v)));
       body.append(segRow("Zoom", [["auto", "Auto-fit"], ["manual", "Manual"]],
         () => settings.game.zoomMode, (v) => (settings.game.zoomMode = v)));
       body.append(el("div", "agx-note", { textContent: "Manual: scroll the mouse wheel to zoom; the camera still follows your box." }));
       body.append(toggleRow("Inactive box stops at last cursor",
         () => settings.game.inactiveBoxStops, (v) => (settings.game.inactiveBoxStops = v)));
-      const slider = el("input", "agx-slider", { type: "range", min: "0", max: "100", value: String(settings.game.animationDelay) });
-      const lbl = el("span", "", { textContent: `Animation delay ${settings.game.animationDelay}%` });
-      slider.addEventListener("input", () => { settings.game.animationDelay = Number(slider.value); lbl.textContent = `Animation delay ${slider.value}%`; save(); });
-      body.append(el("div", "agx-row", {}, [lbl, slider]));
-      body.append(el("div", "agx-note", { textContent: "Higher = smoother but laggier camera." }));
+      const dd = el("input", "agx-slider", { type: "range", min: "20", max: "300", value: String(settings.game.drawDelay) });
+      const ddLbl = el("span", "", { textContent: `Animation delay ${settings.game.drawDelay}ms` });
+      dd.addEventListener("input", () => { settings.game.drawDelay = Number(dd.value); ddLbl.textContent = `Animation delay ${dd.value}ms`; save(); });
+      body.append(el("div", "agx-row", {}, [ddLbl, dd]));
+      body.append(el("div", "agx-note", { textContent: "How long cells take to glide to their server position. Lower = snappier, higher = smoother." }));
       body.append(toggleRow("Auto FPS - match display refresh",
         () => settings.game.autoFps, (v) => (settings.game.autoFps = v)));
-      body.append(el("div", "agx-note", { textContent: "Measures your monitor's refresh rate from the browser and caps the overlay to it. Turn off to set a fixed cap below." }));
+      body.append(el("div", "agx-note", { textContent: "Measures your monitor's refresh rate and caps the overlay to it. Max FPS below still applies on top (0 = off)." }));
       const fps = el("input", "agx-keybtn", { type: "number", min: "30", max: "360", value: String(settings.game.maxFps), style: "width:70px" });
       fps.addEventListener("change", () => { settings.game.maxFps = Math.max(0, Math.min(360, Number(fps.value) | 0)); save(); });
       body.append(el("div", "agx-row", {}, [el("span", "", { textContent: "Max FPS - manual (0 = uncapped)" }), fps]));
@@ -132,9 +132,10 @@ export function createSettingsTabs(rerender: () => void): SettingsTabs {
         () => (t.pelletColor ? "custom" : "game"),
         (v) => (t.pelletColor = v === "custom" ? (t.pelletColor || "#88ccff") : "")));
       body.append(colorRow("Pellet color (when Custom)", () => t.pelletColor || "#88ccff", (v) => (t.pelletColor = v), "#88ccff"));
+      body.append(el("div", "agx-label", { textContent: "BACKGROUND" }));
+      body.append(colorRow("Background color", () => t.backgroundColor || "#0c0c16", (v) => (t.backgroundColor = v), "#0c0c16"));
       const bg = el("input", "agx-input agx-skin", { value: t.backgroundUrl, placeholder: "Background image URL (optional)" });
       bg.addEventListener("input", () => { t.backgroundUrl = bg.value.trim(); save(); });
-      body.append(el("div", "agx-label", { textContent: "BACKGROUND" }));
       body.append(bg);
       body.append(el("div", "agx-label", { textContent: "HUD" }));
       body.append(toggleRow("Minimap", () => t.showMinimap, (v) => (t.showMinimap = v)));

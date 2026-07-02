@@ -4,6 +4,7 @@ import type { Multibox } from "../multibox";
 import type { PacketLog } from "../packetlog";
 import { formatMass, keyLabel, settings } from "../settings";
 import type { Overlay } from "../overlay";
+import { agxInterval } from "../timers";
 import { el } from "./styles";
 
 export interface Hud {
@@ -13,6 +14,7 @@ export interface Hud {
   chatFocused: () => boolean;
   submitChat: () => void;
   closeChat: () => void;
+  dispose: () => void;
 }
 
 export function mountHud(opts: {
@@ -63,7 +65,7 @@ export function mountHud(opts: {
     return `TAB box 2 - ${keyLabel(b.split)} split - ${keyLabel(b.eject)} eject - ${keyLabel(b.respawn)} respawn - Esc menu`;
   };
 
-  setInterval(() => {
+  const timer = agxInterval(() => {
     const t = settings.theme;
     const hud = mb.hud();
 
@@ -77,7 +79,7 @@ export function mountHud(opts: {
       const pingText = hud.ping ? ` - ping: ${hud.ping}ms` : "";
       stat.replaceChildren(
         el("div", "", {}, [el("b", "", { textContent: `Mass ${formatMass(hud.mass, t.massFormat)}` })]),
-        el("div", "", { textContent: `cells: ${hud.cellCount} - fps: ${fpsText}${pingText}` }),
+        el("div", "", { textContent: `cells: ${hud.cellCount} - FPS: ${fpsText}${pingText}` }),
       );
     }
 
@@ -144,5 +146,9 @@ export function mountHud(opts: {
     chatFocused: () => document.activeElement === chatInput,
     submitChat,
     closeChat,
+    dispose: () => {
+      clearInterval(timer);
+      for (const e of [stat, boxbar, lb, chatBox, log, copyBtn]) e.remove();
+    },
   };
 }

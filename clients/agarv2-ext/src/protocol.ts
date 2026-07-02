@@ -128,6 +128,7 @@ export type ServerEvent =
   | { t: "own"; ownIds: number[] }
   | { t: "leaderboard"; entries: LeaderEntry[] }
   | { t: "chat"; name: string; message: string; color: string }
+  | { t: "camera"; x: number; y: number; scale: number }
   | { t: "clear" }
   | { t: "raw"; op: number; len: number };
 
@@ -143,6 +144,13 @@ export function decodeServer(buf: ArrayBuffer): ServerEvent {
       const ownIds: number[] = [];
       while (r.remaining >= 4) ownIds.push(r.u32());
       return { t: "own", ownIds };
+    }
+    case 17: {
+      if (r.remaining < 12) return { t: "raw", op, len: buf.byteLength };
+      const x = r.f32();
+      const y = r.f32();
+      const scale = r.f32();
+      return { t: "camera", x, y, scale };
     }
     case 49:
       return { t: "leaderboard", entries: decodeLeaderboard(r) };

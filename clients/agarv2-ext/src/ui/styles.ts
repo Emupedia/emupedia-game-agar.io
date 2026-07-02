@@ -73,7 +73,7 @@ const CSS = `
 .agx-btn:hover { border-color: rgba(34,211,238,0.4); }
 .agx-x { position: absolute; top: 16px; right: 16px; width: 30px; height: 30px; border: none; border-radius: 8px; cursor: pointer;
   background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.7); font-size: 16px; }
-.agx-slider { width: 150px; }
+.agx-slider { width: 300px; max-width: 45%; }
 .agx-color { width: 40px; height: 26px; border: none; background: none; padding: 0; cursor: pointer; }
 .agx-note { font-size: 11px; color: rgba(255,255,255,0.4); margin: 6px 0; }
 

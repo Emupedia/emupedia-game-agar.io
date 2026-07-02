@@ -1,4 +1,5 @@
 import { decodeServer, hex } from "./protocol";
+import { agxInterval } from "./timers";
 import { World } from "./world";
 
 const PING = new Uint8Array([254]).buffer;
@@ -81,6 +82,7 @@ export class SocketClient {
           case "border": this.world.border = e.border; break;
           case "own": this.world.setOwn(e.ownIds); break;
           case "leaderboard": this.world.leaderboard = e.entries; break;
+          case "camera": this.world.specCam = { x: e.x, y: e.y, at: performance.now() }; break;
           case "chat": this.onChat?.(e.name, e.message, e.color); break;
           case "clear": this.world.clear(); break;
           case "raw": break;
@@ -96,7 +98,7 @@ export class SocketClient {
     });
     ws.addEventListener("error", () => this.log(`[agar-ext] ${this.label}: socket error`));
 
-    this.pingTimer = window.setInterval(() => {
+    this.pingTimer = agxInterval(() => {
       if (this.ws?.readyState === WebSocket.OPEN) {
         try {
           this.lastPingAt = performance.now();

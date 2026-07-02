@@ -23,6 +23,7 @@ export interface Menu {
   toggle: () => void;
   isOpen: () => boolean;
   capturing: () => boolean;
+  dispose: () => void;
 }
 
 export function mountMenu(mb: Multibox): Menu {
@@ -155,5 +156,5 @@ export function mountMenu(mb: Multibox): Menu {
     else settingsTabs.render(tab, body);
   }
 
-  return { open, close, toggle, isOpen, capturing: () => settingsTabs.capturing() };
+  return { open, close, toggle, isOpen, capturing: () => settingsTabs.capturing(), dispose: () => overlay.remove() };
 }
