@@ -42,11 +42,24 @@
 	<body>
 		<div id="connecting" style="transition: opacity 0.5s; opacity: 1;">
 			<div id="connecting-content">
-				<h3>You are banned 😭</h3>
+				<h3 id="ban-title">Something went wrong 😭</h3>
 				<hr class="top">
-				<p style="text-align: center">You are banned from the game because you broke the rules by using bots or custom scripts.</p>
+				<p id="ban-message" style="text-align: center">Something went wrong. Ask for help on Discord.</p>
+				<script>
+					(function () {
+						const params = new URLSearchParams(window.location.search);
+						const message = params.get('message');
+						document.getElementById('ban-title').textContent = message ? 'You are banned 😭' : 'Something went wrong 😭';
+						document.getElementById('ban-message').textContent = message || 'Something went wrong. Ask for help on Discord.';
+					})();
+				</script>
 				<a class="text-center" style="display: block; color: red;" href="https://discord.gg/emupedia-510149138491506688" target="_blank">Join us on Discord!</a>
-				<script>document.write('<center><h1 style="margin: 0;">Your unban code is<br /><br />' + btoa(JSON.parse(localStorage.settings).fp2).replace(/(.{10})/g, "$1<br />") + '</h1></center>')</script>
+				<script>
+					(function () {
+						if (!localStorage.settings) return;
+						document.write('<center><h1 style="margin: 0;">Your unban code is<br /><br />' + btoa(JSON.parse(localStorage.settings).fp2).replace(/(.{10})/g, "$1<br />") + '</h1></center>');
+					})();
+				</script>
 			</div>
 		</div>
 	</body>
