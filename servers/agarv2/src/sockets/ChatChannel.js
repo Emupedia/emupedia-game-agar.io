@@ -60,17 +60,26 @@ class ChatChannel {
 	}
 
 	/**
+	 * @param {string} text
+	 */
+	normalizeChatFilterText(text) {
+		return text
+			.toLowerCase()
+			.replace(/  +/g, ' ')
+			.replace(/(.)\1{3,}/gi, '$1')
+			.trim()
+	}
+
+	/**
 	 * @param {string} message
 	 */
 	shouldFilter(message) {
-		message = message.toLowerCase()
-		message = message.replace(/  +/g, ' ')
-		message = message.replace(/(.)\1{3,}/gi, '$1')
+		const normalizedMessage = this.normalizeChatFilterText(message)
 
 		for (let i = 0, l = this.settings.chatFilteredPhrases.length; i < l; i++) {
-			const phrase = this.settings.chatFilteredPhrases[i].toLowerCase()
-			if (message.indexOf(phrase) !== -1) {
-				this.listener.logger.inform(`MESSAGE REJECTED '${message}' contains '${phrase}'`)
+			const phrase = this.normalizeChatFilterText(this.settings.chatFilteredPhrases[i])
+			if (phrase && normalizedMessage.indexOf(phrase) !== -1) {
+				this.listener.logger.inform(`MESSAGE REJECTED '${message}' contains '${this.settings.chatFilteredPhrases[i]}'`)
 				return true
 			}
 		}
@@ -79,11 +88,17 @@ class ChatChannel {
 	}
 	/**
 	 * @param {Connection} source
+	 */
+	rejectFilteredMessage(source) {
+		return source.protocol.onChatMessage(serverSource, 'Last message was not sent, because it contains banned words.')
+	}
+	/**
+	 * @param {Connection} source
 	 * @param {string} message
 	 */
 	broadcast(source, message) {
 		if (this.shouldFilter(message)) {
-			return source.protocol.onChatMessage(serverSource, 'Last message was not sent, because it contains banned words.')
+			return this.rejectFilteredMessage(source)
 		}
 
 		const sourceInfo = source == null ? serverSource : getSourceFromConnection(source)
@@ -107,7 +122,7 @@ class ChatChannel {
 	 */
 	directMessage(source, recipient, message) {
 		if (this.shouldFilter(message) && recipient.protocol) {
-			return recipient.protocol.onChatMessage(serverSource, 'Last message was not sent, because it contains banned words.')
+			return this.rejectFilteredMessage(recipient)
 		}
 
 		const sourceInfo = source == null ? serverSource : getSourceFromConnection(source)
