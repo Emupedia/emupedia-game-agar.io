@@ -227,7 +227,7 @@ class Connection extends Router {
 		if (!this.settings.adminAuthEnabled) return true;
 		if (!this.isAdminAuthenticated) return false;
 		if (!this.adminLoginTime) return false;
-		
+
 		const sessionAge = Date.now() - this.adminLoginTime;
 		return sessionAge < this.settings.adminSessionTimeout;
 	}

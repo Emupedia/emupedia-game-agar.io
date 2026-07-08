@@ -53,13 +53,13 @@ class PlayerCell extends Cell {
 
 		if (mass < this.world.settings.playerMaxTotalMass) {
 			let massToAdd = other.squareSize;
-			
+
 			// Apply stealthy anti-teaming punishment - reduce mass absorption for suspected teamers
 			if (this.world.antiTeaming) {
 				const absorptionMultiplier = this.world.antiTeaming.getMassAbsorptionMultiplier(this.owner.id, other);
 				massToAdd *= absorptionMultiplier;
 			}
-			
+
 			this.squareSize += massToAdd;
 		}
 	}

@@ -63,15 +63,14 @@ class ChatChannel {
 	 * @param {string} message
 	 */
 	shouldFilter(message) {
-		return false
-
 		message = message.toLowerCase()
 		message = message.replace(/  +/g, ' ')
 		message = message.replace(/(.)\1{3,}/gi, '$1')
 
 		for (let i = 0, l = this.settings.chatFilteredPhrases.length; i < l; i++) {
-			if (message.indexOf(this.settings.chatFilteredPhrases[i]) !== -1) {
-				this.listener.logger.inform(`MESSAGE REJECTED '${message}' contains '${this.settings.chatFilteredPhrases[i]}'`)
+			const phrase = this.settings.chatFilteredPhrases[i].toLowerCase()
+			if (message.indexOf(phrase) !== -1) {
+				this.listener.logger.inform(`MESSAGE REJECTED '${message}' contains '${phrase}'`)
 				return true
 			}
 		}
