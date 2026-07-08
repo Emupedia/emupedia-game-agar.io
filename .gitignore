@@ -9,6 +9,7 @@
 
 # dependencies
 /node_modules
+/clients/agarv2mod/node_modules
 /servers/agarv1/node_modules
 /servers/agarv2/node_modules
 /servers/agarv3/node_modules
