@@ -37,7 +37,7 @@ class FFA extends Gamemode {
 	 */
 	onNewWorld(world) {
 		super.onNewWorld(world);
-		
+
 		// Initialize anti-teaming system for FFA worlds
 		if (this.handle.settings.antiTeamingEnabled) {
 			world.antiTeaming = new AntiTeaming(world);
