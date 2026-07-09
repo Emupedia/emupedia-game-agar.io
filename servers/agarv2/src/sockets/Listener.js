@@ -1,14 +1,15 @@
 require('dotenv').config();
 
-const WebSocket = require("uws");
+const crypto = require('crypto');
+const WebSocket = require('uws');
 const WebSocketServer = WebSocket.Server;
 // const uws = require('uWebSockets.js');
 // const app = uws.App();
 const url = require('url');
 const request = require('request');
-const Connection = require("./Connection");
-const ChatChannel = require("./ChatChannel");
-const { filterIPAddress } = require("../primitives/Misc");
+const Connection = require('./Connection');
+const ChatChannel = require('./ChatChannel');
+const { filterIPAddress } = require('../primitives/Misc');
 
 class Listener {
 	/**
@@ -25,6 +26,9 @@ class Listener {
 		this.connections = [];
 		/** @type {Counter<IPAddress>} */
 		this.connectionsByIP = { };
+		this.CS = 'tFoL46WDlZuRja7W6qCl';
+		this.usedNonces = new Map();
+
 	}
 	get settings() { return this.handle.settings; }
 	get logger() { return this.handle.logger; }
@@ -35,7 +39,11 @@ class Listener {
 
 		this.listenerSocket = new WebSocketServer({
 			port: this.settings.listeningPort,
-			verifyClient: this.verifyClient.bind(this)
+			verifyClient: this.verifyClient.bind(this),
+			handleProtocols: function (protocols) {
+				this.logger.inform(`received protocols ${protocols}`);
+				return protocols[0];
+			}
 		}, this.onOpen.bind(this));
 
 		this.listenerSocket.on("connection", this.onConnection.bind(this));
@@ -58,12 +66,13 @@ class Listener {
 	verifyClient(info, response) {
 		const ip = typeof info.req.headers['x-real-ip'] !== 'undefined' ? info.req.headers['x-real-ip'] : info.req.socket.remoteAddress;
 		const address = filterIPAddress(ip);
+		const protocol = info.req.headers['sec-websocket-protocol'];
 		const userAgent = typeof info.req.headers['user-agent'] !== 'undefined' ? info.req.headers['user-agent'] : 'Unknown User Agent';
 		this.logger.onAccess(`REQUEST FROM ${address}, ${info.secure ? "" : "not "}secure, Origin: ${info.origin}`);
 		this.logger.onAccess(`IP: '${address}' Browser UA: '${userAgent}'`);
 
 		if (this.connections.length > this.settings.listenerMaxConnections) {
-			this.logger.inform("listenerMaxConnections reached, dropping new connections");
+			this.logger.inform("verifyClient: listenerMaxConnections reached, dropping new connections");
 
 			return void response(false, 503, "Service Unavailable");
 		}
@@ -71,19 +80,25 @@ class Listener {
 		const acceptedOrigins = this.settings.listenerAcceptedOrigins;
 
 		if (acceptedOrigins.length > 0 && acceptedOrigins.indexOf(info.origin) === -1) {
-			this.logger.inform(`listenerAcceptedOrigins doesn't contain ${info.origin}`);
+			this.logger.inform(`verifyClient: listenerAcceptedOrigins doesn't contain ${info.origin}`);
+
+			return void response(false, 403, "Forbidden");
+		}
+
+                if (!protocol) {
+			this.logger.inform(`verifyClient: missing websocket protocol for '${address}'`);
 
 			return void response(false, 403, "Forbidden");
 		}
 
 		if (userAgent.length > 0 && userAgent.toLowerCase().indexOf('headless') !== -1 || userAgent.toLowerCase().indexOf('phantomjs') !== -1 || userAgent.toLowerCase().indexOf('electron') !== -1) {
-			this.logger.inform(`UserAgent seems to be Headless UA: '${userAgent}'`);
+			this.logger.inform(`verifyClient: UserAgent seems to be Headless UA: '${userAgent}'`);
 
 			return void response(false, 403, "Forbidden");
 		}
 
 		if (this.settings.listenerForbiddenIPs.indexOf(address) !== -1) {
-			this.logger.inform(`listenerForbiddenIPs contains ${address}, dropping connection`);
+			this.logger.inform(`verifyClient: listenerForbiddenIPs contains ${address}, dropping connection`);
 
 			return void response(false, 403, "Forbidden");
 		}
@@ -92,13 +107,89 @@ class Listener {
 			const count = this.connectionsByIP[address];
 
 			if (count && count >= this.settings.listenerMaxConnectionsPerIP) {
-				this.logger.inform(`listenerMaxConnectionsPerIP reached for '${address}', dropping its new connections`);
+				this.logger.inform(`verifyClient: listenerMaxConnectionsPerIP reached for '${address}', dropping its new connections`);
 
 				return void response(false, 403, "Forbidden");
 			}
 		}
 
-		this.logger.debug(`IP '${address}' Client Verification Passed`);
+		function sha256Hex(input) {
+			return crypto.createHash('sha256').update(input).digest('hex');
+		}
+
+		function cleanupUsedNonces(usedNonces) {
+			const now = Date.now();
+
+			usedNonces.forEach(function (expiresAt, nonce) {
+				if (expiresAt <= now) {
+					usedNonces.delete(nonce);
+				}
+			});
+		}
+
+		function validateProof(CS, logger, usedNonces) {
+			const parts = protocol.split(".");
+
+			// <timestamp>.<nonce>.<digest>
+			if (parts.length !== 3) {
+		    		return false;
+			}
+
+			const ts = parts[0];
+			const nonce = parts[1];
+			const digest = parts[2];
+
+			if (!/^\d{13}$/.test(ts)) {
+				return false;
+			}
+
+			if (!/^[a-f0-9]{32}$/.test(nonce)) {
+				return false;
+			}
+
+			if (!/^[a-f0-9]{64}$/.test(digest)) {
+				return false;
+			}
+
+			const now = Date.now();
+			const timestamp = Number(ts);
+
+			// 30-second validity window
+			if (Math.abs(now - timestamp) > (20 * 60 * 1000)) {
+				logger.inform(`verifyClient: timestamp expired for '${address}', server=${now}, client=${timestamp}, diff=${Math.abs(now - timestamp)}ms`);
+				return false;
+			}
+
+			cleanupUsedNonces(usedNonces);
+
+			if (usedNonces.has(nonce)) {
+				this.logger.inform(`verifyClient: nonce '${nonce}'  reused for '${address}'`);
+				return false;
+			}
+
+			const origin = info.req.headers.origin || "";
+			const raw = [ts, nonce, origin, CS].join(".");
+			const expectedDigest = sha256Hex(raw);
+			const valid = crypto.timingSafeEqual(Buffer.from(digest, "utf8"), Buffer.from(expectedDigest, "utf8") );
+
+			if (!valid) {
+				this.logger.inform(`verifyClient: digest differ '${digest}' expected '${expectedDigest}'`);
+				return false;
+			}
+
+			// Prevent replay within the timestamp window
+			usedNonces.set(nonce, now + 30000);
+
+			return true;
+		}
+
+		if (!validateProof(this.CS, this.logger, this.usedNonces)) {
+                        this.logger.inform(`verifyClient: protocol validation failed for '${address}'`);
+			return void response(false, 403, "Forbidden");
+		}
+
+
+		this.logger.debug(`verifyClient: IP '${address}' Client Verification Passed`);
 		response(true);
 	}
 	onOpen() {

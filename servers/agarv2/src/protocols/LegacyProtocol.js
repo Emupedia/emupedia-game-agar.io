@@ -73,15 +73,15 @@ class LegacyProtocol extends Protocol {
 		}
 
 		switch (messageId) {
-			case 0x05:
+			case 0x14:
 				const spawningName = this.filterName(readZTString(reader, this.protocol))
 				this.connection.spawningName = spawningName ? spawningName : this.connection.spawningName
-				this.logger.inform(`[${this.connection.remoteAddress}][${this.connection.verifyScore}][${this.connection.player.id ? this.connection.player.id : 0}][${this.connection.player.cellSkin ? this.connection.player.cellSkin.split('|').slice(-2)[0] : ''}][${this.connection.player.cellSkin ? this.connection.player.cellSkin.split('|').slice(-1) : ''}] Player '${this.connection.player.chatName}' has spawned into the game`);
-				break;
-			case 0x01:
-				this.connection.requestingSpectate = true;
+				this.logger.inform(`[${this.connection.remoteAddress}][${this.connection.verifyScore}][${this.connection.player.id ? this.connection.player.id : 0}][${this.connection.player.cellSkin ? this.connection.player.cellSkin.split('|').slice(-1) : ''}] Player '${this.connection.player.chatName}' has spawned into the game`);
 				break;
 			case 0x0f:
+				this.connection.requestingSpectate = true;
+				break;
+			case 0x05:
 				switch (reader.length) {
 					case 0x0d:
 						this.connection.mouseX = reader.readInt32();
