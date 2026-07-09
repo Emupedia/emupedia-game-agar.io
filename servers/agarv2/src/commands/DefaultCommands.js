@@ -1,3 +1,4 @@
+const { reloadSettings } = require("../SettingsIO");
 const { genCommand } = require("./CommandList");
 const { EOL } = require("os");
 const { inspect } = require("util");
@@ -825,7 +826,7 @@ const playerHelp = {
 	exec: (handle, context, args) => {
 		const list = handle.chatCommands.list;
 		const hiddenCommands = ['login', 'logout', 'adminstatus']; // Secret admin authentication commands
-		const adminOnlyCommands = ['antiteamstats', 'antiteamclear', 'antiteamtoggle', 'setting']; // Admin-only commands
+		const adminOnlyCommands = ['antiteamstats', 'antiteamclear', 'antiteamtoggle', 'setting', 'reloadsettings']; // Admin-only commands
 
 		const isAdmin = context.isAdminSessionValid();
 
@@ -1541,6 +1542,29 @@ const chatAdminSetting = {
 	}
 }
 
+const chatAdminReloadSettings = {
+	name: "reloadsettings",
+	args: "",
+	desc: "reload settings from settings.json (admin only)",
+	/**
+	 * @param {ServerHandle} handle
+	 * @param {Connection} context
+	 */
+	exec: (handle, context) => {
+		if (!requireAdminAuth(handle, context)) return;
+
+		const chat = handle.listener.globalChat;
+
+		try {
+			const settingsPath = reloadSettings(handle);
+			chat.directMessage(null, context, `✅ Settings reloaded from ${settingsPath}`);
+			handle.logger.inform(`settings reloaded from ${settingsPath} by ${context.remoteAddress}`);
+		} catch (e) {
+			chat.directMessage(null, context, `❌ Failed to reload settings: ${e.message}`);
+		}
+	}
+}
+
 /**
  * @param {CommandList} commands
  * @param {CommandList} chatCommands
@@ -1591,6 +1615,7 @@ module.exports = (commands, chatCommands) => {
 		genCommand(chatAdminAntiTeamingStats),
 		genCommand(chatAdminAntiTeamingClear),
 		genCommand(chatAdminAntiTeamingToggle),
-		genCommand(chatAdminSetting)
+		genCommand(chatAdminSetting),
+		genCommand(chatAdminReloadSettings)
 	);
 };

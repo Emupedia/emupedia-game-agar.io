@@ -1,7 +1,7 @@
 require('dotenv').config()
 
-const fs = require("fs");
 const DefaultSettings = require("./src/Settings");
+const { getSettingsFilePath, readSettingsFile, writeSettingsFile, reloadSettings, ensureSettingsFile } = require("./src/SettingsIO");
 const ServerHandle = require("./src/ServerHandle");
 const { genCommand } = require("./src/commands/CommandList");
 const readline = require("readline");
@@ -20,33 +20,12 @@ const DefaultGamemodes = [
 	require("./src/gamemodes/LastManStanding")
 ];
 
-/** @returns {DefaultSettings} */
-function readSettings() {
-	try {
-		if (process.env.DEV === 'true') {
-			return JSON.parse(fs.readFileSync("./settings.dev.json", "utf-8"));
-		}
+ensureSettingsFile(DefaultSettings);
 
-		return JSON.parse(fs.readFileSync("./settings.json", "utf-8"));
-	} catch (e) {
-		console.log("caught error while parsing/reading settings.json:", e.stack);
-		process.exit(1);
-	}
-}
-
-/** @param {DefaultSettings} settings */
-function overwriteSettings(settings) {
-	fs.writeFileSync("./settings.json", JSON.stringify(settings, null, 4), "utf-8");
-}
-
-if (!fs.existsSync("./settings.json")) {
-	overwriteSettings(DefaultSettings);
-}
-
-let settings = readSettings();
+let settings = readSettingsFile();
 
 const currentHandle = new ServerHandle(settings);
-// overwriteSettings(currentHandle.settings);
+// writeSettingsFile(currentHandle.settings);
 require("./log-handler")(currentHandle);
 const logger = currentHandle.logger;
 
@@ -120,8 +99,12 @@ currentHandle.commands.register(
 		 * @param {ServerHandle} context
 		 */
 		exec: (handle, context, args) => {
-			handle.setSettings(readSettings());
-			logger.print("done");
+			try {
+				const settingsPath = reloadSettings(handle);
+				logger.print(`settings reloaded from ${settingsPath}`);
+			} catch (e) {
+				logger.print(e.message);
+			}
 		}
 	}),
 	genCommand({
@@ -132,11 +115,20 @@ currentHandle.commands.register(
 		 * @param {ServerHandle} context
 		 */
 		exec: (handle, context, args) => {
-			overwriteSettings(handle.settings);
-			logger.print("done");
+			writeSettingsFile(handle.settings);
+			logger.print(`settings saved to ${getSettingsFilePath()}`);
 		}
 	}),
 );
+
+process.on("SIGHUP", () => {
+	try {
+		const settingsPath = reloadSettings(currentHandle);
+		logger.inform(`settings reloaded from ${settingsPath} (SIGHUP)`);
+	} catch (e) {
+		logger.inform(`failed to reload settings (SIGHUP): ${e.message}`);
+	}
+});
 
 function ask() {
 	if (commandStreamClosing) {
