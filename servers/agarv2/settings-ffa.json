@@ -65,10 +65,10 @@
 	"virusFeedTimes": 7,
 	"virusGrowSplitting": true,
 	"virusPushing": true,
+	"virusEatNoMass": false,
 	"virusSplitBoost": 780,
 	"virusPushBoost": 120,
-	"virusMonotonePops": false,
-	"virusEatNoMass": false,
+	"virusMonotonePops": false
 
 	"ejectedSize": 38,
 	"ejectingLoss": 38,
