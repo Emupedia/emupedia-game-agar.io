@@ -68,7 +68,7 @@
 	"virusEatNoMass": false,
 	"virusSplitBoost": 780,
 	"virusPushBoost": 120,
-	"virusMonotonePops": false
+	"virusMonotonePops": false,
 
 	"ejectedSize": 38,
 	"ejectingLoss": 38,
