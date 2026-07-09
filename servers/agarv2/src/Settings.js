@@ -72,10 +72,10 @@ const value = Object.seal({
 	virusFeedTimes: 7,
 	virusGrowSplitting: true,
 	virusPushing: false,
+	virusEatNoMass: false,
 	virusSplitBoost: 780,
 	virusPushBoost: 120,
 	virusMonotonePops: false,
-	virusEatNoMass: false,
 
 	ejectedSize: 38,
 	ejectingLoss: 43,
