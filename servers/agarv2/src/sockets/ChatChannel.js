@@ -1,3 +1,5 @@
+const { normalizeChatFilterText } = require('./ChatFilterNormalization')
+
 const serverSource = {
 	isServer: true,
 	name: 'Server',
@@ -60,24 +62,13 @@ class ChatChannel {
 	}
 
 	/**
-	 * @param {string} text
-	 */
-	normalizeChatFilterText(text) {
-		return text
-			.toLowerCase()
-			.replace(/  +/g, ' ')
-			.replace(/(.)\1{3,}/gi, '$1')
-			.trim()
-	}
-
-	/**
 	 * @param {string} message
 	 */
 	shouldFilter(message) {
-		const normalizedMessage = this.normalizeChatFilterText(message)
+		const normalizedMessage = normalizeChatFilterText(message)
 
 		for (let i = 0, l = this.settings.chatFilteredPhrases.length; i < l; i++) {
-			const phrase = this.normalizeChatFilterText(this.settings.chatFilteredPhrases[i])
+			const phrase = normalizeChatFilterText(this.settings.chatFilteredPhrases[i])
 			if (phrase && normalizedMessage.indexOf(phrase) !== -1) {
 				this.listener.logger.inform(`MESSAGE REJECTED '${message}' contains '${this.settings.chatFilteredPhrases[i]}'`)
 				return true
