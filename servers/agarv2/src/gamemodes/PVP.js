@@ -19,7 +19,6 @@ class PVP extends FFA {
 		return void this.handle.listener.globalChat.directMessage(null, player.router, "Maximum number of players for this world is " + (world.id <= 20 ? 2 : 4));
 	}
 
-
 	/**
 	 * @param {Player} player
 	 * @param {string} name
