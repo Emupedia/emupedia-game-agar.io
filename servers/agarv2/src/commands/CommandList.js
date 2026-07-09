@@ -61,7 +61,7 @@ class CommandList {
 		}
 
 		const command = this.list[split[0].toLowerCase()];
-		
+
 		// Log admin command executions for audit purposes
 		this._logAdminCommand(context, command.name, split.slice(1));
 
@@ -88,7 +88,7 @@ class CommandList {
 			'antiteamstats', 'antiteamclear', 'antiteamtoggle', 'setting',
 			'login', 'logout', 'adminstatus'
 		];
-		
+
 		// Define console admin commands (from server console)
 		const consoleAdminCommands = [
 			'help', 'routers', 'players', 'stats', 'setting', 'eval', 'test',
@@ -104,16 +104,16 @@ class CommandList {
 		const isAdminCommand = adminCommands.includes(commandName.toLowerCase());
 		const isConsoleAdminCommand = consoleAdminCommands.includes(commandName.toLowerCase());
 		const isSensitive = sensitiveCommands.includes(commandName.toLowerCase());
-		
+
 		// For chat commands, only log if it's an admin command and user is authenticated
 		if (context && context.remoteAddress) {
 			// This is a chat command from a connection
 			if (isAdminCommand) {
 				const isAuthenticated = context.isAdminSessionValid ? context.isAdminSessionValid() : false;
-				
+
 				if (isAuthenticated || commandName.toLowerCase() === 'login') {
 					const playerInfo = context.hasPlayer ? context.player.id : 'spectator';
-					
+
 					// Handle sensitive commands - don't log arguments for security
 					let argsStr = '';
 					if (isSensitive) {
@@ -121,7 +121,7 @@ class CommandList {
 					} else {
 						argsStr = args.length > 0 ? ` ${args.join(' ')}` : '';
 					}
-					
+
 					this.handle.logger.inform(`[ADMIN AUDIT] Command executed: /${commandName}${argsStr} | IP: ${context.remoteAddress} | Player ID: ${playerInfo}`);
 				}
 			}
@@ -135,7 +135,7 @@ class CommandList {
 				} else {
 					argsStr = args.length > 0 ? ` ${args.join(' ')}` : '';
 				}
-				
+
 				this.handle.logger.inform(`[ADMIN AUDIT] Console command executed: ${commandName}${argsStr} | Source: server console`);
 			}
 		}
