@@ -16,7 +16,7 @@
 					if (meta) meta.setAttribute('content', '#090d17');
 				}
 
-				var clients = { agarv1: 1, agarv2: 1, agarv2mod: 1, agarv3: 1 };
+				var clients = { agarv1: 1, agarv2: 1, agarv2mod: 1, turkishdelight: 1, agarv3: 1 };
 				var hash = location.hash.replace(/^#\/?/, '');
 				var saved = null;
 				try {
@@ -411,6 +411,13 @@
 								<p class="text-muted client-desc" id="desc-v2mod">Standalone multibox client with custom renderer for v2 server, dual-box play and more.</p>
 
 								<div class="form-wrapper client-choice">
+									<button type="button" class="btn btn-play btn-success client-card" data-client="turkishdelight">
+										<i class="glyphicon glyphicon-play"></i>&nbsp;ArenArcade.com - Multibox <span class="client-tag">(by Tony)</span>
+									</button>
+								</div>
+								<p class="text-muted client-desc" id="desc-v2mod">Standalone multibox client with custom renderer for ArenArcade.com server, dual-box play and more.</p>
+
+								<div class="form-wrapper client-choice">
 									<button type="button" class="btn btn-play btn-warning client-card" data-client="agarv3">
 										<i class="glyphicon glyphicon-play"></i>&nbsp;Agar.io v3 <span class="client-tag">(Beta)</span>
 									</button>
@@ -479,6 +486,7 @@
 					agarv1: { label: 'Agar.io v1', title: 'Agar.io v1 — Classic' },
 					agarv2: { label: 'Agar.io v2', title: 'Agar.io v2' },
 					agarv2mod: { label: 'Agar.io v2 - Multibox by Tony', title: 'Agar.io v2 - Multibox by Tony' },
+					turkishdelight: { label: 'ArenArcade.com - Multibox by Tony', title: 'ArenArcade.com - Multibox by Tony' },
 					agarv3: { label: 'Agar.io v3 Beta', title: 'Agar.io v3 Beta' }
 				};
 
