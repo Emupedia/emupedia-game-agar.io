@@ -37,6 +37,20 @@
 				box-sizing: border-box;
 			}
 
+			*::-webkit-scrollbar {
+				width: 5px;
+				height: 5px;
+			}
+
+			*::-webkit-scrollbar-thumb, *::-webkit-scrollbar-thumb:horizontal {
+				background: #888;
+				border-radius: 3px;
+			}
+
+			*::-webkit-scrollbar-thumb:hover, *::-webkit-scrollbar-thumb:horizontal:hover {
+				background: #555;
+			}
+
 			html, body {
 				height: 100%;
 				margin: 0;
