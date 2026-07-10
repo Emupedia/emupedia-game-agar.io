@@ -30,6 +30,79 @@ const CONFUSABLES = new Map([
 ])
 
 /**
+ * Mathematical Alphanumeric Symbols that NFKC may not fold on older Node/ICU builds.
+ * @type {Map<string, string>}
+ */
+const MATHEMATICAL_ALPHANUMERICS = buildMathematicalAlphanumericMap()
+
+/**
+ * @returns {Map<string, string>}
+ */
+function buildMathematicalAlphanumericMap() {
+	const map = new Map()
+	const letterRanges = [
+		[0x1D400, 0x1D433], // bold
+		[0x1D434, 0x1D467], // italic
+		[0x1D468, 0x1D49B], // bold italic
+		[0x1D4D0, 0x1D503], // bold script
+		[0x1D504, 0x1D537], // fraktur
+		[0x1D538, 0x1D56B], // double-struck
+		[0x1D56C, 0x1D59F], // bold fraktur
+		[0x1D5A0, 0x1D5D3], // sans-serif
+		[0x1D5D4, 0x1D607], // sans-serif bold
+		[0x1D608, 0x1D63B], // sans-serif italic
+		[0x1D63C, 0x1D66F], // sans-serif bold italic
+		[0x1D670, 0x1D6A3]  // monospace
+	]
+	const digitRanges = [
+		[0x1D7CE, 0x1D7D7],
+		[0x1D7D8, 0x1D7E1],
+		[0x1D7E2, 0x1D7EB],
+		[0x1D7EC, 0x1D7F5],
+		[0x1D7F6, 0x1D7FF]
+	]
+
+	for (let i = 0, l = letterRanges.length; i < l; i++) {
+		const start = letterRanges[i][0]
+		const end = letterRanges[i][1]
+
+		for (let cp = start; cp <= end; cp++) {
+			const offset = cp - start
+
+			if (offset < 26) {
+				map.set(String.fromCodePoint(cp), String.fromCharCode(65 + offset))
+			} else if (offset < 52) {
+				map.set(String.fromCodePoint(cp), String.fromCharCode(97 + offset - 26))
+			}
+		}
+	}
+
+	for (let i = 0, l = digitRanges.length; i < l; i++) {
+		const start = digitRanges[i][0]
+		const end = digitRanges[i][1]
+
+		for (let cp = start; cp <= end; cp++) {
+			map.set(String.fromCodePoint(cp), String.fromCharCode(48 + (cp - start)))
+		}
+	}
+
+	return map
+}
+
+/**
+ * @param {string} text
+ */
+function foldMathematicalAlphanumerics(text) {
+	let folded = ''
+
+	for (const ch of text) {
+		folded += MATHEMATICAL_ALPHANUMERICS.get(ch) || ch
+	}
+
+	return folded
+}
+
+/**
  * @param {string} text
  */
 function foldConfusables(text) {
@@ -47,28 +120,14 @@ function foldConfusables(text) {
  */
 function normalizeChatFilterText(text) {
 	return foldConfusables(
-		text
+		foldMathematicalAlphanumerics(text)
 			.normalize('NFKC')
 			.toLowerCase()
 			.normalize('NFD')
-			.replace(/\p{M}+/gu, '')
-			.replace(/[^\p{L}\p{N}]+/gu, ' ')
+			.replace(/[\u0300-\u036f\ufe00-\ufe0f]/g, '')
+			.replace(/[^a-z0-9]+/g, ' ')
 			.replace(/  +/g, ' ')
-			.replace(/(.)\1{3,}/gi, '$1')
-			.trim()
-	)
-}
-
-function normalizeChatFilterText(text) {
-	return foldConfusables(
-		text
-			.normalize('NFKC')
-			.toLowerCase()
-			.normalize('NFD')
-			.replace(/\p{M}+/gu, '')
-			.replace(/[^\p{L}\p{N}]+/gu, ' ')
-			.replace(/  +/g, ' ')
-			.replace(/(.)\1{3,}/gi, '$1')
+			.replace(/(.)\1{3,}/g, '$1')
 			.trim()
 	)
 }

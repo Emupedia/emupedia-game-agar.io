@@ -108,6 +108,10 @@ class Connection extends Router {
 	 * @param {string} message
 	 */
 	onChatMessage(message) {
+		if (this.listener.globalChat.shouldFilter(message)) {
+			return this.listener.globalChat.rejectFilteredMessage(this)
+		}
+
 		message = message.replace(/  +/g, ' ')
 		message = message.replace(/(.)\1{3,}/gi, '$1$1$1$1')
 		message = message.trim()

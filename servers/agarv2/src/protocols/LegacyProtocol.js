@@ -1,6 +1,27 @@
 const Protocol = require("./Protocol");
 const Writer = require("../primitives/Writer");
 
+const LEGACY_PROTOCOL_MIN = 4;
+const LEGACY_PROTOCOL_MAX = 22;
+
+/**
+ * @param {number} protocol
+ * @returns {number}
+ */
+function clampLegacyProtocol(protocol) {
+	const version = Number(protocol);
+
+	if (!Number.isFinite(version) || version < LEGACY_PROTOCOL_MIN) {
+		return LEGACY_PROTOCOL_MIN;
+	}
+
+	if (version > LEGACY_PROTOCOL_MAX) {
+		return LEGACY_PROTOCOL_MAX;
+	}
+
+	return version;
+}
+
 class LegacyProtocol extends Protocol {
 	/**
 	 * @param {Connection} connection
@@ -36,11 +57,11 @@ class LegacyProtocol extends Protocol {
 		}
 
 		this.gotProtocol = true;
-		this.protocol = reader.readUInt32();
+		const rawProtocol = reader.readUInt32();
+		this.protocol = clampLegacyProtocol(rawProtocol);
 
-		if (this.protocol < 4) {
-			this.protocol = 4;
-			this.logger.debug(`legacy protocol: got version ${this.protocol}, which is lower than 4`);
+		if (rawProtocol !== this.protocol) {
+			this.logger.debug(`legacy protocol: got version ${rawProtocol}, using ${this.protocol}`);
 		}
 
 		return true;
@@ -262,13 +283,13 @@ class LegacyProtocol extends Protocol {
 
 		switch (type) {
 			case "ffa":
-				ffaLeaderboard[this.protocol](writer, data, selfData, this.protocol);
+				getLegacyHandler(ffaLeaderboard, this.protocol)(writer, data, selfData, this.protocol);
 				break;
 			case "pie":
-				pieLeaderboard[this.protocol](writer, data, selfData, this.protocol);
+				getLegacyHandler(pieLeaderboard, this.protocol)(writer, data, selfData, this.protocol);
 				break;
 			case "text":
-				textBoard[this.protocol](writer, data, this.protocol);
+				getLegacyHandler(textBoard, this.protocol)(writer, data, this.protocol);
 				break;
 		}
 
@@ -311,12 +332,12 @@ class LegacyProtocol extends Protocol {
 
 		for (i = 0, l = add.length; i < l; i++) {
 			cell = add[i];
-			writeCellData[this.protocol](writer, source, this.protocol, cell, true, true, true, true, true, true);
+			getLegacyHandler(writeCellData, this.protocol)(writer, source, this.protocol, cell, true, true, true, true, true, true);
 		}
 
 		for (i = 0, l = upd.length; i < l; i++) {
 			cell = upd[i];
-			writeCellData[this.protocol](writer, source, this.protocol, cell, false, cell.sizeChanged, cell.posChanged, cell.colorChanged, cell.nameChanged, cell.skinChanged);
+			getLegacyHandler(writeCellData, this.protocol)(writer, source, this.protocol, cell, false, cell.sizeChanged, cell.posChanged, cell.colorChanged, cell.nameChanged, cell.skinChanged);
 		}
 
 		writer.writeUInt32(0);
@@ -536,6 +557,17 @@ const writeCellData = {
 	21: writeCellData11,
 	22: writeCellData11
 };
+
+/**
+ * @template T
+ * @param {{ [protocol: number]: T }} handlers
+ * @param {number} protocol
+ * @returns {T}
+ */
+function getLegacyHandler(handlers, protocol) {
+	const version = clampLegacyProtocol(protocol);
+	return handlers[version] || handlers[LEGACY_PROTOCOL_MAX];
+}
 
 /**
  * @param {Writer} writer
