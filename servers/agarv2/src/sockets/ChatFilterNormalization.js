@@ -7,10 +7,10 @@ const CONFUSABLES = new Map([
 	['\u03b1', 'a'], ['\u03b2', 'b'], ['\u03b3', 'g'], ['\u03b4', 'd'], ['\u03b5', 'e'],
 	['\u03b6', 'z'], ['\u03b7', 'h'], ['\u03b8', 'th'], ['\u03b9', 'i'], ['\u03ba', 'k'],
 	['\u03bb', 'l'], ['\u03bc', 'm'], ['\u03bd', 'n'], ['\u03be', 'x'], ['\u03bf', 'o'],
-	['\u03c0', 'p'], ['\u03c1', 'r'], ['\u03c2', 's'], ['\u03c3', 'o'], ['\u03c4', 't'],
+	['\u03c0', 'p'], ['\u03c1', 'r'], ['\u03c2', 'c'], ['\u03c3', 'o'], ['\u03c4', 't'],
 	['\u03c5', 'u'], ['\u03c6', 'f'], ['\u03c7', 'x'], ['\u03c8', 'ps'], ['\u03c9', 'w'],
 	// Cyrillic
-	['\u0430', 'a'], ['\u0431', 'b'], ['\u0432', 'v'], ['\u0433', 'g'], ['\u0434', 'd'],
+	['\u0430', 'a'], ['\u0431', 'b'], ['\u0432', 'v'], ['\u0433', 'r'], ['\u0434', 'd'],
 	['\u0435', 'e'], ['\u0436', 'zh'], ['\u0437', 'z'], ['\u0438', 'i'], ['\u0439', 'j'],
 	['\u043a', 'k'], ['\u043b', 'l'], ['\u043c', 'm'], ['\u043d', 'n'], ['\u043e', 'o'],
 	['\u043f', 'p'], ['\u0440', 'p'], ['\u0441', 'c'], ['\u0442', 't'], ['\u0443', 'y'],
@@ -27,6 +27,8 @@ const CONFUSABLES = new Map([
 	['\u1d19', 'r'], ['\u1d1a', 'z'], ['\u1d1b', 't'], ['\u1d1c', 'u'], ['\u1d1d', 'u'],
 	['\u1d1e', 'u'], ['\u1d1f', 'm'], ['\u1d20', 'v'], ['\u1d21', 'w'], ['\u1d22', 'z'],
 	['\u0280', 'r'], ['\u0274', 'n'], ['\u026a', 'i'], ['\u1d0b', 'k'],
+	// Thai (common arenarcade homoglyphs)
+	['\u0e04', 'a'], ['\u0e20', 'n'], ['\u0e4f', 'o'], ['\u0e53', 'm'],
 ])
 
 /**
@@ -119,17 +121,38 @@ function foldConfusables(text) {
  * @param {string} text
  */
 function normalizeChatFilterText(text) {
-	return foldConfusables(
-		foldMathematicalAlphanumerics(text)
-			.normalize('NFKC')
-			.toLowerCase()
-			.normalize('NFD')
-			.replace(/[\u0300-\u036f\ufe00-\ufe0f]/g, '')
-			.replace(/[^a-z0-9]+/g, ' ')
-			.replace(/  +/g, ' ')
-			.replace(/(.)\1{3,}/g, '$1')
-			.trim()
-	)
+	let normalized = foldMathematicalAlphanumerics(text)
+		.normalize('NFKC')
+		.toLowerCase()
+		.normalize('NFD')
+		.replace(/[\u0300-\u036f\ufe00-\ufe0f]/g, '')
+
+	normalized = foldConfusables(normalized)
+
+	return normalized
+		.replace(/[^a-z0-9]+/g, ' ')
+		.replace(/  +/g, ' ')
+		.replace(/(.)\1{3,}/g, '$1')
+		.trim()
+}
+
+const MIN_NORMALIZED_PATTERN_LENGTH = 4
+
+/**
+ * @param {string} pattern
+ * @param {string} normalizedPattern
+ */
+function isUsableFilterPattern(pattern, normalizedPattern) {
+	if (!normalizedPattern || normalizedPattern.length < MIN_NORMALIZED_PATTERN_LENGTH) {
+		return false
+	}
+
+	// Long homoglyph phrases that collapse to almost nothing cause false positives (e.g. -> "d").
+	if (pattern.length >= 8 && normalizedPattern.length < Math.max(MIN_NORMALIZED_PATTERN_LENGTH, Math.ceil(pattern.length / 4))) {
+		return false
+	}
+
+	return true
 }
 
 /**
@@ -139,7 +162,12 @@ function normalizeChatFilterText(text) {
 function containsChatFilterMatch(text, pattern) {
 	const normalizedText = normalizeChatFilterText(text)
 	const normalizedPattern = normalizeChatFilterText(pattern)
-	return normalizedPattern.length > 0 && normalizedText.indexOf(normalizedPattern) !== -1
+
+	if (!isUsableFilterPattern(pattern, normalizedPattern)) {
+		return false
+	}
+
+	return normalizedText.indexOf(normalizedPattern) !== -1
 }
 
 module.exports = {
