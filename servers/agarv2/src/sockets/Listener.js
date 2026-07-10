@@ -163,7 +163,7 @@ class Listener {
 			cleanupUsedNonces(usedNonces);
 
 			if (usedNonces.has(nonce)) {
-				this.logger.inform(`verifyClient: nonce '${nonce}'  reused for '${address}'`);
+				logger.inform(`verifyClient: nonce '${nonce}'  reused for '${address}'`);
 				return false;
 			}
 
@@ -173,7 +173,7 @@ class Listener {
 			const valid = crypto.timingSafeEqual(Buffer.from(digest, "utf8"), Buffer.from(expectedDigest, "utf8") );
 
 			if (!valid) {
-				this.logger.inform(`verifyClient: digest differ '${digest}' expected '${expectedDigest}'`);
+				logger.inform(`verifyClient: digest differ '${digest}' expected '${expectedDigest}'`);
 				return false;
 			}
 
@@ -225,7 +225,8 @@ class Listener {
 			request(verify_url, { json: true }, (error, response, body) => {
 				if (!error && response.statusCode === 200) {
 					if (body.success === false) {
-						this.logger.onAccess(`IP '${newConnection.remoteAddress}' Token '${query.token}' Error '${body['error-codes'].join(',')}' failed recaptcha`);
+						const errorCodes = Array.isArray(body['error-codes']) ? body['error-codes'].join(',') : 'unknown';
+						this.logger.onAccess(`IP '${newConnection.remoteAddress}' Token '${query.token}' Error '${errorCodes}' failed recaptcha`);
 						newConnection.closeSocket(1003, "Failed recaptcha verification clientside");
 					} else {
 						newConnection.verifyScore = body.score
