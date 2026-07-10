@@ -59,6 +59,31 @@ function normalizeChatFilterText(text) {
 	)
 }
 
+function normalizeChatFilterText(text) {
+	return foldConfusables(
+		text
+			.normalize('NFKC')
+			.toLowerCase()
+			.normalize('NFD')
+			.replace(/\p{M}+/gu, '')
+			.replace(/[^\p{L}\p{N}]+/gu, ' ')
+			.replace(/  +/g, ' ')
+			.replace(/(.)\1{3,}/gi, '$1')
+			.trim()
+	)
+}
+
+/**
+ * @param {string} text
+ * @param {string} pattern
+ */
+function containsChatFilterMatch(text, pattern) {
+	const normalizedText = normalizeChatFilterText(text)
+	const normalizedPattern = normalizeChatFilterText(pattern)
+	return normalizedPattern.length > 0 && normalizedText.indexOf(normalizedPattern) !== -1
+}
+
 module.exports = {
-	normalizeChatFilterText
+	normalizeChatFilterText,
+	containsChatFilterMatch
 }

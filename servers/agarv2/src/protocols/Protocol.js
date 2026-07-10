@@ -1,6 +1,8 @@
 /**
  * @abstract
  */
+const { containsChatFilterMatch, normalizeChatFilterText } = require('../sockets/ChatFilterNormalization');
+
 class Protocol {
 	/**
 	 * @param {Connection} connection
@@ -138,32 +140,25 @@ class Protocol {
 	filterName(name) {
 		let newname = name || ''
 
-		// Check for forbidden names first - if any forbidden word is found, return default name
 		for (let i = 0, l = this.settings.chatForbiddenNames.length; i < l; i++) {
-			if (newname.toLowerCase().indexOf(this.settings.chatForbiddenNames[i].toLowerCase()) !== -1) {
+			if (containsChatFilterMatch(newname, this.settings.chatForbiddenNames[i])) {
 				return 'An unnamed cell'
 			}
 		}
 
-		// Automate Bot Name Reservation: Block players from taking bot names
-		// If the name exactly matches a reserved bot name (case-insensitive), block it.
 		if (this.settings.worldPlayerBotNames && this.settings.worldPlayerBotNames.length > 0) {
+			const normalizedName = normalizeChatFilterText(newname)
 			for (let i = 0, l = this.settings.worldPlayerBotNames.length; i < l; i++) {
-				if (newname.toLowerCase() === this.settings.worldPlayerBotNames[i].toLowerCase()) {
+				if (normalizedName === normalizeChatFilterText(this.settings.worldPlayerBotNames[i])) {
 					return 'An unnamed cell';
 				}
 			}
 		}
 
-		// Filter bad phrases from the name
 		for (let i = 0, l = this.settings.chatFilteredPhrases.length; i < l; i++) {
-			if (newname.toLowerCase().indexOf(this.settings.chatFilteredPhrases[i].toLowerCase()) !== -1) {
-				newname = newname.replace(new RegExp(this.settings.chatFilteredPhrases[i].toLowerCase(), 'gi'), '')
+			if (containsChatFilterMatch(newname, this.settings.chatFilteredPhrases[i])) {
+				return 'An unnamed cell'
 			}
-		}
-
-		if (newname === '') {
-			return 'An unnamed cell'
 		}
 
 		return newname
