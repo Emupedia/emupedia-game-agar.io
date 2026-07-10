@@ -79,7 +79,7 @@ class LegacyProtocol extends Protocol {
 			}
 
 			if (reader.length < 5) {
-				return void this.fail("Unexpected message format");
+				return void this.fail(1003, "Unexpected message format");
 			}
 
 			this.gotKey = true;

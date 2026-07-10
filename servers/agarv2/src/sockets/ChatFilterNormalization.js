@@ -46,6 +46,7 @@ function buildMathematicalAlphanumericMap() {
 		[0x1D400, 0x1D433], // bold
 		[0x1D434, 0x1D467], // italic
 		[0x1D468, 0x1D49B], // bold italic
+		[0x1D49C, 0x1D4CF], // script
 		[0x1D4D0, 0x1D503], // bold script
 		[0x1D504, 0x1D537], // fraktur
 		[0x1D538, 0x1D56B], // double-struck
@@ -88,7 +89,39 @@ function buildMathematicalAlphanumericMap() {
 		}
 	}
 
+	addEnclosedAlphanumericLetters(map)
+
 	return map
+}
+
+/**
+ * Enclosed / decorative latin letters (NFKC may not fold these on older Node builds).
+ * @param {Map<string, string>} map
+ */
+function addEnclosedAlphanumericLetters(map) {
+	const enclosedRanges = [
+		[0x1F130, 0x1F149], // negative circled capitals A-Z
+		[0x1F170, 0x1F189], // squared capitals A-Z
+		[0x24B6, 0x24CF],   // circled capitals A-Z
+		[0x24D0, 0x24E9]    // circled small a-z
+	]
+
+	for (let r = 0; r < enclosedRanges.length; r++) {
+		const start = enclosedRanges[r][0]
+		const end = enclosedRanges[r][1]
+		const upper = start >= 0x24B6 && start <= 0x24CF
+
+		for (let cp = start; cp <= end; cp++) {
+			const offset = cp - start
+
+			if (offset < 26) {
+				map.set(
+					String.fromCodePoint(cp),
+					String.fromCharCode((upper ? 65 : 97) + offset)
+				)
+			}
+		}
+	}
 }
 
 /**
@@ -136,6 +169,42 @@ function normalizeChatFilterText(text) {
 		.trim()
 }
 
+/**
+ * Compact form used for domain-signature checks (no spaces).
+ * @param {string} text
+ */
+function compactChatFilterText(text) {
+	return normalizeChatFilterText(text).replace(/\s+/g, '')
+}
+
+/**
+ * Catches arenarcade.com homoglyph + ornamental-wrapper spam even when the
+ * exact decorated string is not listed in settings.
+ * @param {string} text
+ */
+function containsArenarcadeDomainSignature(text) {
+	const normalized = normalizeChatFilterText(text)
+
+	if (!normalized) {
+		return false
+	}
+
+	if (/\barenarcade\s*com\b/.test(normalized)) {
+		return true
+	}
+
+	const compact = normalized.replace(/\s+/g, '')
+
+	return /\barenarcade\b/.test(normalized) && compact.indexOf('arenarcadecom') !== -1
+}
+
+/**
+ * @param {string} text
+ */
+function isBlockedPromotionText(text) {
+	return containsArenarcadeDomainSignature(text)
+}
+
 const MIN_NORMALIZED_PATTERN_LENGTH = 4
 
 /**
@@ -160,6 +229,10 @@ function isUsableFilterPattern(pattern, normalizedPattern) {
  * @param {string} pattern
  */
 function containsChatFilterMatch(text, pattern) {
+	if (isBlockedPromotionText(text)) {
+		return true
+	}
+
 	const normalizedText = normalizeChatFilterText(text)
 	const normalizedPattern = normalizeChatFilterText(pattern)
 
@@ -172,5 +245,8 @@ function containsChatFilterMatch(text, pattern) {
 
 module.exports = {
 	normalizeChatFilterText,
+	compactChatFilterText,
+	containsArenarcadeDomainSignature,
+	isBlockedPromotionText,
 	containsChatFilterMatch
 }
