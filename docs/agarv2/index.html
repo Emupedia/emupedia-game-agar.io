@@ -39,9 +39,1546 @@
 		<link href="https://fonts.googleapis.com/css?family=Ubuntu:700" rel="stylesheet" type="text/css" />
 		<link href="assets/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="assets/css/index.css?v=32" rel="stylesheet" />
+		<style>
+			html:not(.touch-device) #menuBtn {
+				display: none !important;
+			}
+
+			:root {
+				--menu-backdrop: #00000059;
+				--menu-bg: #fff;
+				--menu-surface: #14142d0a;
+				--menu-surface-2: #14142d12;
+				--menu-border: #14142d1f;
+				--menu-border-soft: #14142d14;
+				--menu-text: #1b1b28;
+				--menu-text-dim: #1b1b289e;
+				--menu-text-faint: #1b1b2866;
+				--menu-accent: #6c63ff;
+				--menu-accent-2: #4f46e5;
+				--menu-accent-text: #4f46e5;
+				--menu-accent-soft: #6c63ff21;
+				--menu-accent-border: #6c63ff59;
+				--menu-track: #14142d24;
+				--menu-shadow: 0 24px 60px #14143240;
+				--menu-banner-background: linear-gradient(90deg, rgba(255, 255, 255, .06), rgba(255, 255, 255, .22), rgba(255, 255, 255, .06)), url("assets/img/discord-menu-bg-light.png");
+				--menu-banner-text: #29263f;
+				--menu-banner-muted: rgba(41, 38, 63, .62);
+				--menu-banner-beta: #6257d9;
+				--menu-banner-button: rgba(79, 70, 229, .1);
+				--menu-banner-text-shadow: 0 1px 2px rgba(255, 255, 255, .9);
+				--menu-banner-hover: rgba(108, 99, 255, .1);
+				--menu-banner-hover-border: rgba(79, 70, 229, .48);
+				--menu-banner-header-shadow: inset 0 -1px 0 rgba(255, 255, 255, .8), 0 4px 14px rgba(79, 70, 229, .1);
+				--menu-banner-footer-shadow: inset 0 1px 0 rgba(255, 255, 255, .8), 0 -4px 14px rgba(79, 70, 229, .1);
+				--menu-banner-opacity: .5;
+			}
+
+			:root.darkTheme {
+				--menu-backdrop: #000000a6;
+				--menu-bg: #1c1c28;
+				--menu-surface: #ffffff0a;
+				--menu-surface-2: #ffffff12;
+				--menu-border: #ffffff17;
+				--menu-border-soft: #ffffff0f;
+				--menu-text: #ffffffe6;
+				--menu-text-dim: #ffffff73;
+				--menu-text-faint: #ffffff47;
+				--menu-accent-text: #a09bff;
+				--menu-accent-soft: #6c63ff33;
+				--menu-accent-border: #6c63ff47;
+				--menu-track: #ffffff1a;
+				--menu-shadow: 0 24px 60px #0009;
+				--menu-banner-background: linear-gradient(90deg, rgba(8, 8, 30, .35), rgba(8, 8, 30, .72), rgba(8, 8, 30, .35)), url("assets/img/discord-menu-bg.png");
+				--menu-banner-text: #fff;
+				--menu-banner-muted: rgba(255, 255, 255, .62);
+				--menu-banner-beta: #b7b2ff;
+				--menu-banner-button: rgba(255, 255, 255, .12);
+				--menu-banner-text-shadow: 0 1px 3px rgba(0, 0, 0, .85);
+				--menu-banner-hover: rgba(108, 99, 255, .18);
+				--menu-banner-hover-border: rgba(166, 160, 255, .85);
+				--menu-banner-header-shadow: inset 0 -1px 0 rgba(255, 255, 255, .1), 0 4px 14px rgba(28, 20, 92, .16);
+				--menu-banner-footer-shadow: inset 0 1px 0 rgba(255, 255, 255, .1), 0 -4px 14px rgba(28, 20, 92, .16);
+				--menu-banner-opacity: .5;
+			}
+
+			#overlays {
+				position: fixed;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				background: var(--menu-backdrop);
+				backdrop-filter: blur(5px);
+				-webkit-backdrop-filter: blur(5px);
+				padding: 20px;
+			}
+
+			.menu-modal {
+				background: var(--menu-bg);
+				border: 1px solid var(--menu-border);
+				border-radius: 18px;
+				box-shadow: var(--menu-shadow);
+				color: var(--menu-text);
+				display: flex;
+				flex-direction: column;
+				font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+				overflow: hidden;
+			}
+
+			.menu-header {
+				align-items: center;
+				border-bottom: 1px solid var(--menu-border-soft);
+				display: flex;
+				flex-shrink: 0;
+				justify-content: space-between;
+				padding: 12px 18px 10px;
+				position: relative;
+			}
+
+			.menu-header::before,
+			.menu-footer::before,
+			#gallery-header::before {
+				background-image: var(--menu-banner-background);
+				background-position: center;
+				background-size: cover;
+				content: "";
+				inset: 0;
+				opacity: var(--menu-banner-opacity);
+				pointer-events: none;
+				position: absolute;
+			}
+
+			.menu-header > *,
+			.menu-footer > *,
+			#gallery-header > * {
+				position: relative;
+				z-index: 1;
+			}
+
+			.menu-header .menu-logo-word {
+				color: var(--menu-banner-text);
+				text-shadow: var(--menu-banner-text-shadow);
+			}
+
+			.menu-header .menu-logo-beta {
+				color: var(--menu-banner-beta);
+			}
+
+			.menu-header .menu-close {
+				background: var(--menu-banner-button);
+				color: var(--menu-banner-text);
+			}
+
+			.menu-header .menu-esc-hint {
+				color: var(--menu-banner-muted);
+				text-shadow: var(--menu-banner-text-shadow);
+			}
+
+			.menu-close {
+				align-items: center;
+				background: var(--menu-surface-2);
+				border: 0;
+				border-radius: 9px;
+				color: var(--menu-text-dim);
+				cursor: pointer;
+				display: flex;
+				font-family: system-ui, sans-serif;
+				font-size: 17px;
+				height: 30px;
+				justify-content: center;
+				line-height: 1;
+				padding: 0;
+				transition: background .15s, color .15s;
+				width: 30px;
+			}
+
+			.menu-close:hover,
+			.menu-close:focus-visible {
+				background: var(--menu-border);
+				color: var(--menu-text);
+				outline: none;
+			}
+
+			.menu-close-area {
+				align-items: center;
+				display: flex;
+				flex-direction: column;
+				gap: 4px;
+			}
+
+			.menu-header-controls {
+				align-items: flex-start;
+				display: flex;
+				gap: 10px;
+			}
+
+			.menu-language-control {
+				align-items: center;
+				display: flex;
+				flex-direction: column;
+				gap: 4px;
+				position: relative;
+			}
+
+			.menu-header-locale-flag {
+				border-radius: 2px;
+				box-shadow: 0 0 0 1px var(--menu-border);
+				height: 14px;
+				left: 5px;
+				object-fit: cover;
+				pointer-events: none;
+				position: absolute;
+				top: 8px;
+				width: 20px;
+				z-index: 1;
+			}
+
+			#helloDialog select.menu-select.menu-header-locale {
+				background-color: var(--menu-banner-button);
+				background-image: none;
+				border: 1px solid var(--menu-border);
+				border-radius: 9px;
+				color: transparent;
+				flex: 0 0 30px;
+				font-size: 11px;
+				height: 30px;
+				line-height: normal;
+				max-height: 30px;
+				min-height: 30px;
+				padding: 0;
+				width: 30px;
+			}
+
+			#helloDialog select.menu-select.menu-header-locale option {
+				background-color: var(--menu-bg);
+				color: var(--menu-text);
+			}
+
+			#helloDialog select.menu-select.menu-header-locale:hover,
+			#helloDialog select.menu-select.menu-header-locale:focus {
+				background-color: var(--menu-banner-hover);
+				border-color: var(--menu-banner-hover-border);
+			}
+
+			.menu-language-label {
+				align-items: center;
+				color: var(--menu-banner-muted);
+				display: flex;
+				font-size: 10px;
+				line-height: 1;
+				min-height: 18px;
+				text-shadow: var(--menu-banner-text-shadow);
+			}
+
+			.menu-header .menu-language-label,
+			.menu-header .menu-theme-label,
+			.menu-header .menu-esc-hint {
+				text-transform: uppercase;
+			}
+
+			.menu-theme-control {
+				align-items: center;
+				display: flex;
+				flex-direction: column;
+				gap: 4px;
+			}
+
+			.menu-theme-toggle {
+				align-items: center;
+				background: var(--menu-banner-button);
+				border: 0;
+				border-radius: 9px;
+				color: var(--menu-banner-text);
+				cursor: pointer;
+				display: flex;
+				height: 30px;
+				justify-content: center;
+				padding: 0;
+				transition: background .15s, color .15s;
+				width: 30px;
+			}
+
+			.menu-theme-toggle:hover,
+			.menu-theme-toggle:focus-visible {
+				background: var(--menu-banner-hover);
+				outline: none;
+			}
+
+			.menu-theme-toggle svg {
+				height: 17px;
+				width: 17px;
+			}
+
+			.menu-theme-label {
+				align-items: center;
+				color: var(--menu-banner-muted);
+				display: flex;
+				font-size: 10px;
+				line-height: 1;
+				min-height: 18px;
+				text-shadow: var(--menu-banner-text-shadow);
+			}
+
+			.menu-theme-label-dark {
+				display: none;
+			}
+
+			.menu-theme-icon-sun {
+				display: none;
+			}
+
+			:root.darkTheme .menu-theme-icon-moon {
+				display: none;
+			}
+
+			:root.darkTheme .menu-theme-icon-sun {
+				display: block;
+			}
+
+			:root.darkTheme .menu-theme-label-light {
+				display: none;
+			}
+
+			:root.darkTheme .menu-theme-label-dark {
+				display: flex;
+			}
+
+			.menu-footer-discord {
+				align-items: center;
+				background: transparent;
+				border: 1px solid transparent;
+				border-radius: 10px;
+				color: var(--menu-banner-text);
+				display: flex;
+				flex: 0 0 auto;
+				font-size: 16px;
+				gap: 6px;
+				justify-content: center;
+				line-height: 1.35;
+				min-height: 42px;
+				padding: 6px 10px;
+				text-align: center;
+				text-shadow: var(--menu-banner-text-shadow);
+				transition: border-color .15s, box-shadow .15s, transform .15s;
+				width: 100%;
+			}
+
+			.menu-footer {
+				border-top: 1px solid var(--menu-border-soft);
+				box-shadow: var(--menu-banner-footer-shadow);
+				flex-shrink: 0;
+				padding: 12px 18px 16px;
+				position: relative;
+			}
+
+			.menu-footer-discord svg {
+				flex-shrink: 0;
+			}
+
+			.menu-footer-discord:hover,
+			.menu-footer-discord:focus-visible {
+				background: var(--menu-banner-hover);
+				border-color: var(--menu-banner-hover-border);
+				box-shadow: inset 0 1px 0 rgba(255, 255, 255, .16);
+				color: var(--menu-banner-text);
+				outline: none;
+				text-decoration: none;
+				transform: translateY(-1px);
+			}
+
+			.menu-logo {
+				align-items: center;
+				display: flex;
+				gap: 10px;
+			}
+
+			.menu-logo-mark {
+				display: block;
+				filter: drop-shadow(0 2px 4px rgba(31, 18, 92, .28));
+				flex-shrink: 0;
+				height: 44px;
+				width: 44px;
+			}
+
+			.menu-logo-word {
+				color: var(--menu-text);
+				font-family: Ubuntu, system-ui, sans-serif;
+				font-size: 20px;
+				font-weight: 700;
+				letter-spacing: -.01em;
+				line-height: 1.1;
+			}
+
+			.menu-logo-beta {
+				color: var(--menu-accent-text);
+				font-size: 10px;
+				font-weight: 600;
+				letter-spacing: .18em;
+				text-transform: uppercase;
+			}
+
+			.menu-tabs {
+				align-items: center;
+				background-color: var(--menu-surface-2);
+				border-bottom: 1px solid var(--menu-border-soft);
+				border-top: 1px solid var(--menu-border-soft);
+				box-shadow: var(--menu-banner-header-shadow);
+				display: flex;
+				flex-shrink: 0;
+				gap: 4px;
+				justify-content: center;
+				justify-content: safe center;
+				overflow-x: auto;
+				padding: 12px 10px;
+				scrollbar-width: none;
+			}
+
+			.menu-tabs::-webkit-scrollbar {
+				display: none;
+			}
+
+			.menu-tab {
+				align-items: center;
+				border: 1px solid transparent;
+				border-radius: 9px;
+				cursor: pointer;
+				display: flex;
+				flex: 0 0 auto;
+				font-size: 13px;
+				font-weight: 500;
+				gap: 6px;
+				padding: 6px 8px;
+				transition: background .15s, color .15s, border-color .15s;
+			}
+
+			.menu-tab .glyphicon {
+				font-size: 11px;
+				top: 0;
+			}
+
+			.menu-tab:hover {
+				color: var(--menu-text);
+			}
+
+			.menu-esc-hint {
+				align-items: center;
+				color: var(--menu-text-faint);
+				display: flex;
+				font-size: 10px;
+				gap: 4px;
+				line-height: 1;
+				min-height: 18px;
+			}
+
+			#helloDialog kbd {
+				background: var(--menu-surface-2);
+				border-radius: 5px;
+				box-shadow: none;
+				color: var(--menu-text);
+				flex-shrink: 0;
+				font-family: monospace;
+				font-size: 10px;
+				padding: 2px 6px;
+			}
+
+			.menu-body {
+				flex: 1;
+				overflow-y: auto;
+				scrollbar-width: none;
+			}
+
+			.menu-body::-webkit-scrollbar {
+				height: 0;
+				width: 0;
+			}
+
+			#helloDialog.menu-modal {
+				position: relative;
+				top: auto;
+				left: auto;
+				width: 460px;
+				height: auto;
+				max-width: 100%;
+				max-height: 92vh;
+				margin: 0;
+				transform: none;
+			}
+
+			:root:not(.darkTheme) #helloDialog.menu-modal {
+				box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+			}
+
+			:root.darkTheme #helloDialog.menu-modal {
+				border-color: rgba(90, 80, 255, .34);
+				box-shadow:
+					0 24px 60px rgba(12, 18, 72, .72),
+					0 12px 32px rgba(50, 42, 180, .34),
+					0 0 0 1px rgba(90, 80, 255, .22);
+			}
+
+			#helloDialogContent.menu-body {
+				height: auto;
+				min-height: 0;
+				padding: 18px;
+				overflow-y: auto;
+			}
+
+			#helloDialogContent[data-menu-view="settings"] > :not(#settings) {
+				display: none !important;
+			}
+
+			#helloDialog[data-active-tab="settings"] #helloDialogContent > :not(#settings),
+			#helloDialog[data-active-tab="gameplay"] #helloDialogContent,
+			#helloDialog[data-active-tab="rules"] #helloDialogContent,
+			#helloDialog[data-active-tab="news"] #helloDialogContent {
+				display: none !important;
+			}
+
+			#helloDialog[data-active-tab="settings"] #helloDialogContent,
+			#helloDialog[data-active-tab="settings"] #settings,
+			#helloDialog[data-active-tab="gameplay"] #gameplay,
+			#helloDialog[data-active-tab="rules"] #rules,
+			#helloDialog[data-active-tab="news"] #news {
+				display: block !important;
+			}
+
+			#helloDialog .menu-tab {
+				background: transparent;
+				border-color: transparent;
+				color: var(--menu-text-dim);
+			}
+
+			#helloDialog[data-active-tab="play"] [data-menu-tab="play"],
+			#helloDialog[data-active-tab="settings"] [data-menu-tab="settings"],
+			#helloDialog[data-active-tab="rules"] [data-menu-tab="rules"],
+			#helloDialog[data-active-tab="gameplay"] [data-menu-tab="gameplay"],
+			#helloDialog[data-active-tab="news"] [data-menu-tab="news"] {
+				background: var(--menu-accent-soft);
+				border-color: var(--menu-accent-border);
+				color: var(--menu-accent-text);
+			}
+
+			#helloDialog .form-wrapper {
+				align-items: flex-end;
+				gap: 8px;
+				margin-bottom: 12px;
+			}
+
+			#helloDialog .form-wrapper:has(#server) {
+				display: grid;
+				gap: 6px;
+				grid-template-columns: minmax(88px, 1fr) auto auto auto;
+			}
+
+			#helloDialog .form-label-wrapper:has(#server) {
+				min-width: 0;
+				width: auto !important;
+			}
+
+			#server-list {
+				display: flex;
+				flex-direction: column;
+				gap: 6px;
+				min-width: 0;
+				width: 100%;
+			}
+
+			#helloDialog #server {
+				min-width: 0;
+				width: 100% !important;
+			}
+
+			#helloDialog #play-btn,
+			#helloDialog #spectate-btn,
+			#helloDialog .btn-settings {
+				align-self: end;
+				margin: 0;
+				padding-inline: 9px;
+			}
+
+			#helloDialog .form-label-wrapper {
+				min-width: 0;
+				color: var(--menu-text-faint);
+				flex: 1;
+				gap: 6px;
+				font-size: 11px;
+				font-weight: 500;
+				letter-spacing: .04em;
+				text-transform: uppercase;
+			}
+
+			#helloDialog #skin-copy-control {
+				gap: 0;
+			}
+
+			#helloDialog #skin-list {
+				line-height: 20px;
+				margin: 0;
+			}
+
+			#helloDialog .skin-copy-input-group {
+				display: flex;
+				min-width: 0;
+				width: 100%;
+			}
+
+			#helloDialog .skin-copy-input-group #skin {
+				border-radius: 10px 0 0 10px;
+				border-right: 0;
+				flex: 1;
+				min-width: 0;
+				width: 1%;
+			}
+
+			#helloDialog #copy-btn {
+				align-items: center;
+				background: var(--menu-accent-soft);
+				border: 1px solid var(--menu-accent-border);
+				border-radius: 0 10px 10px 0;
+				color: var(--menu-accent-text);
+				display: flex;
+				float: none !important;
+				gap: 6px;
+				height: 38px;
+				justify-content: center;
+				line-height: 1;
+				margin: 0;
+				min-width: 78px;
+				padding: 0 12px;
+				transition: background-color .15s, border-color .15s, color .15s;
+				white-space: nowrap;
+			}
+
+			#helloDialog .skin-copy-input-group:focus-within #copy-btn {
+				border-color: var(--menu-accent-border);
+			}
+
+			#helloDialog #copy-btn:focus,
+			#helloDialog #play-btn:focus,
+			#helloDialog #spectate-btn:focus,
+			#helloDialog #show-upload-btn:focus,
+			#helloDialog .btn-settings:focus {
+				box-shadow: none;
+				outline: none;
+			}
+
+			#helloDialog #copy-btn.is-copied {
+				background: rgba(34, 197, 94, .16);
+				border-color: rgba(22, 163, 74, .65);
+				color: #15803d;
+			}
+
+			.darkTheme #helloDialog #copy-btn.is-copied {
+				background: rgba(34, 197, 94, .2);
+				border-color: rgba(74, 222, 128, .65);
+				color: #86efac;
+			}
+
+			#helloDialog .form-control,
+			#helloDialog input[type="text"],
+			#helloDialog select {
+				background-color: var(--menu-surface);
+				border: 1px solid var(--menu-border);
+				border-radius: 10px;
+				box-shadow: none;
+				color: var(--menu-text);
+				font-size: 13px;
+				height: 38px;
+				outline: none;
+				padding: 9px 12px;
+			}
+
+			#helloDialog .form-control:focus,
+			#helloDialog input[type="text"]:focus,
+			#helloDialog select:focus {
+				border-color: var(--menu-accent-border);
+				box-shadow: none;
+			}
+
+			#helloDialog select.menu-select {
+				-webkit-appearance: none;
+				appearance: none;
+				background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12' fill='none'%3E%3Cpath d='M2 4l4 4 4-4' stroke='%23888' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+				background-position: right 12px center;
+				background-repeat: no-repeat;
+				cursor: pointer;
+				padding-right: 30px;
+			}
+
+			#helloDialog option {
+				background: var(--menu-bg);
+				color: var(--menu-text);
+			}
+
+			#helloDialog label#nick-list:after,
+			#helloDialog label#skin-list:after {
+				display: none;
+			}
+
+			#helloDialog .btn {
+				border-radius: 10px;
+				box-shadow: none;
+				font-size: 12px;
+				font-weight: 600;
+				min-height: 36px;
+			}
+
+			#helloDialog .btn-primary,
+			#helloDialog .btn-info,
+			#helloDialog .btn-success {
+				background: var(--menu-accent-soft);
+				border: 1px solid var(--menu-accent-border);
+				color: var(--menu-accent-text);
+			}
+
+			#helloDialog #play-btn {
+				background: linear-gradient(135deg, var(--menu-accent), var(--menu-accent-2));
+				border: 0;
+				color: #fff;
+				padding-inline: 24px;
+			}
+
+			#helloDialog #spectate-btn,
+			#helloDialog .btn-settings {
+				background: var(--menu-surface-2);
+				border: 1px solid var(--menu-border-soft);
+				color: var(--menu-text-dim);
+			}
+
+			#settings {
+				height: auto;
+				max-height: none;
+				overflow: visible;
+			}
+
+			#settings > div {
+				background: var(--menu-surface);
+				border: 1px solid var(--menu-border-soft);
+				border-radius: 12px;
+				margin: 0 0 10px !important;
+				padding: 12px;
+			}
+
+			#settings .settings-card {
+				background: var(--menu-surface);
+				border: 1px solid var(--menu-border-soft);
+				border-radius: 12px;
+				padding: 12px;
+			}
+
+			#settings .settings-language-section {
+				margin: 0 0 16px;
+				padding: 0;
+			}
+
+			.settings-tabs {
+				display: flex;
+				gap: 6px;
+				margin-bottom: 18px;
+				overflow-x: auto;
+				scrollbar-width: none;
+			}
+
+			.settings-tabs::-webkit-scrollbar {
+				display: none;
+			}
+
+			.settings-tab {
+				background: transparent;
+				border: 1px solid transparent;
+				border-radius: 9px;
+				color: var(--menu-text-dim);
+				cursor: pointer;
+				flex: 1;
+				font-size: 12px;
+				font-weight: 600;
+				min-width: max-content;
+				padding: 7px 12px;
+				transition: background .15s, border-color .15s, color .15s;
+			}
+
+			.settings-tab:hover {
+				color: var(--menu-text);
+			}
+
+			.settings-tab-active {
+				background: var(--menu-accent-soft);
+				border-color: var(--menu-accent-border);
+				color: var(--menu-accent-text);
+			}
+
+			.settings-panel {
+				display: none;
+			}
+
+			.settings-panel-active {
+				display: block;
+			}
+
+			.settings-panel > * + * {
+				margin-top: 18px;
+			}
+
+			#settings > hr,
+			#settings > div > hr {
+				display: none;
+			}
+
+			#settings h4 {
+				color: var(--menu-text-faint);
+				font-size: 10px;
+				font-weight: 600;
+				letter-spacing: .14em;
+				margin: 0 0 10px;
+				text-transform: uppercase;
+			}
+
+			#settings label {
+				color: var(--menu-text-dim);
+				font-size: 12px;
+			}
+
+			#settings > .settings-options {
+				background: transparent;
+				border: 0;
+				padding: 0;
+			}
+
+			.menu-settings-group + .menu-settings-group {
+				margin-top: 18px;
+			}
+
+			.menu-group-title {
+				color: var(--menu-text-faint);
+				font-size: 10px;
+				font-weight: 600;
+				letter-spacing: .14em;
+				margin: 0 0 8px;
+				text-transform: uppercase;
+			}
+
+			.menu-settings-grid {
+				display: grid;
+				gap: 6px;
+				grid-template-columns: 1fr 1fr;
+			}
+
+			#settings label.menu-row {
+				align-items: center;
+				background: var(--menu-surface);
+				border: 1px solid var(--menu-border-soft);
+				border-radius: 12px;
+				cursor: pointer;
+				display: flex;
+				flex-wrap: wrap;
+				gap: 8px;
+				margin: 0;
+				padding: 9px 12px;
+			}
+
+			#settings label.menu-row:hover {
+				border-color: var(--menu-border);
+			}
+
+			#settings #translateChatRow:has(#translateChat:disabled) {
+				cursor: not-allowed;
+				opacity: .55;
+			}
+
+			#settings #translateChatRow:has(#translateChat:disabled) * {
+				cursor: not-allowed;
+			}
+
+			#settings #translateChatRow:has(#translateChat:disabled):hover {
+				border-color: var(--menu-border-soft);
+			}
+
+			#settings label.menu-row:has(.menu-switch:checked) {
+				background: var(--menu-accent-soft);
+				border-color: var(--menu-accent-border);
+			}
+
+			.menu-row-label {
+				color: var(--menu-text-dim);
+				flex: 1;
+				line-height: 1.25;
+				min-width: 0;
+				order: 1;
+			}
+
+			.menu-row:has(.menu-switch:checked) .menu-row-label {
+				color: var(--menu-text);
+			}
+
+			.menu-row-slider {
+				grid-column: 1 / -1;
+			}
+
+			#settings label.menu-row:has(#showTransparent) {
+				grid-column: auto;
+			}
+
+			input.menu-switch {
+				appearance: none;
+				background: var(--menu-track);
+				border: 0;
+				border-radius: 999px;
+				cursor: pointer;
+				display: inline-block;
+				flex-shrink: 0;
+				height: 19px;
+				left: auto;
+				margin: 0 !important;
+				order: 2;
+				position: relative !important;
+				top: auto;
+				transition: background .2s, box-shadow .2s;
+				vertical-align: middle;
+				width: 34px;
+			}
+
+			input.menu-switch::after {
+				background: #fff;
+				border-radius: 50%;
+				box-shadow: 0 1px 3px #00000059;
+				content: "";
+				height: 13px;
+				left: 3px;
+				position: absolute;
+				top: 3px;
+				transition: left .2s;
+				width: 13px;
+			}
+
+			input.menu-switch:checked {
+				background: linear-gradient(135deg, var(--menu-accent), var(--menu-accent-2));
+				box-shadow: 0 0 8px var(--menu-accent-soft);
+			}
+
+			input.menu-switch:checked::after {
+				left: calc(100% - 16px);
+			}
+
+			.menu-range {
+				appearance: none;
+				background: var(--menu-track);
+				border-radius: 999px;
+				cursor: pointer;
+				display: none;
+				flex-basis: 100%;
+				height: 4px !important;
+				margin: 6px 0 0;
+				order: 3;
+				padding: 0 !important;
+				width: 100% !important;
+			}
+
+			.menu-switch:checked ~ .menu-range {
+				display: block;
+			}
+
+			.menu-range::-webkit-slider-thumb {
+				appearance: none;
+				background: #fff;
+				border-radius: 50%;
+				box-shadow: 0 0 0 2px var(--menu-accent-border), 0 1px 4px #0006;
+				height: 14px;
+				width: 14px;
+			}
+
+			.menu-reset-btn {
+				margin-top: 18px;
+				width: 100%;
+			}
+
+			#settings .key-binding-btn,
+			#settings select {
+				width: 100%;
+			}
+
+			#mute-user-input {
+				color: var(--menu-text) !important;
+			}
+
+			#preview {
+				background: var(--menu-surface);
+				border: 1px solid var(--menu-border-soft);
+				border-radius: 14px;
+				color: inherit;
+				cursor: pointer;
+				height: 174px;
+				margin: 6px auto 14px;
+				padding: 12px;
+				transition: border-color .15s, box-shadow .15s;
+				width: 174px;
+			}
+
+			#preview:hover,
+			#preview:focus-visible {
+				border-color: var(--menu-accent-border);
+				box-shadow: 0 8px 22px rgba(79, 70, 229, .18);
+				outline: none;
+			}
+
+			.preview-customization {
+				align-items: flex-start;
+				display: flex;
+				gap: 12px;
+				justify-content: center;
+				margin: 6px 0 14px;
+			}
+
+			.preview-skin-column {
+				align-items: center;
+				display: flex;
+				flex: 1 1 0;
+				flex-direction: column;
+				gap: 8px;
+				min-width: 0;
+			}
+
+			.preview-options-column {
+				display: flex;
+				flex: 1 1 0;
+				flex-direction: column;
+				gap: 8px;
+				min-width: 0;
+			}
+
+			.preview-auto-respawn {
+				align-items: center;
+				background: var(--menu-surface);
+				border: 1px solid var(--menu-border-soft);
+				border-radius: 10px;
+				color: var(--menu-text-dim);
+				cursor: pointer;
+				display: flex;
+				flex: 0 0 36px;
+				font-size: 11px;
+				gap: 8px;
+				margin: 0;
+				padding: 8px 10px;
+			}
+
+			.preview-auto-respawn:has(.menu-switch:checked) {
+				background: var(--menu-accent-soft);
+				border-color: var(--menu-accent-border);
+			}
+
+			.preview-skin-column #show-upload-btn,
+			.preview-skin-column #unban-btn {
+				margin: 0;
+				max-width: none !important;
+				width: 100%;
+			}
+
+			.preview-customization #preview {
+				flex: 0 0 auto;
+				margin: 0;
+				width: 100%;
+			}
+
+			.preview-colors-panel {
+				align-self: stretch;
+				background: var(--menu-surface);
+				border: 1px solid var(--menu-border-soft);
+				border-radius: 12px;
+				display: flex;
+				flex: 1;
+				flex-direction: column;
+				min-width: 0;
+				padding: 10px;
+			}
+
+			.preview-colors-grid {
+				display: grid;
+				flex: 1;
+				gap: 8px;
+				grid-template-columns: 1fr 1fr;
+				grid-template-rows: repeat(2, minmax(0, 1fr));
+			}
+
+			.preview-color {
+				align-items: center;
+				color: var(--menu-text-dim);
+				cursor: pointer;
+				display: flex;
+				flex-direction: column;
+				font-size: 9px;
+				gap: 4px;
+				margin: 0;
+				min-width: 0;
+				text-align: center;
+			}
+
+			.preview-color input[type="color"] {
+				background: transparent;
+				border: 1px solid var(--menu-border);
+				border-radius: 8px;
+				cursor: pointer;
+				flex: 1;
+				height: auto;
+				min-height: 36px;
+				padding: 0;
+				width: 100%;
+			}
+
+			.preview-color span {
+				overflow: hidden;
+				text-overflow: ellipsis;
+				white-space: nowrap;
+				width: 100%;
+			}
+
+			#previewSkin {
+				background-color: transparent !important;
+				background-image: none !important;
+				border: 0 !important;
+				border-radius: 0;
+				box-shadow: none;
+				height: 150px;
+				width: 150px;
+			}
+
+			#previewName {
+				font-size: 22px;
+				pointer-events: none;
+			}
+
+			#preview .preview-choose-skin {
+				align-items: center;
+				backdrop-filter: blur(5px);
+				-webkit-backdrop-filter: blur(5px);
+				background: rgba(20, 20, 45, .72);
+				border: 1px solid rgba(255, 255, 255, .18);
+				border-radius: 999px;
+				bottom: 17px;
+				color: #fff;
+				display: flex;
+				font-size: 10px;
+				font-weight: 700;
+				gap: 6px;
+				left: 50%;
+				letter-spacing: .04em;
+				line-height: 1;
+				max-width: calc(100% - 30px);
+				overflow: hidden;
+				padding: 7px 11px;
+				pointer-events: none;
+				position: absolute;
+				text-overflow: ellipsis;
+				text-shadow: 0 1px 2px rgba(0, 0, 0, .8);
+				transform: translateX(-50%);
+				white-space: nowrap;
+				z-index: 2;
+			}
+
+			#preview .preview-choose-skin .glyphicon {
+				flex-shrink: 0;
+				top: 0;
+			}
+
+			#colors {
+				gap: 8px;
+				justify-content: stretch;
+				padding: 0;
+			}
+
+			#colors .form-label-wrapper {
+				align-items: center;
+				color: var(--menu-text-faint);
+				font-size: 10px;
+				font-weight: 600;
+				letter-spacing: .14em;
+				line-height: 1.2;
+				min-width: 0;
+				text-transform: uppercase;
+			}
+
+			#colors .form-label-wrapper span {
+				font-size: inherit;
+				font-weight: inherit;
+				letter-spacing: inherit;
+				line-height: inherit;
+			}
+
+			#colors input[type="color"] {
+				background: transparent;
+				border: 1px solid var(--menu-border);
+				border-radius: 8px;
+				height: 34px;
+				padding: 0;
+				width: 100%;
+			}
+
+			#gallery {
+				align-items: center;
+				background: var(--menu-backdrop);
+				backdrop-filter: blur(5px);
+				-webkit-backdrop-filter: blur(5px);
+				display: flex;
+				inset: 0;
+				justify-content: center;
+				padding: 20px;
+				position: fixed;
+			}
+
+			#gallery-content {
+				background: var(--menu-bg);
+				border: 1px solid var(--menu-border);
+				border-radius: 18px;
+				box-shadow: var(--menu-shadow);
+				color: var(--menu-text);
+				max-height: 86vh;
+				max-width: 100%;
+				width: 760px;
+			}
+
+			#gallery-header {
+				align-items: center;
+				background: transparent;
+				border-bottom: 1px solid var(--menu-border-soft);
+				color: var(--menu-text);
+				display: flex;
+				justify-content: space-between;
+				padding: 16px 18px;
+				position: relative;
+				text-align: left;
+			}
+
+			#gallery-header::before {
+				border-radius: 17px 17px 0 0;
+			}
+
+			.gallery-title {
+				color: var(--menu-banner-text);
+				font-family: Ubuntu, system-ui, sans-serif;
+				font-size: 16px;
+				line-height: 30px;
+				text-shadow: var(--menu-banner-text-shadow);
+			}
+
+			#gallery-header .menu-close {
+				background: var(--menu-banner-button);
+				color: var(--menu-banner-text);
+			}
+
+			#gallery-body {
+				background: var(--menu-surface);
+				display: flex;
+				min-height: 0;
+				overflow: hidden;
+			}
+
+			#skinsUL {
+				display: grid;
+				gap: 10px;
+				grid-template-columns: repeat(auto-fill, minmax(112px, 1fr));
+				justify-content: stretch;
+				margin: 0;
+				overflow-x: hidden;
+				overflow-y: auto;
+				padding: 14px;
+				scrollbar-color: var(--menu-accent-border) transparent;
+				scrollbar-width: thin;
+				width: 100%;
+			}
+
+			#skinsUL::-webkit-scrollbar {
+				width: 8px;
+			}
+
+			#skinsUL::-webkit-scrollbar-track {
+				background: transparent;
+			}
+
+			#skinsUL::-webkit-scrollbar-thumb {
+				background: var(--menu-accent-border);
+				border-radius: 999px;
+			}
+
+			#skinsUL .skin {
+				align-items: center;
+				background: var(--menu-bg);
+				border: 1px solid var(--menu-border-soft);
+				border-radius: 13px;
+				cursor: pointer;
+				display: flex;
+				flex-direction: column;
+				margin: 0;
+				min-width: 0;
+				padding: 10px 8px 8px;
+				position: relative;
+				transform-origin: center;
+				transition: background .2s, border-color .2s, transform .2s ease;
+			}
+
+			#skinsUL .skin:hover {
+				background: var(--menu-accent-soft);
+				border-color: var(--menu-accent-border);
+				transform: scale(1.1);
+				z-index: 1;
+			}
+
+			#skinsUL .circular {
+				background-color: var(--menu-surface-2);
+				background-size: cover;
+				box-shadow: 0 5px 14px rgba(0, 0, 0, .24);
+				height: 88px;
+				object-fit: cover;
+				transition: box-shadow .15s, transform .15s;
+				width: 88px;
+			}
+
+			#skinsUL .skin:hover .circular {
+				box-shadow: 0 7px 18px rgba(41, 31, 140, .36);
+				transform: scale(1.18);
+			}
+
+			#skinsUL .skinName {
+				color: var(--menu-text-dim);
+				font-size: 12px;
+				font-weight: 600;
+				margin: 8px 0 0;
+				max-width: 100%;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				white-space: nowrap;
+			}
+
+			#skinsUL .skin:hover .skinName {
+				color: var(--menu-text);
+				text-shadow: none;
+			}
+
+			#gameplay,
+			#rules,
+			#news {
+				background: transparent;
+				border: 0;
+				box-shadow: none;
+				color: var(--menu-text);
+				height: auto;
+				left: auto;
+				padding: 18px;
+				position: static;
+				top: auto;
+				width: auto;
+				overflow-y: auto;
+			}
+
+			#gameplay .text,
+			#rules .text,
+			#news .text {
+				color: var(--menu-text-dim);
+				font-size: 13px;
+				height: auto;
+				line-height: 1.55;
+				overflow: visible;
+			}
+
+			#gameplay p,
+			#rules p,
+			#news p {
+				color: var(--menu-text-dim);
+				font-size: 13px;
+				line-height: 1.5;
+			}
+
+			.menu-guide-content {
+				display: flex;
+				flex-direction: column;
+				gap: 12px;
+			}
+
+			.menu-guide-controls {
+				display: grid;
+				gap: 6px;
+				grid-template-columns: repeat(2, minmax(0, 1fr));
+			}
+
+			#gameplay .menu-guide-control {
+				align-items: center;
+				background: var(--menu-surface);
+				border: 1px solid var(--menu-border-soft);
+				border-radius: 9px;
+				display: flex;
+				min-width: 0;
+				padding: 8px 10px;
+			}
+
+			#gameplay .menu-guide-control > span {
+				color: var(--menu-text-dim);
+				font-size: 11px;
+				line-height: 1.55;
+			}
+
+			#gameplay .menu-guide-control kbd {
+				margin: 1px 2px;
+			}
+
+			.menu-guide-section {
+				align-items: flex-start;
+				display: flex;
+				gap: 12px;
+				padding: 2px 4px;
+			}
+
+			.menu-guide-objective {
+				background: var(--menu-accent-soft);
+				border: 1px solid var(--menu-accent-border);
+				border-radius: 12px;
+				padding: 10px 12px;
+			}
+
+			.menu-guide-icon {
+				flex: 0 0 25px;
+				font-size: 20px;
+				line-height: 1.4;
+				text-align: center;
+			}
+
+			#gameplay .menu-guide-title {
+				color: var(--menu-text);
+				font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+				font-size: 13px;
+				font-weight: 600;
+				line-height: 1.4;
+				margin: 0 0 3px;
+			}
+
+			#gameplay .menu-guide-body {
+				color: var(--menu-text-dim);
+				font-size: 12px;
+				line-height: 1.55;
+				margin: 0;
+			}
+
+			#gameplay .menu-guide-footer {
+				background: var(--menu-accent-soft);
+				border: 1px solid var(--menu-accent-border);
+				border-radius: 12px;
+				color: var(--menu-text-dim);
+				font-size: 12px;
+				line-height: 1.5;
+				padding: 12px;
+				text-align: center;
+			}
+
+			#gameplay .menu-guide-footer p {
+				font-size: inherit;
+				line-height: inherit;
+				margin: 0;
+			}
+
+			#gameplay .menu-guide-footer strong {
+				color: var(--menu-text);
+				display: block;
+				margin-top: 6px;
+			}
+
+			#rules p {
+				display: flex;
+				font-size: 15px;
+				font-weight: 600;
+				gap: 10px;
+				line-height: 1.55;
+			}
+
+			#rules p::before {
+				flex: 0 0 auto;
+				font-size: 18px;
+				line-height: 1.3;
+			}
+
+			#rules p:nth-child(1)::before { content: "1️⃣"; }
+			#rules p:nth-child(2)::before { content: "2️⃣"; }
+			#rules p:nth-child(3)::before { content: "3️⃣"; }
+
+			#gameplay h2.title,
+			#rules h2.title,
+			#news h2.title {
+				color: var(--menu-text);
+				font-family: Ubuntu, sans-serif;
+				font-size: 18px;
+				font-weight: 700;
+			}
+
+			:root.darkTheme #gameplay,
+			:root.darkTheme #news {
+				background: transparent;
+				border: 0;
+				box-shadow: none;
+			}
+
+			:root.darkTheme #news .text > b {
+				color: #fff;
+			}
+
+			#helloDialogContent,
+			#gameplay,
+			#news {
+				min-height: 0;
+				scrollbar-color: var(--menu-accent-border) transparent;
+				scrollbar-width: thin;
+			}
+
+			#helloDialogContent::-webkit-scrollbar,
+			#gameplay::-webkit-scrollbar,
+			#news::-webkit-scrollbar {
+				width: 8px;
+			}
+
+			#helloDialogContent::-webkit-scrollbar-track,
+			#gameplay::-webkit-scrollbar-track,
+			#news::-webkit-scrollbar-track {
+				background: transparent;
+			}
+
+			#helloDialogContent::-webkit-scrollbar-thumb,
+			#gameplay::-webkit-scrollbar-thumb,
+			#news::-webkit-scrollbar-thumb {
+				background: var(--menu-accent-border);
+				border-radius: 999px;
+			}
+
+			@media (max-width: 600px) {
+				#overlays { padding: 10px; }
+				#helloDialog.menu-modal { max-height: 96vh; transform: none; }
+				.menu-tabs { gap: 2px; overflow-x: auto; padding-inline: 10px; }
+				.menu-tab { padding-inline: 10px; }
+				.menu-esc-hint { display: none; }
+				#helloDialog .form-wrapper { flex-wrap: wrap; }
+				#helloDialog .form-wrapper:has(#server) { grid-template-columns: minmax(0, 1fr) auto; }
+				#helloDialog .form-label-wrapper:has(#server) { grid-column: 1 / -1; }
+				.menu-settings-grid { grid-template-columns: 1fr; }
+				.menu-row-slider { grid-column: auto; }
+				.settings-tab { flex: 0 0 auto; }
+				#gallery { padding: 10px; }
+				#gallery-content { max-height: 92vh; }
+				#skinsUL { grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); padding: 10px; }
+				#skinsUL .circular { height: 76px; width: 76px; }
+				.menu-guide-controls { grid-template-columns: 1fr; }
+			}
+
+			@media (max-width: 370px) {
+				.preview-customization { align-items: stretch; flex-direction: column; }
+				.preview-skin-column, .preview-options-column { flex: none; width: 100%; }
+				.preview-customization #preview { align-self: center; }
+			}
+		</style>
 	</head>
 
 	<body>
+		<script>
+			document.documentElement.classList.toggle(
+				'touch-device',
+				navigator.maxTouchPoints > 0 && window.matchMedia('(pointer: coarse)').matches
+			);
+			window.addEventListener('touchstart', function () {
+				document.documentElement.classList.add('touch-device');
+			}, { capture: true, passive: true, once: true });
+		</script>
 		<canvas id="canvas" width="800" height="600"></canvas>
 
 		<div id="mobileStuff">
@@ -70,20 +1607,52 @@
 
 		<div id="gallery" onclick="if (event.target === this) this.hide()" style="display: none;">
 			<div id="gallery-content">
-				<div id="gallery-header" data-i18n="gallery.skins">Skins</div>
+				<div id="gallery-header">
+					<strong class="gallery-title" data-i18n="lobby.chooseSkin">Choose Skin</strong>
+					<button class="menu-close" type="button" aria-label="Close skin gallery" title="Close" onclick="event.stopPropagation(); document.getElementById('gallery').hide();">&#x2715;</button>
+				</div>
 				<div id="gallery-body"></div>
 			</div>
 		</div>
 
 		<div id="overlays" style="display: none;">
-			<div id="helloDialog">
-				<div id="helloDialogContent">
-					<div>
-						<h2 class="title" data-i18n="lobby.title">Agar.io v2</h2>
-						<hr class="top" />
-						<a class="text-center" style="display: block; color: red;" href="https://discord.gg/emupedia-510149138491506688" target="_blank" data-i18n="lobby.discordSuggestions">Join us on Discord if you have suggestions</a>
+			<div id="helloDialog" class="menu-modal" data-active-tab="play">
+				<div class="menu-header">
+					<div class="menu-logo" aria-label="Agar.io v2">
+						<canvas id="menuLogoCanvas" class="menu-logo-mark" width="44" height="44" aria-hidden="true"></canvas>
+						<div>
+							<div class="menu-logo-word">Agar.io</div>
+							<div class="menu-logo-beta">Version 2</div>
+						</div>
 					</div>
+					<div class="menu-header-controls">
+						<div class="menu-language-control">
+							<img id="headerLocaleFlag" class="menu-header-locale-flag" alt="" aria-hidden="true" decoding="async" referrerpolicy="no-referrer" onerror="this.hidden=true" onload="this.hidden=false" />
+							<select id="headerLocale" class="form-control menu-select menu-header-locale" data-locale-select aria-label="Language" onchange="var l=document.getElementById('locale');if(l&&l.value!==this.value){l.value=this.value;l.dispatchEvent(new Event('change',{bubbles:true}));}"></select>
+						</div>
+						<div class="menu-theme-control">
+							<button class="menu-theme-toggle" type="button" aria-label="Toggle color theme" title="Toggle color theme" onclick="var t=document.getElementById('darkTheme');if(t){t.checked=!t.checked;t.dispatchEvent(new Event('change',{bubbles:true}));}">
+								<svg class="menu-theme-icon-moon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.2 15.5A8.3 8.3 0 0 1 8.5 3.8 8.5 8.5 0 1 0 20.2 15.5Z" /></svg>
+								<svg class="menu-theme-icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4" /><path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.65 17.65l1.42 1.42M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.65 6.35l1.42-1.42" /></svg>
+							</button>
+						</div>
+						<button class="menu-theme-toggle menu-fullscreen-toggle" type="button" aria-label="Toggle Fullscreen" data-i18n-title="settings.toggleFullscreen" title="Toggle Fullscreen" onclick="var t=document.getElementById('toggleFullscreen');if(t)t.click();">
+							<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 3H3v5M16 3h5v5M8 21H3v-5M16 21h5v-5" /></svg>
+						</button>
+						<div class="menu-close-area">
+							<button class="menu-close" type="button" aria-label="Close menu" title="Close menu" onclick="event.stopPropagation(); document.getElementById('overlays').click();">&#x2715;</button>
+						</div>
+					</div>
+				</div>
+				<div class="menu-tabs" role="tablist" aria-label="Game menu">
+					<button class="menu-tab" type="button" role="tab" aria-selected="true" data-menu-tab="play" onclick="var b=this,d=b.closest('#helloDialog');d.setAttribute('data-active-tab',b.getAttribute('data-menu-tab'));d.querySelectorAll('[data-menu-tab]').forEach(function(t){t.setAttribute('aria-selected',t===b?'true':'false')})"><i class="glyphicon glyphicon-play" aria-hidden="true"></i><span data-i18n="lobby.play">Play</span></button>
+					<button class="menu-tab" type="button" role="tab" aria-selected="false" data-menu-tab="settings" onclick="var b=this,d=b.closest('#helloDialog');d.setAttribute('data-active-tab',b.getAttribute('data-menu-tab'));d.querySelectorAll('[data-menu-tab]').forEach(function(t){t.setAttribute('aria-selected',t===b?'true':'false')})"><i class="glyphicon glyphicon-cog" aria-hidden="true"></i><span data-i18n="lobby.settings">Settings</span></button>
+					<button class="menu-tab" type="button" role="tab" aria-selected="false" data-menu-tab="news" onclick="var b=this,d=b.closest('#helloDialog');d.setAttribute('data-active-tab',b.getAttribute('data-menu-tab'));d.querySelectorAll('[data-menu-tab]').forEach(function(t){t.setAttribute('aria-selected',t===b?'true':'false')})"><i class="glyphicon glyphicon-bullhorn" aria-hidden="true"></i><span data-i18n="news.title">News</span></button>
+					<button class="menu-tab" type="button" role="tab" aria-selected="false" data-menu-tab="rules" onclick="var b=this,d=b.closest('#helloDialog');d.setAttribute('data-active-tab',b.getAttribute('data-menu-tab'));d.querySelectorAll('[data-menu-tab]').forEach(function(t){t.setAttribute('aria-selected',t===b?'true':'false')})"><i class="glyphicon glyphicon-flag" aria-hidden="true"></i><span data-i18n="gameplay.rulesTitle">Rules</span></button>
+					<button class="menu-tab" type="button" role="tab" aria-selected="false" data-menu-tab="gameplay" onclick="var b=this,d=b.closest('#helloDialog');d.setAttribute('data-active-tab',b.getAttribute('data-menu-tab'));d.querySelectorAll('[data-menu-tab]').forEach(function(t){t.setAttribute('aria-selected',t===b?'true':'false')})"><i class="glyphicon glyphicon-question-sign" aria-hidden="true"></i><span data-i18n="gameplay.howToPlay">How to play</span></button>
+				</div>
 
+				<div id="helloDialogContent" class="menu-body" data-menu-panel="play">
 					<div class="form-wrapper">
 						<div class="form-label-wrapper">
 							<label id="nick-list"><span data-i18n="lobby.nickname">Nickname</span><input id="nick" list="nicknames" class="form-control" onfocus="this.oldvalue=this.value;this.value=''" onblur="if(this.value==='')this.value=this.oldvalue || ''" data-i18n-placeholder="lobby.nickname" placeholder="Nickname" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" minlength="3" maxlength="16" required></label>
@@ -91,14 +1660,15 @@
 								<option value=""> </option>
 							</datalist>
 						</div>
-						<div class="form-label-wrapper">
-							<label id="skin-list"><span data-i18n="lobby.skin">Skin</span><input id="skin" list="skinnames" class="form-control pull-right" onfocus="this.oldvalue=this.value;this.value=''" onblur="if(this.value==='')this.value=this.oldvalue || ''" data-i18n-placeholder="lobby.skinPlaceholder" placeholder="Skin Name" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></label>
+						<div id="skin-copy-control" class="form-label-wrapper">
+							<label id="skin-list" for="skin"><span data-i18n="lobby.skin">Skin</span></label>
+							<div class="skin-copy-input-group">
+								<input id="skin" list="skinnames" class="form-control" onfocus="this.oldvalue=this.value;this.value=''" onblur="if(this.value==='')this.value=this.oldvalue || ''" data-i18n-placeholder="lobby.skinPlaceholder" placeholder="Skin Name" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+								<button id="copy-btn" class="btn" type="button" aria-label="Copy skin" onclick="copyToClipboard(document.getElementById('skin').value, this)"><span aria-hidden="true">⧉</span><span data-i18n="lobby.copy">Copy</span></button>
+							</div>
 							<datalist id="skinnames">
 								<option value=""> </option>
 							</datalist>
-						</div>
-						<div class="form-label-wrapper">
-							<label><span data-i18n="lobby.copy">Copy</span><button id="copy-btn" class="btn btn-success pull-right" onclick="copyToClipboard(document.getElementById('skin').value, this)"><i class="glyphicon glyphicon-copy"></i></button></label>
 						</div>
 					</div>
 
@@ -114,34 +1684,28 @@
 					<div class="form-wrapper">
 						<div class="form-label-wrapper" style="width: 100%;">
 							<label id="server-list"><span data-i18n="lobby.gameMode">Game Mode</span>
-								<select id="server" class="form-control" style="width: 134px;" onchange="setserver(this.value)" required>
+								<select id="server" class="form-control menu-select" style="width: 134px;" onchange="setserver(this.value)" required>
 									<option value="eu-ffa" selected>FFA</option>
 									<option value="eu-pvp">PVP</option>
 								</select>
 							</label>
 						</div>
 						<button id="play-btn" class="btn btn-play btn-primary btn-needs-server pull-left"><i class="glyphicon glyphicon-play"></i>&nbsp;<span data-i18n="lobby.play">Play</span></button>
-						<button id="spectate-btn" onclick="spectate()" class="btn btn-warning btn-spectate btn-needs-server pull-left"><i class="glyphicon glyphicon-eye-open"></i></button>
-					</div>
-
-					<div class="form-wrapper">
-						<button id="gallery-btn" onclick="openSkinsList()" class="btn btn-play btn-primary btn-needs-server btn-info"><i class="glyphicon glyphicon-folder-open"></i>&nbsp;&nbsp;<span data-i18n="lobby.chooseSkin">Choose Skin</span></button>
-						<button id="show-upload-btn" onclick="openUpload()" class="btn btn-play btn-primary btn-needs-server btn-info" style="max-width: 124px;"><i class="glyphicon glyphicon-cloud-upload"></i>&nbsp;&nbsp;<span data-i18n="lobby.uploadSkin">Upload Skin</span></button>
-						<button id="unban-btn" onclick="openUnban()" class="btn btn-play btn-primary btn-needs-server btn-info" style="display: none;"><i class="glyphicon glyphicon-log-in"></i>&nbsp;<span data-i18n="lobby.unban">Unban</span></button>
-						<button class="btn btn-success btn-settings pull-right" onclick="toggleSettingsPanel()"><i class="glyphicon glyphicon-cog"></i></button>
+						<button id="spectate-btn" onclick="spectate()" class="btn btn-warning btn-spectate btn-needs-server pull-left"><i class="glyphicon glyphicon-eye-open"></i>&nbsp;<span data-i18n="lobby.spectate">Spectate</span></button>
+						<button class="btn btn-success btn-settings" onclick="document.querySelector('[data-menu-tab=&quot;settings&quot;]').click(); return false;" aria-label="Open settings"><i class="glyphicon glyphicon-cog"></i>&nbsp;<span data-i18n="lobby.settings">Settings</span></button>
 					</div>
 
 					<div id="settings" class="checkbox" style="display: none;">
-						<div style="margin: 6px;">
+						<div>
 							<h4 data-i18n="settings.language">Language</h4>
-							<select id="locale" class="form-control" style="margin-bottom: 8px;"></select>
-							<label id="translateChatRow" class="translate-chat-row" hidden style="margin-top: 8px;">
-								<input id="translateChat" type="checkbox" />
-								<span data-i18n="settings.translateChat">Translate Chat (Beta)</span>
+							<select id="locale" class="form-control menu-select" data-locale-select style="margin-bottom: 8px;"></select>
+							<label id="translateChatRow" class="translate-chat-row menu-row" hidden style="margin-top: 8px;">
+								<input id="translateChat" class="menu-switch" type="checkbox" />
+								<span class="menu-row-label" data-i18n="settings.translateChat">Translate Chat (Beta)</span>
 							</label>
 						</div>
 						<hr />
-						<div style="margin: 6px;">
+						<div>
 							<h4 data-i18n="settings.mutedPlayers">Muted Players</h4>
 							<hr />
 							<div id="muted-users-list" style="margin-bottom: 10px;"></div>
@@ -187,7 +1751,7 @@
 							<hr />
 							<div style="display: grid; grid-template-columns: auto 1fr; gap: 8px; align-items: center;">
 								<label style="margin: 0;" data-i18n="settings.leftClick">Left Click:</label>
-								<select id="mouseLeftAction" class="form-control" style="font-size: 14px;">
+								<select id="mouseLeftAction" class="form-control menu-select" style="font-size: 14px;">
 									<option value="none" data-i18n="mouseActions.none">None</option>
 									<option value="feed" selected data-i18n="mouseActions.feed">Feed (Eject Mass)</option>
 									<option value="split" data-i18n="mouseActions.split">Split</option>
@@ -196,7 +1760,7 @@
 								</select>
 
 								<label style="margin: 0;" data-i18n="settings.middleClick">Middle Click:</label>
-								<select id="mouseMiddleAction" class="form-control" style="font-size: 14px;">
+								<select id="mouseMiddleAction" class="form-control menu-select" style="font-size: 14px;">
 									<option value="none" data-i18n="mouseActions.none">None</option>
 									<option value="feed" data-i18n="mouseActions.feed">Feed (Eject Mass)</option>
 									<option value="split" data-i18n="mouseActions.split">Split</option>
@@ -205,7 +1769,7 @@
 								</select>
 
 								<label style="margin: 0;" data-i18n="settings.rightClick">Right Click:</label>
-								<select id="mouseRightAction" class="form-control" style="font-size: 14px;">
+								<select id="mouseRightAction" class="form-control menu-select" style="font-size: 14px;">
 									<option value="none" data-i18n="mouseActions.none">None</option>
 									<option value="feed" data-i18n="mouseActions.feed">Feed (Eject Mass)</option>
 									<option value="split" data-i18n="mouseActions.split">Split</option>
@@ -219,7 +1783,7 @@
 							<p style="margin-top: 10px; font-size: 12px; color: #888;" data-i18n="settings.mouseHint">Configure what action each mouse button performs</p>
 						</div>
 						<hr />
-						<div style="margin: 6px;">
+						<div class="settings-options" style="margin: 6px;">
 							<label><input id="toggleFullscreen" type="checkbox" /><span data-i18n="settings.toggleFullscreen">Toggle Fullscreen</span></label>
 							<label><input id="darkTheme" type="checkbox" /><span data-i18n="settings.darkTheme">Dark Theme</span></label>
 							<label>
@@ -230,19 +1794,19 @@
 								<input id="cellAnimationSpeed" type="checkbox" /><span data-i18n="settings.cellAnimationSpeed">Cell Animations Speed</span>
 								<input id="animationSpeed" type="range" min="1" max="250" step="1" value="120">
 							</label>
-							<label><input id="showSkins" type="checkbox" /><span data-i18n="settings.showSkins">Cell Skins</span></label>
+							<label><input id="showSkins" type="checkbox" /><span data-i18n="settings.showSkins">Show Skins</span></label>
 							<label><input id="showNames" type="checkbox" /><span data-i18n="settings.showNames">Cell Names</span></label>
-							<label><input id="showColor" type="checkbox" /><span data-i18n="settings.showColor">Cell Colors</span></label>
-							<label><input id="showMass" type="checkbox" /><span data-i18n="settings.showMass">Cell Mass</span></label>
+							<label><input id="showColor" type="checkbox" /><span data-i18n="settings.showColor">Show Colors</span></label>
+							<label><input id="showMass" type="checkbox" /><span data-i18n="settings.showMass">Show Mass</span></label>
 							<label>
 								<input id="slowMassUpdates" type="checkbox" checked /><span data-i18n="settings.slowMassUpdates">Slower Mass Updates</span>
 								<input id="massUpdateInterval" type="range" min="0" max="3000" step="50" value="300">
 							</label>
-							<label><input id="jellyPhysics" type="checkbox" /><span data-i18n="settings.jellyPhysics">Cell Jelly Physics</span></label>
-							<label><input id="showIdenticon" type="checkbox" /><span data-i18n="settings.showIdenticon">Cell Identicons</span></label>
+							<label><input id="jellyPhysics" type="checkbox" /><span data-i18n="settings.jellyPhysics">Show Jelly Physics</span></label>
+							<label><input id="showIdenticon" type="checkbox" /><span data-i18n="settings.showIdenticon">Show Identicons</span></label>
 							<label><input id="fillSkin" type="checkbox" /><span data-i18n="settings.fillSkin">Cell Color Under Skin</span></label>
 							<label>
-								<input id="showTransparent" type="checkbox" /><span data-i18n="settings.showTransparent">Cell Transparency</span>
+								<input id="showTransparent" type="checkbox" /><span data-i18n="settings.showTransparent">Transparency</span>
 								<input id="transparentAlpha" type="range" min="0" max="0.9" step="any">
 							</label>
 							<label><input id="showChat" type="checkbox" /><span data-i18n="settings.showChat">Show Chat</span></label>
@@ -269,13 +1833,30 @@
 								<button id="reset-button-positions-btn" class="btn btn-sm btn-warning" style="width: 100%;" data-i18n="settings.resetButtonPositions">Reset Mobile Buttons Positions</button>
 							</div>
 							<label><input id="useWordFilters" type="checkbox" /><span data-i18n="settings.useWordFilters">Words Censorship</span></label>
-							<label><input id="autoRespawn" type="checkbox" /><span data-i18n="settings.autoRespawn">Toggle AutoRespawn</span></label>
+							<label><input id="autoRespawn" type="checkbox" /><span data-i18n="settings.autoRespawn">AutoRespawn</span></label>
 						</div>
 					</div>
 
-					<div id="preview">
-						<canvas id="previewSkin"></canvas>
-						<div id="previewName"></div>
+					<div class="preview-customization">
+						<div class="preview-skin-column">
+							<button id="show-upload-btn" onclick="openUpload()" class="btn btn-play btn-primary btn-needs-server btn-info"><i class="glyphicon glyphicon-cloud-upload"></i>&nbsp;&nbsp;<span data-i18n="lobby.uploadSkin">Upload Skin</span></button>
+							<button id="unban-btn" onclick="openUnban()" class="btn btn-play btn-primary btn-needs-server btn-info" style="display: none;"><i class="glyphicon glyphicon-log-in"></i>&nbsp;<span data-i18n="lobby.unban">Unban</span></button>
+							<button id="preview" type="button" data-i18n-title="lobby.chooseSkin" title="Choose Skin" onclick="openSkinsList()">
+								<canvas id="previewSkin"></canvas>
+								<div id="previewName"></div>
+								<span class="preview-choose-skin"><i class="glyphicon glyphicon-folder-open" aria-hidden="true"></i><span data-i18n="lobby.chooseSkin">Choose Skin</span></span>
+							</button>
+						</div>
+						<div class="preview-options-column">
+							<label class="preview-auto-respawn">
+								<input id="preview-autoRespawn" class="menu-switch" type="checkbox" />
+								<span class="menu-row-label" data-i18n="settings.autoRespawn">AutoRespawn</span>
+							</label>
+							<div class="preview-colors-panel">
+								<p class="menu-group-title" data-i18n="colors.title">Colors</p>
+								<div id="preview-colors-copy" class="preview-colors-grid"></div>
+							</div>
+						</div>
 					</div>
 
 					<div id="colors">
@@ -286,25 +1867,33 @@
 					</div>
 				</div>
 
-				<div id="gameplay">
+				<div id="rules" class="menu-body" data-menu-panel="rules" style="display: none;">
 					<div>
-						<h2 class="title" data-i18n="gameplay.rulesTitle">Rules</h2>
-						<hr class="top" />
 						<p data-i18n="gameplay.rule1">Don't upload forbbiden custom skins, especially if it's someone's face, you might get your skin banned or yourself banned from the game.</p>
 						<p data-i18n="gameplay.rule2">Don't use other people's nicknames in chat or as your name in a derogatory way or harass people in chat, you might get muted or banned from the game.</p>
 						<p data-i18n="gameplay.rule3">Don't advertise other servers, services or websites in chat, you might get muted or banned from the game.</p>
-						<h2 class="title" data-i18n="gameplay.gameplayTitle">Gameplay</h2>
-						<hr class="top" />
+					</div>
+				</div>
+
+				<div id="gameplay" class="menu-body" data-menu-panel="gameplay" style="display: none;">
+					<div>
 						<div class="text"></div>
 					</div>
 				</div>
 
-				<div id="news">
+				<div id="news" class="menu-body" data-menu-panel="news" style="display: none;">
 					<div>
-						<h2 class="title" data-i18n="news.title">News</h2>
-						<hr class="top" />
 						<div class="text"></div>
 					</div>
+				</div>
+
+				<div class="menu-footer">
+					<a class="menu-footer-discord" href="https://discord.gg/emupedia-510149138491506688" target="_blank" rel="noopener noreferrer">
+						<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+							<path d="M19.54 5.34A16.3 16.3 0 0 0 15.44 4l-.5 1.03a15.2 15.2 0 0 0-5.86 0L8.56 4a16.5 16.5 0 0 0-4.11 1.35C1.85 9.22 1.15 13 1.5 16.72a16.7 16.7 0 0 0 5.03 2.55l1.22-1.67a10.7 10.7 0 0 1-1.92-.92l.47-.36c3.7 1.71 7.72 1.71 11.38 0l.48.36c-.62.36-1.27.67-1.93.92l1.22 1.67a16.6 16.6 0 0 0 5.03-2.55c.42-4.33-.72-8.08-2.94-11.38ZM8.5 14.5c-1.1 0-2-1.02-2-2.27s.88-2.28 2-2.28c1.13 0 2.03 1.03 2 2.28 0 1.25-.88 2.27-2 2.27Zm7 0c-1.1 0-2-1.02-2-2.27s.88-2.28 2-2.28c1.13 0 2.03 1.03 2 2.28 0 1.25-.87 2.27-2 2.27Z" />
+						</svg>
+						<span data-i18n="lobby.discordSuggestions">Join us on Discord if you have suggestions</span>
+					</a>
 				</div>
 			</div>
 		</div>
@@ -320,8 +1909,222 @@
 		<script src="assets/js/chat-filter.js?v=2"></script>
 		<script src="assets/js/nipplejs.js"></script>
 		<script src="assets/js/quadtree.js?v=2"></script>
-		<script src="assets/js/i18n.js?v=10"></script>
+		<script src="assets/js/i18n.js?v=23"></script>
 		<script src="assets/js/chat-translate.js?v=6"></script>
-		<script src="assets/js/main.min.js?v=254"></script>
+		<script>
+			(function () {
+				var options = document.querySelector('#settings .settings-options');
+				if (!options) return;
+
+				var groups = [
+					['Display', ['toggleFullscreen', 'darkTheme']],
+					['Camera & Zoom', ['cameraSmoothing', 'cellAnimationSpeed', 'moreZoom', 'showZoom']],
+					['Cell Appearance', ['showSkins', 'showNames', 'showColor', 'showMass', 'jellyPhysics', 'showIdenticon', 'fillSkin', 'showTransparent']],
+					['Performance', ['slowMassUpdates']],
+					['Map', ['showMinimap', 'showPosition', 'showBorder', 'showGrid', 'backgroundSectors']],
+					['Chat', ['showChat', 'useWordFilters']],
+					['Audio', ['playSounds']],
+					['Controls', ['feedMacro', 'splitMacro', 'leftClick', 'middleClick', 'rightClick', 'disableTouchControls', 'useJoystick', 'lockMobileButtons']],
+					['Gameplay', ['autoRespawn']]
+				];
+				var fragment = document.createDocumentFragment();
+				var resetPositions = document.getElementById('reset-button-positions-btn');
+
+				groups.forEach(function (group) {
+					var section = document.createElement('section');
+					var title = document.createElement('p');
+					var grid = document.createElement('div');
+					title.className = 'menu-group-title';
+					title.textContent = group[0];
+					grid.className = 'menu-settings-grid';
+
+					group[1].forEach(function (id) {
+						var input = document.getElementById(id);
+						var label = input && input.closest('label');
+						if (!label) return;
+						var range = label.querySelector('input[type="range"]');
+						var text = label.querySelector('span');
+						label.className = 'menu-row' + (range ? ' menu-row-slider' : '');
+						input.classList.add('menu-switch');
+						if (text) text.classList.add('menu-row-label');
+						if (range) range.classList.add('menu-range');
+						grid.appendChild(label);
+					});
+
+					section.className = 'menu-settings-group';
+					section.setAttribute('data-settings-group', group[0]);
+					section.appendChild(title);
+					section.appendChild(grid);
+					fragment.appendChild(section);
+				});
+
+				options.replaceChildren(fragment);
+				if (resetPositions) {
+					resetPositions.classList.add('menu-reset-btn');
+					options.appendChild(resetPositions);
+				}
+
+				var settings = document.getElementById('settings');
+				function settingsCard(id) {
+					var node = document.getElementById(id);
+					while (node && node.parentElement !== settings) node = node.parentElement;
+					return node;
+				}
+
+				var languageCard = settingsCard('locale');
+				var keyboardCard = settingsCard('keyFeed-btn');
+				var mouseCard = settingsCard('mouseLeftAction');
+				var mutedCard = settingsCard('muted-users-list');
+
+				var colors = document.getElementById('colors');
+				var colorsCard = null;
+				var previewColors = document.getElementById('preview-colors-copy');
+				var autoRespawn = document.getElementById('autoRespawn');
+				var previewAutoRespawn = document.getElementById('preview-autoRespawn');
+				if (autoRespawn && previewAutoRespawn) {
+					function syncAutoRespawnCopy() {
+						previewAutoRespawn.checked = autoRespawn.checked;
+					}
+
+					previewAutoRespawn.addEventListener('change', function () {
+						autoRespawn.checked = previewAutoRespawn.checked;
+						autoRespawn.dispatchEvent(new Event('change', { bubbles: true }));
+					});
+					autoRespawn.addEventListener('change', syncAutoRespawnCopy);
+					requestAnimationFrame(syncAutoRespawnCopy);
+					setTimeout(syncAutoRespawnCopy, 250);
+					setTimeout(syncAutoRespawnCopy, 1000);
+				}
+				if (colors && previewColors) {
+					colors.querySelectorAll('label').forEach(function (sourceLabel) {
+						var sourceInput = sourceLabel.querySelector('input[type="color"]');
+						var copyLabel = sourceLabel.cloneNode(true);
+						var copyInput = copyLabel.querySelector('input[type="color"]');
+						if (!sourceInput || !copyInput) return;
+						copyLabel.className = 'preview-color';
+						copyInput.id = 'preview-' + sourceInput.id;
+
+						function syncCopy() {
+							copyInput.value = sourceInput.value;
+						}
+
+						['input', 'change'].forEach(function (eventName) {
+							copyInput.addEventListener(eventName, function () {
+								sourceInput.value = copyInput.value;
+								sourceInput.dispatchEvent(new Event(eventName, { bubbles: true }));
+							});
+							sourceInput.addEventListener(eventName, syncCopy);
+						});
+
+						previewColors.appendChild(copyLabel);
+						function syncAfterGameInit() {
+							requestAnimationFrame(syncCopy);
+							setTimeout(syncCopy, 250);
+							setTimeout(syncCopy, 1000);
+						}
+						if (document.readyState === 'loading') {
+							document.addEventListener('DOMContentLoaded', syncAfterGameInit, { once: true });
+						} else {
+							syncAfterGameInit();
+						}
+					});
+				}
+				if (colors) {
+					colorsCard = document.createElement('div');
+					var colorsTitle = document.createElement('p');
+					colorsTitle.className = 'menu-group-title';
+					colorsTitle.setAttribute('data-i18n', 'colors.title');
+					colorsTitle.textContent = window.I18n ? window.I18n.t('colors.title') : 'Colors';
+					colorsCard.appendChild(colorsTitle);
+					colorsCard.appendChild(colors);
+				}
+
+				if (languageCard) languageCard.classList.add('settings-language-section');
+				[keyboardCard, mouseCard, mutedCard, colorsCard].forEach(function (card) {
+					if (card) card.classList.add('settings-card');
+				});
+
+				function settingsGroup(name) {
+					return options.querySelector('[data-settings-group="' + name + '"]');
+				}
+				var hiddenGameplayGroup = settingsGroup('Gameplay');
+				if (hiddenGameplayGroup) {
+					hiddenGameplayGroup.hidden = true;
+					hiddenGameplayGroup.setAttribute('aria-hidden', 'true');
+					hiddenGameplayGroup.style.display = 'none';
+				}
+
+				var tabDefinitions = [
+					{
+						id: 'general',
+						label: 'General',
+						i18n: 'settings.tabGeneral',
+						nodes: [languageCard, settingsGroup('Display'), settingsGroup('Camera & Zoom'), settingsGroup('Performance'), settingsGroup('Audio')]
+					},
+					{
+						id: 'appearance',
+						label: 'Appearance',
+						i18n: 'settings.tabAppearance',
+						nodes: [settingsGroup('Cell Appearance'), colorsCard]
+					},
+					{
+						id: 'interface',
+						label: 'Interface',
+						i18n: 'settings.tabInterface',
+						nodes: [settingsGroup('Map'), settingsGroup('Chat'), mutedCard]
+					},
+					{
+						id: 'controls',
+						label: 'Controls',
+						i18n: 'settings.tabControls',
+						nodes: [settingsGroup('Controls'), keyboardCard, mouseCard, resetPositions]
+					}
+				];
+				var settingsTabs = document.createElement('div');
+				var settingsPanels = document.createElement('div');
+				settingsTabs.className = 'settings-tabs';
+				settingsTabs.setAttribute('role', 'tablist');
+				settingsTabs.setAttribute('aria-label', 'Settings sections');
+				settingsPanels.className = 'settings-panels';
+
+				tabDefinitions.forEach(function (definition, index) {
+					var button = document.createElement('button');
+					var panel = document.createElement('div');
+					var active = index === 0;
+					button.type = 'button';
+					button.className = 'settings-tab' + (active ? ' settings-tab-active' : '');
+					button.setAttribute('data-i18n', definition.i18n);
+					button.textContent = window.I18n && window.I18n.isReady() ? window.I18n.t(definition.i18n) : definition.label;
+					button.setAttribute('role', 'tab');
+					button.setAttribute('aria-selected', active ? 'true' : 'false');
+					button.setAttribute('aria-controls', 'settings-panel-' + definition.id);
+					panel.id = 'settings-panel-' + definition.id;
+					panel.className = 'settings-panel' + (active ? ' settings-panel-active' : '');
+					panel.setAttribute('role', 'tabpanel');
+
+					definition.nodes.forEach(function (node) {
+						if (node) panel.appendChild(node);
+					});
+
+					button.addEventListener('click', function () {
+						settingsTabs.querySelectorAll('.settings-tab').forEach(function (tab) {
+							var selected = tab === button;
+							tab.classList.toggle('settings-tab-active', selected);
+							tab.setAttribute('aria-selected', selected ? 'true' : 'false');
+						});
+						settingsPanels.querySelectorAll('.settings-panel').forEach(function (item) {
+							item.classList.toggle('settings-panel-active', item === panel);
+						});
+					});
+
+					settingsTabs.appendChild(button);
+					settingsPanels.appendChild(panel);
+				});
+
+				settings.replaceChildren(settingsTabs, settingsPanels);
+				if (hiddenGameplayGroup) settings.appendChild(hiddenGameplayGroup);
+			}());
+		</script>
+		<script src="assets/js/main.min.js?v=268"></script>
 	</body>
 </html>

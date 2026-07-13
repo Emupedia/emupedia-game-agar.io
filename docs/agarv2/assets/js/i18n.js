@@ -3,6 +3,7 @@
 	'use strict';
 
 	const LOCALES_PATH = 'assets/locales/';
+	const LOCALES_VERSION = '10';
 	const FALLBACK = 'en';
 
 	const SUPPORTED_LOCALES = [
@@ -45,6 +46,15 @@
 		{ code: 'ru-Latn', name: 'Russkiy (Latin)' },
 		{ code: 'uk', name: 'Українська' }
 	];
+
+	const LOCALE_COUNTRIES = {
+		en: 'gb', es: 'es', tr: 'tr', cs: 'cz', bs: 'ba', sr: 'rs', 'sr-Latn': 'rs',
+		hr: 'hr', mk: 'mk', 'mk-Latn': 'mk', sl: 'si', ro: 'ro', it: 'it', fr: 'fr',
+		'pt-BR': 'br', 'pt-PT': 'pt', nl: 'nl', de: 'de', sv: 'se', da: 'dk', nb: 'no',
+		nn: 'no', hu: 'hu', fi: 'fi', et: 'ee', pl: 'pl', lv: 'lv', lt: 'lt', mt: 'mt',
+		sk: 'sk', bg: 'bg', 'bg-Latn': 'bg', el: 'gr', ka: 'ge', 'ka-Latn': 'ge',
+		ru: 'ru', 'ru-Latn': 'ru', uk: 'ua'
+	};
 
 	const cache = {};
 	let strings = {};
@@ -139,7 +149,7 @@
 	async function fetchLocale(code) {
 		if (cache[code]) return cache[code];
 		const fileCode = code === 'pt' ? 'pt-BR' : code;
-		const res = await fetch(`${LOCALES_PATH}${fileCode}.json`, { cache: 'default' });
+		const res = await fetch(`${LOCALES_PATH}${fileCode}.json?v=${LOCALES_VERSION}`, { cache: 'default' });
 		if (!res.ok) throw new Error(`Locale ${code} not found`);
 		const data = await res.json();
 		cache[code] = data;
@@ -235,22 +245,76 @@
 		});
 	}
 
+	function updateMutedPlayersListText() {
+		const mutedList = document.getElementById('muted-users-list');
+		if (!mutedList) return;
+
+		const emptyMessage = mutedList.querySelector('.text-muted');
+		if (emptyMessage) emptyMessage.textContent = t('muted.empty');
+		mutedList.querySelectorAll('.muted-user-item .btn-danger').forEach(button => {
+			button.textContent = t('muted.unmute');
+		});
+	}
+
 	function renderGameplay() {
 		const container = document.querySelector('#gameplay .text');
 		if (!container) return;
 		const g = strings.gameplay;
 		if (!g) return;
 
-		let html = '';
+		const sectionIcons = {
+			objective: '🎯',
+			startingOut: '🟢',
+			movement: '🖱️',
+			consumeSmaller: '⚡',
+			avoidLarger: '🛡️',
+			splitting: '✂️',
+			ejectingMass: '💨',
+			teamPlay: '🤝',
+			growDominate: '📈',
+			viruses: '🦠',
+			beStrategic: '🧠'
+		};
+		const splitSection = value => {
+			const cleanValue = String(value).replace(/<hr\s*\/?\s*>\s*$/i, '').trim();
+			const match = cleanValue.match(/^\s*<b>(.*?)<\/b>\s*([\s\S]*)$/i);
+			return match
+				? { title: match[1].replace(/\s*[:：]\s*$/, ''), body: match[2] }
+				: { title: '', body: cleanValue };
+		};
+
+		let html = '<div class="menu-guide-content">';
 		if (g.controlsIntro) {
-			html += `<p class="text-center">${g.controlsIntro}</p><hr />`;
+			const controls = g.controlsIntro
+				.split(/<br\s*\/?\s*>/i)
+				.map(control => control.trim())
+				.filter(Boolean);
+			html += '<div class="menu-guide-controls">';
+			controls.forEach(control => {
+				html += `<div class="menu-guide-control"><span>${control}</span></div>`;
+			});
+			html += '</div>';
 		}
 		const sections = ['objective', 'startingOut', 'movement', 'consumeSmaller', 'avoidLarger', 'splitting', 'ejectingMass', 'teamPlay', 'growDominate', 'viruses', 'beStrategic'];
 		sections.forEach(key => {
-			if (g[key]) html += g[key] + '<br /><br />';
+			if (!g[key]) return;
+			const section = splitSection(g[key]);
+			html += `
+				<section class="menu-guide-section${key === 'objective' ? ' menu-guide-objective' : ''}">
+					<span class="menu-guide-icon" aria-hidden="true">${sectionIcons[key]}</span>
+					<div>
+						${section.title ? `<h3 class="menu-guide-title">${section.title}</h3>` : ''}
+						<p class="menu-guide-body">${section.body}</p>
+					</div>
+				</section>`;
 		});
-		if (g.closing) html += `<hr /><p class="text-center">${g.closing}</p><hr />`;
-		if (g.goodLuck) html += `<h5 class="text-center">${g.goodLuck}</h5>`;
+		if (g.closing || g.goodLuck) {
+			html += '<div class="menu-guide-footer">';
+			if (g.closing) html += `<p>${g.closing}</p>`;
+			if (g.goodLuck) html += `<strong>${g.goodLuck}</strong>`;
+			html += '</div>';
+		}
+		html += '</div>';
 		container.innerHTML = html;
 	}
 
@@ -320,25 +384,42 @@
 	}
 
 	function populateLocaleSelect(selected) {
-		const sel = document.getElementById('locale');
-		if (!sel || sel.options.length > 1) return;
-		sel.innerHTML = '';
-		SUPPORTED_LOCALES.slice()
-			.sort((a, b) => a.name.localeCompare(b.name, undefined, { sensitivity: 'base' }))
-			.forEach(l => {
+		const selects = document.querySelectorAll('[data-locale-select]');
+		const locales = SUPPORTED_LOCALES.slice()
+			.sort((a, b) => a.name.localeCompare(b.name, undefined, { sensitivity: 'base' }));
+		selects.forEach(sel => {
+			if (sel.options.length > 1) return;
+			sel.innerHTML = '';
+			locales.forEach(l => {
 				const opt = document.createElement('option');
 				opt.value = l.code;
 				opt.textContent = l.name;
 				if (l.code === selected) opt.selected = true;
 				sel.appendChild(opt);
 			});
+		});
+		updateLocaleFlag(selected);
+	}
+
+	function updateLocaleFlag(localeCode) {
+		const flag = document.getElementById('headerLocaleFlag');
+		const country = LOCALE_COUNTRIES[localeCode];
+		if (!flag || !country) return;
+		const src = `https://flagcdn.io/flags/4x3/${country}.svg`;
+		flag.hidden = false;
+		if (flag.src !== src) flag.src = src;
 	}
 
 	function applyLocale() {
 		document.documentElement.lang = locale;
+		updateLocaleFlag(locale);
+		document.querySelectorAll('[data-locale-select]').forEach(sel => {
+			sel.value = locale;
+		});
 		applyMeta();
 		applyDataAttributes();
 		updateMouseActionSelects();
+		updateMutedPlayersListText();
 		renderGameplay();
 		renderNews();
 		window.dispatchEvent(new CustomEvent('i18n:locale'));

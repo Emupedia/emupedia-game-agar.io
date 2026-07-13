@@ -33,7 +33,8 @@
     "chooseSkin": "Choose Skin",
     "uploadSkin": "Upload Skin",
     "unban": "Unban",
-    "skinCopied": "Skin URL Copied to Clipboard!"
+    "skinCopied": "Skin URL Copied to Clipboard!",
+    "copied": "Copied!"
   },
   "settings": {
     "language": "Language",

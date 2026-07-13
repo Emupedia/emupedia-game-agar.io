@@ -7486,6 +7486,7 @@ const L = 'localhost:58585';
 
 		row.hidden = !hasApi;
 		cb.disabled = !available;
+		row.title = cb.disabled ? 'Only available in Chrome browser' : '';
 		if (!available && settings.translateChat) {
 			settings.translateChat = false;
 			cb.checked = false;
@@ -9425,25 +9426,139 @@ const L = 'localhost:58585';
 		return size;
 	}
 
-	function paintSkinPreviewCanvas(canvas, image) {
-		ensurePreviewSkinCanvasSize(canvas);
+	const previewSkinJellyStates = new WeakMap();
 
-		const ctx = canvas.getContext('2d');
-
-		ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-		if (image && image.width && image.height) {
-			drawSkinImageCoverRect(ctx, image, 0, 0, canvas.width, canvas.height);
+	function getPreviewSkinJellyState(canvas) {
+		let state = previewSkinJellyStates.get(canvas);
+		if (!state) {
+			state = { canvas, image: null, hasSkin: false, size: 0, radius: 0, lineWidth: 0, points: [], pointsVel: [], pointsVelScratch: [] };
+			previewSkinJellyStates.set(canvas, state);
 		}
+		return state;
+	}
+
+	function syncPreviewSkinJellyGeometry(state) {
+		const size = ensurePreviewSkinCanvasSize(state.canvas);
+		if (state.size === size && state.points.length) return;
+
+		state.size = size;
+		state.lineWidth = 10;
+		state.radius = size / 2 - state.lineWidth / 2 - 2;
+		const pointCount = Math.min(Math.max(state.radius | 0, CELL_POINTS_MIN), CELL_POINTS_MAX);
+		const incremental = Math.PI * 2 / pointCount;
+		const center = size / 2;
+		state.points = [];
+		state.pointsVel = [];
+		state.pointsVelScratch = new Array(pointCount);
+
+		for (let index = 0; index < pointCount; index++) {
+			const angle = incremental * index;
+			state.points.push({
+				x: center + Math.cos(angle) * state.radius,
+				y: center + Math.sin(angle) * state.radius,
+				rl: state.radius
+			});
+			state.pointsVel.push(Math.random() - .5);
+		}
+	}
+
+	function movePreviewSkinJellyPoints(state) {
+		const pointCount = state.points.length;
+		const points = state.points;
+		const pointsVel = state.pointsVel;
+		const scratch = state.pointsVelScratch;
+
+		for (let index = 0; index < pointCount; index++) scratch[index] = pointsVel[index];
+
+		for (let index = 0; index < pointCount; index++) {
+			const previousVelocity = scratch[(index - 1 + pointCount) % pointCount];
+			const nextVelocity = scratch[(index + 1) % pointCount];
+			const newVelocity = Math.max(Math.min((pointsVel[index] + Math.random() - .5) * .7, 10), -10);
+			pointsVel[index] = (previousVelocity + nextVelocity + 8 * newVelocity) / 10;
+		}
+
+		const center = state.size / 2;
+		const incremental = Math.PI * 2 / pointCount;
+		for (let index = 0; index < pointCount; index++) {
+			const point = points[index];
+			const previousRadius = points[(index - 1 + pointCount) % pointCount].rl;
+			const nextRadius = points[(index + 1) % pointCount].rl;
+			let currentRadius = Math.max(point.rl + pointsVel[index], 0);
+
+			currentRadius = (9 * currentRadius + state.radius) / 10;
+			point.rl = (previousRadius + nextRadius + 8 * currentRadius) / 10;
+
+			const angle = incremental * index;
+			point.x = center + Math.cos(angle) * point.rl;
+			point.y = center + Math.sin(angle) * point.rl;
+		}
+	}
+
+	function drawPreviewCheckerboard(ctx, size) {
+		const tile = Math.max(7, Math.round(size / 12));
+		for (let y = 0; y < size; y += tile) {
+			for (let x = 0; x < size; x += tile) {
+				ctx.fillStyle = ((x / tile + y / tile) & 1) ? '#c9c9cf' : '#eeeef2';
+				ctx.fillRect(x, y, tile, tile);
+			}
+		}
+	}
+
+	function renderPreviewSkinJelly(state, staticShape) {
+		syncPreviewSkinJellyGeometry(state);
+		const canvas = state.canvas;
+		const ctx = canvas.getContext('2d');
+		const size = state.size;
+		const center = size / 2;
+		const points = state.points;
+		const cellColor = settings.showColor ? settings.cellColor : '#ffffff';
+		const borderColor = settings.showColor ? settings.borderColor : '#e5e5e5';
+
+		ctx.clearRect(0, 0, size, size);
+		ctx.beginPath();
+		if (staticShape) {
+			ctx.arc(center, center, state.radius, 0, Math.PI * 2);
+		} else {
+			ctx.moveTo(points[0].x, points[0].y);
+			for (const point of points) ctx.lineTo(point.x, point.y);
+		}
+		ctx.closePath();
+
+		const showSkin = state.hasSkin && tempShowSkins && state.image && state.image.width && state.image.height;
+		if (!showSkin || settings.fillSkin) {
+			ctx.fillStyle = cellColor;
+			ctx.fill();
+		}
+
+		if (showSkin) {
+			ctx.save();
+			ctx.clip();
+			if (!settings.fillSkin && canvas.style.backgroundImage !== 'none') drawPreviewCheckerboard(ctx, size);
+			drawSkinImageCoverRect(ctx, state.image, 0, 0, size, size);
+			ctx.restore();
+		}
+
+		ctx.strokeStyle = borderColor;
+		ctx.lineWidth = state.lineWidth;
+		ctx.stroke();
+	}
+
+	function paintSkinPreviewCanvas(canvas, image, hasSkin) {
+		const state = getPreviewSkinJellyState(canvas);
+		if (state.image && state.image !== image && state.image !== TRANSP && typeof state.image.close === 'function') state.image.close();
+		state.image = image;
+		state.hasSkin = !!hasSkin;
+		renderPreviewSkinJelly(state, false);
 	}
 
 	function drawSkinPreview(url, canvas) {
 		const paintFallback = () => {
-			if (TRANSP && TRANSP.width) paintSkinPreviewCanvas(canvas, TRANSP);
+			if (TRANSP && TRANSP.width) paintSkinPreviewCanvas(canvas, TRANSP, false);
 			else ensurePreviewSkinCanvasSize(canvas);
 		}
 
 		const previewSkin = normalizeSkinId(url) || url;
+		const hasSkin = !previewSkin.includes('transparent.png');
 
 		if (encSkins) {
 			if (previewSkin.startsWith('https://iili.io/')) {
@@ -9457,8 +9572,7 @@ const L = 'localhost:58585';
 					return res.arrayBuffer();
 				}).then(buffer => decodeEncSkinBuffer(previewSkin, buffer))
 					.then(data => {
-						paintSkinPreviewCanvas(canvas, data);
-						data.close();
+						paintSkinPreviewCanvas(canvas, data, hasSkin);
 					})
 					.catch(error => {
 						console.error(error);
@@ -9478,8 +9592,7 @@ const L = 'localhost:58585';
 					}
 					return createImageBitmap(blob);
 				}).then(data => {
-					paintSkinPreviewCanvas(canvas, data);
-					data.close();
+					paintSkinPreviewCanvas(canvas, data, hasSkin);
 				}).catch(error => {
 					console.error(error);
 					paintFallback();
@@ -9490,7 +9603,7 @@ const L = 'localhost:58585';
 			image.crossOrigin = 'Anonymous';
 
 			image.onload = function() {
-				paintSkinPreviewCanvas(canvas, image);
+				paintSkinPreviewCanvas(canvas, image, hasSkin);
 			}
 
 			image.onerror = paintFallback;
@@ -9499,6 +9612,69 @@ const L = 'localhost:58585';
 			if (!url.startsWith('./')) Logger.info('preview-image', url, previewImgUrl);
 			image.src = previewImgUrl;
 		}
+	}
+
+	function initPreviewSkinJelly() {
+		const canvas = byId('previewSkin');
+		if (!canvas) return;
+
+		const state = getPreviewSkinJellyState(canvas);
+		const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+		let lastFrame = performance.now();
+		let accumulator = 0;
+		let lastPointerImpulse = 0;
+
+		function applyCollisionImpulse(index, strength) {
+			const pointCount = state.points.length;
+			if (!pointCount) return;
+			state.pointsVel[index] = Math.min(state.pointsVel[index], 0) - strength;
+		}
+
+		function animate(now) {
+			const elapsed = Math.min(now - lastFrame, 50);
+			lastFrame = now;
+			syncPreviewSkinJellyGeometry(state);
+
+			if (canvas.offsetParent !== null) {
+				if (motionQuery.matches) {
+					renderPreviewSkinJelly(state, true);
+				} else {
+					accumulator += elapsed;
+					while (accumulator >= 1000 / 60) {
+						movePreviewSkinJellyPoints(state);
+						accumulator -= 1000 / 60;
+					}
+					renderPreviewSkinJelly(state, false);
+				}
+			} else {
+				accumulator = 0;
+			}
+
+			requestAnimationFrame(animate);
+		}
+
+		canvas.addEventListener('pointerenter', () => {
+			syncPreviewSkinJellyGeometry(state);
+			if (!motionQuery.matches) applyCollisionImpulse(Math.floor(Math.random() * state.points.length), 3.2);
+		});
+
+		canvas.addEventListener('pointermove', event => {
+			const now = performance.now();
+			if (motionQuery.matches || now - lastPointerImpulse < 80) return;
+
+			const bounds = canvas.getBoundingClientRect();
+			const x = event.clientX - bounds.left - bounds.width / 2;
+			const y = event.clientY - bounds.top - bounds.height / 2;
+			let angle = Math.atan2(y, x);
+			if (angle < 0) angle += Math.PI * 2;
+			const pointIndex = Math.round(angle / (Math.PI * 2) * state.points.length) % state.points.length;
+
+			applyCollisionImpulse(pointIndex, 2.25);
+			lastPointerImpulse = now;
+		});
+
+		renderPreviewSkinJelly(state, motionQuery.matches);
+		requestAnimationFrame(animate);
 	}
 
 	function cellSort(a, b) {
@@ -10322,7 +10498,7 @@ const L = 'localhost:58585';
 
 			const canvasMethods = ['toDataURL', 'toBlob'];
 			const ctxMethods = ['getImageData'];
-			const allowedCanvasIds = new Set(['canvas', 'previewSkin']);
+			const allowedCanvasIds = new Set(['canvas', 'previewSkin', 'menuLogoCanvas']);
 			let tampered = false;
 
 			canvasMethods.forEach(method => {
@@ -10827,6 +11003,7 @@ const L = 'localhost:58585';
 		const handleTouchStart = (event) => {
 			if (typeof event['isTrusted'] !== 'boolean' || event['isTrusted'] === false) return;
 			if (settings.disableTouchControls) return;
+			document.documentElement.classList.add('touch-device');
 
 			const target = event.target;
 			const buttonId = target.id;
@@ -11363,7 +11540,6 @@ const L = 'localhost:58585';
 
 				if (!touched) {
 					chatBox.focus();
-					byId('menuBtn')?.show();
 				} else {
 					if (document.activeElement === chatBox) {
 						chatBox.blur();
@@ -11785,6 +11961,10 @@ const L = 'localhost:58585';
 
 		mainCanvas.addEventListener('click', event => {
 			if (typeof event['isTrusted'] !== 'boolean' || event['isTrusted'] === false) return;
+			if (cells.mine.length === 0 && !escOverlayShown) {
+				showESCOverlay();
+				return;
+			}
 
 			if (!chat.visible || !settings.showChat || !chat.muteIconAreas) return;
 
@@ -12058,8 +12238,6 @@ const L = 'localhost:58585';
 					init();
 					return;
 				}
-
-				byId('gallery-btn').style.display = 'inline-block';
 
 				const stamp = Date.now();
 
@@ -12349,40 +12527,206 @@ const L = 'localhost:58585';
 		byId('upload-skin')?.hide();
 	}
 
-	window.copyToClipboard = (text, el) => {
-		if ('clipboard' in navigator) {
-			// noinspection JSIgnoredPromiseFromCall
-			navigator.clipboard.writeText(text);
-		} else {
+	window.copyToClipboard = async (text, el) => {
+		let copied = false;
+		if (el) {
+			const copiedText = (typeof I18n !== 'undefined' && I18n.isReady()) ? I18n.t('lobby.copied') : 'Copied!';
+			const successIcon = document.createElement('span');
+			const successLabel = document.createElement('span');
+			successIcon.setAttribute('aria-hidden', 'true');
+			successIcon.textContent = '✔';
+			successLabel.textContent = copiedText;
+			el.classList.add('is-copied');
+			el.setAttribute('aria-label', copiedText);
+			el.replaceChildren(successIcon, successLabel);
+			clearTimeout(el.copyResetTimer);
+			el.copyResetTimer = setTimeout(() => {
+				const copyIcon = document.createElement('span');
+				const copyLabel = document.createElement('span');
+				const copyText = (typeof I18n !== 'undefined' && I18n.isReady()) ? I18n.t('lobby.copy') : 'Copy';
+				copyIcon.setAttribute('aria-hidden', 'true');
+				copyIcon.textContent = '⧉';
+				copyLabel.setAttribute('data-i18n', 'lobby.copy');
+				copyLabel.textContent = copyText;
+				el.classList.remove('is-copied');
+				el.setAttribute('aria-label', copyText);
+				el.replaceChildren(copyIcon, copyLabel);
+			}, 1800);
+		}
+
+		if (navigator.clipboard && typeof navigator.clipboard.writeText === 'function') {
+			try {
+				await navigator.clipboard.writeText(text);
+				copied = true;
+			} catch (_) {
+				// Fall through to the legacy copy method.
+			}
+		}
+
+		if (!copied) {
 			let element = document.createElement('input');
-
 			element.type = 'text';
-			element.disabled = true;
-
+			element.readOnly = true;
 			element.style.setProperty('position', 'fixed');
 			element.style.setProperty('z-index', '-100');
 			element.style.setProperty('pointer-events', 'none');
 			element.style.setProperty('opacity', '0');
-
 			element.value = text;
-
 			document.body.appendChild(element);
-
-			element.click();
+			element.focus();
 			element.select();
 			// noinspection JSDeprecatedSymbols
-			document.execCommand('copy');
-
-			document.body.removeChild(element);
+			try {
+				document.execCommand('copy');
+				copied = true;
+			} catch (_) {
+				copied = false;
+			}
+			element.remove();
 		}
 
-		if (el) {
-			let message = document.createElement('div');
-			message.innerText = (typeof I18n !== 'undefined' && I18n.isReady()) ? I18n.t('lobby.skinCopied') : 'Skin URL Copied to Clipboard!';
-			el.parentElement.parentElement.after(message);
-			setTimeout(() => message.remove(), 2000);
-		}
+		return copied;
 	}
 
+	/**
+	 * Draws a real red cell using the same point velocity smoothing, radius
+	 * relaxation, and neighboring-radius smoothing as Cell.movePoints().
+	 */
+	function initMenuLogoJelly() {
+		const canvas = byId('menuLogoCanvas');
+		const ctx = canvas?.getContext('2d');
+		if (!canvas || !ctx) return;
+
+		const logicalSize = 44;
+		const center = logicalSize / 2;
+		const radius = 16.5;
+		const pointCount = 32;
+		const tau = Math.PI * 2 / pointCount;
+		const pixelRatio = Math.min(Math.max(window.devicePixelRatio || 1, 3), 4);
+		const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+		const points = [];
+		const pointsVel = [];
+		const pointsVelScratch = new Array(pointCount);
+		let lastFrame = performance.now();
+		let accumulator = 0;
+		let lastPointerImpulse = 0;
+
+		canvas.width = Math.round(logicalSize * pixelRatio);
+		canvas.height = Math.round(logicalSize * pixelRatio);
+		ctx.lineJoin = 'round';
+
+		for (let index = 0; index < pointCount; index++) {
+			const angle = tau * index;
+			points.push({
+				x: center + Math.cos(angle) * radius,
+				y: center + Math.sin(angle) * radius,
+				rl: radius
+			});
+			pointsVel.push(Math.random() - .5);
+		}
+
+		function resetTransform() {
+			ctx.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
+		}
+
+		function movePoints() {
+			for (let index = 0; index < pointCount; index++) {
+				pointsVelScratch[index] = pointsVel[index];
+			}
+
+			for (let index = 0; index < pointCount; index++) {
+				const previousVelocity = pointsVelScratch[(index - 1 + pointCount) % pointCount];
+				const nextVelocity = pointsVelScratch[(index + 1) % pointCount];
+				const newVelocity = Math.max(Math.min((pointsVel[index] + Math.random() - .5) * .7, 10), -10);
+				pointsVel[index] = (previousVelocity + nextVelocity + 8 * newVelocity) / 10;
+			}
+
+			for (let index = 0; index < pointCount; index++) {
+				const point = points[index];
+				const previousRadius = points[(index - 1 + pointCount) % pointCount].rl;
+				const nextRadius = points[(index + 1) % pointCount].rl;
+				let currentRadius = Math.max(point.rl + pointsVel[index], 0);
+
+				currentRadius = (9 * currentRadius + radius) / 10;
+				point.rl = (previousRadius + nextRadius + 8 * currentRadius) / 10;
+
+				const angle = tau * index;
+				point.x = center + Math.cos(angle) * point.rl;
+				point.y = center + Math.sin(angle) * point.rl;
+			}
+		}
+
+		function drawCell(staticShape) {
+			resetTransform();
+			ctx.clearRect(0, 0, logicalSize, logicalSize);
+			ctx.fillStyle = '#eb1b23';
+			ctx.strokeStyle = '#c22828';
+			ctx.lineWidth = 3.5;
+			ctx.beginPath();
+
+			if (staticShape) {
+				ctx.arc(center, center, radius, 0, Math.PI * 2);
+			} else {
+				ctx.moveTo(points[0].x, points[0].y);
+				for (const point of points) ctx.lineTo(point.x, point.y);
+			}
+
+			ctx.closePath();
+			ctx.fill();
+			ctx.stroke();
+		}
+
+		function applyCollisionImpulse(index, strength) {
+			const opposite = (index + (pointCount >> 1)) % pointCount;
+			pointsVel[index] = Math.min(pointsVel[index], 0) - strength;
+			pointsVel[(index - 1 + pointCount) % pointCount] -= strength * .45;
+			pointsVel[(index + 1) % pointCount] -= strength * .45;
+			pointsVel[opposite] = Math.max(pointsVel[opposite], 0) + strength * .38;
+		}
+
+		function animate(now) {
+			const elapsed = Math.min(now - lastFrame, 50);
+			lastFrame = now;
+
+			if (motionQuery.matches) {
+				drawCell(true);
+				requestAnimationFrame(animate);
+				return;
+			}
+
+			accumulator += elapsed;
+			while (accumulator >= 1000 / 60) {
+				movePoints();
+				accumulator -= 1000 / 60;
+			}
+
+			drawCell(false);
+			requestAnimationFrame(animate);
+		}
+
+		canvas.addEventListener('pointerenter', () => {
+			if (!motionQuery.matches) applyCollisionImpulse(Math.floor(Math.random() * pointCount), 1.8);
+		});
+
+		canvas.addEventListener('pointermove', event => {
+			const now = performance.now();
+			if (motionQuery.matches || now - lastPointerImpulse < 80) return;
+
+			const bounds = canvas.getBoundingClientRect();
+			const x = event.clientX - bounds.left - bounds.width / 2;
+			const y = event.clientY - bounds.top - bounds.height / 2;
+			let angle = Math.atan2(y, x);
+			if (angle < 0) angle += Math.PI * 2;
+			const pointIndex = Math.round(angle / (Math.PI * 2) * pointCount) % pointCount;
+
+			applyCollisionImpulse(pointIndex, 1.15);
+			lastPointerImpulse = now;
+		});
+
+		drawCell(motionQuery.matches);
+		requestAnimationFrame(animate);
+	}
+	window.addEventListener('DOMContentLoaded', initPreviewSkinJelly);
+	window.addEventListener('DOMContentLoaded', initMenuLogoJelly);
 	window.addEventListener('DOMContentLoaded', start);
 })();
