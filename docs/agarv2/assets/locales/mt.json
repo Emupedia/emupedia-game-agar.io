@@ -18,7 +18,7 @@
     "title": "Agar.io v2",
     "discordSuggestions": "Ingħaqad magħna fuq Discord jekk għandek suġġerimenti",
     "nickname": "Laqam",
-    "skin": "Ġilda",
+    "skin": "Skin",
     "skinPlaceholder": "Isem tal-Ġilda",
     "copy": "Kopja",
     "clanName": "Isem Klan",
@@ -26,25 +26,25 @@
     "createClan": "Oħloq Klan",
     "leaveClan": "Ħalli Clan",
     "copyInvite": "Ikkopja Stedinna",
-    "gameMode": "Mod tal-Logħba",
-    "play": "Play",
-    "chooseSkin": "Agħżel Ġilda",
-    "uploadSkin": "Ittella Ġilda",
-    "unban": "Unban",
+    "gameMode": "Mod",
+    "play": "Ilgħab",
+    "chooseSkin": "Agħżel skin",
+    "uploadSkin": "Tella' skin",
+    "unban": "Neħħi l-imblokk",
     "skinCopied": "URL tal-ġilda kkupjat fil-clipboard!",
-    "spectate": "Spettaklu",
-    "settings": "Issettjar"
+    "spectate": "Ara",
+    "settings": "Għażliet"
   },
   "settings": {
     "language": "Lingwa",
     "mutedPlayers": "Plejers Muted",
     "mutePlaceholder": "Daħħal il-laqam biex tismut",
-    "mute": "Mute",
+    "mute": "Sikket",
     "keyboardBindings": "Bindings tal-buttuni tat-Tastiera",
     "feed": "Għalf:",
     "split": "Qsim:",
     "doubleSplit": "Qsim Doppju:",
-    "multiSplit": "Multi Split:",
+    "multiSplit": "Qasma multipla:",
     "zoomIn": "Żomm 'il ġewwa:",
     "zoomOut": "Żomm 'il barra:",
     "minion": "Kamera tal-Ispettatur b'xejn / Kontroll tal-Minion:",
@@ -56,12 +56,12 @@
     "rightClick": "Ikklikkja bil-lemin:",
     "resetMouse": "Irrisettja għal Defaults",
     "mouseHint": "Ikkonfigura liema azzjoni twettaq kull buttuna tal-maws",
-    "toggleFullscreen": "Toggle Fullscreen",
+    "toggleFullscreen": "Skrin sħiħ",
     "darkTheme": "Tema skur",
     "themeLight": "Ċar",
     "themeDark": "Skur",
     "cameraSmoothing": "It-twittija tal-kamera",
-    "cellAnimationSpeed": "Veloċità ta' Animazzjonijiet taċ-Ċelluli",
+    "cellAnimationSpeed": "Veloċità tal-animazzjoni",
     "showSkins": "Ġlud taċ-Ċelloli",
     "showNames": "Ismijiet taċ-Ċelloli",
     "showColor": "Kuluri taċ-Ċellola",
@@ -86,14 +86,15 @@
     "middleClickToggle": "Ikklikkja Nofsani",
     "rightClickToggle": "Ikklikkja Dritt",
     "disableTouchControls": "Itfi Touch Controls",
-    "useJoystick": "Touch Joystick",
+    "useJoystick": "Joystick tal-mess",
     "lockMobileButtons": "Lock Buttuni Mobbli",
     "resetButtonPositions": "Irrisettja l-Pożizzjonijiet tal-buttuni mobbli",
     "useWordFilters": "Kliem Ċensura",
-    "autoRespawn": "Toggle AutoRespawn",
+    "autoRespawn": "AutoRespawn",
     "translateChat": "Ittraduċi Chat (Beta)"
   },
   "colors": {
+    "title": "Kuluri",
     "background": "Sfond",
     "name": "Isem",
     "color": "Kulur",
@@ -102,9 +103,9 @@
   "mouseActions": {
     "none": "Xejn",
     "feed": "Għalf (Eject Massa)",
-    "split": "Split",
+    "split": "Aqsam",
     "doubleSplit": "Doppju Split",
-    "multiSplit": "Multi Split"
+    "multiSplit": "Qasma multipla"
   },
   "connecting": {
     "trying": "Nipprova jgħaqqad...",
@@ -138,7 +139,7 @@
     "rule2": "Tużax il-laqmijiet ta' nies oħra fiċ-chat jew bħala ismek b'mod dispreġġjattiv, tista' tisikket jew ipprojbit mil-logħba.",
     "rule3": "Tirreklamax servers, servizzi jew websajts oħra fiċ-chat, jista' jkollok siekta jew ipprojbit mil-logħba.",
     "gameplayTitle": "Gameplay",
-    "howToPlay": "Kif tilgħab",
+    "howToPlay": "Gwida",
     "controlsIntro": "<kbd>MAWS</kbd> / <kbd>MESS</kbd> — Moviment<br /><kbd>ROTA</kbd> / <kbd id=\"key-zoomin-display\">F</kbd> / <kbd id=\"key-zoomout-display\">V</kbd> — Kabbar / ċekken<br /><kbd id=\"key-feed-display\">W</kbd> / <kbd>XELLUG</kbd> — Armi massa<br /><kbd id=\"key-split-display\">SPAZJU</kbd> — Qasma waħda<br /><kbd id=\"key-doublesplit-display\">X</kbd> / <kbd>LEMIN</kbd> — Qasma doppja<br /><kbd id=\"key-multisplit-display\">C</kbd> / <kbd>NOFS</kbd> — Qasma multipla",
     "objective": "<b>Objettiv:</b> L-għan ta 'Agar.io huwa li tkabbar iċ-ċellula tiegħek billi tikkonsma ċelluli iżgħar u tevita dawk akbar. Hekk kif tikber, int se ssir aktar formidabbli u tkun tista 'tikkonsma ċelloli saħansitra akbar.",
     "startingOut": "<b>Bidu:</b> Meta tingħaqad mal-logħba għall-ewwel darba, tibda bħala ċellola żgħira. Ċaqlaq uża l-maws biex tiġbor il-gerbub ikkuluriti mifruxa mal-mappa. Tiekol gerbub iżid id-daqs u l-massa tiegħek.",
@@ -157,6 +158,15 @@
   "news": {
     "title": "Aħbarijiet",
     "entries": [
+      {
+        "date": "07/13/2026",
+        "items": [
+          "Ġie mġedded il-<b>menu ewlieni</b> b'banners tematiċi, ikoni tat-tabs u stil ċar u skur aħjar",
+          "L-<b>Għażliet</b> tqassmu f'tabs ċari bi swiċċijiet, listi, kontrolli u għażliet mobbli aħjar",
+          "Ġiet imtejba l-<b>għażla tal-ġilda</b> bi preview Jelly Physics, kuluri diretti u gallerija ġdida",
+          "Żdiedu tabs għal <b>Aħbarijiet</b>, <b>Regoli</b> u <b>Kif tilgħab</b>, flimkien ma' traduzzjonijiet aħjar"
+        ]
+      },
       {
         "date": "21/05/2026",
         "items": [
@@ -360,8 +370,8 @@
   },
   "canvas": {
     "unnamedCell": "Ċellula bla isem",
-    "leaderboard": "Leaderboard",
-    "score": "Score: {score}",
+    "leaderboard": "Klassifika",
+    "score": "Punti: {score}",
     "fps": "{fps} FPS",
     "ping": "{ms}ms ping",
     "position": "X: {x}, Y: {y}",
@@ -369,9 +379,9 @@
     "statsWorld": "- Dinja {world}",
     "statsWorldDefault": "- Dinja 1",
     "statsPlayers": "{total} / {limit} plejers",
-    "statsPlaying": "{alive} playing",
+    "statsPlaying": "{alive} jilagħbu",
     "statsSpectating": "{spect} jispettaw",
-    "statsLoad": "{load}% load @ {uptime}",
+    "statsLoad": "{load}% tagħbija @ {uptime}",
     "timeLessThanMinute": "<1 min",
     "timeMinutes": "{n}min",
     "timeHours": "{n}h",

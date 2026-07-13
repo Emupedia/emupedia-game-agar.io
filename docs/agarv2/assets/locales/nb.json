@@ -4,7 +4,7 @@
     "description": "Spis celler mindre enn deg og ikke bli spist av de større, som en MMO"
   },
   "chat": {
-    "general": "General",
+    "general": "Generelt",
     "clan": "Klan",
     "placeholder": "Trykk enter for å chatte",
     "clearTitle": "Tøm chat",
@@ -18,21 +18,21 @@
     "title": "Agar.io v2",
     "discordSuggestions": "Bli med oss ​​på Discord hvis du har forslag",
     "nickname": "Kallenavn",
-    "skin": "Hud",
+    "skin": "Skin",
     "skinPlaceholder": "Hudnavn",
-    "copy": "Kopiere",
+    "copy": "Kopi",
     "clanName": "Klannavn",
     "clanPlaceholder": "Maks 5 bokstaver",
     "createClan": "Opprett klan",
     "leaveClan": "Forlat klanen",
     "copyInvite": "Kopier invitasjonen",
-    "gameMode": "Spillmodus",
-    "play": "Spille",
-    "chooseSkin": "Velg Hud",
-    "uploadSkin": "Last opp hud",
+    "gameMode": "Modus",
+    "play": "Spill",
+    "chooseSkin": "Velg skin",
+    "uploadSkin": "Last opp skin",
     "unban": "Opphev utestengelsen",
     "skinCopied": "Skin URL kopiert til utklippstavlen!",
-    "spectate": "Tilskuer",
+    "spectate": "Se på",
     "settings": "Innstillinger"
   },
   "settings": {
@@ -44,7 +44,7 @@
     "feed": "Mate:",
     "split": "Dele:",
     "doubleSplit": "Dobbel splitt:",
-    "multiSplit": "Multi Split:",
+    "multiSplit": "Multideling:",
     "zoomIn": "Zoom inn:",
     "zoomOut": "Zoom ut:",
     "minion": "Gratis tilskuerkamera / Minion-kontroll:",
@@ -90,10 +90,11 @@
     "lockMobileButtons": "Lås mobilknapper",
     "resetButtonPositions": "Tilbakestill mobilknappposisjoner",
     "useWordFilters": "Ordsensur",
-    "autoRespawn": "Slå av/på AutoRespawn",
+    "autoRespawn": "AutoRespawn",
     "translateChat": "Oversett chat (beta)"
   },
   "colors": {
+    "title": "Farger",
     "background": "Bakgrunn",
     "name": "Navn",
     "color": "Farge",
@@ -104,7 +105,7 @@
     "feed": "Fôr (utkast masse)",
     "split": "Dele",
     "doubleSplit": "Dobbel Split",
-    "multiSplit": "Multi Split"
+    "multiSplit": "Multideling"
   },
   "connecting": {
     "trying": "Prøver å koble til...",
@@ -138,7 +139,7 @@
     "rule2": "Ikke bruk andres kallenavn i chat eller som navnet ditt på en nedsettende måte, du kan bli dempet eller utestengt fra spillet.",
     "rule3": "Ikke annonser andre servere, tjenester eller nettsteder i chat, du kan bli dempet eller utestengt fra spillet.",
     "gameplayTitle": "Gameplay",
-    "howToPlay": "Slik spiller du",
+    "howToPlay": "Guide",
     "controlsIntro": "<kbd>MUS</kbd> / <kbd>BERØRING</kbd> — Beveg cellen<br /><kbd>HJUL</kbd> / <kbd id=\"key-zoomin-display\">F</kbd> / <kbd id=\"key-zoomout-display\">V</kbd> — Zoom inn / ut<br /><kbd id=\"key-feed-display\">W</kbd> / <kbd>VENSTREKLIKK</kbd> — Skyt ut masse<br /><kbd id=\"key-split-display\">MELLOMROM</kbd> — Del én gang<br /><kbd id=\"key-doublesplit-display\">X</kbd> / <kbd>HØYREKLIKK</kbd> — Dobbel deling<br /><kbd id=\"key-multisplit-display\">C</kbd> / <kbd>MIDTKLIKK</kbd> — Multideling",
     "objective": "<b>Mål:</b> Målet med Agar.io er å utvide cellen din ved å konsumere mindre celler og unngå større. Etter hvert som du vokser, vil du bli mer formidabel og være i stand til å konsumere enda større celler.",
     "startingOut": "<b>Begynner:</b> Når du først blir med i spillet, starter du som en liten celle. Beveg deg rundt med musen for å samle de fargerike pellets spredt over kartet. Å spise pellets øker størrelsen og massen din.",
@@ -157,6 +158,15 @@
   "news": {
     "title": "Nyheter",
     "entries": [
+      {
+        "date": "07/13/2026",
+        "items": [
+          "Fornyet <b>hovedmenyen</b> med temabannere, faneikoner og bedre lys og mørk stil",
+          "Delte <b>Innstillinger</b> i tydelige faner med bedre brytere, valg, kontroller og mobilvalg",
+          "Forbedret <b>skinntilpasning</b> med Jelly Physics-forhåndsvisning, farger og nytt galleri",
+          "La til egne faner for <b>Nyheter</b>, <b>Regler</b> og <b>Slik spiller du</b>, samt bedre oversettelser"
+        ]
+      },
       {
         "date": "21.05.2026",
         "items": [
@@ -360,7 +370,7 @@
   },
   "canvas": {
     "unnamedCell": "En ikke navngitt celle",
-    "leaderboard": "Leaderboard",
+    "leaderboard": "Toppliste",
     "score": "Poengsum: {score}",
     "fps": "{fps} FPS",
     "ping": "{ms}ms ping",

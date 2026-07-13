@@ -4,7 +4,7 @@
     "description": "Jedite stanice manje od vas i nemojte da vas pojedu veće, kao MMO"
   },
   "chat": {
-    "general": "General",
+    "general": "Općenito",
     "clan": "Klan",
     "placeholder": "Pritisnite Enter za razgovor",
     "clearTitle": "Obriši chat",
@@ -18,21 +18,21 @@
     "title": "Agar.io v2",
     "discordSuggestions": "Pridružite nam se na Discordu ako imate prijedloge",
     "nickname": "Nadimak",
-    "skin": "koža",
+    "skin": "Skin",
     "skinPlaceholder": "Ime kože",
-    "copy": "Kopirati",
+    "copy": "Kopija",
     "clanName": "Ime klana",
     "clanPlaceholder": "5 slova max",
     "createClan": "Stvorite klan",
     "leaveClan": "Napusti klan",
     "copyInvite": "Kopiraj pozivnicu",
-    "gameMode": "Način igre",
-    "play": "Igrati",
-    "chooseSkin": "Odaberite kožu",
-    "uploadSkin": "Prenesi kožu",
+    "gameMode": "Način",
+    "play": "Igraj",
+    "chooseSkin": "Odaberi skin",
+    "uploadSkin": "Prenesi skin",
     "unban": "Poništi zabranu",
     "skinCopied": "URL maske kopiran u međuspremnik!",
-    "spectate": "Gledajte",
+    "spectate": "Gledaj",
     "settings": "Postavke"
   },
   "settings": {
@@ -41,10 +41,10 @@
     "mutePlaceholder": "Unesite nadimak za isključivanje zvuka",
     "mute": "Isključi zvuk",
     "keyboardBindings": "Vezovi gumba tipkovnice",
-    "feed": "Feed:",
-    "split": "Split:",
+    "feed": "Izbaci:",
+    "split": "Podjela:",
     "doubleSplit": "Dvostruka podjela:",
-    "multiSplit": "Multi Split:",
+    "multiSplit": "Više podjela:",
     "zoomIn": "Povećaj:",
     "zoomOut": "Smanji:",
     "minion": "Besplatna kamera za gledatelje/upravljanje miljenicima:",
@@ -90,10 +90,11 @@
     "lockMobileButtons": "Gumbi za zaključavanje mobitela",
     "resetButtonPositions": "Resetirajte položaje mobilnih gumba",
     "useWordFilters": "Cenzura riječi",
-    "autoRespawn": "Uključi/isključi AutoRespawn",
+    "autoRespawn": "AutoRespawn",
     "translateChat": "Prevedi chat (Beta)"
   },
   "colors": {
+    "title": "Boje",
     "background": "Pozadina",
     "name": "Ime",
     "color": "Boja",
@@ -102,9 +103,9 @@
   "mouseActions": {
     "none": "Nijedan",
     "feed": "Hrana (izbačena masa)",
-    "split": "Split",
+    "split": "Podjela",
     "doubleSplit": "Dupli Split",
-    "multiSplit": "Multi Split"
+    "multiSplit": "Višestruka podjela"
   },
   "connecting": {
     "trying": "Pokušaj povezivanja...",
@@ -138,7 +139,7 @@
     "rule2": "Nemojte koristiti nadimke drugih ljudi u chatu ili kao svoje ime na pogrdan način, mogli biste biti isključeni ili zabranjeni u igri.",
     "rule3": "Ne reklamirajte druge poslužitelje, usluge ili web-mjesta u chatu, mogli biste biti isključeni ili zabranjeni u igri.",
     "gameplayTitle": "Igranje",
-    "howToPlay": "Kako igrati",
+    "howToPlay": "Vodič",
     "controlsIntro": "<kbd>MIŠ</kbd> / <kbd>DODIR</kbd> — Kretanje<br /><kbd>KOTAČIĆ</kbd> / <kbd id=\"key-zoomin-display\">F</kbd> / <kbd id=\"key-zoomout-display\">V</kbd> — Povećaj / smanji<br /><kbd id=\"key-feed-display\">W</kbd> / <kbd>LIJEVI KLIK</kbd> — Izbaci masu<br /><kbd id=\"key-split-display\">RAZMAKNICA</kbd> — Jedna podjela<br /><kbd id=\"key-doublesplit-display\">X</kbd> / <kbd>DESNI KLIK</kbd> — Dvostruka podjela<br /><kbd id=\"key-multisplit-display\">C</kbd> / <kbd>SREDNJI KLIK</kbd> — Višestruka podjela",
     "objective": "<b>Cilj:</b> cilj Agar.io je uzgoj vaših stanica konzumiranjem manjih stanica i izbjegavanjem većih. Kako rastete, postajat ćete sve moćniji i moći ćete konzumirati još veće stanice.",
     "startingOut": "<b>Početak:</b> Kada se prvi put pridružite igri, počet ćete kao mala ćelija. Krećite se mišem kako biste skupljali raznobojne kuglice razbacane po karti. Jedenje peleta povećava vašu veličinu i masu.",
@@ -157,6 +158,15 @@
   "news": {
     "title": "Vijesti",
     "entries": [
+      {
+        "date": "07/13/2026",
+        "items": [
+          "Redizajniran <b>glavni izbornik</b> s tematskim bannerima, ikonama kartica te boljim svijetlim i tamnim stilom",
+          "Podijeljene <b>Postavke</b> u jasne kartice s boljim prekidačima, izbornicima, kontrolama i mobilnim opcijama",
+          "Poboljšena <b>prilagodba skinova</b> uz Jelly Physics pregled, kontrole boja i novu galeriju",
+          "Dodane kartice <b>Novosti</b>, <b>Pravila</b> i <b>Kako igrati</b>, uz bolji izbornik i prijevode"
+        ]
+      },
       {
         "date": "21/05/2026",
         "items": [
@@ -360,7 +370,7 @@
   },
   "canvas": {
     "unnamedCell": "Neimenovana ćelija",
-    "leaderboard": "Leaderboard",
+    "leaderboard": "Ljestvica",
     "score": "Rezultat: {score}",
     "fps": "{fps} FPS",
     "ping": "{ms}ms ping",

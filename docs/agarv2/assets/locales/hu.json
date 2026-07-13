@@ -18,22 +18,22 @@
     "title": "Agar.io v2",
     "discordSuggestions": "Ha javaslata van, csatlakozzon hozzánk a Discordon",
     "nickname": "Becenév",
-    "skin": "Bőr",
+    "skin": "Skin",
     "skinPlaceholder": "Bőr neve",
-    "copy": "Másolat",
+    "copy": "Másolás",
     "clanName": "Klán neve",
     "clanPlaceholder": "5 betű max",
     "createClan": "Klán létrehozása",
     "leaveClan": "Hagyd el a klánt",
     "copyInvite": "Meghívó másolása",
-    "gameMode": "Játék mód",
+    "gameMode": "Mód",
     "play": "Játék",
-    "chooseSkin": "Válassza a Skin lehetőséget",
+    "chooseSkin": "Skin választása",
     "uploadSkin": "Skin feltöltése",
-    "unban": "Unban",
+    "unban": "Feloldás",
     "skinCopied": "Skin URL a vágólapra másolva!",
-    "spectate": "Megfigyelés",
-    "settings": "Beállítások"
+    "spectate": "Néző",
+    "settings": "Opciók"
   },
   "settings": {
     "language": "Nyelv",
@@ -48,13 +48,13 @@
     "zoomIn": "Nagyítás:",
     "zoomOut": "Kicsinyítés:",
     "minion": "Ingyenes nézői kamera/minion vezérlés:",
-    "resetKeys": "Állítsa vissza az alapértelmezett értékeket",
+    "resetKeys": "Alapértékek",
     "keyRebindHint": "Kattintson egy gombra, és nyomja meg a gombot az újrakötéshez",
     "mouseBindings": "Egérgomb kötések",
     "leftClick": "Bal kattintás:",
     "middleClick": "Középső kattintás:",
     "rightClick": "Jobb klikk:",
-    "resetMouse": "Állítsa vissza az alapértelmezett értékeket",
+    "resetMouse": "Alapértékek",
     "mouseHint": "Állítsa be, hogy az egyes egérgombok milyen műveleteket hajtsanak végre",
     "toggleFullscreen": "Teljes képernyő váltás",
     "darkTheme": "Sötét téma",
@@ -90,10 +90,11 @@
     "lockMobileButtons": "Mobil gombok zárolása",
     "resetButtonPositions": "Állítsa vissza a mobilgombok pozícióit",
     "useWordFilters": "Szavak cenzúra",
-    "autoRespawn": "Kapcsolja be az AutoRespawn funkciót",
+    "autoRespawn": "AutoRespawn",
     "translateChat": "Csevegés fordítása (béta)"
   },
   "colors": {
+    "title": "Színek",
     "background": "Háttér",
     "name": "Név",
     "color": "Szín",
@@ -104,7 +105,7 @@
     "feed": "Táplálkozás (tömeg kidobása)",
     "split": "Hasított",
     "doubleSplit": "Dupla felosztás",
-    "multiSplit": "Multi Split"
+    "multiSplit": "Többszörös osztás"
   },
   "connecting": {
     "trying": "Csatlakozni próbál...",
@@ -138,7 +139,7 @@
     "rule2": "Ne használj mások becenevét a chaten vagy saját nevedként becsmérlő módon, mert elnémítanak vagy kitiltják a játékból.",
     "rule3": "Ne hirdessen más szervereket, szolgáltatásokat vagy webhelyeket a chaten, mert elnémíthatják vagy kitilthatják a játékból.",
     "gameplayTitle": "Játékmenet",
-    "howToPlay": "Hogyan kell játszani",
+    "howToPlay": "Útmutató",
     "controlsIntro": "<kbd>EGÉR</kbd> / <kbd>ÉRINTÉS</kbd> — Mozgás<br /><kbd>GÖRGŐ</kbd> / <kbd id=\"key-zoomin-display\">F</kbd> / <kbd id=\"key-zoomout-display\">V</kbd> — Nagyítás / kicsinyítés<br /><kbd id=\"key-feed-display\">W</kbd> / <kbd>BAL KLIKK</kbd> — Tömeg kilökése<br /><kbd id=\"key-split-display\">SZÓKÖZ</kbd> — Egyszeres osztódás<br /><kbd id=\"key-doublesplit-display\">X</kbd> / <kbd>JOBB KLIKK</kbd> — Dupla osztódás<br /><kbd id=\"key-multisplit-display\">C</kbd> / <kbd>KÖZÉPSŐ KLIKK</kbd> — Többszörös osztódás",
     "objective": "<b>Cél:</b> Az Agar.io célja, hogy a sejteket kisebb sejtek fogyasztásával és a nagyobbak elkerülésével növelje. Ahogy nősz, egyre félelmetesebb leszel, és képes leszel még nagyobb sejteket fogyasztani.",
     "startingOut": "<b>Kezdés:</b> Amikor először csatlakozik a játékhoz, kis cellaként indul. Mozogjon az egérrel, és gyűjtse össze a térképen szétszórt színes pelleteket. A pellet fogyasztása növeli a méretét és tömegét.",
@@ -155,8 +156,17 @@
     "goodLuck": "Sok sikert, és jó szórakozást!"
   },
   "news": {
-    "title": "Hír",
+    "title": "Hírek",
     "entries": [
+      {
+        "date": "07/13/2026",
+        "items": [
+          "Megújult a <b>főmenü</b> tematikus fej- és lábléccel, fülikonokkal, valamint jobb világos és sötét stílussal",
+          "A <b>Beállítások</b> áttekinthető fülekre kerültek jobb kapcsolókkal, választókkal és mobilopciókkal",
+          "Fejlettebb <b>kinézet-testreszabás</b> Jelly Physics előnézettel, színekkel és új galériával",
+          "Külön <b>Hírek</b>, <b>Szabályok</b> és <b>Játékmenet</b> fülek, valamint jobb fordítások készültek"
+        ]
+      },
       {
         "date": "2026.05.21",
         "items": [
@@ -366,7 +376,7 @@
     "ping": "{ms}ms ping",
     "position": "X: {x}, Y: {y}",
     "statsServer": "{name} ({mode})",
-    "statsWorld": "- World {world}",
+    "statsWorld": " - Világ {world}",
     "statsWorldDefault": "- Világ 1",
     "statsPlayers": "{total} / {limit} lejátszók",
     "statsPlaying": "{alive} játszik",

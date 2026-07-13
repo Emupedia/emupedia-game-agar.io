@@ -6,7 +6,7 @@
   "chat": {
     "general": "Generolas",
     "clan": "Klanas",
-    "placeholder": "Norėdami kalbėtis, paspauskite „Enter“.",
+    "placeholder": "Enter — pokalbis",
     "clearTitle": "Išvalyti pokalbį",
     "zoom": "Padidinti",
     "translatedSuffix": "→"
@@ -18,22 +18,22 @@
     "title": "Agar.io v2",
     "discordSuggestions": "Jei turite pasiūlymų, prisijunkite prie mūsų „Discord“.",
     "nickname": "Slapyvardis",
-    "skin": "Oda",
+    "skin": "Skinas",
     "skinPlaceholder": "Odos pavadinimas",
-    "copy": "Kopijuoti",
+    "copy": "Kopija",
     "clanName": "Klano pavadinimas",
     "clanPlaceholder": "max 5 raides",
     "createClan": "Sukurti klaną",
     "leaveClan": "Palikite klaną",
     "copyInvite": "Kopijuoti kvietimą",
-    "gameMode": "Žaidimo režimas",
+    "gameMode": "Režimas",
     "play": "Žaisti",
-    "chooseSkin": "Pasirinkite odą",
-    "uploadSkin": "Įkelti odą",
+    "chooseSkin": "Rinktis skiną",
+    "uploadSkin": "Įkelti skiną",
     "unban": "Atšaukti draudimą",
     "skinCopied": "Skin URL nukopijuotas į mainų sritį!",
-    "spectate": "Žiūrėti",
-    "settings": "Nustatymai"
+    "spectate": "Stebėti",
+    "settings": "Parinktys"
   },
   "settings": {
     "language": "Kalba",
@@ -48,13 +48,13 @@
     "zoomIn": "Padidinti:",
     "zoomOut": "Sumažinti:",
     "minion": "Nemokama žiūrovų kamera / minionų valdymas:",
-    "resetKeys": "Atstatyti į numatytuosius nustatymus",
+    "resetKeys": "Numatytosios",
     "keyRebindHint": "Spustelėkite mygtuką ir paspauskite klavišą, kad vėl susietumėte",
     "mouseBindings": "Pelės mygtukų apkaustai",
-    "leftClick": "Kairiuoju pelės mygtuku spustelėkite:",
+    "leftClick": "Kairys klik:",
     "middleClick": "Vidurinis paspaudimas:",
-    "rightClick": "Dešiniuoju pelės mygtuku spustelėkite:",
-    "resetMouse": "Atstatyti į numatytuosius nustatymus",
+    "rightClick": "Dešinys klik:",
+    "resetMouse": "Numatytosios",
     "mouseHint": "Konfigūruokite, kokį veiksmą atlieka kiekvienas pelės mygtukas",
     "toggleFullscreen": "Perjungti viso ekrano režimą",
     "darkTheme": "Tamsi tema",
@@ -82,18 +82,19 @@
     "playSounds": "Garsai",
     "feedMacro": "Pašarų makrokomandas",
     "splitMacro": "Padalintas makrokomandas",
-    "leftClickToggle": "Kairiuoju pelės mygtuku spustelėkite",
+    "leftClickToggle": "Kairys klik",
     "middleClickToggle": "Vidurinis paspaudimas",
-    "rightClickToggle": "Dešiniuoju pelės mygtuku spustelėkite",
+    "rightClickToggle": "Dešinys klik",
     "disableTouchControls": "Išjungti jutiklinius valdiklius",
     "useJoystick": "Palieskite Vairasvirtę",
-    "lockMobileButtons": "Užrakinti mobiliojo telefono mygtukus",
+    "lockMobileButtons": "Užrakinti mygtukus",
     "resetButtonPositions": "Iš naujo nustatyti mobiliųjų mygtukų padėtis",
     "useWordFilters": "Žodžiai cenzūra",
-    "autoRespawn": "Perjungti „AutoRespawn“.",
+    "autoRespawn": "AutoRespawn",
     "translateChat": "Išversti pokalbį (beta versija)"
   },
   "colors": {
+    "title": "Spalvos",
     "background": "Fonas",
     "name": "Vardas",
     "color": "Spalva",
@@ -104,7 +105,7 @@
     "feed": "Tiekimas (išstumti masę)",
     "split": "Padalinti",
     "doubleSplit": "Dvigubas padalijimas",
-    "multiSplit": "Multi Split"
+    "multiSplit": "Daugkartinis dalijimas"
   },
   "connecting": {
     "trying": "Bandoma prisijungti...",
@@ -138,7 +139,7 @@
     "rule2": "Nenaudokite kitų žmonių slapyvardžių pokalbiuose ar kaip savo vardo žeminančiai, nes galite būti nutildyti arba uždrausti dalyvauti žaidime.",
     "rule3": "Pokalbyje nereklamuokite kitų serverių, paslaugų ar svetainių, galite būti nutildyti arba uždrausti dalyvauti žaidime.",
     "gameplayTitle": "Žaidimo eiga",
-    "howToPlay": "Kaip žaisti",
+    "howToPlay": "Gidas",
     "controlsIntro": "<kbd>PELĖ</kbd> / <kbd>LIETIMAS</kbd> — Judėjimas<br /><kbd>RATUKAS</kbd> / <kbd id=\"key-zoomin-display\">F</kbd> / <kbd id=\"key-zoomout-display\">V</kbd> — Artinti / tolinti<br /><kbd id=\"key-feed-display\">W</kbd> / <kbd>KAIRYSIS</kbd> — Išmesti masę<br /><kbd id=\"key-split-display\">TARPAS</kbd> — Vienas padalijimas<br /><kbd id=\"key-doublesplit-display\">X</kbd> / <kbd>DEŠINYSIS</kbd> — Dvigubas padalijimas<br /><kbd id=\"key-multisplit-display\">C</kbd> / <kbd>VIDURINIS</kbd> — Daugkartinis padalijimas",
     "objective": "<b>Tikslas:</b> Agar.io tikslas yra auginti jūsų ląsteles vartojant mažesnes ląsteles ir vengiant didesnių. Augdami tapsite grėsmingesni ir galėsite suvartoti dar didesnes ląsteles.",
     "startingOut": "<b>Pradžia:</b> pirmą kartą prisijungę prie žaidimo, pradėsite kaip mažas langelis. Judėkite naudodami pelę, kad surinktumėte spalvingas granules, išsibarsčiusias žemėlapyje. Valgant granules padidėja dydis ir masė.",
@@ -157,6 +158,15 @@
   "news": {
     "title": "Naujienos",
     "entries": [
+      {
+        "date": "07/13/2026",
+        "items": [
+          "Atnaujintas <b>pagrindinis meniu</b> su teminiais skydeliais, kortelių piktogramomis ir geresniu šviesiu bei tamsiu stiliumi",
+          "<b>Nustatymai</b> suskirstyti į aiškias korteles su geresniais jungikliais, pasirinkimais ir mobiliosiomis parinktimis",
+          "Patobulintas <b>išvaizdos derinimas</b> su Jelly Physics peržiūra, spalvomis ir nauja galerija",
+          "Pridėtos atskiros <b>Naujienų</b>, <b>Taisyklių</b> ir <b>Kaip žaisti</b> kortelės bei geresni vertimai"
+        ]
+      },
       {
         "date": "2026-05-21",
         "items": [

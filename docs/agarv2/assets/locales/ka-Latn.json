@@ -18,22 +18,22 @@
     "title": "Agar.io v2",
     "discordSuggestions": "shemogviertdit Discord-ze, tu gakvt shemotavazebebi",
     "nickname": "metsakheli",
-    "skin": "kani",
+    "skin": "Skini",
     "skinPlaceholder": "kanis sakheli",
-    "copy": "kopireba",
+    "copy": "Asli",
     "clanName": "klanis sakheli",
     "clanPlaceholder": "maksimum 5 aso",
     "createClan": "shekmenit klani",
     "leaveClan": "datove klani",
     "copyInvite": "daakopiret motsveva",
-    "gameMode": "tamashis rezhimi",
-    "play": "itamashet",
-    "chooseSkin": "airchiet kani",
-    "uploadSkin": "atvirtet kani",
+    "gameMode": "Rezhimi",
+    "play": "Tamashi",
+    "chooseSkin": "Airchie skini",
+    "uploadSkin": "Atvirte skini",
     "unban": "gaukmeba",
     "skinCopied": "kanis URL kopirebulia bufershi!",
-    "spectate": "Sanakhaoba",
-    "settings": "Parametrebi"
+    "spectate": "Uyure",
+    "settings": "Optsiebi"
   },
   "settings": {
     "language": "ena",
@@ -53,7 +53,7 @@
     "mouseBindings": "mausis ghilakebis shekvra",
     "leftClick": "martskhena datskapuneba:",
     "middleClick": "shua datskapuneba:",
-    "rightClick": "daatskapunet marjvena ghilakit:",
+    "rightClick": "Marjvena kliki:",
     "resetMouse": "gadatvirtet naguliskhmevad",
     "mouseHint": "daakonfiguriret ra mokmedebas asrulebs mausis titoeuli ghilaki",
     "toggleFullscreen": "sruli ekranis gadartva",
@@ -84,16 +84,17 @@
     "splitMacro": "makro gaqofa",
     "leftClickToggle": "martskhena datskapunebit",
     "middleClickToggle": "shua datskapuneba",
-    "rightClickToggle": "daatskapunet marjvena ghilakit",
+    "rightClickToggle": "Marjvena kliki",
     "disableTouchControls": "gamortet sensoruli kontroli",
     "useJoystick": "sheekhet joistiks",
     "lockMobileButtons": "mobiluri ghilakebis chaketva",
     "resetButtonPositions": "mobiluri ghilakebis pozitsiebis gadatvirtva",
     "useWordFilters": "sitqvebis tsenzura",
-    "autoRespawn": "AutoRespawn-is gadartva",
+    "autoRespawn": "AutoRespawn",
     "translateChat": "თარგმნეთ ჩატი (ბეტა)"
   },
   "colors": {
+    "title": "Perebi",
     "background": "foni",
     "name": "sakheli",
     "color": "feri",
@@ -133,12 +134,12 @@
     "pressKey": "daachiret ghilaks..."
   },
   "gameplay": {
-    "rulesTitle": "tsesebi",
+    "rulesTitle": "Ts'esebi",
     "rule1": "ar atvirtot akrdzaluli morgebuli skinebi, mit umetes, tu es vighatsis sakhea, shesadzloa tkveni kani aikrdzalos an tavad aikrdzalos tamashi.",
     "rule2": "nu gamoiqenebt skhva adamianebis metsakhelebs chatshi an tkveni sakhelis damamtsireblad, sheidzleba dadumdet an tamashshi akrdzalot.",
     "rule3": "nu gauketebt skhva serverebis, servisebis an vebsaitebis reklamas chatshi, shesadzloa dadumdet an aikrdzalot tamashshi.",
     "gameplayTitle": "geimplei",
-    "howToPlay": "rogor vitamashot",
+    "howToPlay": "Gidi",
     "controlsIntro": "<kbd>MAUSI</kbd> / <kbd>SHEKHEBA</kbd> — Modzraoba<br /><kbd>BORBALI</kbd> / <kbd id=\"key-zoomin-display\">F</kbd> / <kbd id=\"key-zoomout-display\">V</kbd> — Gadideba / shemtsireba<br /><kbd id=\"key-feed-display\">W</kbd> / <kbd>MARTSKHENA</kbd> — Masis gamosrola<br /><kbd id=\"key-split-display\">SPACE</kbd> — Erti gayofa<br /><kbd id=\"key-doublesplit-display\">X</kbd> / <kbd>MARJVENA</kbd> — Ormagi gayofa<br /><kbd id=\"key-multisplit-display\">C</kbd> / <kbd>SHUA</kbd> — Mravaljeradi gayofa",
     "objective": "<b>mizani:</b> Agar.io-s mizania gaizardos tkveni ujredi patara ujredebis mokhmarebit da ufro didi ujredebis tavidan atsilebit. rotsa izrdebi, ufro dzlieri gakhdebi da shedzleb kidev ufro didi ujredebis mokhmarebas.",
     "startingOut": "<b>datsqeba:</b> rodesats pirvelad sheuertdebit tamashs, daitsqebt rogorts patara ujredi. imodzravet mausis gamoqenebit rukaze mimofantuli feradi martsvlebis shesagroveblad. martsvlebis chama zrdis tkvens zomas da masas.",
@@ -146,7 +147,7 @@
     "consumeSmaller": "<b>moikhmaret patara ujredebi:</b> tvali adevnet akhlomakhlo roumingis patara ujredebs. rats ufro didi gakhdebit, tkven shedzlebt am patara ujredebis gadaqlapvas tkveni masis gasazrdelad. miuakhlovdit mat strategiulad, rata ar shechamon ufro didi ujredebi.",
     "avoidLarger": "<b>moeridet ufro did ujredebs:</b> frtkhilad iqavit ufro didi ujredebis mimart, radgan mat sheudzliat mogchamon, tu matze patara khar. gaufrtkhildit motamasheebs, romlebits iqofa patara ujredebis dasacherad da sheetsadet tsinastsar gansazghvrot mati modzraobebi, rata daitsvan usafrtkhod.",
     "splitting": "<b>gaqofa:</b> shegidzliat daqot tkveni ujredi ramdenime patara natsilad <kbd>SPACE</kbd> dacherit. gamoiqenet es taktika patara ujredebis dasacherad an ufro didi ujredebisgan tavis dasaghtsevad. tkven aseve shegidzliat gaaketot ramdenime gaqofa <kbd>X</kbd> an <kbd>Z</kbd> dacherit. daimakhsovre, gaqofa ufro dautsvels gkhdis, amitom gonivrulad gamoiqene.",
-    "ejectingMass": "<b>masis amogheba:</b> rodesats masis amogheba <kbd>W</kbd> an <kbd>martskhniv datskapunebit</kbd> dacherit sheidzleba momgebiani iqos, mas aseve akvs riskebi. amogdebuli masa sheidzleba mokhmardes skhva motamasheebs, mat shoris potentsiur konkurentebs. garda amisa, masis gamodevna amtsirebs tkveni ujredis saerto zomas, ramats sheidzleba gakhados ufro dautsveli ufro didi ujre���ebis mier mokhmarebis mimart.",
+    "ejectingMass": "<b>Masis gamotyorcna</b> — <kbd>W</kbd> an <kbd>martskhena kliki</kbd>. Skhvebs sheudzliat masis ageba; tkveni ujredic pataravdeba da ufro dautsveli khdeba.",
     "teamPlay": "<b>gunduri tamashi (arasavaldebulo):</b> gundur rezhimshi, shegidzliat itanamshromlot skhva motamasheebtan liderbordis dominirebistvis. gaertiandit megobrebtan an skhva motamasheebtan, rata ajobot oponentebs da ertad daipqrot tamashi.",
     "growDominate": "<b>izrdet da dominirdet:</b> rogorts tkven moikhmart patara ujredebs da tavs aridebt chamas, tkveni ujredi gaagrdzelebs zomit zrdas. sheetsadet gakhdet qvelaze didi ujredi serverze da dominirdet liderbortze.",
     "viruses": "<b>ufrtkhildit virusebs:</b> rukaze, tkven shekhvdebit mtsvane tsvetian tsreebs, romlebits tsnobilia rogorts virusebi. moeridet mattan shejakhebas, radgan mat sheudzliat tkveni ujredis daqofa patara nachrebad, tu tkven matze didi khart. virusebis tkveni masis mimartulebidan gamokveba gamoitsvevs mat sapirispiro mimartulebit gamravlebas.",
@@ -155,8 +156,17 @@
     "goodLuck": "tsarmatebebs gisurvebt da gaertet!"
   },
   "news": {
-    "title": "siakhleebi",
+    "title": "Ambebi",
     "entries": [
+      {
+        "date": "07/13/2026",
+        "items": [
+          "Ganakhlda <b>mtavari meniu</b> tematuri banerebit, tabis ikonebit da gaumjobesebuli nateli da bneli stili",
+          "<b>Parametrebi</b> daiyo mkafio tabebad, uketesi chartvebit, archevnit da mobiluri paratmetrebit",
+          "Gaumjobesda <b>skinis morgeba</b> Jelly Physics tsinaswari nakhvit, perebit da akhali galereit",
+          "Daemata <b>Siakhleebi</b>, <b>Ts'esebi</b> da <b>Rogor vit'amashot</b> tabebi da gaumjobesda targmani"
+        ]
+      },
       {
         "date": "21/05/2026",
         "items": [

@@ -18,21 +18,21 @@
     "title": "Agar.io v2",
     "discordSuggestions": "Sluit je aan bij ons op Discord als je suggesties hebt",
     "nickname": "Bijnaam",
-    "skin": "Huid",
+    "skin": "Skin",
     "skinPlaceholder": "Huidnaam",
-    "copy": "Kopiëren",
+    "copy": "Kopie",
     "clanName": "Clannaam",
     "clanPlaceholder": "Maximaal 5 letters",
     "createClan": "Creëer een clan",
     "leaveClan": "Verlaat de clan",
     "copyInvite": "Kopieer uitnodiging",
-    "gameMode": "Spelmodus",
-    "play": "Toneelstuk",
-    "chooseSkin": "Kies Huid",
-    "uploadSkin": "Huid uploaden",
-    "unban": "Verbanning ongedaan maken",
+    "gameMode": "Modus",
+    "play": "Spelen",
+    "chooseSkin": "Kies skin",
+    "uploadSkin": "Skin uploaden",
+    "unban": "Deblokkeren",
     "skinCopied": "Skin-URL gekopieerd naar klembord!",
-    "spectate": "Toeschouwen",
+    "spectate": "Kijken",
     "settings": "Instellingen"
   },
   "settings": {
@@ -90,10 +90,11 @@
     "lockMobileButtons": "Mobiele knoppen vergrendelen",
     "resetButtonPositions": "Posities van mobiele knoppen opnieuw instellen",
     "useWordFilters": "Woorden censuur",
-    "autoRespawn": "Schakel AutoRespawn in",
+    "autoRespawn": "AutoRespawn",
     "translateChat": "Chat vertalen (bèta)"
   },
   "colors": {
+    "title": "Kleuren",
     "background": "Achtergrond",
     "name": "Naam",
     "color": "Kleur",
@@ -138,7 +139,7 @@
     "rule2": "Gebruik de bijnamen van anderen niet op een denigrerende manier in de chat of als jouw naam. Het kan zijn dat je hierdoor wordt gedempt of uit het spel wordt verbannen.",
     "rule3": "Maak geen reclame voor andere servers, services of websites in de chat. U kunt hierdoor worden gedempt of verbannen uit het spel.",
     "gameplayTitle": "Gameplay",
-    "howToPlay": "Hoe te spelen",
+    "howToPlay": "Uitleg",
     "controlsIntro": "<kbd>MUIS</kbd> / <kbd>AANRAKEN</kbd> — Cel bewegen<br /><kbd>WIEL</kbd> / <kbd id=\"key-zoomin-display\">F</kbd> / <kbd id=\"key-zoomout-display\">V</kbd> — In- / uitzoomen<br /><kbd id=\"key-feed-display\">W</kbd> / <kbd>LINKERKLIK</kbd> — Massa uitstoten<br /><kbd id=\"key-split-display\">SPATIE</kbd> — Eenmaal splitsen<br /><kbd id=\"key-doublesplit-display\">X</kbd> / <kbd>RECHTERKLIK</kbd> — Dubbel splitsen<br /><kbd id=\"key-multisplit-display\">C</kbd> / <kbd>MIDDENKLIK</kbd> — Meervoudig splitsen",
     "objective": "<b>Doelstelling:</b> Het doel van Agar.io is om uw cel te laten groeien door kleinere cellen te consumeren en grotere cellen te vermijden. Naarmate je groeit, word je formidabeler en kun je nog grotere cellen consumeren.",
     "startingOut": "<b>Beginnen:</b> Wanneer je voor het eerst meedoet aan het spel, begin je als een kleine cel. Beweeg rond met je muis om de kleurrijke pellets te verzamelen die verspreid over de kaart liggen. Het eten van pellets vergroot uw omvang en massa.",
@@ -157,6 +158,15 @@
   "news": {
     "title": "Nieuws",
     "entries": [
+      {
+        "date": "07/13/2026",
+        "items": [
+          "Het <b>hoofdmenu</b> vernieuwd met themabanners, tabpictogrammen en betere lichte en donkere stijlen",
+          "<b>Instellingen</b> verdeeld over duidelijke tabs met betere schakelaars, keuzelijsten en mobiele opties",
+          "<b>Skin-aanpassing</b> verbeterd met Jelly Physics-voorbeeld, live kleuren en een nieuwe galerij",
+          "Eigen tabs voor <b>Nieuws</b>, <b>Regels</b> en <b>Speluitleg</b> toegevoegd, met betere vertalingen"
+        ]
+      },
       {
         "date": "21/05/2026",
         "items": [

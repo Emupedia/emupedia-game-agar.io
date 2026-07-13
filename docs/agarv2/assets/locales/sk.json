@@ -6,7 +6,7 @@
   "chat": {
     "general": "generál",
     "clan": "Klan",
-    "placeholder": "Ak chcete chatovať, stlačte kláves Enter",
+    "placeholder": "Enter pre chat",
     "clearTitle": "Vymazať chat",
     "zoom": "Zoom",
     "translatedSuffix": "→"
@@ -18,21 +18,21 @@
     "title": "Agar.io v2",
     "discordSuggestions": "Pridajte sa k nám na Discord, ak máte návrhy",
     "nickname": "prezývka",
-    "skin": "Koža",
+    "skin": "Skin",
     "skinPlaceholder": "Názov kože",
-    "copy": "Kopírovať",
+    "copy": "Kópia",
     "clanName": "Názov klanu",
     "clanPlaceholder": "5 písmen max",
     "createClan": "Vytvoriť klan",
     "leaveClan": "Opustiť klan",
     "copyInvite": "Kopírovať pozvánku",
-    "gameMode": "Herný režim",
+    "gameMode": "Režim",
     "play": "Hrať",
-    "chooseSkin": "Vyberte položku Koža",
-    "uploadSkin": "Nahrajte vzhľad",
+    "chooseSkin": "Vybrať skin",
+    "uploadSkin": "Nahrať skin",
     "unban": "Zrušiť zákaz",
     "skinCopied": "Adresa URL vzhľadu bola skopírovaná do schránky!",
-    "spectate": "Divák",
+    "spectate": "Sleduj",
     "settings": "Nastavenia"
   },
   "settings": {
@@ -53,7 +53,7 @@
     "mouseBindings": "Väzby tlačidiel myši",
     "leftClick": "Kliknutie ľavým tlačidlom:",
     "middleClick": "Kliknutie stredom:",
-    "rightClick": "Kliknite pravým tlačidlom myši:",
+    "rightClick": "Pravý klik:",
     "resetMouse": "Obnoviť predvolené nastavenia",
     "mouseHint": "Nakonfigurujte, akú akciu vykoná každé tlačidlo myši",
     "toggleFullscreen": "Prepnúť na celú obrazovku",
@@ -82,18 +82,19 @@
     "playSounds": "Zvuky",
     "feedMacro": "Makro krmiva",
     "splitMacro": "Rozdeliť makro",
-    "leftClickToggle": "Kliknite ľavým tlačidlom myši",
+    "leftClickToggle": "Ľavý klik",
     "middleClickToggle": "Stredné kliknutie",
-    "rightClickToggle": "Kliknite pravým tlačidlom myši",
+    "rightClickToggle": "Pravý klik",
     "disableTouchControls": "Zakázať dotykové ovládanie",
     "useJoystick": "Dotknite sa joysticku",
     "lockMobileButtons": "Zamknúť tlačidlá mobilu",
     "resetButtonPositions": "Obnovte polohy tlačidiel mobilného telefónu",
     "useWordFilters": "Cenzúra slov",
-    "autoRespawn": "Prepnúť AutoRespawn",
+    "autoRespawn": "AutoRespawn",
     "translateChat": "Preložiť čet (beta)"
   },
   "colors": {
+    "title": "Farby",
     "background": "Pozadie",
     "name": "Meno",
     "color": "Farba",
@@ -101,7 +102,7 @@
   },
   "mouseActions": {
     "none": "žiadne",
-    "feed": "Feed (Eject Mass)",
+    "feed": "Vysunúť hmotu",
     "split": "Rozdeliť",
     "doubleSplit": "Dvojité rozdelenie",
     "multiSplit": "Viacnásobné rozdelenie"
@@ -133,12 +134,12 @@
     "pressKey": "Stlačte kláves..."
   },
   "gameplay": {
-    "rulesTitle": "pravidlá",
+    "rulesTitle": "Pravidlá",
     "rule1": "Nenahrávajte zakázané vlastné vzhľady, najmä ak ide o niekoho tvár, môže vám byť zakázaný váš vzhľad alebo vám bude zakázaná účasť v hre.",
     "rule2": "Nepoužívajte prezývky iných ľudí v rozhovore ani ako svoje meno hanlivým spôsobom, mohli by ste byť stlmení alebo by vám bolo zakázané hrať.",
     "rule3": "Neinzerujte v chate iné servery, služby alebo webové stránky, mohli by ste byť stlmení alebo by vám mohla byť zakázaná hra.",
     "gameplayTitle": "Hrateľnosť",
-    "howToPlay": "Ako hrať",
+    "howToPlay": "Návod",
     "controlsIntro": "<kbd>MYŠ</kbd> / <kbd>DOTYK</kbd> — Pohyb<br /><kbd>KOLIESKO</kbd> / <kbd id=\"key-zoomin-display\">F</kbd> / <kbd id=\"key-zoomout-display\">V</kbd> — Priblížiť / oddialiť<br /><kbd id=\"key-feed-display\">W</kbd> / <kbd>ĽAVÝ KLIK</kbd> — Vysunúť hmotu<br /><kbd id=\"key-split-display\">MEDZERNÍK</kbd> — Jedno rozdelenie<br /><kbd id=\"key-doublesplit-display\">X</kbd> / <kbd>PRAVÝ KLIK</kbd> — Dvojité rozdelenie<br /><kbd id=\"key-multisplit-display\">C</kbd> / <kbd>STREDNÝ KLIK</kbd> — Viacnásobné rozdelenie",
     "objective": "<b>Cieľ:</b> Cieľom Agar.io je pestovať vašu bunku konzumáciou menších buniek a vyhýbaním sa väčším. Ako budete rásť, stanete sa impozantnejšími a budete môcť konzumovať ešte väčšie bunky.",
     "startingOut": "<b>Začiatok:</b> Keď sa prvýkrát zapojíte do hry, začnete ako malá bunka. Pohybujte sa pomocou myši a zbierajte farebné pelety roztrúsené po mape. Jedenie peliet zvyšuje vašu veľkosť a hmotnosť.",
@@ -155,8 +156,17 @@
     "goodLuck": "Veľa šťastia a bavte sa!"
   },
   "news": {
-    "title": "Správy",
+    "title": "Novinky",
     "entries": [
+      {
+        "date": "07/13/2026",
+        "items": [
+          "Prepracovaná <b>hlavná ponuka</b> s tematickými panelmi, ikonami kariet a lepším svetlým aj tmavým vzhľadom",
+          "<b>Nastavenia</b> rozdelené do jasných kariet s lepšími prepínačmi, výbermi a mobilnými možnosťami",
+          "Vylepšené <b>nastavenie skinu</b> o náhľad Jelly Physics, farby a novú galériu",
+          "Pridané samostatné karty <b>Novinky</b>, <b>Pravidlá</b> a <b>Ako hrať</b> spolu s lepšími prekladmi"
+        ]
+      },
       {
         "date": "21.05.2026",
         "items": [

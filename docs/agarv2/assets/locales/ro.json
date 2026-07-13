@@ -18,33 +18,33 @@
     "title": "Agar.io v2",
     "discordSuggestions": "Alăturați-vă nouă pe Discord dacă aveți sugestii",
     "nickname": "Pseudonim",
-    "skin": "Pielea",
+    "skin": "Skin",
     "skinPlaceholder": "Numele pielii",
-    "copy": "Copiere",
+    "copy": "Copie",
     "clanName": "Numele clanului",
     "clanPlaceholder": "5 litere max",
     "createClan": "Creați un clan",
     "leaveClan": "Lasă Clanul",
     "copyInvite": "Copiați invitația",
-    "gameMode": "Modul de joc",
+    "gameMode": "Mod",
     "play": "Joacă",
-    "chooseSkin": "Alegeți Skin",
-    "uploadSkin": "Încărcați pielea",
-    "unban": "Unban",
+    "chooseSkin": "Alege skin",
+    "uploadSkin": "Încarcă skin",
+    "unban": "Deblochează",
     "skinCopied": "Adresa URL a skinului a fost copiată în Clipboard!",
-    "spectate": "Spectator",
+    "spectate": "Privește",
     "settings": "Setări"
   },
   "settings": {
     "language": "Limba",
     "mutedPlayers": "Jucători dezactivați",
-    "mutePlaceholder": "Introduceți porecla pentru a dezactiva sunetul",
+    "mutePlaceholder": "Poreclă de ignorat",
     "mute": "Mut",
     "keyboardBindings": "Legături pentru butoanele de la tastatură",
-    "feed": "Feed:",
+    "feed": "Ejectare:",
     "split": "Împărțire:",
     "doubleSplit": "Split dublu:",
-    "multiSplit": "Multi Split:",
+    "multiSplit": "Împărțire multiplă:",
     "zoomIn": "Măriți:",
     "zoomOut": "Micșorare:",
     "minion": "Cameră gratuită pentru spectatori / Control Minion:",
@@ -81,7 +81,7 @@
     "showZoom": "Afișați glisorul de zoom",
     "playSounds": "Sunete",
     "feedMacro": "Macro de alimentare",
-    "splitMacro": "Split Macro",
+    "splitMacro": "Macro împărțire",
     "leftClickToggle": "Click stânga",
     "middleClickToggle": "Click din mijloc",
     "rightClickToggle": "Faceți clic dreapta",
@@ -90,10 +90,11 @@
     "lockMobileButtons": "Blocați butoanele mobile",
     "resetButtonPositions": "Resetați pozițiile butoanelor mobile",
     "useWordFilters": "Cenzura cuvintelor",
-    "autoRespawn": "Comutați AutoRespawn",
+    "autoRespawn": "AutoRespawn",
     "translateChat": "Traduceți chat (beta)"
   },
   "colors": {
+    "title": "Culori",
     "background": "Fundal",
     "name": "Nume",
     "color": "Culoare",
@@ -102,9 +103,9 @@
   "mouseActions": {
     "none": "Niciuna",
     "feed": "Alimentare (masa de evacuare)",
-    "split": "Split",
+    "split": "Împărțire",
     "doubleSplit": "Split dublu",
-    "multiSplit": "Multi Split"
+    "multiSplit": "Împărțire multiplă"
   },
   "connecting": {
     "trying": "Încerc să se conecteze...",
@@ -138,7 +139,7 @@
     "rule2": "Nu folosi pseudonimele altor persoane în chat sau ca nume într-un mod derogatoriu, s-ar putea să fii dezactivat sau interzis din joc.",
     "rule3": "Nu face publicitate altor servere, servicii sau site-uri web în chat, s-ar putea să fii dezactivat sau interzis din joc.",
     "gameplayTitle": "Gameplay-ul",
-    "howToPlay": "Cum se joacă",
+    "howToPlay": "Ghid",
     "controlsIntro": "<kbd>MOUSE</kbd> / <kbd>ATINGERE</kbd> — Mișcare<br /><kbd>ROTIȚĂ</kbd> / <kbd id=\"key-zoomin-display\">F</kbd> / <kbd id=\"key-zoomout-display\">V</kbd> — Mărire / micșorare<br /><kbd id=\"key-feed-display\">W</kbd> / <kbd>CLIC STÂNGA</kbd> — Ejectare masă<br /><kbd id=\"key-split-display\">SPAȚIU</kbd> — Împărțire simplă<br /><kbd id=\"key-doublesplit-display\">X</kbd> / <kbd>CLIC DREAPTA</kbd> — Împărțire dublă<br /><kbd id=\"key-multisplit-display\">C</kbd> / <kbd>CLIC MIJLOC</kbd> — Împărțire multiplă",
     "objective": "<b>Obiectiv:</b> Obiectivul Agar.io este de a vă crește celula consumând celule mai mici și evitându-le pe cele mai mari. Pe măsură ce creșteți, veți deveni mai formidabil și veți putea consuma celule și mai mari.",
     "startingOut": "<b>Începe:</b> când te înscrii pentru prima dată în joc, vei începe ca o celulă mică. Deplasați-vă folosind mouse-ul pentru a colecta granulele colorate împrăștiate pe hartă. Consumul de pelete vă crește dimensiunea și masa.",
@@ -157,6 +158,15 @@
   "news": {
     "title": "Știri",
     "entries": [
+      {
+        "date": "07/13/2026",
+        "items": [
+          "Am refăcut <b>meniul principal</b> cu bannere tematice, pictograme și stiluri luminoase și întunecate mai bune",
+          "Am împărțit <b>Setările</b> în file clare, cu comutatoare, selectoare, comenzi și opțiuni mobile îmbunătățite",
+          "Am îmbunătățit <b>personalizarea skinului</b> cu previzualizare Jelly Physics, culori live și galerie nouă",
+          "Am adăugat file pentru <b>Știri</b>, <b>Reguli</b> și <b>Cum se joacă</b>, plus traduceri mai bune"
+        ]
+      },
       {
         "date": "21/05/2026",
         "items": [
@@ -246,7 +256,7 @@
         "items": [
           "Au fost adăugate <b>Identificații</b> pentru a identifica mai bine prietenii sau inamicii, fiecare dispozitiv are o <b>pictogramă</b> unică.",
           "S-a adăugat caseta de selectare <b>Afișează Identicons</b> în <b>Setări</b>",
-          "S-au eliminat trucurile care permit duplicarea cu ușurinț�� a <b>Nicks</b> sau <b>Skins</b>"
+          "Am eliminat metodele de duplicare ușoară a <b>poreclelor</b> și <b>skinurilor</b>"
         ]
       },
       {

@@ -18,21 +18,21 @@
     "title": "Agar.io v2",
     "discordSuggestions": "Liity meihin Discordissa, jos sinulla on ehdotuksia",
     "nickname": "Lempinimi",
-    "skin": "Iho",
+    "skin": "Skin",
     "skinPlaceholder": "Ihon nimi",
-    "copy": "Kopioida",
+    "copy": "Kopioi",
     "clanName": "Klaanin nimi",
     "clanPlaceholder": "5 kirjainta max",
     "createClan": "Luo klaani",
     "leaveClan": "Poistu klaanista",
     "copyInvite": "Kopioi kutsu",
-    "gameMode": "Pelitila",
-    "play": "Pelata",
-    "chooseSkin": "Valitse Skin",
-    "uploadSkin": "Lataa Skin",
+    "gameMode": "Tila",
+    "play": "Pelaa",
+    "chooseSkin": "Valitse skin",
+    "uploadSkin": "Lataa skin",
     "unban": "Poista porttikielto",
     "skinCopied": "Skin URL kopioitu leikepöydälle!",
-    "spectate": "Nähdä",
+    "spectate": "Katso",
     "settings": "Asetukset"
   },
   "settings": {
@@ -53,7 +53,7 @@
     "mouseBindings": "Hiiren painikkeiden sidokset",
     "leftClick": "Vasen napsautus:",
     "middleClick": "Keskimmäinen napsautus:",
-    "rightClick": "Napsauta hiiren kakkospainikkeella:",
+    "rightClick": "Oikea klikkaus:",
     "resetMouse": "Palauta oletusarvoihin",
     "mouseHint": "Määritä, mitä toimintoa kukin hiiren painike suorittaa",
     "toggleFullscreen": "Koko näyttö päälle/pois",
@@ -84,16 +84,17 @@
     "splitMacro": "Jaettu makro",
     "leftClickToggle": "Vasen napsautus",
     "middleClickToggle": "Keskimmäinen napsautus",
-    "rightClickToggle": "Napsauta hiiren kakkospainikkeella",
+    "rightClickToggle": "Oikea klikkaus",
     "disableTouchControls": "Poista kosketusohjaimet käytöstä",
     "useJoystick": "Kosketa Joystick",
     "lockMobileButtons": "Lukitse mobiilipainikkeet",
     "resetButtonPositions": "Palauta mobiilipainikkeiden paikat",
     "useWordFilters": "Sanat sensuuri",
-    "autoRespawn": "Ota AutoRespawn käyttöön",
+    "autoRespawn": "AutoRespawn",
     "translateChat": "Käännä Chat (beta)"
   },
   "colors": {
+    "title": "Värit",
     "background": "Tausta",
     "name": "Nimi",
     "color": "Väri",
@@ -103,8 +104,8 @@
     "none": "Ei mitään",
     "feed": "Syötä (poistaa massa)",
     "split": "Jakaa",
-    "doubleSplit": "Double Split",
-    "multiSplit": "Multi Split"
+    "doubleSplit": "Kaksoisjako",
+    "multiSplit": "Monijako"
   },
   "connecting": {
     "trying": "Yritetään yhdistää...",
@@ -133,12 +134,12 @@
     "pressKey": "Paina näppäintä..."
   },
   "gameplay": {
-    "rulesTitle": "säännöt",
+    "rulesTitle": "Säännöt",
     "rule1": "Älä lataa kiellettyjä mukautettuja skinejä, varsinkin jos kyseessä ovat jonkun kasvot, saatat saada skinisi pelikiellon tai itsesi pelikiellon.",
     "rule2": "Älä käytä muiden ihmisten lempinimiä chatissa tai nimenäsi halventavasti, sillä saatat saada mykistyksen tai pelikiellon.",
     "rule3": "Älä mainosta muita palvelimia, palveluita tai verkkosivustoja chatissa, saatat saada mykistyksen tai pelikiellon.",
     "gameplayTitle": "Pelin kulku",
-    "howToPlay": "Kuinka pelata",
+    "howToPlay": "Ohje",
     "controlsIntro": "<kbd>HIIRI</kbd> / <kbd>KOSKETUS</kbd> — Liiku<br /><kbd>RULLA</kbd> / <kbd id=\"key-zoomin-display\">F</kbd> / <kbd id=\"key-zoomout-display\">V</kbd> — Lähennä / loitonna<br /><kbd id=\"key-feed-display\">W</kbd> / <kbd>VASEN KLIKKAUS</kbd> — Poista massaa<br /><kbd id=\"key-split-display\">VÄLILYÖNTI</kbd> — Jaa kerran<br /><kbd id=\"key-doublesplit-display\">X</kbd> / <kbd>OIKEA KLIKKAUS</kbd> — Kaksoisjako<br /><kbd id=\"key-multisplit-display\">C</kbd> / <kbd>KESKIKLIKKAUS</kbd> — Monijako",
     "objective": "<b>Tavoite:</b> Agar.io:n tavoitteena on kasvattaa soluasi kuluttamalla pienempiä soluja ja välttämällä suurempia. Kasvatessasi sinusta tulee pelottavampi ja pystyt kuluttamaan entistä suurempia soluja.",
     "startingOut": "<b>Aloitus:</b> Kun liityt peliin ensimmäisen kerran, aloitat pienenä soluna. Liiku hiirellä kerätäksesi värikkäitä pellettejä hajallaan kartalla. Pellettien syöminen lisää kokoasi ja massaasi.",
@@ -157,6 +158,15 @@
   "news": {
     "title": "Uutiset",
     "entries": [
+      {
+        "date": "07/13/2026",
+        "items": [
+          "Uudistettu <b>päävalikko</b> teemakuvilla, välilehtikoneilla sekä paremmalla vaalealla ja tummalla tyylillä",
+          "Jaettu <b>Asetukset</b> selkeisiin välilehtiin, joissa on paremmat kytkimet, valinnat ja mobiiliasetukset",
+          "Parannettu <b>ulkoasun muokkausta</b> Jelly Physics -esikatselulla, väreillä ja uudella gallerialla",
+          "Lisätty omat <b>Uutiset</b>-, <b>Säännöt</b>- ja <b>Peliohje</b>-välilehdet sekä paremmat käännökset"
+        ]
+      },
       {
         "date": "21.5.2026",
         "items": [

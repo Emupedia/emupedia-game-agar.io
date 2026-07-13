@@ -18,7 +18,7 @@
     "title": "Agar.io v2",
     "discordSuggestions": "Unisciti a noi su Discord se hai suggerimenti",
     "nickname": "Soprannome",
-    "skin": "Pelle",
+    "skin": "Skin",
     "skinPlaceholder": "Nome della pelle",
     "copy": "Copia",
     "clanName": "Nome del clan",
@@ -26,19 +26,19 @@
     "createClan": "Crea clan",
     "leaveClan": "Lascia il clan",
     "copyInvite": "Copia invito",
-    "gameMode": "Modalità di gioco",
-    "play": "Giocare",
-    "chooseSkin": "Scegli Pelle",
+    "gameMode": "Modalità",
+    "play": "Gioca",
+    "chooseSkin": "Scegli skin",
     "uploadSkin": "Carica skin",
     "unban": "Sbancare",
     "skinCopied": "URL della skin copiato negli appunti!",
-    "spectate": "Spettatore",
-    "settings": "Impostazioni"
+    "spectate": "Osserva",
+    "settings": "Opzioni"
   },
   "settings": {
     "language": "Lingua",
     "mutedPlayers": "Giocatori disattivati",
-    "mutePlaceholder": "Inserisci il nickname per disattivare l'audio",
+    "mutePlaceholder": "Nickname da silenziare",
     "mute": "Muto",
     "keyboardBindings": "Associazioni dei pulsanti della tastiera",
     "feed": "Foraggio:",
@@ -48,13 +48,13 @@
     "zoomIn": "Zoom avanti:",
     "zoomOut": "Zoom indietro:",
     "minion": "Telecamera spettatore gratuita/Controllo servitore:",
-    "resetKeys": "Ripristina le impostazioni predefinite",
+    "resetKeys": "Valori predefiniti",
     "keyRebindHint": "Fare clic su un pulsante e premere un tasto per riassociare",
     "mouseBindings": "Associazioni dei pulsanti del mouse",
     "leftClick": "Clic sinistro:",
     "middleClick": "Clic centrale:",
-    "rightClick": "Fare clic con il tasto destro:",
-    "resetMouse": "Ripristina le impostazioni predefinite",
+    "rightClick": "Clic destro:",
+    "resetMouse": "Valori predefiniti",
     "mouseHint": "Configura l'azione eseguita da ciascun pulsante del mouse",
     "toggleFullscreen": "Attiva/disattiva schermo intero",
     "darkTheme": "Tema oscuro",
@@ -78,22 +78,23 @@
     "showGrid": "Mostra griglia della mappa",
     "backgroundSectors": "Mostra settori della mappa",
     "moreZoom": "Aumenta lo zoom indietro",
-    "showZoom": "Mostra dispositivo di scorrimento dello zoom",
+    "showZoom": "Cursore zoom",
     "playSounds": "Suoni",
     "feedMacro": "Alimentazione Macro",
     "splitMacro": "Macro divisa",
-    "leftClickToggle": "Fare clic con il pulsante sinistro del mouse",
+    "leftClickToggle": "Clic sinistro",
     "middleClickToggle": "Clic centrale",
-    "rightClickToggle": "Fare clic con il tasto destro",
+    "rightClickToggle": "Clic destro",
     "disableTouchControls": "Disabilita i controlli touch",
     "useJoystick": "Toccare Joystick",
     "lockMobileButtons": "Blocca i pulsanti mobili",
     "resetButtonPositions": "Ripristina le posizioni dei pulsanti mobili",
     "useWordFilters": "Censura delle parole",
-    "autoRespawn": "Attiva/disattiva la rigenerazione automatica",
+    "autoRespawn": "AutoRespawn",
     "translateChat": "Traduci chat (Beta)"
   },
   "colors": {
+    "title": "Colori",
     "background": "Sfondo",
     "name": "Nome",
     "color": "Colore",
@@ -101,7 +102,7 @@
   },
   "mouseActions": {
     "none": "Nessuno",
-    "feed": "Alimentazione (massa di espulsione)",
+    "feed": "Espelli massa",
     "split": "Diviso",
     "doubleSplit": "Doppia divisione",
     "multiSplit": "Multidivisione"
@@ -138,7 +139,7 @@
     "rule2": "Non utilizzare i soprannomi di altre persone in chat o come nome in modo dispregiativo, potresti essere silenziato o bannato dal gioco.",
     "rule3": "Non pubblicizzare altri server, servizi o siti web in chat, potresti essere silenziato o bannato dal gioco.",
     "gameplayTitle": "Gioco",
-    "howToPlay": "Come giocare",
+    "howToPlay": "Guida",
     "controlsIntro": "<kbd>MOUSE</kbd> / <kbd>TOCCO</kbd> — Muovi cellula<br /><kbd>ROTELLA</kbd> / <kbd id=\"key-zoomin-display\">F</kbd> / <kbd id=\"key-zoomout-display\">V</kbd> — Zoom avanti / indietro<br /><kbd id=\"key-feed-display\">W</kbd> / <kbd>CLIC SINISTRO</kbd> — Espelli massa<br /><kbd id=\"key-split-display\">SPAZIO</kbd> — Dividi una volta<br /><kbd id=\"key-doublesplit-display\">X</kbd> / <kbd>CLIC DESTRO</kbd> — Doppia divisione<br /><kbd id=\"key-multisplit-display\">C</kbd> / <kbd>CLIC CENTRALE</kbd> — Divisione multipla",
     "objective": "<b>Obiettivo:</b> L'obiettivo di Agar.io è far crescere la tua cellula consumando cellule più piccole ed evitando quelle più grandi. Man mano che cresci, diventerai più formidabile e sarai in grado di consumare cellule ancora più grandi.",
     "startingOut": "<b>Inizio:</b> quando ti unisci per la prima volta al gioco, inizierai come una piccola cella. Muoviti usando il mouse per raccogliere le palline colorate sparse sulla mappa. Mangiare pellet aumenta le dimensioni e la massa.",
@@ -155,8 +156,17 @@
     "goodLuck": "Buona fortuna e buon divertimento!"
   },
   "news": {
-    "title": "Notizia",
+    "title": "Novità",
     "entries": [
+      {
+        "date": "07/13/2026",
+        "items": [
+          "Rinnovato il <b>menu principale</b> con banner a tema, icone e migliori stili chiaro e scuro",
+          "Riorganizzate le <b>Impostazioni</b> in schede con interruttori, selettori, controlli e opzioni mobili migliori",
+          "Migliorata la <b>personalizzazione skin</b> con anteprima Jelly Physics, colori dal vivo e nuova galleria",
+          "Aggiunte schede dedicate a <b>Novità</b>, <b>Regole</b> e <b>Come giocare</b>, con traduzioni migliori"
+        ]
+      },
       {
         "date": "21/05/2026",
         "items": [

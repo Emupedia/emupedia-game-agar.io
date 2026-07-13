@@ -6,7 +6,7 @@
   "chat": {
     "general": "Ģenerālis",
     "clan": "Klans",
-    "placeholder": "Lai tērzētu, nospiediet taustiņu Enter",
+    "placeholder": "Enter — tērzēšana",
     "clearTitle": "Notīrīt tērzēšanu",
     "zoom": "Tālummaiņa",
     "translatedSuffix": "→"
@@ -18,22 +18,22 @@
     "title": "Agar.io v2",
     "discordSuggestions": "Pievienojieties mums Discord, ja jums ir ieteikumi",
     "nickname": "Segvārds",
-    "skin": "Āda",
+    "skin": "Skins",
     "skinPlaceholder": "Ādas nosaukums",
-    "copy": "Kopēt",
+    "copy": "Kopija",
     "clanName": "Klana nosaukums",
     "clanPlaceholder": "5 burti max",
     "createClan": "Izveidot klanu",
     "leaveClan": "Pamest klanu",
     "copyInvite": "Kopēt uzaicinājumu",
-    "gameMode": "Spēles režīms",
+    "gameMode": "Režīms",
     "play": "Spēlēt",
-    "chooseSkin": "Izvēlieties Skin",
-    "uploadSkin": "Augšupielādēt ādu",
+    "chooseSkin": "Izvēlēties skinu",
+    "uploadSkin": "Augšupielādēt skinu",
     "unban": "Atcelt aizliegumu",
     "skinCopied": "Ādas URL ir kopēts starpliktuvē!",
-    "spectate": "Skatīties",
-    "settings": "Iestatījumi"
+    "spectate": "Vērot",
+    "settings": "Opcijas"
   },
   "settings": {
     "language": "Valoda",
@@ -48,13 +48,13 @@
     "zoomIn": "Tuvināt:",
     "zoomOut": "Tālināt:",
     "minion": "Bezmaksas skatītāju kamera/miniona vadība:",
-    "resetKeys": "Atiestatīt uz noklusējuma iestatījumiem",
+    "resetKeys": "Noklusējumi",
     "keyRebindHint": "Noklikšķiniet uz pogas un nospiediet taustiņu, lai pārsietu",
     "mouseBindings": "Peles pogu stiprinājumi",
     "leftClick": "Kreisais klikšķis:",
     "middleClick": "Vidējais klikšķis:",
-    "rightClick": "Ar peles labo pogu noklikšķiniet:",
-    "resetMouse": "Atiestatīt uz noklusējuma iestatījumiem",
+    "rightClick": "Labais klikšķis:",
+    "resetMouse": "Noklusējumi",
     "mouseHint": "Konfigurējiet, kādu darbību veic katra peles poga",
     "toggleFullscreen": "Pārslēgt pilnekrāna režīmu",
     "darkTheme": "Tumšā tēma",
@@ -84,16 +84,17 @@
     "splitMacro": "Sadalīts makro",
     "leftClickToggle": "Kreisais klikšķis",
     "middleClickToggle": "Vidējais klikšķis",
-    "rightClickToggle": "Ar peles labo pogu noklikšķiniet",
+    "rightClickToggle": "Labais klikšķis",
     "disableTouchControls": "Atspējot skārienvadību",
     "useJoystick": "Pieskarieties Kursorsvirai",
     "lockMobileButtons": "Bloķēt mobilās pogas",
     "resetButtonPositions": "Atiestatīt mobilo sakaru pogu pozīcijas",
     "useWordFilters": "Vārdi cenzūra",
-    "autoRespawn": "Pārslēgt AutoRespawn",
+    "autoRespawn": "AutoRespawn",
     "translateChat": "Tulkot tērzēšanu (beta)"
   },
   "colors": {
+    "title": "Krāsas",
     "background": "Fons",
     "name": "Vārds",
     "color": "Krāsa",
@@ -138,7 +139,7 @@
     "rule2": "Neizmantojiet citu cilvēku segvārdus tērzēšanā vai kā savu vārdu nievājošā veidā, jo jūs varat tikt izslēgts vai padzīts no spēles.",
     "rule3": "Tērzēšanā nereklamējiet citus serverus, pakalpojumus vai vietnes, jo jūs varat tikt izslēgts vai aizliegts piedalīties spēlē.",
     "gameplayTitle": "Spēles gaita",
-    "howToPlay": "Kā spēlēt",
+    "howToPlay": "Palīgs",
     "controlsIntro": "<kbd>PELE</kbd> / <kbd>PIESKĀRIENS</kbd> — Kustība<br /><kbd>RITENĪTIS</kbd> / <kbd id=\"key-zoomin-display\">F</kbd> / <kbd id=\"key-zoomout-display\">V</kbd> — Tuvināt / tālināt<br /><kbd id=\"key-feed-display\">W</kbd> / <kbd>KREISAIS</kbd> — Izmest masu<br /><kbd id=\"key-split-display\">ATSTARPE</kbd> — Viena sadalīšana<br /><kbd id=\"key-doublesplit-display\">X</kbd> / <kbd>LABAIS</kbd> — Dubulta sadalīšana<br /><kbd id=\"key-multisplit-display\">C</kbd> / <kbd>VIDĒJAIS</kbd> — Vairākkārtēja sadalīšana",
     "objective": "<b>Mērķis:</b> Agar.io mērķis ir palielināt jūsu šūnu, patērējot mazākas šūnas un izvairoties no lielākām. Pieaugot, jūs kļūsit briesmīgāks un varēsit patērēt vēl lielākas šūnas.",
     "startingOut": "<b>Sākums:</b> pirmo reizi pievienojoties spēlei, jūs sāksit kā maza šūna. Pārvietojieties, izmantojot peli, lai savāktu krāsainās granulas, kas izkaisītas pa karti. Granulu ēšana palielina jūsu izmēru un masu.",
@@ -157,6 +158,15 @@
   "news": {
     "title": "Jaunumi",
     "entries": [
+      {
+        "date": "07/13/2026",
+        "items": [
+          "Atjaunota <b>galvenā izvēlne</b> ar tematiskiem baneriem, ciļņu ikonām un labāku gaišo un tumšo stilu",
+          "<b>Iestatījumi</b> sadalīti skaidrās cilnēs ar labākiem slēdžiem, izvēlēm, vadību un mobilajām opcijām",
+          "Uzlabota <b>izskata pielāgošana</b> ar Jelly Physics priekšskatījumu, krāsām un jaunu galeriju",
+          "Pievienotas atsevišķas <b>Ziņu</b>, <b>Noteikumu</b> un <b>Kā spēlēt</b> cilnes un uzlaboti tulkojumi"
+        ]
+      },
       {
         "date": "21/05/2026",
         "items": [

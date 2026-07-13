@@ -18,22 +18,22 @@
     "title": "Agar.io v2",
     "discordSuggestions": "Prisedinete se km nas v Discord, ako imate predlozheniya",
     "nickname": "Psevdonim",
-    "skin": "kozha",
+    "skin": "Skin",
     "skinPlaceholder": "Ime na kozhata",
-    "copy": "kopie",
+    "copy": "Kopie",
     "clanName": "Ime na klana",
     "clanPlaceholder": "5 bukvi maksimum",
     "createClan": "Szdayte klan",
     "leaveClan": "Napusni klana",
     "copyInvite": "Kopirane na pokana",
-    "gameMode": "Rezhim na igra",
-    "play": "Igrayte",
-    "chooseSkin": "Izberete Kozha",
-    "uploadSkin": "Kachvane na kozha",
+    "gameMode": "Rezhim",
+    "play": "Igray",
+    "chooseSkin": "Izberi skin",
+    "uploadSkin": "Kachi skin",
     "unban": "Otmyana na zabranata",
     "skinCopied": "URL adrest na kozhata e kopiran v klipborda!",
-    "spectate": "Gledayte",
-    "settings": "Nastroyki"
+    "spectate": "Gleday",
+    "settings": "Optsii"
   },
   "settings": {
     "language": "ezik",
@@ -48,13 +48,13 @@
     "zoomIn": "Uvelichavane:",
     "zoomOut": "Namalyavane:",
     "minion": "Bezplatna kamera za zriteli / Upravlenie na minoni:",
-    "resetKeys": "Vzstanovyavane na nastroykite po podrazbirane",
+    "resetKeys": "Nachalni nastroyki",
     "keyRebindHint": "Shchraknete vrkhu buton i natisnete klavish za povtorno obvrzvane",
     "mouseBindings": "Vrzki na butonite na mishkata",
     "leftClick": "Lyav klik:",
     "middleClick": "Sredno klikvane:",
     "rightClick": "Desen klik:",
-    "resetMouse": "Vzstanovyavane na nastroykite po podrazbirane",
+    "resetMouse": "Nachalni nastroyki",
     "mouseHint": "Konfigurirayte kakvo deystvie da izplnyava vseki buton na mishkata",
     "toggleFullscreen": "Prevklyuchvane na tsyal ekran",
     "darkTheme": "Tmna tema",
@@ -74,11 +74,11 @@
     "showChat": "Pokazhi chat",
     "showMinimap": "Pokazvane na minikarta",
     "showPosition": "Pokazvane na pozitsiya",
-    "showBorder": "Pokazvane na granitsata na kartata",
-    "showGrid": "Pokazvane na mrezhata na kartata",
+    "showBorder": "Granitsa na kartata",
+    "showGrid": "Mrezha na kartata",
     "backgroundSectors": "Pokazvane na sektori na kartata",
     "moreZoom": "Namalyavane Uvelichavane",
-    "showZoom": "Pokazvane na plzgacha za mashchabirane",
+    "showZoom": "Plzgach za zum",
     "playSounds": "Zvutsi",
     "feedMacro": "Podavane na makros",
     "splitMacro": "Razdelen makros",
@@ -90,10 +90,11 @@
     "lockMobileButtons": "Zaklyuchvane na mobilni butoni",
     "resetButtonPositions": "Nulirane na pozitsiite na mobilnite butoni",
     "useWordFilters": "Tsenzura na dumite",
-    "autoRespawn": "Prevklyuchete AutoRespawn",
-    "translateChat": "Превод на чат (бета)"
+    "autoRespawn": "AutoRespawn",
+    "translateChat": "Prevod na chat (beta)"
   },
   "colors": {
+    "title": "Tsvetove",
     "background": "Fon",
     "name": "Ime",
     "color": "Tsvyat",
@@ -102,7 +103,7 @@
   "mouseActions": {
     "none": "Nyama",
     "feed": "Zakhranvane (izkhvrlena masa)",
-    "split": "Split",
+    "split": "Razdelyane",
     "doubleSplit": "Dvoyno razdelenie",
     "multiSplit": "Multi split"
   },
@@ -116,7 +117,7 @@
     "oldBrowserLink": "Molya, shchraknete tuk, za da aktualizirate svoya brauzr do po-nova versiya.",
     "bannedTitle": "Zabraneni ste 😭",
     "bannedBody": "Vie ste zabraneni ot igrata, zashchoto ste narushili pravilata ili chrez spam v chata, ili dokato kachvate personalizirani kozhi.",
-    "bannedBodyBots": "Забранени сте от играта, защото сте нарушили правилата, като сте използвали ботове или персонализирани скриптове.",
+    "bannedBodyBots": "Zabraneni ste ot igrata zaradi botove ili personalizirani skriptove.",
     "unbanCode": "Vashiyat kod za deblokirane e"
   },
   "errors": {
@@ -133,12 +134,12 @@
     "pressKey": "Natisnete klavish..."
   },
   "gameplay": {
-    "rulesTitle": "pravila",
+    "rulesTitle": "Pravila",
     "rule1": "Ne kachvayte zabraneni personalizirani skinove, osobeno ako tova e nechie litse, mozhe da poluchite zabrana na vashiya skin ili vas samite ot igrata.",
     "rule2": "Ne izpolzvayte psevdonimi na drugi khora v chata ili kato svoe ime po unizitelen nachin, mozhe da bdete zaglushen ili zabranen ot igrata.",
     "rule3": "Ne reklamirayte drugi sarvari, uslugi ili uebsaytove v chata, mozhe da badete zaglusheni ili zabraneni ot igrata.",
     "gameplayTitle": "Geympley",
-    "howToPlay": "Kak se igrae",
+    "howToPlay": "Pomosh",
     "controlsIntro": "<kbd>MIShKA</kbd> / <kbd>DOKOSVANE</kbd> — Dvizhenie<br /><kbd>SKROL</kbd> / <kbd id=\"key-zoomin-display\">F</kbd> / <kbd id=\"key-zoomout-display\">V</kbd> — Uvelichavane / namalyavane<br /><kbd id=\"key-feed-display\">W</kbd> / <kbd>LYAV KLIK</kbd> — Izkhvarlyane na masa<br /><kbd id=\"key-split-display\">INTERVAL</kbd> — Edinichno razdelyane<br /><kbd id=\"key-doublesplit-display\">X</kbd> / <kbd>DESEN KLIK</kbd> — Dvoyno razdelyane<br /><kbd id=\"key-multisplit-display\">C</kbd> / <kbd>SREDEN KLIK</kbd> — Mnogokratno razdelyane",
     "objective": "<b>Tsel:</b> Tselta na Agar.io e da razviete vashata kletka, kato konsumirate po-malki kletki i izbyagvate po-golemite. Dokato rastete, shche stavate po-strashni i shche mozhete da konsumirate dori po-golemi kletki.",
     "startingOut": "<b>Zapochvane:</b> Kogato za prvi pt se prisedinite km igrata, shche zapochnete kato malka kletka. Dvizhete se s pomoshchta na mishkata, za da sbirate tsvetnite peleti, razprsnati po kartata. Yadeneto na peleti uvelichava vashiya razmer i masa.",
@@ -157,6 +158,15 @@
   "news": {
     "title": "Novini",
     "entries": [
+      {
+        "date": "07/13/2026",
+        "items": [
+          "Obnoveno <b>glavno menyu</b> s tematski baneri, ikoni za razdeli i po-dobar svetal i tamen stil",
+          "Podredeni <b>Nastroyki</b> v yasni razdeli s podobreni prevklyuchvateli, spisatsi, kontroli i mobilni optsii",
+          "Podobreno <b>oformyane na kozhi</b> s Jelly Physics pregled, kontroli na tsveta i nova galeriya",
+          "Dobaveni otdelni razdeli <b>Novini</b>, <b>Pravila</b> i <b>Kak se igrae</b>, plus po-dobri prevodi"
+        ]
+      },
       {
         "date": "21.05.2026 g",
         "items": [
@@ -359,24 +369,24 @@
     ]
   },
   "canvas": {
-    "unnamedCell": "Клетка без име",
-    "leaderboard": "класация",
-    "score": "Резултат: {score}",
+    "unnamedCell": "Kletka bez ime",
+    "leaderboard": "Klasatsiya",
+    "score": "Rezultat: {score}",
     "fps": "{fps} FPS",
-    "ping": "{ms}ms пинг",
+    "ping": "{ms}ms ping",
     "position": "X: {x}, Y: {y}",
     "statsServer": "{name} ({mode})",
-    "statsWorld": "- Свят {world}",
-    "statsWorldDefault": "- Свят 1",
-    "statsPlayers": "{total} / {limit} играчи",
-    "statsPlaying": "{alive} се играе",
-    "statsSpectating": "{spect} гледам",
-    "statsLoad": "{load}% натоварване @ {uptime}",
-    "timeLessThanMinute": "<1 мин",
+    "statsWorld": " - Svyat {world}",
+    "statsWorldDefault": " - Svyat 1",
+    "statsPlayers": "{total} / {limit} igrachi",
+    "statsPlaying": "{alive} igrayat",
+    "statsSpectating": "{spect} nablyudavat",
+    "statsLoad": "{load}% natovarvane @ {uptime}",
+    "timeLessThanMinute": "<1 min",
     "timeMinutes": "{n}min",
     "timeHours": "{n}h",
     "timeDays": "{n}d",
-    "minionSpectator": "Използвате изглед Free-Camera Spectator, натиснете {key}, за да превключите обратно",
-    "minionControl": "Вие контролирате миньон, натиснете {key}, за да превключите обратно"
+    "minionSpectator": "Izpolzvate svobodna kamera; natisnete {key} za vrashtane",
+    "minionControl": "Kontrolirate minion; natisnete {key} za vrashtane"
   }
 }

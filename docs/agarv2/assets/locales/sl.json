@@ -18,33 +18,33 @@
     "title": "Agar.io v2",
     "discordSuggestions": "Pridružite se nam na Discordu, če imate predloge",
     "nickname": "Vzdevek",
-    "skin": "koža",
+    "skin": "Skin",
     "skinPlaceholder": "Ime kože",
-    "copy": "Kopiraj",
+    "copy": "Kopija",
     "clanName": "Ime klana",
     "clanPlaceholder": "največ 5 črk",
     "createClan": "Ustvari klan",
     "leaveClan": "Zapusti klan",
     "copyInvite": "Kopiraj povabilo",
-    "gameMode": "Igralni način",
+    "gameMode": "Način",
     "play": "Igraj",
-    "chooseSkin": "Izberite Koža",
-    "uploadSkin": "Naloži kožo",
+    "chooseSkin": "Izberi skin",
+    "uploadSkin": "Naloži skin",
     "unban": "Prekliči prepoved",
     "skinCopied": "URL preobleke kopiran v odložišče!",
-    "spectate": "Oglejte si",
-    "settings": "nastavitve"
+    "spectate": "Glej",
+    "settings": "Nastavitve"
   },
   "settings": {
     "language": "Jezik",
     "mutedPlayers": "Utišani igralci",
     "mutePlaceholder": "Vnesite vzdevek za izklop zvoka",
-    "mute": "Mute",
+    "mute": "Utišaj",
     "keyboardBindings": "Vezave gumbov na tipkovnici",
     "feed": "Vir:",
     "split": "Razdeli:",
     "doubleSplit": "Dvojna delitev:",
-    "multiSplit": "Multi Split:",
+    "multiSplit": "Več delitev:",
     "zoomIn": "Povečaj:",
     "zoomOut": "Pomanjšaj:",
     "minion": "Brezplačna kamera za gledalce / nadzor minionov:",
@@ -90,10 +90,11 @@
     "lockMobileButtons": "Zakleni mobilne gumbe",
     "resetButtonPositions": "Ponastavite položaje mobilnih gumbov",
     "useWordFilters": "Cenzura besed",
-    "autoRespawn": "Preklop AutoRespawn",
+    "autoRespawn": "AutoRespawn",
     "translateChat": "Prevajalnik klepeta (beta)"
   },
   "colors": {
+    "title": "Barve",
     "background": "Ozadje",
     "name": "Ime",
     "color": "barva",
@@ -102,9 +103,9 @@
   "mouseActions": {
     "none": "Noben",
     "feed": "Krma (izmetna masa)",
-    "split": "Split",
+    "split": "Razdeli",
     "doubleSplit": "Dvojni razdelek",
-    "multiSplit": "Multi Split"
+    "multiSplit": "Več delitev"
   },
   "connecting": {
     "trying": "Poskus vzpostavitve povezave ...",
@@ -138,7 +139,7 @@
     "rule2": "Ne uporabljajte vzdevkov drugih ljudi v klepetu ali kot svoje ime na slabšalni način, lahko vas utišajo ali izključijo iz igre.",
     "rule3": "V klepetu ne oglašujte drugih strežnikov, storitev ali spletnih mest, saj vas lahko utišajo ali vas izključijo iz igre.",
     "gameplayTitle": "Igranje",
-    "howToPlay": "Kako igrati",
+    "howToPlay": "Vodnik",
     "controlsIntro": "<kbd>MIŠKA</kbd> / <kbd>DOTIK</kbd> — Premikanje<br /><kbd>KOLESCE</kbd> / <kbd id=\"key-zoomin-display\">F</kbd> / <kbd id=\"key-zoomout-display\">V</kbd> — Povečaj / pomanjšaj<br /><kbd id=\"key-feed-display\">W</kbd> / <kbd>LEVI KLIK</kbd> — Izvrzi maso<br /><kbd id=\"key-split-display\">PRESLEDNICA</kbd> — Ena delitev<br /><kbd id=\"key-doublesplit-display\">X</kbd> / <kbd>DESNI KLIK</kbd> — Dvojna delitev<br /><kbd id=\"key-multisplit-display\">C</kbd> / <kbd>SREDNJI KLIK</kbd> — Večkratna delitev",
     "objective": "<b>Cilj:</b> Cilj Agar.io je povečati vašo celico s porabo manjših celic in izogibanjem večjim. Ko boste rasli, boste postajali mogočnejši in boste lahko zaužili še večje celice.",
     "startingOut": "<b>Začetek:</b> Ko se prvič pridružite igri, boste začeli kot majhna celica. Z miško se premikajte in zbirajte pisane kroglice, raztresene po zemljevidu. Uživanje peletov poveča vašo velikost in maso.",
@@ -157,6 +158,15 @@
   "news": {
     "title": "Novice",
     "entries": [
+      {
+        "date": "07/13/2026",
+        "items": [
+          "Prenovljen <b>glavni meni</b> s tematskimi pasicami, ikonami zavihkov ter boljšim svetlim in temnim videzom",
+          "<b>Nastavitve</b> razdeljene v jasne zavihke z boljšimi stikali, izbirniki in mobilnimi možnostmi",
+          "Izboljšana <b>prilagoditev preobleke</b> s predogledom Jelly Physics, barvami in novo galerijo",
+          "Dodani zavihki <b>Novice</b>, <b>Pravila</b> in <b>Kako igrati</b> ter izboljšani prevodi"
+        ]
+      },
       {
         "date": "21. 5. 2026",
         "items": [

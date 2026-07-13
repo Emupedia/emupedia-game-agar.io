@@ -18,22 +18,22 @@
     "title": "Agar.io v2",
     "discordSuggestions": "Slut dig til os på Discord, hvis du har forslag",
     "nickname": "Kaldenavn",
-    "skin": "Hud",
+    "skin": "Skin",
     "skinPlaceholder": "Hudens navn",
-    "copy": "Kopiér",
+    "copy": "Kopi",
     "clanName": "Klan navn",
     "clanPlaceholder": "max 5 bogstaver",
     "createClan": "Opret klan",
     "leaveClan": "Forlad klanen",
     "copyInvite": "Kopiér invitationen",
-    "gameMode": "Spiltilstand",
+    "gameMode": "Spiltype",
     "play": "Spil",
-    "chooseSkin": "Vælg Hud",
+    "chooseSkin": "Vælg skin",
     "uploadSkin": "Upload skin",
     "unban": "Ophæv forbuddet",
     "skinCopied": "Skin URL kopieret til udklipsholder!",
-    "spectate": "Tilskuer",
-    "settings": "Indstillinger"
+    "spectate": "Se med",
+    "settings": "Opsætning"
   },
   "settings": {
     "language": "Sprog",
@@ -41,10 +41,10 @@
     "mutePlaceholder": "Indtast kaldenavn for at slå lyden fra",
     "mute": "Lydløs",
     "keyboardBindings": "Tastaturknapbindinger",
-    "feed": "Feed:",
-    "split": "Split:",
+    "feed": "Skyd:",
+    "split": "Del:",
     "doubleSplit": "Dobbelt split:",
-    "multiSplit": "Multi Split:",
+    "multiSplit": "Multideling:",
     "zoomIn": "Zoom ind:",
     "zoomOut": "Zoom ud:",
     "minion": "Gratis tilskuerkamera / Minion kontrol:",
@@ -90,10 +90,11 @@
     "lockMobileButtons": "Lås mobilknapper",
     "resetButtonPositions": "Nulstil mobilknappernes positioner",
     "useWordFilters": "Ord Censur",
-    "autoRespawn": "Slå AutoRespawn til/fra",
+    "autoRespawn": "AutoRespawn",
     "translateChat": "Oversæt chat (beta)"
   },
   "colors": {
+    "title": "Farver",
     "background": "Baggrund",
     "name": "Navn",
     "color": "Farve",
@@ -102,9 +103,9 @@
   "mouseActions": {
     "none": "Ingen",
     "feed": "Foder (udkast masse)",
-    "split": "Split",
+    "split": "Del",
     "doubleSplit": "Dobbelt split",
-    "multiSplit": "Multi Split"
+    "multiSplit": "Multideling"
   },
   "connecting": {
     "trying": "Forsøger at oprette forbindelse...",
@@ -138,7 +139,7 @@
     "rule2": "Brug ikke andres kaldenavne i chat eller som dit navn på en nedsættende måde, du kan blive slået fra eller udelukket fra spillet.",
     "rule3": "Annoncer ikke andre servere, tjenester eller websteder i chat, du kan blive slået fra eller udelukket fra spillet.",
     "gameplayTitle": "Gameplay",
-    "howToPlay": "Sådan spiller du",
+    "howToPlay": "Guide",
     "controlsIntro": "<kbd>MUS</kbd> / <kbd>TOUCH</kbd> — Bevæg<br /><kbd>SCROLL</kbd> / <kbd id=\"key-zoomin-display\">F</kbd> / <kbd id=\"key-zoomout-display\">V</kbd> — Zoom ind / ud<br /><kbd id=\"key-feed-display\">W</kbd> / <kbd>VENSTREKLIK</kbd> — Skyd masse<br /><kbd id=\"key-split-display\">MELLEMRUM</kbd> — Del én gang<br /><kbd id=\"key-doublesplit-display\">X</kbd> / <kbd>HØJREKLIK</kbd> — Dobbelt deling<br /><kbd id=\"key-multisplit-display\">C</kbd> / <kbd>MIDTERKLIK</kbd> — Multideling",
     "objective": "<b>Mål:</b> Formålet med Agar.io er at dyrke din celle ved at forbruge mindre celler og undgå større. Efterhånden som du vokser, vil du blive mere formidabel og være i stand til at forbruge endnu større celler.",
     "startingOut": "<b>Start ud:</b> Når du først deltager i spillet, starter du som en lille celle. Bevæg dig rundt med din mus for at samle de farverige piller spredt ud over kortet. At spise pellets øger din størrelse og masse.",
@@ -157,6 +158,15 @@
   "news": {
     "title": "Nyheder",
     "entries": [
+      {
+        "date": "07/13/2026",
+        "items": [
+          "Fornyet <b>hovedmenuen</b> med temabannere, faneikoner og bedre lyst og mørkt design",
+          "Opdelt <b>Indstillinger</b> i klare faner med bedre knapper, valg, styring og mobilindstillinger",
+          "Forbedret <b>skin-tilpasning</b> med Jelly Physics-visning, farver og et nyt galleri",
+          "Tilføjet fanerne <b>Nyheder</b>, <b>Regler</b> og <b>Sådan spiller du</b> samt bedre oversættelser"
+        ]
+      },
       {
         "date": "21/05/2026",
         "items": [
@@ -360,8 +370,8 @@
   },
   "canvas": {
     "unnamedCell": "En unavngiven celle",
-    "leaderboard": "Leaderboard",
-    "score": "Score: {score}",
+    "leaderboard": "Topliste",
+    "score": "Point: {score}",
     "fps": "{fps} FPS",
     "ping": "{ms}ms ping",
     "position": "X: {x}, Y: {y}",

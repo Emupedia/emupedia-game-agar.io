@@ -18,21 +18,21 @@
     "title": "Agar.io v2",
     "discordSuggestions": "Gå med oss på Discord om du har förslag",
     "nickname": "Smeknamn",
-    "skin": "Hud",
+    "skin": "Skin",
     "skinPlaceholder": "Hudens namn",
-    "copy": "Kopiera",
+    "copy": "Kopia",
     "clanName": "Klannamn",
     "clanPlaceholder": "Max 5 bokstäver",
     "createClan": "Skapa klan",
     "leaveClan": "Lämna klanen",
     "copyInvite": "Kopiera inbjudan",
-    "gameMode": "Spelläge",
+    "gameMode": "Läge",
     "play": "Spela",
-    "chooseSkin": "Välj Hud",
-    "uploadSkin": "Ladda upp hud",
+    "chooseSkin": "Välj skin",
+    "uploadSkin": "Ladda upp skin",
     "unban": "Avsluta",
     "skinCopied": "Skin URL kopierad till Urklipp!",
-    "spectate": "Åskåda",
+    "spectate": "Titta",
     "settings": "Inställningar"
   },
   "settings": {
@@ -44,7 +44,7 @@
     "feed": "Flöde:",
     "split": "Dela:",
     "doubleSplit": "Dubbel split:",
-    "multiSplit": "Multi Split:",
+    "multiSplit": "Multidela:",
     "zoomIn": "Zooma in:",
     "zoomOut": "Zooma ut:",
     "minion": "Gratis åskådarkamera/minionkontroll:",
@@ -90,10 +90,11 @@
     "lockMobileButtons": "Lås mobilknappar",
     "resetButtonPositions": "Återställ mobilknapparnas positioner",
     "useWordFilters": "Ord Censur",
-    "autoRespawn": "Växla AutoRespawn",
+    "autoRespawn": "AutoRespawn",
     "translateChat": "Översätt chatt (beta)"
   },
   "colors": {
+    "title": "Färger",
     "background": "Bakgrund",
     "name": "Namn",
     "color": "Färg",
@@ -102,9 +103,9 @@
   "mouseActions": {
     "none": "Inga",
     "feed": "Mata (utmatningsmassa)",
-    "split": "Split",
+    "split": "Dela",
     "doubleSplit": "Dubbel Split",
-    "multiSplit": "Multi Split"
+    "multiSplit": "Multidela"
   },
   "connecting": {
     "trying": "Försöker ansluta...",
@@ -138,7 +139,7 @@
     "rule2": "Använd inte andras smeknamn i chatten eller som ditt namn på ett nedsättande sätt, du kan bli tystad eller avstängd från spelet.",
     "rule3": "Annonsera inte andra servrar, tjänster eller webbplatser i chatten, du kan bli avstängd eller avstängd från spelet.",
     "gameplayTitle": "Gameplay",
-    "howToPlay": "Så spelar du",
+    "howToPlay": "Guide",
     "controlsIntro": "<kbd>MUS</kbd> / <kbd>PEKSKÄRM</kbd> — Flytta cellen<br /><kbd>HJUL</kbd> / <kbd id=\"key-zoomin-display\">F</kbd> / <kbd id=\"key-zoomout-display\">V</kbd> — Zooma in / ut<br /><kbd id=\"key-feed-display\">W</kbd> / <kbd>VÄNSTERKLICK</kbd> — Skjut ut massa<br /><kbd id=\"key-split-display\">MELLANSLAG</kbd> — Dela en gång<br /><kbd id=\"key-doublesplit-display\">X</kbd> / <kbd>HÖGERKLICK</kbd> — Dubbeldelning<br /><kbd id=\"key-multisplit-display\">C</kbd> / <kbd>MITTENKLICK</kbd> — Multidelning",
     "objective": "<b>Mål:</b> Målet med Agar.io är att växa din cell genom att konsumera mindre celler och undvika större. När du växer blir du mer formidabel och kan konsumera ännu större celler.",
     "startingOut": "<b>Börjar:</b> När du först går med i spelet börjar du som en liten cell. Flytta runt med musen för att samla de färgglada pellets utspridda över kartan. Att äta pellets ökar din storlek och massa.",
@@ -157,6 +158,15 @@
   "news": {
     "title": "Nyheter",
     "entries": [
+      {
+        "date": "07/13/2026",
+        "items": [
+          "Förnyade <b>huvudmenyn</b> med temabanderoller, flikikoner och bättre ljust och mörkt utseende",
+          "Delade <b>Inställningar</b> i tydliga flikar med bättre reglage, val, kontroller och mobilalternativ",
+          "Förbättrade <b>skin-anpassning</b> med Jelly Physics-förhandsvisning, färger och ett nytt galleri",
+          "Lade till egna flikar för <b>Nyheter</b>, <b>Regler</b> och <b>Så spelar du</b> samt bättre översättningar"
+        ]
+      },
       {
         "date": "21/05/2026",
         "items": [
@@ -360,7 +370,7 @@
   },
   "canvas": {
     "unnamedCell": "En icke namngiven cell",
-    "leaderboard": "Leaderboard",
+    "leaderboard": "Topplista",
     "score": "Poäng: {score}",
     "fps": "{fps} FPS",
     "ping": "{ms}ms ping",

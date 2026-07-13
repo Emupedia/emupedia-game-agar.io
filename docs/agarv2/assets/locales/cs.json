@@ -6,7 +6,7 @@
   "chat": {
     "general": "Generál",
     "clan": "Klan",
-    "placeholder": "Chcete-li chatovat, stiskněte klávesu Enter",
+    "placeholder": "Enter pro chat",
     "clearTitle": "Vymazat chat",
     "zoom": "Přiblížení",
     "translatedSuffix": "→"
@@ -18,21 +18,21 @@
     "title": "Agar.io v2",
     "discordSuggestions": "Pokud máte návrhy, přidejte se k nám na Discordu",
     "nickname": "přezdívka",
-    "skin": "Kůže",
+    "skin": "Skin",
     "skinPlaceholder": "Název kůže",
-    "copy": "Kopírovat",
+    "copy": "Kopie",
     "clanName": "Jméno klanu",
     "clanPlaceholder": "5 písmen max",
     "createClan": "Vytvořte klan",
     "leaveClan": "Opustit klan",
     "copyInvite": "Kopírovat pozvánku",
-    "gameMode": "Herní režim",
-    "play": "hrát",
-    "chooseSkin": "Vyberte Skin",
-    "uploadSkin": "Nahrát vzhled",
+    "gameMode": "Režim",
+    "play": "Hraj",
+    "chooseSkin": "Vybrat skin",
+    "uploadSkin": "Nahrát skin",
     "unban": "Zrušit zákaz",
     "skinCopied": "Adresa URL vzhledu zkopírována do schránky!",
-    "spectate": "Diváci",
+    "spectate": "Sleduj",
     "settings": "Nastavení"
   },
   "settings": {
@@ -90,10 +90,11 @@
     "lockMobileButtons": "Zamknout tlačítka na mobilu",
     "resetButtonPositions": "Resetujte polohu tlačítek na mobilu",
     "useWordFilters": "Cenzura slov",
-    "autoRespawn": "Přepnout AutoRespawn",
+    "autoRespawn": "AutoRespawn",
     "translateChat": "Přeložit chat (beta)"
   },
   "colors": {
+    "title": "Barvy",
     "background": "Pozadí",
     "name": "Jméno",
     "color": "Barva",
@@ -138,7 +139,7 @@
     "rule2": "Nepoužívejte přezdívky jiných lidí v chatu nebo jako své jméno hanlivým způsobem, mohli byste být ztlumeni nebo vám bude zakázána hra.",
     "rule3": "Neinzerujte v chatu jiné servery, služby nebo webové stránky, mohli byste být ztlumeni nebo vám hra zakázána.",
     "gameplayTitle": "Hratelnost",
-    "howToPlay": "Jak hrát",
+    "howToPlay": "Návod",
     "controlsIntro": "<kbd>MYŠ</kbd> / <kbd>DOTYK</kbd> — Pohyb<br /><kbd>KOLEČKO</kbd> / <kbd id=\"key-zoomin-display\">F</kbd> / <kbd id=\"key-zoomout-display\">V</kbd> — Přiblížit / oddálit<br /><kbd id=\"key-feed-display\">W</kbd> / <kbd>LEVÝ KLIK</kbd> — Vysunout hmotu<br /><kbd id=\"key-split-display\">MEZERNÍK</kbd> — Jedno rozdělení<br /><kbd id=\"key-doublesplit-display\">X</kbd> / <kbd>PRAVÝ KLIK</kbd> — Dvojité rozdělení<br /><kbd id=\"key-multisplit-display\">C</kbd> / <kbd>PROSTŘEDNÍ KLIK</kbd> — Vícenásobné rozdělení",
     "objective": "<b>Cíl:</b> Cílem Agar.io je vypěstovat vaši buňku tím, že budete spotřebovávat menší buňky a vyhýbat se větším. Jak budete růst, stanete se impozantnějšími a budete schopni konzumovat ještě větší buňky.",
     "startingOut": "<b>Začínáme:</b> Když se poprvé připojíte ke hře, začnete jako malá buňka. Pohybujte se pomocí myši a sbírejte barevné pelety roztroušené po mapě. Konzumace pelet zvyšuje vaši velikost a hmotnost.",
@@ -157,6 +158,15 @@
   "news": {
     "title": "Novinky",
     "entries": [
+      {
+        "date": "07/13/2026",
+        "items": [
+          "Přepracována <b>hlavní nabídka</b> s tematickými panely, ikonami karet a lepším světlým i tmavým vzhledem",
+          "Rozděleno <b>Nastavení</b> do přehledných karet s lepšími přepínači, výběry, ovládáním a mobilními volbami",
+          "Vylepšeno <b>nastavení skinu</b> o náhled Jelly Physics, barvy a novou galerii",
+          "Přidány samostatné karty <b>Novinky</b>, <b>Pravidla</b> a <b>Jak hrát</b> spolu s lepšími překlady"
+        ]
+      },
       {
         "date": "21/05/2026",
         "items": [
@@ -217,7 +227,7 @@
       {
         "date": "03/02/2025",
         "items": [
-          "Přidáno <b>Posouvání chatu</b>, nyní mů��ete posouvat buď přetažením posuvníku pomocí <kbd>myši</kbd> nebo pomocí kláves <kbd>↑ Šipka nahoru</kbd> a <kbd>↓ Šipka dolů</kbd>"
+          "Přidáno <b>posouvání chatu</b>; posouvejte lištu myší nebo klávesami <kbd>↑</kbd> a <kbd>↓</kbd>"
         ]
       },
       {

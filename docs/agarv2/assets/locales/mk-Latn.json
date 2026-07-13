@@ -18,31 +18,31 @@
     "title": "Agar.io v2",
     "discordSuggestions": "Pridruzhete ni se na Discord dokolku imate predlozi",
     "nickname": "Prekar",
-    "skin": "Kozhata",
+    "skin": "Skin",
     "skinPlaceholder": "Ime na kozhata",
-    "copy": "Kopiraj",
+    "copy": "Kopija",
     "clanName": "Ime na klan",
     "clanPlaceholder": "5 bukvi maks",
     "createClan": "Kreiraj klan",
     "leaveClan": "Napushti go Klanot",
     "copyInvite": "Kopiraj ja pokanata",
-    "gameMode": "Rezhim na igra",
+    "gameMode": "Rezhim",
     "play": "Igraj",
-    "chooseSkin": "Izberete Kozha",
-    "uploadSkin": "Postavete kozha",
+    "chooseSkin": "Izberi skin",
+    "uploadSkin": "Postavi skin",
     "unban": "Otstrani zabrana",
-    "skinCopied": "URL-adresata na kozhata e kopirana vo tablata so isechotsi!",
-    "spectate": "Spektajt",
+    "skinCopied": "URL na skinot e kopiran!",
+    "spectate": "Gledaj",
     "settings": "Postavki"
   },
   "settings": {
     "language": "Jazik",
     "mutedPlayers": "Isklucheni igrachi",
-    "mutePlaceholder": "Vnesete prekar za da go iskluchite zvukot",
+    "mutePlaceholder": "Prekar za zamolchuvanje",
     "mute": "Iskluchi zvuk",
     "keyboardBindings": "Vrzuvanje na kopchinjata na tastaturata",
     "feed": "Napojuvanje:",
-    "split": "Split:",
+    "split": "Delenje:",
     "doubleSplit": "Dvojna podelba:",
     "multiSplit": "Multi razdeluvanje:",
     "zoomIn": "Zumirajte:",
@@ -74,11 +74,11 @@
     "showChat": "Prikazhi razgovor",
     "showMinimap": "Prikazhi minimapa",
     "showPosition": "Prikazhi pozitsija",
-    "showBorder": "Prikazhi ja granitsata na kartata",
+    "showBorder": "Granitsa na kartata",
     "showGrid": "Prikazhi mrezha na karti",
     "backgroundSectors": "Prikazhi sektori na karti",
     "moreZoom": "Zumiranje Zgolemuvanje",
-    "showZoom": "Prikazhi go lizgachot za zumiranje",
+    "showZoom": "Lizgach za zum",
     "playSounds": "Zvutsi",
     "feedMacro": "Nakhranete makro",
     "splitMacro": "Split makro",
@@ -90,10 +90,11 @@
     "lockMobileButtons": "Zakluchi mobilni kopchinja",
     "resetButtonPositions": "Resetirajte gi pozitsiite na mobilnite kopchinja",
     "useWordFilters": "Zborovi tsenzura",
-    "autoRespawn": "Vkluchete go AutoRespawn",
-    "translateChat": "Преведи разговор (бета)"
+    "autoRespawn": "AutoRespawn",
+    "translateChat": "Prevedi razgovor (beta)"
   },
   "colors": {
+    "title": "Boi",
     "background": "Pozadina",
     "name": "Ime",
     "color": "Boja",
@@ -102,9 +103,9 @@
   "mouseActions": {
     "none": "Nikoj",
     "feed": "Napojuvanje (Isfrli masa)",
-    "split": "Split",
+    "split": "Delenje",
     "doubleSplit": "Dvoen split",
-    "multiSplit": "Multi Split"
+    "multiSplit": "Povekjekratno delenje"
   },
   "connecting": {
     "trying": "Se obiduva da se povrze...",
@@ -116,7 +117,7 @@
     "oldBrowserLink": "Ve molime kliknete ovde za da go azhurirate vashiot prelistuvach na ponova verzija.",
     "bannedTitle": "Ti si baniran 😭",
     "bannedBody": "Vie ste zabraneti od igrata zatoa shto gi prekrshivte pravilata ili spamuvajkji go razgovorot ili dodeka prikachuvavte sopstveni skinovi.",
-    "bannedBodyBots": "Вие сте забранети од играта затоа што ги прекршивте правилата користејќи ботови или сопствени скрипти.",
+    "bannedBodyBots": "Zabraneti ste poradi koristenje botovi ili sopstveni skripti.",
     "unbanCode": "Vashiot kod za otbaniranje e"
   },
   "errors": {
@@ -138,7 +139,7 @@
     "rule2": "Ne koristete tugji prekari vo razgovorot ili kako vasheto ime na pogrden nachin, mozhe da dobiete iskluchuvanje ili zabrana za igranje.",
     "rule3": "Ne reklamirajte drugi serveri, uslugi ili veb-stranitsi vo razgovorot, mozhe da bidete zamolcheni ili zabraneti od igrata.",
     "gameplayTitle": "Igranje",
-    "howToPlay": "Kako da igrash",
+    "howToPlay": "Vodich",
     "controlsIntro": "<kbd>GLUVChE</kbd> / <kbd>DOPIR</kbd> — Dvizhenje<br /><kbd>TRKALO</kbd> / <kbd id=\"key-zoomin-display\">F</kbd> / <kbd id=\"key-zoomout-display\">V</kbd> — Zumiranje<br /><kbd id=\"key-feed-display\">W</kbd> / <kbd>LEV KLIK</kbd> — Isfrli masa<br /><kbd id=\"key-split-display\">PROSTOR</kbd> — Edno delenje<br /><kbd id=\"key-doublesplit-display\">X</kbd> / <kbd>DESEN KLIK</kbd> — Dvojno delenje<br /><kbd id=\"key-multisplit-display\">C</kbd> / <kbd>SREDEN KLIK</kbd> — Povekjekratno delenje",
     "objective": "<b>Tsel:</b>Tselta na Agar.io e da ja zgolemi vashata kletka so konsumiranje pomali kletki i izbegnuvanje na pogolemi. Kako shto rastete, kje stanete postrashni i kje mozhete da konsumirate ushte pogolemi kletki.",
     "startingOut": "<b>Zapochnuvanje:</b>Koga prvpat kje se prikluchite na igrata, kje zapochnete kako mala kjelija. Dvizhete se so pomosh na gluvcheto za da gi soberete sharenite peleti rasfrlani niz kartata. Jadenjeto peleti ja zgolemuva vashata golemina i masa.",
@@ -151,12 +152,21 @@
     "growDominate": "<b>Rastete i dominirajte:</b>Kako shto konsumirate pomali kletki i izbegnuvate da bidete jadeni, vashata kletka kje prodolzhi da raste vo golemina. Imajte za tsel da stanete najgolema kjelija na serverot i da dominirate na tablata na vodachi.",
     "viruses": "<b>Vnimavajte na virusite:</b>Niz kartata, kje naidete na zeleni shilesti krugovi poznati kako virusi. Izbegnuvajte sudir so niv, bidejkji tie mozhat da ja podelat vashata kjelija na pomali parchinja ako ste pogolemi od niv. Khranenjeto na virusite so vashata masa od pravets kje predizvika nivno razmnozhuvanje vo sprotivna nasoka.",
     "beStrategic": "<b>Bidete strateshki:</b>Agar.io e isto tolku za strategija kolku shto e za veshtina. Obrnete vnimanie na okolinata, predvidete gi potezite na vashite protivnitsi i koristete taktiki kako razdeluvanje i mudro spojuvanje za da gi nadmudrite vashite rivali.<hr />",
-    "closing": "Toa e sè za osnovite na Agar.io! Sega e vreme da skoknete vo igrata i da zapochnete da ja ra��vivate vashata kjelija za da stanete najgolemiot i najdominanten igrach na serverot.",
+    "closing": "Toa se osnovite na Agar.io! Vlezete vo igrata, rastejte i stanete najgolemiot igrach na serverot.",
     "goodLuck": "Srekjno, i zabavuvaj se!"
   },
   "news": {
     "title": "Vesti",
     "entries": [
+      {
+        "date": "07/13/2026",
+        "items": [
+          "Redizajnirano <b>glavnoto meni</b> so tematski baneri, ikoni na kartichki i podobar svetol i temen stil",
+          "<b>Postavkite</b> se podeleni vo jasni kartichki so podobri prekidachi, izbori i mobilni opcii",
+          "Podobreno <b>ureduvanjeto na skinovi</b> so Jelly Physics pregled, boi i nova galerija",
+          "Dodadeni se kartichki <b>Novosti</b>, <b>Pravila</b> i <b>Kako se igra</b>, plus podobri prevodi"
+        ]
+      },
       {
         "date": "21.05.2026",
         "items": [
@@ -347,7 +357,7 @@
           "Dodadeno<b>Igranje</b>del",
           "Implementirani skinovi koi zapochnuvaat so<kbd>$</kbd>",
           "Sprecheni sintetichki nastani generirani od injektirani skripti",
-          "Nedozvoleni site drugi sops��veni klienti"
+          "Zabraneti se site drugi sopstveni klienti"
         ]
       },
       {
@@ -359,24 +369,24 @@
     ]
   },
   "canvas": {
-    "unnamedCell": "Неименувана ќелија",
-    "leaderboard": "Табла на водачи",
-    "score": "Резултат: {score}",
+    "unnamedCell": "Neimenuvana kjelija",
+    "leaderboard": "Tabela na vodachi",
+    "score": "Rezultat: {score}",
     "fps": "{fps} FPS",
-    "ping": "{ms}ms пинг",
+    "ping": "{ms}ms ping",
     "position": "X: {x}, Y: {y}",
     "statsServer": "{name} ({mode})",
-    "statsWorld": "- Свет {world}",
-    "statsWorldDefault": "- Свет 1",
-    "statsPlayers": "{total} / {limit} играчи",
-    "statsPlaying": "{alive} игра",
-    "statsSpectating": "{spect} гледање",
-    "statsLoad": "{load}% оптоварување @ {uptime}",
-    "timeLessThanMinute": "<1 мин",
+    "statsWorld": " - Svet {world}",
+    "statsWorldDefault": " - Svet 1",
+    "statsPlayers": "{total} / {limit} igrachi",
+    "statsPlaying": "{alive} igraat",
+    "statsSpectating": "{spect} gledaat",
+    "statsLoad": "{load}% optovaruvanje @ {uptime}",
+    "timeLessThanMinute": "<1 min",
     "timeMinutes": "{n}min",
     "timeHours": "{n}h",
     "timeDays": "{n}d",
-    "minionSpectator": "Користите приказ на гледач со слободна камера, притиснете {key} за да се вратите назад",
-    "minionControl": "Контролирате минион, притиснете {key} за да се вратите назад"
+    "minionSpectator": "Koristite slobodna kamera; pritisnete {key} za vrakjanje",
+    "minionControl": "Kontrolirate minion; pritisnete {key} za vrakjanje"
   }
 }

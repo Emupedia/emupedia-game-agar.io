@@ -18,33 +18,33 @@
     "title": "Agar.io v2",
     "discordSuggestions": "Prisoedinyaytes k nam v Discord, esli u vas est predlozheniya",
     "nickname": "Psevdonim",
-    "skin": "Kozha",
+    "skin": "Skin",
     "skinPlaceholder": "Nazvanie skina",
-    "copy": "Kopirovat",
+    "copy": "Kopiya",
     "clanName": "Nazvanie klana",
     "clanPlaceholder": "maksimum 5 bukv",
     "createClan": "Sozdat klan",
     "leaveClan": "Pokinut klan",
     "copyInvite": "Kopirovat priglashenie",
-    "gameMode": "Igrovoy rezhim",
+    "gameMode": "Rezhim",
     "play": "Igrat",
     "chooseSkin": "Vybrat skin",
     "uploadSkin": "Zagruzit skin",
     "unban": "Razbanit",
     "skinCopied": "URL skina skopirovan v bufer obmena!",
-    "spectate": "Nablyudat",
+    "spectate": "Smotret",
     "settings": "Nastroyki"
   },
   "settings": {
     "language": "Yazyk",
     "mutedPlayers": "Priglushennye igroki",
-    "mutePlaceholder": "Vvedite psevdonim, chtoby otklyuchit zvuk",
+    "mutePlaceholder": "Nik dlya blokirovki",
     "mute": "Nemoy",
     "keyboardBindings": "Privyazki knopok klaviatury",
     "feed": "Kormit:",
     "split": "Raskolot:",
     "doubleSplit": "Dvoynoy split:",
-    "multiSplit": "Multi Split:",
+    "multiSplit": "Mnogokratnoe delenie:",
     "zoomIn": "Uvelichenie masshtaba:",
     "zoomOut": "Umenshit masshtab:",
     "minion": "Besplatnaya kamera nablyudeniya/upravlenie minonami:",
@@ -53,7 +53,7 @@
     "mouseBindings": "Privyazki knopok myshi",
     "leftClick": "Levyy klik:",
     "middleClick": "Sredniy shchelchok:",
-    "rightClick": "Shchelknite pravoy knopkoy myshi:",
+    "rightClick": "Pravyy klik:",
     "resetMouse": "Sbros k nastroykam po umolchaniyu",
     "mouseHint": "Nastroyte, kakoe deystvie vypolnyaet kazhdaya knopka myshi",
     "toggleFullscreen": "Pereklyuchit polnoekrannyy rezhim",
@@ -78,22 +78,23 @@
     "showGrid": "Pokazat setku karty",
     "backgroundSectors": "Pokazat sektora karty",
     "moreZoom": "Umenshit Uvelichenie",
-    "showZoom": "Pokazat polzunok masshtabirovaniya",
+    "showZoom": "Polzunok zuma",
     "playSounds": "Zvuki",
     "feedMacro": "Kormovoy makros",
     "splitMacro": "Razdelit makros",
-    "leftClickToggle": "Shchelknite levoy knopkoy myshi",
+    "leftClickToggle": "Levyy klik",
     "middleClickToggle": "Sredniy shchelchok",
-    "rightClickToggle": "Shchelknite pravoy knopkoy myshi",
+    "rightClickToggle": "Pravyy klik",
     "disableTouchControls": "Otklyuchit sensornoe upravlenie",
     "useJoystick": "Sensornyy dzhoystik",
     "lockMobileButtons": "Blokirovka mobilnykh knopok",
     "resetButtonPositions": "Sbrosit raspolozhenie mobilnykh knopok",
     "useWordFilters": "Tsenzura slov",
-    "autoRespawn": "Pereklyuchit avtovozrozhdenie",
-    "translateChat": "Перевести чат (бета)"
+    "autoRespawn": "AutoRespawn",
+    "translateChat": "Perevesti chat (beta)"
   },
   "colors": {
+    "title": "Tsveta",
     "background": "Fon",
     "name": "Imya",
     "color": "Tsvet",
@@ -104,7 +105,7 @@
     "feed": "Podacha (vybros massy)",
     "split": "Raskolot",
     "doubleSplit": "Dvoynoy Split",
-    "multiSplit": "Multi Split"
+    "multiSplit": "Mnogokratnoe delenie"
   },
   "connecting": {
     "trying": "Pytayus podklyuchitsya...",
@@ -116,7 +117,7 @@
     "oldBrowserLink": "Pozhaluysta, nazhmite zdes, chtoby obnovit brauzer do bolee novoy versii.",
     "bannedTitle": "Vas zabanili 😭",
     "bannedBody": "Vas zabanili v igre, potomu chto vy narushili pravila, rassylaya spam v chat ili zagruzhaya sobstvennye skiny.",
-    "bannedBodyBots": "Вас забанили в игре, потому что вы нарушили правила, используя ботов или собственные скрипты.",
+    "bannedBodyBots": "Vy zablokirovany za botov ili polzovatelskie skripty.",
     "unbanCode": "Vash kod razbana"
   },
   "errors": {
@@ -138,7 +139,7 @@
     "rule2": "Ne ispolzuyte nikneymy drugikh lyudey v chate ili v kachestve svoego imeni v unichizhitelnoy forme, vas mogut otklyuchit ili zabanit v igre.",
     "rule3": "Ne reklamiruyte drugie servery, servisy ili veb-sayty v chate, vas mogut otklyuchit ili zabanit v igre.",
     "gameplayTitle": "Geympley",
-    "howToPlay": "Kak igrat",
+    "howToPlay": "Gayd",
     "controlsIntro": "<kbd>MYSH</kbd> / <kbd>KASANIE</kbd> — Dvizhenie<br /><kbd>KOLESO</kbd> / <kbd id=\"key-zoomin-display\">F</kbd> / <kbd id=\"key-zoomout-display\">V</kbd> — Priblizit / otdalit<br /><kbd id=\"key-feed-display\">W</kbd> / <kbd>LEVYY KLIK</kbd> — Vybrosit massu<br /><kbd id=\"key-split-display\">PROBEL</kbd> — Odno delenie<br /><kbd id=\"key-doublesplit-display\">X</kbd> / <kbd>PRAVYY KLIK</kbd> — Dvoynoe delenie<br /><kbd id=\"key-multisplit-display\">C</kbd> / <kbd>SREDNIY KLIK</kbd> — Mnozhestvennoe delenie",
     "objective": "<b>Tsel:</b> Tsel Agar.io — vyrastit vashu kletku, potreblyaya menshie kletki i izbegaya bolee krupnykh. Po mere rosta vy stanete bolee groznym i smozhete potreblyat eshche bolee krupnye kletki.",
     "startingOut": "<b>Nachalo:</b> Kogda vy vpervye prisoedinyaetes k igre, vy nachinaete s malenkoy yacheyki. Peremeshchaytes s pomoshchyu myshi, chtoby sobirat raznotsvetnye shariki, razbrosannye po karte. Upotreblenie granul uvelichivaet vash razmer i massu.",
@@ -157,6 +158,15 @@
   "news": {
     "title": "Novosti",
     "entries": [
+      {
+        "date": "07/13/2026",
+        "items": [
+          "Obnovleno <b>glavnoe menyu</b>: tematicheskie bannery, ikonki vkladok i luchshie svetlaya i tyomnaya temy",
+          "<b>Nastroyki</b> razdeleny na ponyatnye vkladki s uluchshennymi pereklyuchatelyami i mobilnymi optsiyami",
+          "Uluchshena <b>nastroyka skina</b>: predprosmotr Jelly Physics, tsveta i novaya galereya",
+          "Dobavleny vkladki <b>Novosti</b>, <b>Pravila</b> i <b>Kak igrat</b>, a takzhe uluchsheny perevody"
+        ]
+      },
       {
         "date": "21.05.2026",
         "items": [
@@ -359,24 +369,24 @@
     ]
   },
   "canvas": {
-    "unnamedCell": "Безымянная ячейка",
-    "leaderboard": "Таблица лидеров",
-    "score": "Оценка: {score}",
-    "fps": "{fps} кадров в секунду",
-    "ping": "{ms}ms пинг",
+    "unnamedCell": "Bezymyannaya kletka",
+    "leaderboard": "Tablitsa liderov",
+    "score": "Schet: {score}",
+    "fps": "{fps} FPS",
+    "ping": "{ms}ms ping",
     "position": "X: {x}, Y: {y}",
     "statsServer": "{name} ({mode})",
-    "statsWorld": "- Мир {world}",
-    "statsWorldDefault": "- Мир 1",
-    "statsPlayers": "Игроки {total} / {limit}",
-    "statsPlaying": "{alive} играет",
-    "statsSpectating": "{spect} наблюдение",
-    "statsLoad": "{load}% загрузки @ {uptime}",
-    "timeLessThanMinute": "<1 мин.",
+    "statsWorld": " - Mir {world}",
+    "statsWorldDefault": " - Mir 1",
+    "statsPlayers": "{total} / {limit} igrokov",
+    "statsPlaying": "{alive} igrayut",
+    "statsSpectating": "{spect} nablyudayut",
+    "statsLoad": "{load}% nagruzki @ {uptime}",
+    "timeLessThanMinute": "<1 min",
     "timeMinutes": "{n}min",
     "timeHours": "{n}h",
     "timeDays": "{n}d",
-    "minionSpectator": "Вы используете режим просмотра свободной камеры. Нажмите {key}, чтобы переключиться обратно.",
-    "minionControl": "Вы управляете миньоном, нажмите {key}, чтобы переключиться обратно."
+    "minionSpectator": "Svobodnaya kamera; nazhmite {key}, chtoby vernutsya",
+    "minionControl": "Vy upravlyaete minonom; nazhmite {key}, chtoby vernutsya"
   }
 }

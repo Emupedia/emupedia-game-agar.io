@@ -18,7 +18,7 @@
     "title": "Agar.io v2",
     "discordSuggestions": "Kui teil on ettepanekuid, liituge meiega Discordis",
     "nickname": "Hüüdnimi",
-    "skin": "Nahk",
+    "skin": "Skin",
     "skinPlaceholder": "Naha nimi",
     "copy": "Kopeeri",
     "clanName": "Klanni nimi",
@@ -26,13 +26,13 @@
     "createClan": "Loo klann",
     "leaveClan": "Lahku klannist",
     "copyInvite": "Kopeeri kutse",
-    "gameMode": "Mängurežiim",
+    "gameMode": "Režiim",
     "play": "Mängi",
-    "chooseSkin": "Valige Nahk",
-    "uploadSkin": "Laadige nahk üles",
+    "chooseSkin": "Vali skin",
+    "uploadSkin": "Laadi skin",
     "unban": "Tühista keelamine",
     "skinCopied": "Skini URL on lõikelauale kopeeritud!",
-    "spectate": "Vaadata",
+    "spectate": "Vaata",
     "settings": "Seaded"
   },
   "settings": {
@@ -90,10 +90,11 @@
     "lockMobileButtons": "Lukusta mobiilinupud",
     "resetButtonPositions": "Lähtestage mobiilinuppude positsioonid",
     "useWordFilters": "Sõnade tsensuur",
-    "autoRespawn": "Lülitage automaatne taaselus",
+    "autoRespawn": "AutoRespawn",
     "translateChat": "Tõlgi vestlus (beeta)"
   },
   "colors": {
+    "title": "Värvid",
     "background": "Taust",
     "name": "Nimi",
     "color": "Värv",
@@ -104,7 +105,7 @@
     "feed": "Sööt (mass väljutamine)",
     "split": "Lõhestatud",
     "doubleSplit": "Kahekordne poolitus",
-    "multiSplit": "Multi Split"
+    "multiSplit": "Mitmikjagamine"
   },
   "connecting": {
     "trying": "Ühenduse loomine ...",
@@ -117,7 +118,7 @@
     "bannedTitle": "Oled keelatud 😭",
     "bannedBody": "Olete mängust keelatud, kuna rikkusite reegleid kas vestluses rämpsposti saatmise või kohandatud skinnide üleslaadimise ajal.",
     "bannedBodyBots": "Sa oled mängust keelatud, kuna rikkusid reegleid kasutades roboteid või kohandatud skripte.",
-    "unbanCode": "Teie blokeerimise tühistamise kood on"
+    "unbanCode": "Avamiskood"
   },
   "errors": {
     "browserUnsupported": "Teie brauser ei toeta nõutavaid funktsioone, palun värskendage oma brauserit.",
@@ -138,7 +139,7 @@
     "rule2": "Ärge kasutage vestluses ega oma nimena teiste inimeste hüüdnimesid halvustavalt, sest võite mängu vaigistada või mängust blokeerida.",
     "rule3": "Ärge reklaamige vestluses teisi servereid, teenuseid ega veebisaite, sest teid võidakse mängu vaigistada või keelata.",
     "gameplayTitle": "Mängu käik",
-    "howToPlay": "Kuidas mängida",
+    "howToPlay": "Juhend",
     "controlsIntro": "<kbd>HIIR</kbd> / <kbd>PUUDUTUS</kbd> — Liikumine<br /><kbd>RULLIK</kbd> / <kbd id=\"key-zoomin-display\">F</kbd> / <kbd id=\"key-zoomout-display\">V</kbd> — Suumi sisse / välja<br /><kbd id=\"key-feed-display\">W</kbd> / <kbd>VASAKKLIKK</kbd> — Väljuta mass<br /><kbd id=\"key-split-display\">TÜHIK</kbd> — Üks jagamine<br /><kbd id=\"key-doublesplit-display\">X</kbd> / <kbd>PAREMKLIKK</kbd> — Topeltjagamine<br /><kbd id=\"key-multisplit-display\">C</kbd> / <kbd>KESKKLIKK</kbd> — Mitmikjagamine",
     "objective": "<b>Eesmärk:</b> Agar.io eesmärk on teie rakku kasvatada, tarbides väiksemaid rakke ja vältides suuremaid. Kasvades muutute hirmuäratavamaks ja suudate tarbida veelgi suuremaid rakke.",
     "startingOut": "<b>Alustades:</b> kui esimest korda mänguga liitute, alustate väikese lahtrina. Liikuge hiirega ringi, et koguda kaardil hajutatud värvilisi graanuleid. Pelletite söömine suurendab teie suurust ja massi.",
@@ -157,6 +158,15 @@
   "news": {
     "title": "Uudised",
     "entries": [
+      {
+        "date": "07/13/2026",
+        "items": [
+          "Uuendatud <b>peamenüü</b> teemabännerite, vahekaardiikoonide ning parema heleda ja tumeda kujundusega",
+          "Jagatud <b>Seaded</b> selgeteks vahekaartideks paremate lülitite, valikute, juhtelementide ja mobiilivalikutega",
+          "Täiustatud <b>välimuse kohandust</b> Jelly Physics eelvaate, värvide ja uue galeriiga",
+          "Lisatud eraldi <b>Uudiste</b>, <b>Reeglite</b> ja <b>Kuidas mängida</b> vahekaardid ning paremad tõlked"
+        ]
+      },
       {
         "date": "21/05/2026",
         "items": [
@@ -366,7 +376,7 @@
     "ping": "{ms}ms ping",
     "position": "X: {x}, Y: {y}",
     "statsServer": "{name} ({mode})",
-    "statsWorld": "- World {world}",
+    "statsWorld": " - Maailm {world}",
     "statsWorldDefault": "- maailm 1",
     "statsPlayers": "{total} / {limit} mängijad",
     "statsPlaying": "Mängib {alive}",

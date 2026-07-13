@@ -1,7 +1,7 @@
 {
   "meta": {
     "title": "Agar.io v2",
-    "description": "Eat cells smaller than you and don't get eaten by the bigger ones, as an MMO"
+    "description": "Eat smaller cells and avoid larger ones in this multiplayer game."
   },
   "chat": {
     "general": "General",
@@ -61,7 +61,7 @@
     "themeLight": "Light",
     "themeDark": "Dark",
     "cameraSmoothing": "Camera Smoothing",
-    "cellAnimationSpeed": "Cell Animations Speed",
+    "cellAnimationSpeed": "Cell Animation Speed",
     "showSkins": "Show Skins",
     "showNames": "Cell Names",
     "showColor": "Show Colors",
@@ -89,11 +89,12 @@
     "disableTouchControls": "Disable Touch Controls",
     "useJoystick": "Touch Joystick",
     "lockMobileButtons": "Lock Mobile Buttons",
-    "resetButtonPositions": "Reset Mobile Buttons Positions",
-    "useWordFilters": "Words Censorship",
+    "resetButtonPositions": "Reset Mobile Button Positions",
+    "useWordFilters": "Word Filter",
     "autoRespawn": "AutoRespawn"
   },
   "colors": {
+    "title": "Colors",
     "background": "Background",
     "name": "Name",
     "color": "Color",
@@ -112,11 +113,11 @@
     "firewall": "If you cannot connect to the servers, check if you have some antivirus or firewall blocking the connection.",
     "multisessionTitle": "Multisession Warning",
     "multisessionBody": "Multiple game instances are not allowed.<br />Close all other game instances and reload.",
-    "oldBrowserTitle": "Your Browser is very Old",
+    "oldBrowserTitle": "Your Browser Is Outdated",
     "oldBrowserLink": "Please click here to update your Browser to a newer version.",
     "bannedTitle": "You are banned 😭",
-    "bannedBody": "You are banned from the game because you broke the rules either spamming the chat or while uploading custom skins.",
-    "bannedBodyBots": "You are banned from the game because you broke the rules by using bots or custom scripts.",
+    "bannedBody": "You were banned for breaking the rules by spamming chat or uploading a forbidden custom skin.",
+    "bannedBodyBots": "You were banned for breaking the rules by using bots or custom scripts.",
     "unbanCode": "Your unban code is"
   },
   "errors": {
@@ -155,19 +156,19 @@
   },
   "gameplay": {
     "rulesTitle": "Rules",
-    "rule1": "Don't upload forbbiden custom skins, especially if it's someone's face, you might get your skin banned or yourself banned from the game.",
-    "rule2": "Don't use other people's nicknames in chat or as your name in a derogatory way, you might get muted or banned from the game.",
+    "rule1": "Don't upload forbidden custom skins, especially anyone's face. Your skin or account may be banned.",
+    "rule2": "Don't use someone else's name to insult them in chat or as your nickname. You may be muted or banned.",
     "rule3": "Don't advertise other servers, services or websites in chat, you might get muted or banned from the game.",
     "gameplayTitle": "Gameplay",
     "howToPlay": "How to play",
     "controlsIntro": "<kbd>MOUSE</kbd> / <kbd>TOUCH</kbd> — Move your cell<br /><kbd>SCROLL</kbd> / <kbd id=\"key-zoomin-display\">F</kbd> / <kbd id=\"key-zoomout-display\">V</kbd> — Zoom in / out<br /><kbd id=\"key-feed-display\">W</kbd> / <kbd>LEFT CLICK</kbd> — Eject mass<br /><kbd id=\"key-split-display\">SPACE</kbd> — Split once<br /><kbd id=\"key-doublesplit-display\">X</kbd> / <kbd>RIGHT CLICK</kbd> — Double split<br /><kbd id=\"key-multisplit-display\">C</kbd> / <kbd>MIDDLE CLICK</kbd> — Multi split",
     "objective": "<b>Objective:</b> The objective of Agar.io is to grow your cell by consuming smaller cells and avoiding larger ones. As you grow, you'll become more formidable and be able to consume even larger cells.",
     "startingOut": "<b>Starting Out:</b> When you first join the game, you'll start as a small cell. Move around using your mouse to collect the colorful pellets scattered across the map. Eating pellets increases your size and mass.",
-    "movement": "<b>Movement:</b> To move your cell, you simply move your mouse cursor or use your touch screen by moving in the direction you want your cell to go. Your cell will follow the movement of your mouse cursor on the screen.",
+    "movement": "<b>Movement:</b> Move your mouse cursor or drag on the touch screen in the direction you want to go. Your cell follows the pointer.",
     "consumeSmaller": "<b>Consume Smaller Cells:</b> Keep an eye out for smaller cells roaming nearby. As you grow larger, you'll be able to engulf these smaller cells to increase your mass. Approach them strategically to avoid being eaten by larger cells.",
-    "avoidLarger": "<b>Avoid Larger Cells:</b> Be cautious of larger cells, as they can consume you if you're smaller than they. Watch out for players who split to capture smaller cells, and try to anticipate their movements to stay safe.",
-    "splitting": "<b>Splitting:</b> You can split your cell into multiple smaller pieces by pressing <kbd>SPACE</kbd>. Use this tactic to capture smaller cells or to escape from larger ones. You can also do a multiple splits by pressing <kbd>X</kbd> or <kbd>Z</kbd>. Remember, splitting also makes you more vulnerable, so use it wisely.",
-    "ejectingMass": "<b>Ejecting Mass:</b> While ejecting mass by pressing the <kbd>W</kbd> or <kbd>Left Click</kbd> can be beneficial, it also comes with risks. Ejected mass can be consumed by other players, including potential rivals. Additionally, ejecting mass reduces your cell's overall size, which may make you more vulnerable to being consumed by larger cells.",
+    "avoidLarger": "<b>Avoid Larger Cells:</b> Larger cells can consume you. Watch for players splitting to catch smaller cells, and anticipate their movement to stay safe.",
+    "splitting": "<b>Splitting:</b> Press <kbd>SPACE</kbd> to split into smaller pieces. Use it to catch smaller cells or escape larger ones. Press <kbd>X</kbd> or <kbd>Z</kbd> for multiple splits. Splitting leaves you vulnerable, so time it wisely.",
+    "ejectingMass": "<b>Ejecting Mass:</b> Press <kbd>W</kbd> or <kbd>Left Click</kbd> to eject mass. Other players can consume it, and ejecting makes your cell smaller and more vulnerable.",
     "teamPlay": "<b>Team Play (Optional):</b> In team mode, you can collaborate with other players to dominate the leaderboard. Team up with friends or other players to outmaneuver your opponents and conquer the game together.",
     "growDominate": "<b>Grow and Dominate:</b> As you consume smaller cells and avoid being eaten, your cell will continue to grow in size. Aim to become the largest cell on the server and dominate the leaderboard.",
     "viruses": "<b>Watch Out for Viruses:</b> Throughout the map, you'll encounter green spiky circles known as viruses. Avoid colliding with these, as they can split your cell into smaller pieces if you're larger than they. Feeding viruses your mass from a direction will cause them to multiply in the opposite direction.",

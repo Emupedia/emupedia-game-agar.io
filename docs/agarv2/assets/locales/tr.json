@@ -18,21 +18,21 @@
     "title": "Agar.io v2",
     "discordSuggestions": "Önerileriniz varsa Discord'da bize katılın",
     "nickname": "Takma ad",
-    "skin": "Cilt",
+    "skin": "Skin",
     "skinPlaceholder": "Cilt Adı",
-    "copy": "Kopyala",
+    "copy": "Kopya",
     "clanName": "Klan Adı",
     "clanPlaceholder": "maksimum 5 harf",
     "createClan": "Klan Oluştur",
     "leaveClan": "Klandan Ayrıl",
     "copyInvite": "Daveti Kopyala",
-    "gameMode": "Oyun Modu",
+    "gameMode": "Mod",
     "play": "Oyna",
-    "chooseSkin": "Cilt Seç",
-    "uploadSkin": "Görünüm Yükle",
+    "chooseSkin": "Skin seç",
+    "uploadSkin": "Skin yükle",
     "unban": "Yasağı kaldır",
     "skinCopied": "Görünüm URL'si Panoya Kopyalandı!",
-    "spectate": "Seyirci",
+    "spectate": "İzle",
     "settings": "Ayarlar"
   },
   "settings": {
@@ -64,7 +64,7 @@
     "cellAnimationSpeed": "Hücre Animasyon Hızı",
     "showSkins": "Hücre Kaplamaları",
     "showNames": "Hücre Adları",
-    "showColor": "H��cre Renkleri",
+    "showColor": "Hücre Renkleri",
     "showMass": "Hücre Kütlesi",
     "slowMassUpdates": "Daha Yavaş Toplu Güncellemeler",
     "jellyPhysics": "Hücre Jöle Fiziği",
@@ -78,7 +78,7 @@
     "showGrid": "Harita Izgarasını Göster",
     "backgroundSectors": "Harita Sektörlerini Göster",
     "moreZoom": "Uzaklaştır Arttır",
-    "showZoom": "Yakınlaştırma Kaydırıcısını Göster",
+    "showZoom": "Yakınlaştırma çubuğu",
     "playSounds": "Sesler",
     "feedMacro": "Yem Makrosu",
     "splitMacro": "Makroyu Böl",
@@ -90,10 +90,11 @@
     "lockMobileButtons": "Mobil Düğmeleri Kilitle",
     "resetButtonPositions": "Mobil Düğme Konumlarını Sıfırla",
     "useWordFilters": "Kelimeler Sansür",
-    "autoRespawn": "Otomatik Yeniden Doğmayı Değiştir",
+    "autoRespawn": "AutoRespawn",
     "translateChat": "Sohbeti Çevir (Beta)"
   },
   "colors": {
+    "title": "Renkler",
     "background": "Arka plan",
     "name": "İsim",
     "color": "Renk",
@@ -138,9 +139,9 @@
     "rule2": "Sohbette başkalarının takma adlarını veya adınız olarak aşağılayıcı bir şekilde kullanmayın; sessize alınabilirsiniz veya oyundan yasaklanabilirsiniz.",
     "rule3": "Sohbette diğer sunucuların, hizmetlerin veya web sitelerinin reklamını yapmayın; sessize alınabilirsiniz veya oyundan yasaklanabilirsiniz.",
     "gameplayTitle": "oynanış",
-    "howToPlay": "Nasıl oynanır",
+    "howToPlay": "Rehber",
     "controlsIntro": "<kbd>FARE</kbd> / <kbd>DOKUNMA</kbd> — Hücreyi hareket ettir<br /><kbd>TEKERLEK</kbd> / <kbd id=\"key-zoomin-display\">F</kbd> / <kbd id=\"key-zoomout-display\">V</kbd> — Yakınlaştır / uzaklaştır<br /><kbd id=\"key-feed-display\">W</kbd> / <kbd>SOL TIK</kbd> — Kütle çıkar<br /><kbd id=\"key-split-display\">BOŞLUK</kbd> — Bir kez böl<br /><kbd id=\"key-doublesplit-display\">X</kbd> / <kbd>SAĞ TIK</kbd> — Çift böl<br /><kbd id=\"key-multisplit-display\">C</kbd> / <kbd>ORTA TIK</kbd> — Çoklu böl",
-    "objective": "<b>Hedef:</b> Agar.io'nun amacı, daha küçük hücreleri t��keterek ve daha büyük olanlardan kaçınarak hücrenizi büyütmektir. Büyüdükçe daha zorlu hale gelecek ve daha da büyük hücreleri tüketebileceksiniz.",
+    "objective": "<b>Hedef</b> — Küçük hücreleri yiyip büyüklerden kaçarak büyüyün. Büyüdükçe daha büyük hücreleri de yiyebilirsiniz.",
     "startingOut": "<b>Başlangıç:</b> Oyuna ilk katıldığınızda küçük bir hücre olarak başlayacaksınız. Haritaya dağılmış renkli parçacıkları toplamak için farenizi kullanarak dolaşın. Pelet yemek bedeninizi ve kütlenizi artırır.",
     "movement": "<b>Hareket:</b> Hücrenizi hareket ettirmek için fare imlecinizi hareket ettirmeniz veya hücrenizin gitmesini istediğiniz yönde hareket ederek dokunmatik ekranınızı kullanmanız yeterlidir. Hücreniz fare imlecinizin ekrandaki hareketini takip edecektir.",
     "consumeSmaller": "<b>Daha Küçük Hücreleri Tüketin:</b> Yakınlarda dolaşan daha küçük hücrelere dikkat edin. Büyüdükçe, kütlenizi artırmak için bu küçük hücreleri yutabileceksiniz. Daha büyük hücreler tarafından yenilmemek için onlara stratejik olarak yaklaşın.",
@@ -157,6 +158,15 @@
   "news": {
     "title": "Haberler",
     "entries": [
+      {
+        "date": "07/13/2026",
+        "items": [
+          "<b>Ana menü</b> temalı afişler, sekme simgeleri ve daha iyi açık/koyu görünümle yenilendi",
+          "<b>Ayarlar</b> daha iyi anahtarlar, seçimler, kontroller ve mobil seçeneklerle net sekmelere ayrıldı",
+          "<b>Skin özelleştirme</b> Jelly Physics önizleme, canlı renkler ve yeni galeriyle geliştirildi",
+          "<b>Haberler</b>, <b>Kurallar</b> ve <b>Nasıl oynanır</b> sekmeleri ile daha iyi çeviriler eklendi"
+        ]
+      },
       {
         "date": "21/05/2026",
         "items": [

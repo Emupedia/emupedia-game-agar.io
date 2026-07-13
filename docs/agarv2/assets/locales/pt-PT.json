@@ -18,7 +18,7 @@
     "title": "Agar.io v2",
     "discordSuggestions": "Junte-se a nós no Discord se tiver sugestões",
     "nickname": "Apelido",
-    "skin": "Pele",
+    "skin": "Skin",
     "skinPlaceholder": "Nome da pele",
     "copy": "Cópia",
     "clanName": "Nome do Clã",
@@ -26,14 +26,14 @@
     "createClan": "Criar clã",
     "leaveClan": "Sair do clã",
     "copyInvite": "Copiar convite",
-    "gameMode": "Modo de jogo",
+    "gameMode": "Modo",
     "play": "Jogar",
-    "chooseSkin": "Escolha a pele",
+    "chooseSkin": "Escolher skin",
     "uploadSkin": "Carregar skin",
     "unban": "Desbanir",
     "skinCopied": "URL do skin copiado para a área de transferência!",
-    "spectate": "Espectador",
-    "settings": "Configurações"
+    "spectate": "Observar",
+    "settings": "Ajustes"
   },
   "settings": {
     "language": "Linguagem",
@@ -78,7 +78,7 @@
     "showGrid": "Mostrar grade do mapa",
     "backgroundSectors": "Mostrar setores do mapa",
     "moreZoom": "Aumento de redução de zoom",
-    "showZoom": "Mostrar controle deslizante de zoom",
+    "showZoom": "Mostrar zoom",
     "playSounds": "Sons",
     "feedMacro": "Macro de alimentação",
     "splitMacro": "Macro dividida",
@@ -90,10 +90,11 @@
     "lockMobileButtons": "Bloquear botões móveis",
     "resetButtonPositions": "Redefinir as posições dos botões móveis",
     "useWordFilters": "Censura de palavras",
-    "autoRespawn": "Alternar AutoRespawn",
+    "autoRespawn": "AutoRespawn",
     "translateChat": "Traduzir bate-papo (beta)"
   },
   "colors": {
+    "title": "Cores",
     "background": "Fundo",
     "name": "Nome",
     "color": "Cor",
@@ -138,7 +139,7 @@
     "rule2": "Não use apelidos de outras pessoas no chat ou como seu nome de forma depreciativa, pois você pode ser silenciado ou banido do jogo.",
     "rule3": "Não anuncie outros servidores, serviços ou sites no chat, você pode ser silenciado ou banido do jogo.",
     "gameplayTitle": "Jogabilidade",
-    "howToPlay": "Como jogar",
+    "howToPlay": "Guia",
     "controlsIntro": "<kbd>RATO</kbd> / <kbd>TOQUE</kbd> — Mover célula<br /><kbd>RODA</kbd> / <kbd id=\"key-zoomin-display\">F</kbd> / <kbd id=\"key-zoomout-display\">V</kbd> — Aproximar / afastar<br /><kbd id=\"key-feed-display\">W</kbd> / <kbd>CLIQUE ESQ.</kbd> — Ejetar massa<br /><kbd id=\"key-split-display\">ESPAÇO</kbd> — Dividir uma vez<br /><kbd id=\"key-doublesplit-display\">X</kbd> / <kbd>CLIQUE DIR.</kbd> — Divisão dupla<br /><kbd id=\"key-multisplit-display\">C</kbd> / <kbd>CLIQUE MEIO</kbd> — Divisão múltipla",
     "objective": "<b>Objetivo:</b> O objetivo do Agar.io é fazer crescer sua célula consumindo células menores e evitando as maiores. À medida que você cresce, você se tornará mais formidável e será capaz de consumir células ainda maiores.",
     "startingOut": "<b>Começando:</b> Ao entrar no jogo pela primeira vez, você começará como uma pequena célula. Mova-se usando o mouse para coletar as bolinhas coloridas espalhadas pelo mapa. Comer pellets aumenta seu tamanho e massa.",
@@ -157,6 +158,15 @@
   "news": {
     "title": "Notícias",
     "entries": [
+      {
+        "date": "07/13/2026",
+        "items": [
+          "Redesenhado o <b>menu principal</b> com faixas temáticas, ícones e melhores estilos claro e escuro",
+          "<b>Definições</b> divididas em separadores claros com melhores botões, seletores e opções móveis",
+          "Melhorada a <b>personalização da skin</b> com pré-visualização Jelly Physics, cores e nova galeria",
+          "Adicionados separadores de <b>Notícias</b>, <b>Regras</b> e <b>Como jogar</b>, além de melhores traduções"
+        ]
+      },
       {
         "date": "21/05/2026",
         "items": [

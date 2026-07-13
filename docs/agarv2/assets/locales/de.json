@@ -6,7 +6,7 @@
   "chat": {
     "general": "Allgemein",
     "clan": "Clan",
-    "placeholder": "Drücken Sie die Eingabetaste, um zu chatten",
+    "placeholder": "Enter zum Chatten",
     "clearTitle": "Klarer Chat",
     "zoom": "Zoomen",
     "translatedSuffix": "→"
@@ -18,27 +18,27 @@
     "title": "Agar.io v2",
     "discordSuggestions": "Treten Sie uns auf Discord bei, wenn Sie Vorschläge haben",
     "nickname": "Spitzname",
-    "skin": "Haut",
+    "skin": "Skin",
     "skinPlaceholder": "Hautname",
-    "copy": "Kopieren",
+    "copy": "Kopie",
     "clanName": "Clanname",
     "clanPlaceholder": "Maximal 5 Buchstaben",
     "createClan": "Erstelle einen Clan",
     "leaveClan": "Clan verlassen",
     "copyInvite": "Einladung kopieren",
-    "gameMode": "Spielmodus",
-    "play": "Spielen",
-    "chooseSkin": "Wählen Sie „Haut“.",
+    "gameMode": "Modus",
+    "play": "Spiel",
+    "chooseSkin": "Skin wählen",
     "uploadSkin": "Skin hochladen",
     "unban": "Verbot aufheben",
     "skinCopied": "Skin-URL in die Zwischenablage kopiert!",
-    "spectate": "Zuschauen",
-    "settings": "Einstellungen"
+    "spectate": "Zusehen",
+    "settings": "Optionen"
   },
   "settings": {
     "language": "Sprache",
     "mutedPlayers": "Stummgeschaltete Spieler",
-    "mutePlaceholder": "Geben Sie einen Spitznamen ein, um ihn stummzuschalten",
+    "mutePlaceholder": "Spielername stummschalten",
     "mute": "Stumm",
     "keyboardBindings": "Tastaturtastenbelegungen",
     "feed": "Futtermittel:",
@@ -48,13 +48,13 @@
     "zoomIn": "Vergrößern:",
     "zoomOut": "Herauszoomen:",
     "minion": "Kostenlose Zuschauerkamera / Minion-Kontrolle:",
-    "resetKeys": "Auf Standardeinstellungen zurücksetzen",
-    "keyRebindHint": "Klicken Sie auf eine Schaltfläche und drücken Sie eine Taste, um die Bindung erneut vorzunehmen",
+    "resetKeys": "Standardwerte",
+    "keyRebindHint": "Button wählen, dann Taste drücken",
     "mouseBindings": "Maustastenbindungen",
     "leftClick": "Linksklick:",
     "middleClick": "Mittelklick:",
     "rightClick": "Rechtsklick:",
-    "resetMouse": "Auf Standardeinstellungen zurücksetzen",
+    "resetMouse": "Standardwerte",
     "mouseHint": "Konfigurieren Sie, welche Aktion jede Maustaste ausführt",
     "toggleFullscreen": "Vollbild umschalten",
     "darkTheme": "Dunkles Thema",
@@ -90,10 +90,11 @@
     "lockMobileButtons": "Sperren Sie mobile Tasten",
     "resetButtonPositions": "Setzen Sie die Positionen der mobilen Tasten zurück",
     "useWordFilters": "Wortzensur",
-    "autoRespawn": "Schalten Sie AutoRespawn um",
+    "autoRespawn": "AutoRespawn",
     "translateChat": "Chat übersetzen (Beta)"
   },
   "colors": {
+    "title": "Farben",
     "background": "Hintergrund",
     "name": "Name",
     "color": "Farbe",
@@ -107,7 +108,7 @@
     "multiSplit": "Multi-Split"
   },
   "connecting": {
-    "trying": "Versuche eine Verbindung herzustellen...",
+    "trying": "Verbindung wird hergestellt...",
     "discord": "Begleiten Sie uns auf Discord!",
     "firewall": "Wenn Sie keine Verbindung zu den Servern herstellen können, prüfen Sie, ob ein Antivirenprogramm oder eine Firewall die Verbindung blockiert.",
     "multisessionTitle": "Multisession-Warnung",
@@ -116,7 +117,7 @@
     "oldBrowserLink": "Bitte klicken Sie hier, um Ihren Browser auf eine neuere Version zu aktualisieren.",
     "bannedTitle": "Du bist gesperrt 😭",
     "bannedBody": "Sie werden vom Spiel ausgeschlossen, weil Sie gegen die Regeln verstoßen haben, indem Sie entweder den Chat gespammt oder benutzerdefinierte Skins hochgeladen haben.",
-    "bannedBodyBots": "Sie werden vom Spiel ausgeschlossen, weil Sie durch die Verwendung von Bots oder benutzerdefinierten Skripten gegen die Regeln verstoßen haben.",
+    "bannedBodyBots": "Wegen Bots oder eigenen Skripten wurdest du gesperrt.",
     "unbanCode": "Ihr Unban-Code lautet"
   },
   "errors": {
@@ -138,7 +139,7 @@
     "rule2": "Benutzen Sie die Spitznamen anderer Personen im Chat oder als Ihren Namen nicht auf abfällige Weise, da Sie sonst stummgeschaltet oder vom Spiel ausgeschlossen werden könnten.",
     "rule3": "Machen Sie im Chat keine Werbung für andere Server, Dienste oder Websites, da Sie sonst stummgeschaltet oder vom Spiel ausgeschlossen werden könnten.",
     "gameplayTitle": "Gameplay",
-    "howToPlay": "Spielanleitung",
+    "howToPlay": "Anleitung",
     "controlsIntro": "<kbd>MAUS</kbd> / <kbd>TOUCH</kbd> — Zelle bewegen<br /><kbd>SCROLL</kbd> / <kbd id=\"key-zoomin-display\">F</kbd> / <kbd id=\"key-zoomout-display\">V</kbd> — Rein- / rauszoomen<br /><kbd id=\"key-feed-display\">W</kbd> / <kbd>LINKSKLICK</kbd> — Masse auswerfen<br /><kbd id=\"key-split-display\">LEERTASTE</kbd> — Einmal teilen<br /><kbd id=\"key-doublesplit-display\">X</kbd> / <kbd>RECHTSKLICK</kbd> — Doppelt teilen<br /><kbd id=\"key-multisplit-display\">C</kbd> / <kbd>MITTELKLICK</kbd> — Mehrfach teilen",
     "objective": "<b>Ziel:</b> Das Ziel von Agar.io ist das Wachstum Ihrer Zelle durch den Verbrauch kleinerer Zellen und die Vermeidung größerer. Mit zunehmendem Wachstum werden Sie leistungsfähiger und können noch größere Zellen verzehren.",
     "startingOut": "<b>Anfang:</b> Wenn Sie dem Spiel zum ersten Mal beitreten, beginnen Sie als kleine Zelle. Bewegen Sie sich mit der Maus umher, um die bunten Pellets einzusammeln, die auf der Karte verstreut sind. Der Verzehr von Pellets erhöht Ihre Größe und Masse.",
@@ -155,8 +156,17 @@
     "goodLuck": "Viel Glück und viel Spaß!"
   },
   "news": {
-    "title": "Nachrichten",
+    "title": "News",
     "entries": [
+      {
+        "date": "07/13/2026",
+        "items": [
+          "Das <b>Hauptmenü</b> erhielt Themenbanner, Tab-Symbole und ein besseres helles und dunkles Design",
+          "<b>Einstellungen</b> sind jetzt in übersichtliche Tabs mit besseren Schaltern, Auswahlfeldern und Mobiloptionen gegliedert",
+          "Die <b>Skin-Anpassung</b> bietet Jelly-Physics-Vorschau, Farbregler und eine neue Galerie",
+          "Eigene Tabs für <b>Neuigkeiten</b>, <b>Regeln</b> und <b>Spielanleitung</b> sowie bessere Übersetzungen hinzugefügt"
+        ]
+      },
       {
         "date": "21.05.2026",
         "items": [
@@ -168,7 +178,7 @@
         "date": "01.05.2026",
         "items": [
           "<b>Spitznamen</b> müssen jetzt mindestens <b>3 Zeichen</b> lang sein",
-          "Optionale <b>Wörterzensur</b> f��r <b>Chat</b> und <b>Spitznamen</b> hinzugefügt. Sie ist standardmäßig aktiviert. <u>Sie können sie deaktivieren, aber beschweren Sie sich dann nicht über <a style=\"font-weight: bolder;\" href=\"https://discord.gg/emupedia-510149138491506688\" target=\"_blank\">Discord</a> über Menschen, die giftig sind</u>",
+          "Optionaler <b>Wortfilter</b> für <b>Chat</b> und <b>Spitznamen</b> hinzugefügt; standardmäßig aktiv. <u>Er lässt sich deaktivieren, Beschwerden über toxische Spieler auf <a style=\"font-weight: bolder;\" href=\"https://discord.gg/emupedia-510149138491506688\" target=\"_blank\">Discord</a> helfen dann aber nicht</u>",
           "Das <b>Umschalten der freien Kamera für Zuschauer</b> wurde behoben. Jetzt können Sie im Zuschauermodus ordnungsgemäß von der automatischen Verfolgung von Spielern auf die freie Kamera umschalten"
         ]
       },

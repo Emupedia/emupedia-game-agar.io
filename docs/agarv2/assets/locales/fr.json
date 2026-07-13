@@ -18,22 +18,22 @@
     "title": "Agar.io v2",
     "discordSuggestions": "Rejoignez-nous sur Discord si vous avez des suggestions",
     "nickname": "Surnom",
-    "skin": "Peau",
+    "skin": "Skin",
     "skinPlaceholder": "Nom de la peau",
-    "copy": "Copier",
+    "copy": "Copie",
     "clanName": "Nom du clan",
     "clanPlaceholder": "5 lettres maximum",
     "createClan": "Créer un clan",
     "leaveClan": "Quitter le clan",
     "copyInvite": "Copier l'invitation",
-    "gameMode": "Mode de jeu",
+    "gameMode": "Mode",
     "play": "Jouer",
-    "chooseSkin": "Choisir la peau",
-    "uploadSkin": "Télécharger le skin",
-    "unban": "Annuler le bannissement",
+    "chooseSkin": "Choisir un skin",
+    "uploadSkin": "Importer un skin",
+    "unban": "Débannir",
     "skinCopied": "URL du skin copiée dans le presse-papiers !",
-    "spectate": "Spectateur",
-    "settings": "Paramètres"
+    "spectate": "Observer",
+    "settings": "Réglages"
   },
   "settings": {
     "language": "Langue",
@@ -48,13 +48,13 @@
     "zoomIn": "Zoom avant :",
     "zoomOut": "Zoom arrière :",
     "minion": "Caméra de spectateur gratuite / Contrôle des serviteurs :",
-    "resetKeys": "Réinitialiser aux valeurs par défaut",
+    "resetKeys": "Réglages par défaut",
     "keyRebindHint": "Cliquez sur un bouton et appuyez sur une touche pour relier",
     "mouseBindings": "Liaisons des boutons de la souris",
     "leftClick": "Clic gauche :",
     "middleClick": "Clic du milieu :",
     "rightClick": "Clic droit :",
-    "resetMouse": "Réinitialiser aux valeurs par défaut",
+    "resetMouse": "Réglages par défaut",
     "mouseHint": "Configurer l'action effectuée par chaque bouton de la souris",
     "toggleFullscreen": "Basculer en plein écran",
     "darkTheme": "Thème sombre",
@@ -90,10 +90,11 @@
     "lockMobileButtons": "Verrouiller les boutons mobiles",
     "resetButtonPositions": "Réinitialiser les positions des boutons mobiles",
     "useWordFilters": "Censure des mots",
-    "autoRespawn": "Activer la réapparition automatique",
+    "autoRespawn": "AutoRespawn",
     "translateChat": "Traduire le chat (bêta)"
   },
   "colors": {
+    "title": "Couleurs",
     "background": "Contexte",
     "name": "Nom",
     "color": "Couleur",
@@ -138,7 +139,7 @@
     "rule2": "N'utilisez pas les surnoms d'autres personnes dans le chat ou comme nom de manière désobligeante, vous pourriez être mis en sourdine ou banni du jeu.",
     "rule3": "Ne faites pas de publicité pour d'autres serveurs, services ou sites Web dans le chat, vous pourriez être mis en sourdine ou banni du jeu.",
     "gameplayTitle": "Gameplay",
-    "howToPlay": "Comment jouer",
+    "howToPlay": "Guide",
     "controlsIntro": "<kbd>SOURIS</kbd> / <kbd>TACTILE</kbd> — Déplacer<br /><kbd>MOLETTE</kbd> / <kbd id=\"key-zoomin-display\">F</kbd> / <kbd id=\"key-zoomout-display\">V</kbd> — Zoom avant / arrière<br /><kbd id=\"key-feed-display\">W</kbd> / <kbd>CLIC GAUCHE</kbd> — Éjecter la masse<br /><kbd id=\"key-split-display\">ESPACE</kbd> — Division simple<br /><kbd id=\"key-doublesplit-display\">X</kbd> / <kbd>CLIC DROIT</kbd> — Double division<br /><kbd id=\"key-multisplit-display\">C</kbd> / <kbd>CLIC MILIEU</kbd> — Division multiple",
     "objective": "<b>Objectif :</b> L'objectif d'Agar.io est de faire croître votre cellule en consommant des cellules plus petites et en évitant les plus grosses. Au fur et à mesure de votre croissance, vous deviendrez plus redoutable et pourrez consommer des cellules encore plus grosses.",
     "startingOut": "<b>Début :</b> Lorsque vous rejoignez le jeu pour la première fois, vous commencerez comme une petite cellule. Déplacez-vous à l'aide de votre souris pour collecter les pastilles colorées dispersées sur la carte. Manger des pellets augmente votre taille et votre masse.",
@@ -155,8 +156,17 @@
     "goodLuck": "Bonne chance et amusez-vous !"
   },
   "news": {
-    "title": "Actualités",
+    "title": "Actus",
     "entries": [
+      {
+        "date": "07/13/2026",
+        "items": [
+          "Refonte du <b>menu principal</b> avec bannières thématiques, icônes et meilleurs thèmes clair et sombre",
+          "<b>Paramètres</b> répartis en onglets clairs avec de meilleurs boutons, sélecteurs et options mobiles",
+          "<b>Personnalisation du skin</b> améliorée avec aperçu Jelly Physics, couleurs en direct et nouvelle galerie",
+          "Ajout des onglets <b>Actualités</b>, <b>Règles</b> et <b>Comment jouer</b>, avec de meilleures traductions"
+        ]
+      },
       {
         "date": "21/05/2026",
         "items": [

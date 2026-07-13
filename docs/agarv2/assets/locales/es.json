@@ -18,21 +18,21 @@
     "title": "Agar.io v2",
     "discordSuggestions": "Únase a nosotros en Discord si tiene sugerencias",
     "nickname": "Apodo",
-    "skin": "Piel",
+    "skin": "Skin",
     "skinPlaceholder": "Nombre de la piel",
-    "copy": "Copiar",
+    "copy": "Copia",
     "clanName": "Nombre del clan",
     "clanPlaceholder": "5 letras máximo",
     "createClan": "Crear clan",
     "leaveClan": "Dejar el clan",
     "copyInvite": "Copiar invitación",
-    "gameMode": "Modo de juego",
+    "gameMode": "Modo",
     "play": "Jugar",
-    "chooseSkin": "Elige la piel",
-    "uploadSkin": "Subir máscara",
+    "chooseSkin": "Elegir skin",
+    "uploadSkin": "Subir skin",
     "unban": "Desbanear",
     "skinCopied": "¡URL de la máscara copiada al portapapeles!",
-    "spectate": "Espectar",
+    "spectate": "Observar",
     "settings": "Ajustes"
   },
   "settings": {
@@ -48,13 +48,13 @@
     "zoomIn": "Acercar:",
     "zoomOut": "Alejar:",
     "minion": "Cámara de espectador gratuita/Control de Minion:",
-    "resetKeys": "Restablecer los valores predeterminados",
+    "resetKeys": "Valores iniciales",
     "keyRebindHint": "Haga clic en un botón y presione una tecla para volver a vincular",
     "mouseBindings": "Enlaces de botones del ratón",
     "leftClick": "Clic izquierdo:",
     "middleClick": "Clic medio:",
     "rightClick": "Haga clic derecho:",
-    "resetMouse": "Restablecer los valores predeterminados",
+    "resetMouse": "Valores iniciales",
     "mouseHint": "Configurar qué acción realiza cada botón del mouse",
     "toggleFullscreen": "Alternar pantalla completa",
     "darkTheme": "Tema oscuro",
@@ -78,7 +78,7 @@
     "showGrid": "Mostrar cuadrícula de mapa",
     "backgroundSectors": "Mostrar sectores del mapa",
     "moreZoom": "Alejar aumentar",
-    "showZoom": "Mostrar control deslizante de zoom",
+    "showZoom": "Mostrar zoom",
     "playSounds": "sonidos",
     "feedMacro": "Macro de alimentación",
     "splitMacro": "Macro dividida",
@@ -90,10 +90,11 @@
     "lockMobileButtons": "Bloquear botones del móvil",
     "resetButtonPositions": "Restablecer posiciones de botones móviles",
     "useWordFilters": "Censura de palabras",
-    "autoRespawn": "Alternar reaparición automática",
+    "autoRespawn": "AutoRespawn",
     "translateChat": "Traducir chat (Beta)"
   },
   "colors": {
+    "title": "Colores",
     "background": "Antecedentes",
     "name": "Nombre",
     "color": "Color",
@@ -138,7 +139,7 @@
     "rule2": "No uses los apodos de otras personas en el chat o como tu nombre de manera despectiva, podrías ser silenciado o expulsado del juego.",
     "rule3": "No anuncie otros servidores, servicios o sitios web en el chat, podrían silenciarlo o prohibirlo en el juego.",
     "gameplayTitle": "Jugabilidad",
-    "howToPlay": "Cómo jugar",
+    "howToPlay": "Guía",
     "controlsIntro": "<kbd>RATÓN</kbd> / <kbd>TOQUE</kbd> — Mover célula<br /><kbd>RUEDA</kbd> / <kbd id=\"key-zoomin-display\">F</kbd> / <kbd id=\"key-zoomout-display\">V</kbd> — Acercar / alejar<br /><kbd id=\"key-feed-display\">W</kbd> / <kbd>CLIC IZQ.</kbd> — Expulsar masa<br /><kbd id=\"key-split-display\">ESPACIO</kbd> — Dividir una vez<br /><kbd id=\"key-doublesplit-display\">X</kbd> / <kbd>CLIC DER.</kbd> — División doble<br /><kbd id=\"key-multisplit-display\">C</kbd> / <kbd>CLIC MEDIO</kbd> — División múltiple",
     "objective": "<b>Objetivo:</b> El objetivo de Agar.io es hacer crecer sus células consumiendo células más pequeñas y evitando las más grandes. A medida que crezcas, te volverás más formidable y podrás consumir células aún más grandes.",
     "startingOut": "<b>Comenzando:</b> Cuando te unas al juego por primera vez, comenzarás como una pequeña célula. Muévete usando el ratón para recoger las bolitas de colores repartidas por el mapa. Comer pellets aumenta tu tamaño y masa.",
@@ -157,6 +158,15 @@
   "news": {
     "title": "Noticias",
     "entries": [
+      {
+        "date": "07/13/2026",
+        "items": [
+          "Rediseñado el <b>menú principal</b> con banners temáticos, iconos y mejores estilos claro y oscuro",
+          "Reorganizados los <b>Ajustes</b> en pestañas con mejores interruptores, selectores, controles y opciones móviles",
+          "Mejorada la <b>personalización de skins</b> con vista Jelly Physics, colores en vivo y una galería renovada",
+          "Añadidas pestañas de <b>Noticias</b>, <b>Reglas</b> y <b>Cómo jugar</b>, junto con mejores traducciones"
+        ]
+      },
       {
         "date": "21/05/2026",
         "items": [
@@ -231,7 +241,7 @@
         "date": "13/10/2024",
         "items": [
           "Se agregaron las teclas <kbd>F</kbd> y <kbd>V</kbd> para acercar y alejar.",
-          "Se agreg�� <b>Control deslizante de zoom</b> para acercar y alejar",
+          "Se agregó un <b>control de zoom</b> para acercar y alejar",
           "Se agregó la casilla de verificación <b>Mostrar control deslizante de zoom</b> en <b>Configuración</b>"
         ]
       },

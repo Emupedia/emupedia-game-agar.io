@@ -12,49 +12,49 @@
     "translatedSuffix": "→"
   },
   "gallery": {
-    "skins": "Skins"
+    "skins": "Skinovi"
   },
   "lobby": {
     "title": "Agar.io v2",
     "discordSuggestions": "Pridruzhite nam se na Distsord-u ako imate predloge",
     "nickname": "Nadimak",
-    "skin": "Kozha",
+    "skin": "Skin",
     "skinPlaceholder": "Ime kozhe",
-    "copy": "Kopiraj",
+    "copy": "Kopija",
     "clanName": "Ime klana",
     "clanPlaceholder": "5 slova mak",
     "createClan": "Tsreate Tslan",
     "leaveClan": "Napusti klan",
     "copyInvite": "Kopiraj poziv",
-    "gameMode": "Rezhim igre",
+    "gameMode": "Režim",
     "play": "Igraj",
-    "chooseSkin": "Izaberite Skin",
-    "uploadSkin": "Upload Skin",
-    "unban": "Unban",
+    "chooseSkin": "Izaberi skin",
+    "uploadSkin": "Otpremi skin",
+    "unban": "Odblokiraj",
     "skinCopied": "URL maske je kopiran u medjuspremnik!",
-    "spectate": "Posmatraj",
-    "settings": "Podeshavanja"
+    "spectate": "Gledaj",
+    "settings": "Opcije"
   },
   "settings": {
     "language": "Jezik",
     "mutedPlayers": "Muted Plaiers",
-    "mutePlaceholder": "Unesite nadimak da biste iskljuchili zvuk",
-    "mute": "Mute",
+    "mutePlaceholder": "Nadimak za utišavanje",
+    "mute": "Utišaj",
     "keyboardBindings": "Vezivanje dugmadi na tastaturi",
-    "feed": "Feed:",
-    "split": "Split:",
+    "feed": "Izbaci:",
+    "split": "Podela:",
     "doubleSplit": "Dvostruka podela:",
-    "multiSplit": "Multi Split:",
+    "multiSplit": "Više podela:",
     "zoomIn": "Uvechaj:",
     "zoomOut": "Umanji:",
     "minion": "Besplatna kontrola kamere za gledaotse / miniona:",
-    "resetKeys": "Resetujte na podrazumevane vrednosti",
+    "resetKeys": "Podrazumevano",
     "keyRebindHint": "Kliknite na dugme i pritisnite taster da biste ponovo povezali",
     "mouseBindings": "Vezivanje dugmeta misha",
     "leftClick": "Kliknite levim klikom:",
     "middleClick": "Srednji klik:",
     "rightClick": "Desni klik:",
-    "resetMouse": "Resetujte na podrazumevane vrednosti",
+    "resetMouse": "Podrazumevano",
     "mouseHint": "Konfigurishite koju radnju obavlja svako dugme misha",
     "toggleFullscreen": "Prebatsi preko tselog ekrana",
     "darkTheme": "Dark Tkheme",
@@ -87,13 +87,14 @@
     "rightClickToggle": "Desni klik",
     "disableTouchControls": "Onemoguchite kontrole na dodir",
     "useJoystick": "Dodirnite Joistitsk",
-    "lockMobileButtons": "Zakljuchavanje dugmadi za mobilne uredjaje",
+    "lockMobileButtons": "Zaključaj dugmad",
     "resetButtonPositions": "Resetujte polozhaje mobilnikh dugmadi",
     "useWordFilters": "Rechi Tsenzura",
-    "autoRespawn": "Toggle AutoRespavn",
-    "translateChat": "Преведи ћаскање (Бета)"
+    "autoRespawn": "AutoRespawn",
+    "translateChat": "Prevedi ćaskanje (Beta)"
   },
   "colors": {
+    "title": "Boje",
     "background": "Pozadina",
     "name": "Ime",
     "color": "Boja",
@@ -102,9 +103,9 @@
   "mouseActions": {
     "none": "Nijedan",
     "feed": "Feed (Ejetst Mass)",
-    "split": "Split",
+    "split": "Podela",
     "doubleSplit": "Dvostruki Split",
-    "multiSplit": "Multi Split"
+    "multiSplit": "Više podela"
   },
   "connecting": {
     "trying": "Pokushavam da se povezhem...",
@@ -116,7 +117,7 @@
     "oldBrowserLink": "Kliknite ovde da biste azhurirali svoj pretrazhivach na noviju verziju.",
     "bannedTitle": "Zabranjeni ste 😭",
     "bannedBody": "Zabranjeni ste iz igre jer ste prekrshili pravila ili slanjem nezheljene poshte u chaskanje ili prilikom postavljanja prilagodjenikh skinova.",
-    "bannedBodyBots": "Забрањени сте из игре јер сте прекршили правила користећи ботове или прилагођене скрипте.",
+    "bannedBodyBots": "Blokirani ste zbog botova ili prilagođenih skripti.",
     "unbanCode": "Vash kod za odbranu je"
   },
   "errors": {
@@ -138,7 +139,7 @@
     "rule2": "Ne koristite nadimke drugikh ljudi u chaskanju ili kao svoje ime na pogrdan nachin, mozhete biti iskljucheni ili izbacheni iz igre.",
     "rule3": "Ne oglashavajte druge servere, usluge ili veb-sajtove u chaskanju, mozhda chete biti utishani ili izbacheni iz igre.",
     "gameplayTitle": "Igranje",
-    "howToPlay": "Kako igrati",
+    "howToPlay": "Vodič",
     "controlsIntro": "<kbd>MISh</kbd> / <kbd>DODIR</kbd> — Kretanje<br /><kbd>TOChAK</kbd> / <kbd id=\"key-zoomin-display\">F</kbd> / <kbd id=\"key-zoomout-display\">V</kbd> — Uvechaj / umanji<br /><kbd id=\"key-feed-display\">W</kbd> / <kbd>LEVI KLIK</kbd> — Izbaci masu<br /><kbd id=\"key-split-display\">RAZMAK</kbd> — Jedna podela<br /><kbd id=\"key-doublesplit-display\">X</kbd> / <kbd>DESNI KLIK</kbd> — Dvostruka podela<br /><kbd id=\"key-multisplit-display\">C</kbd> / <kbd>SREDNJI KLIK</kbd> — Vishestruka podela",
     "objective": "<b>Tsilj:</b>Tsilj Agar.io je da povecha vashu cheliju konzumiranjem manjikh chelija i izbegavanjem vechikh. Kako rastete, postachete mochniji i mochi chete da konzumirate josh veche chelije.",
     "startingOut": "<b>Pochetak:</b>Kada se prvi put pridruzhite igri, pochechete kao mala chelija. Krechite se pomochu misha da biste prikupili sharene kuglitse razbatsane po mapi. Jedenje peleta povechava vashu velichinu i masu.",
@@ -157,6 +158,15 @@
   "news": {
     "title": "Vesti",
     "entries": [
+      {
+        "date": "07/13/2026",
+        "items": [
+          "Redizajniran <b>glavni meni</b> sa tematskim banerima, ikonama kartica i boljim svetlim i tamnim stilom",
+          "<b>Podešavanja</b> su podeljena u jasne kartice sa boljim prekidačima, izborima i mobilnim opcijama",
+          "Poboljšeno <b>prilagođavanje skinova</b> uz Jelly Physics pregled, boje i novu galeriju",
+          "Dodate su kartice <b>Vesti</b>, <b>Pravila</b> i <b>Kako igrati</b>, uz bolji meni i prevode"
+        ]
+      },
       {
         "date": "21/05/2026",
         "items": [
@@ -359,24 +369,24 @@
     ]
   },
   "canvas": {
-    "unnamedCell": "Неименована ћелија",
-    "leaderboard": "Леадербоард",
-    "score": "Оцена: {score}",
-    "fps": "{fps} ФПС",
-    "ping": "{ms}мс пинг",
-    "position": "Кс: {x}, И: {y}",
+    "unnamedCell": "Neimenovana ćelija",
+    "leaderboard": "Lestvica",
+    "score": "Rezultat: {score}",
+    "fps": "{fps} FPS",
+    "ping": "{ms}ms ping",
+    "position": "X: {x}, Y: {y}",
     "statsServer": "{name} ({mode})",
-    "statsWorld": "- Свет {world}",
-    "statsWorldDefault": "- Свет 1",
-    "statsPlayers": "{total} / {limit} играчи",
-    "statsPlaying": "{alive} свира",
-    "statsSpectating": "{spect} посматра",
-    "statsLoad": "{load}% оптерећења @ {uptime}",
-    "timeLessThanMinute": "<1 мин",
-    "timeMinutes": "{n}мин",
-    "timeHours": "{n}х",
-    "timeDays": "{n}д",
-    "minionSpectator": "Користите приказ Фрее-Цамера Спецтатор, притисните {key} да бисте се вратили назад",
-    "minionControl": "Контролишете миниона, притисните {key} да бисте се вратили"
+    "statsWorld": " - Svet {world}",
+    "statsWorldDefault": " - Svet 1",
+    "statsPlayers": "{total} / {limit} igrača",
+    "statsPlaying": "{alive} igra",
+    "statsSpectating": "{spect} posmatra",
+    "statsLoad": "{load}% opterećenja @ {uptime}",
+    "timeLessThanMinute": "<1 min",
+    "timeMinutes": "{n}min",
+    "timeHours": "{n}h",
+    "timeDays": "{n}d",
+    "minionSpectator": "Slobodna kamera; pritisnite {key} za povratak",
+    "minionControl": "Kontrolišete miniona; pritisnite {key} za povratak"
   }
 }
