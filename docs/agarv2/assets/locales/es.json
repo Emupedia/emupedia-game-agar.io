@@ -138,6 +138,7 @@
     "rule2": "No uses los apodos de otras personas en el chat o como tu nombre de manera despectiva, podrías ser silenciado o expulsado del juego.",
     "rule3": "No anuncie otros servidores, servicios o sitios web en el chat, podrían silenciarlo o prohibirlo en el juego.",
     "gameplayTitle": "Jugabilidad",
+    "howToPlay": "Cómo jugar",
     "controlsIntro": "Mueva su <kbd>MOUSE</kbd> / <kbd>TOUCH</kbd> para controlar su celular<br /><kbd>Rueda del mouse</kbd> o <kbd id=\"key-zoomin-display\">F</kbd> y <kbd id=\"key-zoomout-display\">V</kbd> para acercar y alejar<br />Presione <kbd id=\"key-feed-display\">W</kbd> o <kbd>Clic izquierdo</kbd> para expulsar masa<br />Presione <kbd id=\"key-split-display\">ESPACIO</kbd> para dividir su celda una vez<br />Presione <kbd id=\"key-doublesplit-display\">X</kbd> o <kbd>Clic derecho</kbd> para hacerlo. una división doble<br />Presione <kbd id=\"key-multisplit-display\">C</kbd> o <kbd>clic central</kbd> para realizar una división múltiple",
     "objective": "<b>Objetivo:</b> El objetivo de Agar.io es hacer crecer sus células consumiendo células más pequeñas y evitando las más grandes. A medida que crezcas, te volverás más formidable y podrás consumir células aún más grandes.",
     "startingOut": "<b>Comenzando:</b> Cuando te unas al juego por primera vez, comenzarás como una pequeña célula. Muévete usando el ratón para recoger las bolitas de colores repartidas por el mapa. Comer pellets aumenta tu tamaño y masa.",

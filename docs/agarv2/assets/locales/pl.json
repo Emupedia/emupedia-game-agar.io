@@ -138,6 +138,7 @@
     "rule2": "Nie używaj pseudonimów innych osób na czacie ani jako swojego imienia w obraźliwy sposób, ponieważ możesz zostać wyciszony lub zablokowany w grze.",
     "rule3": "Nie reklamuj innych serwerów, usług ani stron internetowych na czacie, możesz zostać wyciszony lub zablokowany w grze.",
     "gameplayTitle": "Rozgrywka",
+    "howToPlay": "Jak grać",
     "controlsIntro": "Poruszaj <kbd>MYSZĄ</kbd> / <kbd>TOUCH</kbd>, aby sterować komórką<br /><kbd>Kółkiem myszy</kbd> lub <kbd id=\"key-zoomin-display\">F</kbd> i <kbd id=\"key-zoomout-display\">V</kbd>, aby przybliżać i oddalać<br />Naciśnij <kbd id=\"key-feed-display\">W</kbd> lub <kbd>Kliknij lewym przyciskiem myszy</kbd>, aby wysunąć masę<br />Naciśnij <kbd id=\"key-split-display\">SPACJA</kbd>, aby jednokrotnie podzielić komórkę<br />Naciśnij <kbd id=\"key-doublesplit-display\">X</kbd> lub <kbd>kliknij prawym przyciskiem</kbd>, aby wykonać Podwójny podział<br />Naciśnij <kbd id=\"key-multisplit-display\">C</kbd> lub <kbd>kliknięcie środkowym przyciskiem</kbd>, aby wykonać wielokrotny podział",
     "objective": "<b>Cel:</b> Celem Agar.io jest hodowanie komórek poprzez spożywanie mniejszych komórek i unikanie większych. W miarę dorastania staniesz się potężniejszy i będziesz mógł konsumować jeszcze większe komórki.",
     "startingOut": "<b>Rozpoczęcie:</b> Kiedy po raz pierwszy dołączysz do gry, zaczniesz jako mała komórka. Poruszaj się za pomocą myszki, aby zbierać kolorowe kulki rozrzucone po mapie. Jedzenie pelletu zwiększa Twój rozmiar i masę.",

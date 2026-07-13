@@ -138,6 +138,7 @@
     "rule2": "Non utilizzare i soprannomi di altre persone in chat o come nome in modo dispregiativo, potresti essere silenziato o bannato dal gioco.",
     "rule3": "Non pubblicizzare altri server, servizi o siti web in chat, potresti essere silenziato o bannato dal gioco.",
     "gameplayTitle": "Gioco",
+    "howToPlay": "Come giocare",
     "controlsIntro": "Muovi il <kbd>MOUSE</kbd> / <kbd>TOUCH</kbd> per controllare il cellulare<br /><kbd>rotellina del mouse</kbd> o <kbd id=\"key-zoomin-display\">F</kbd> e <kbd id=\"key-zoomout-display\">V</kbd> per ingrandire e rimpicciolire<br />Premi <kbd id=\"key-feed-display\">W</kbd> o <kbd>clic sinistro</kbd> per espellere la massa<br />Premi <kbd id=\"key-split-display\">SPACE</kbd> per dividere la cella una volta<br />Premi <kbd id=\"key-doublesplit-display\">X</kbd> o <kbd>clic destro</kbd> per eseguire una doppia divisione<br />Premi <kbd id=\"key-multisplit-display\">C</kbd> o <kbd>clic centrale</kbd> per eseguire una suddivisione multipla",
     "objective": "<b>Obiettivo:</b> L'obiettivo di Agar.io è far crescere la tua cellula consumando cellule più piccole ed evitando quelle più grandi. Man mano che cresci, diventerai più formidabile e sarai in grado di consumare cellule ancora più grandi.",
     "startingOut": "<b>Inizio:</b> quando ti unisci per la prima volta al gioco, inizierai come una piccola cella. Muoviti usando il mouse per raccogliere le palline colorate sparse sulla mappa. Mangiare pellet aumenta le dimensioni e la massa.",
