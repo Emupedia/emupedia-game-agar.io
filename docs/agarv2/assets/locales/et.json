@@ -58,6 +58,8 @@
     "mouseHint": "Konfigureerige, milliseid toiminguid iga hiirenupp teeb",
     "toggleFullscreen": "Lülitab täisekraani sisse",
     "darkTheme": "Tume teema",
+    "themeLight": "Hele",
+    "themeDark": "Tume",
     "cameraSmoothing": "Kaamera silumine",
     "cellAnimationSpeed": "Lahtri animatsioonide kiirus",
     "showSkins": "Rakkude nahad",

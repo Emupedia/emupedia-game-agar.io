@@ -58,6 +58,8 @@
     "mouseHint": "Конфигурирајте каква акција врши секое копче на глувчето",
     "toggleFullscreen": "Вклучете го цел екран",
     "darkTheme": "Темна тема",
+    "themeLight": "Светло",
+    "themeDark": "Темно",
     "cameraSmoothing": "Измазнување на камерата",
     "cellAnimationSpeed": "Брзина на мобилната анимација",
     "showSkins": "Клеточни кожи",

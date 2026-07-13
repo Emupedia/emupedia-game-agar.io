@@ -58,6 +58,8 @@
     "mouseHint": "Määritä, mitä toimintoa kukin hiiren painike suorittaa",
     "toggleFullscreen": "Koko näyttö päälle/pois",
     "darkTheme": "Tumma teema",
+    "themeLight": "Vaalea",
+    "themeDark": "Tumma",
     "cameraSmoothing": "Kameran tasoitus",
     "cellAnimationSpeed": "Solun animaatioiden nopeus",
     "showSkins": "Solun nahat",

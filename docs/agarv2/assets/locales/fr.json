@@ -58,6 +58,8 @@
     "mouseHint": "Configurer l'action effectuée par chaque bouton de la souris",
     "toggleFullscreen": "Basculer en plein écran",
     "darkTheme": "Thème sombre",
+    "themeLight": "Clair",
+    "themeDark": "Sombre",
     "cameraSmoothing": "Lissage de la caméra",
     "cellAnimationSpeed": "Vitesse des animations cellulaires",
     "showSkins": "Peaux cellulaires",

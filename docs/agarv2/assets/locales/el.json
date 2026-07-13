@@ -58,6 +58,8 @@
     "mouseHint": "Διαμορφώστε την ενέργεια που εκτελεί κάθε κουμπί του ποντικιού",
     "toggleFullscreen": "Εναλλαγή πλήρους οθόνης",
     "darkTheme": "Σκοτεινό θέμα",
+    "themeLight": "Φωτεινό",
+    "themeDark": "Σκοτεινό",
     "cameraSmoothing": "Εξομάλυνση κάμερας",
     "cellAnimationSpeed": "Ταχύτητα κινούμενων εικόνων κυττάρων",
     "showSkins": "Cell Skins",

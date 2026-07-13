@@ -58,6 +58,8 @@
     "mouseHint": "Nastroyte, kakoe deystvie vypolnyaet kazhdaya knopka myshi",
     "toggleFullscreen": "Pereklyuchit polnoekrannyy rezhim",
     "darkTheme": "Temnaya tema",
+    "themeLight": "Svetlaya",
+    "themeDark": "Temnaya",
     "cameraSmoothing": "Sglazhivanie kamery",
     "cellAnimationSpeed": "Skorost animatsii yacheek",
     "showSkins": "Kletochnye skiny",

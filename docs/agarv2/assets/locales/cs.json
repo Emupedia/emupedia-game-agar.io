@@ -58,6 +58,8 @@
     "mouseHint": "Nakonfigurujte, jakou akci každé tlačítko myši provádí",
     "toggleFullscreen": "Přepnout na celou obrazovku",
     "darkTheme": "Temné téma",
+    "themeLight": "Světlý",
+    "themeDark": "Tmavý",
     "cameraSmoothing": "Vyhlazení fotoaparátu",
     "cellAnimationSpeed": "Rychlost animací buněk",
     "showSkins": "Cell Skins",

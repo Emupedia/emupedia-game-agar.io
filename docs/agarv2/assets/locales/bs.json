@@ -58,6 +58,8 @@
     "mouseHint": "Konfigurirajte koju radnju izvodi svako dugme miša",
     "toggleFullscreen": "Uključi/isključi cijeli ekran",
     "darkTheme": "Dark Theme",
+    "themeLight": "Svijetlo",
+    "themeDark": "Tamno",
     "cameraSmoothing": "Camera Smoothing",
     "cellAnimationSpeed": "Brzina animacije ćelija",
     "showSkins": "Cell Skins",

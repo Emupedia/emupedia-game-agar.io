@@ -58,6 +58,8 @@
     "mouseHint": "Налаштуйте дію, яку виконує кожна кнопка миші",
     "toggleFullscreen": "Перемкнути повноекранний режим",
     "darkTheme": "Темна тема",
+    "themeLight": "Світла",
+    "themeDark": "Темна",
     "cameraSmoothing": "Згладжування камери",
     "cellAnimationSpeed": "Швидкість клітинної анімації",
     "showSkins": "Скіни клітин",

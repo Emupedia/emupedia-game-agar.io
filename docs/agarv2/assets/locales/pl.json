@@ -58,6 +58,8 @@
     "mouseHint": "Skonfiguruj działanie, jakie wykonuje każdy przycisk myszy",
     "toggleFullscreen": "Przełącz tryb pełnoekranowy",
     "darkTheme": "Ciemny motyw",
+    "themeLight": "Jasny",
+    "themeDark": "Ciemny",
     "cameraSmoothing": "Wygładzanie aparatu",
     "cellAnimationSpeed": "Szybkość animacji komórek",
     "showSkins": "Skórki komórek",

@@ -58,6 +58,8 @@
     "mouseHint": "Konfigurējiet, kādu darbību veic katra peles poga",
     "toggleFullscreen": "Pārslēgt pilnekrāna režīmu",
     "darkTheme": "Tumšā tēma",
+    "themeLight": "Gaišs",
+    "themeDark": "Tumšs",
     "cameraSmoothing": "Kameras izlīdzināšana",
     "cellAnimationSpeed": "Šūnu animācijas ātrums",
     "showSkins": "Šūnu ādas",

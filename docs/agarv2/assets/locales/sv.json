@@ -58,6 +58,8 @@
     "mouseHint": "Konfigurera vilken åtgärd varje musknapp utför",
     "toggleFullscreen": "Växla helskärm",
     "darkTheme": "mörkt tema",
+    "themeLight": "Ljust",
+    "themeDark": "Mörkt",
     "cameraSmoothing": "Kamerautjämning",
     "cellAnimationSpeed": "Cellanimationer Hastighet",
     "showSkins": "Cellskinn",

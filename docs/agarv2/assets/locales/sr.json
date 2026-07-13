@@ -58,6 +58,8 @@
     "mouseHint": "Конфигуришите коју радњу обавља свако дугме миша",
     "toggleFullscreen": "Пребаци преко целог екрана",
     "darkTheme": "Дарк Тхеме",
+    "themeLight": "Светло",
+    "themeDark": "Тамно",
     "cameraSmoothing": "Цамера Смоотхинг",
     "cellAnimationSpeed": "Брзина анимације ћелија",
     "showSkins": "Целл Скинс",

@@ -58,6 +58,8 @@
     "mouseHint": "Konfigurer hvilken handling hver museknapp utfører",
     "toggleFullscreen": "Slå på fullskjerm",
     "darkTheme": "Mørkt tema",
+    "themeLight": "Lys",
+    "themeDark": "Mørk",
     "cameraSmoothing": "Kamerautjevning",
     "cellAnimationSpeed": "Hastighet for celleanimasjoner",
     "showSkins": "Celleskinn",

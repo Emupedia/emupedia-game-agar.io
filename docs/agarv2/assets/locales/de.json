@@ -58,6 +58,8 @@
     "mouseHint": "Konfigurieren Sie, welche Aktion jede Maustaste ausführt",
     "toggleFullscreen": "Vollbild umschalten",
     "darkTheme": "Dunkles Thema",
+    "themeLight": "Hell",
+    "themeDark": "Dunkel",
     "cameraSmoothing": "Kameraglättung",
     "cellAnimationSpeed": "Geschwindigkeit der Zellanimationen",
     "showSkins": "Zellhäute",

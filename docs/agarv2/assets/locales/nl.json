@@ -58,6 +58,8 @@
     "mouseHint": "Configureer welke actie elke muisknop uitvoert",
     "toggleFullscreen": "Schakel Volledig scherm in",
     "darkTheme": "Donker thema",
+    "themeLight": "Licht",
+    "themeDark": "Donker",
     "cameraSmoothing": "Cameraverzachting",
     "cellAnimationSpeed": "Celanimaties Snelheid",
     "showSkins": "Celhuiden",

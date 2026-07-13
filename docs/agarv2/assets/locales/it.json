@@ -58,6 +58,8 @@
     "mouseHint": "Configura l'azione eseguita da ciascun pulsante del mouse",
     "toggleFullscreen": "Attiva/disattiva schermo intero",
     "darkTheme": "Tema oscuro",
+    "themeLight": "Chiaro",
+    "themeDark": "Scuro",
     "cameraSmoothing": "Smussamento della fotocamera",
     "cellAnimationSpeed": "Velocità delle animazioni delle celle",
     "showSkins": "Pelli cellulari",

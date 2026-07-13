@@ -58,6 +58,8 @@
     "mouseHint": "დააკონფიგურირეთ რა მოქმედებას ასრულებს მაუსის თითოეული ღილაკი",
     "toggleFullscreen": "სრული ეკრანის გადართვა",
     "darkTheme": "მუქი თემა",
+    "themeLight": "ღია",
+    "themeDark": "მუქი",
     "cameraSmoothing": "კამერის გლუვი",
     "cellAnimationSpeed": "უჯრედის ანიმაციის სიჩქარე",
     "showSkins": "უჯრედის ტყავი",

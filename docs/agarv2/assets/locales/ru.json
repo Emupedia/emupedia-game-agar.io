@@ -58,6 +58,8 @@
     "mouseHint": "Настройте, какое действие выполняет каждая кнопка мыши",
     "toggleFullscreen": "Переключить полноэкранный режим",
     "darkTheme": "Темная тема",
+    "themeLight": "Светлая",
+    "themeDark": "Тёмная",
     "cameraSmoothing": "Сглаживание камеры",
     "cellAnimationSpeed": "Скорость анимации ячеек",
     "showSkins": "Клеточные скины",

@@ -58,6 +58,8 @@
     "mouseHint": "Konfigurirajte, katero dejanje izvede posamezen gumb miške",
     "toggleFullscreen": "Preklop na celozaslonski način",
     "darkTheme": "Temna tema",
+    "themeLight": "Svetlo",
+    "themeDark": "Temno",
     "cameraSmoothing": "Kamera Glajenje",
     "cellAnimationSpeed": "Hitrost celičnih animacij",
     "showSkins": "Preobleke celic",

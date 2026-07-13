@@ -58,6 +58,8 @@
     "mouseHint": "Konfigūruokite, kokį veiksmą atlieka kiekvienas pelės mygtukas",
     "toggleFullscreen": "Perjungti viso ekrano režimą",
     "darkTheme": "Tamsi tema",
+    "themeLight": "Šviesus",
+    "themeDark": "Tamsus",
     "cameraSmoothing": "Kameros išlyginimas",
     "cellAnimationSpeed": "Ląstelių animacijos greitis",
     "showSkins": "Ląstelių odos",

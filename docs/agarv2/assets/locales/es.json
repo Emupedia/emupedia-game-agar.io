@@ -58,6 +58,8 @@
     "mouseHint": "Configurar qué acción realiza cada botón del mouse",
     "toggleFullscreen": "Alternar pantalla completa",
     "darkTheme": "Tema oscuro",
+    "themeLight": "Claro",
+    "themeDark": "Oscuro",
     "cameraSmoothing": "Suavizado de cámara",
     "cellAnimationSpeed": "Velocidad de animaciones celulares",
     "showSkins": "Pieles celulares",

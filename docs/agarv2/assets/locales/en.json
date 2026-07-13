@@ -58,6 +58,8 @@
     "mouseHint": "Configure what action each mouse button performs",
     "toggleFullscreen": "Toggle Fullscreen",
     "darkTheme": "Dark Theme",
+    "themeLight": "Light",
+    "themeDark": "Dark",
     "cameraSmoothing": "Camera Smoothing",
     "cellAnimationSpeed": "Cell Animations Speed",
     "showSkins": "Show Skins",
@@ -175,6 +177,15 @@
   "news": {
     "title": "News",
     "entries": [
+      {
+        "date": "07/13/2026",
+        "items": [
+          "Redesigned the <b>main menu</b> with themed header and footer artwork, icon tabs, and improved light and dark styling",
+          "Reorganized <b>Settings</b> into focused tabs with improved toggles, selects, controls, and mobile options",
+          "Upgraded <b>skin customization</b> with interactive Jelly Physics previews, live color controls, and a redesigned skin gallery",
+          "Added dedicated <b>News</b>, <b>Rules</b>, and <b>How to Play</b> sections alongside menu usability and localization improvements"
+        ]
+      },
       {
         "date": "05/21/2026",
         "items": [

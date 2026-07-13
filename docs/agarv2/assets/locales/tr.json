@@ -58,6 +58,8 @@
     "mouseHint": "Her fare düğmesinin hangi eylemi gerçekleştireceğini yapılandırın",
     "toggleFullscreen": "Tam Ekrana Geçiş Yap",
     "darkTheme": "Koyu Tema",
+    "themeLight": "Açık",
+    "themeDark": "Koyu",
     "cameraSmoothing": "Kamera Yumuşatma",
     "cellAnimationSpeed": "Hücre Animasyon Hızı",
     "showSkins": "Hücre Kaplamaları",

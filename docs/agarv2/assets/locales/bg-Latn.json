@@ -58,6 +58,8 @@
     "mouseHint": "Konfigurirayte kakvo deystvie da izplnyava vseki buton na mishkata",
     "toggleFullscreen": "Prevklyuchvane na tsyal ekran",
     "darkTheme": "Tmna tema",
+    "themeLight": "Svetla",
+    "themeDark": "Tmna",
     "cameraSmoothing": "Izglazhdane na kamerata",
     "cellAnimationSpeed": "Skorost na kletchnite animatsii",
     "showSkins": "Kletchni kozhi",

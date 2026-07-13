@@ -58,6 +58,8 @@
     "mouseHint": "Állítsa be, hogy az egyes egérgombok milyen műveleteket hajtsanak végre",
     "toggleFullscreen": "Teljes képernyő váltás",
     "darkTheme": "Sötét téma",
+    "themeLight": "Világos",
+    "themeDark": "Sötét",
     "cameraSmoothing": "Kamera simítás",
     "cellAnimationSpeed": "Cell animációk sebessége",
     "showSkins": "Sejtbőrök",

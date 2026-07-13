@@ -58,6 +58,8 @@
     "mouseHint": "Konfigurer, hvilken handling hver museknap udfører",
     "toggleFullscreen": "Skift fuldskærm",
     "darkTheme": "Mørkt tema",
+    "themeLight": "Lys",
+    "themeDark": "Mørk",
     "cameraSmoothing": "Kameraudjævning",
     "cellAnimationSpeed": "Celleanimationshastighed",
     "showSkins": "Celleskind",

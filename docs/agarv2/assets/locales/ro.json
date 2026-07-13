@@ -58,6 +58,8 @@
     "mouseHint": "Configurați ce acțiune efectuează fiecare buton al mouse-ului",
     "toggleFullscreen": "Comutați ecranul complet",
     "darkTheme": "Tema întunecată",
+    "themeLight": "Luminos",
+    "themeDark": "Întunecat",
     "cameraSmoothing": "Netezirea camerei",
     "cellAnimationSpeed": "Viteza animațiilor celulare",
     "showSkins": "Piele celulare",
