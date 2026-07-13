@@ -10534,7 +10534,7 @@ const L = 'localhost:58585';
 			detectRandomProperties(),
 			detectVmwareVirtualBox(),
 			detectWebSocketTamper(),
-			detectCanvasTamper()
+			//detectCanvasTamper()
 		]
 	}
 
