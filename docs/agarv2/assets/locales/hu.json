@@ -1,6 +1,6 @@
 {
   "meta": {
-    "title": "Agar.io v2.0",
+    "title": "Agar.io v2",
     "description": "Egyél meg a nálad kisebb sejteket, és ne egyék meg a nagyobbak, MMO-ként"
   },
   "chat": {
@@ -15,7 +15,7 @@
     "skins": "Skinek"
   },
   "lobby": {
-    "title": "Agar.io v2.0",
+    "title": "Agar.io v2",
     "discordSuggestions": "Ha javaslata van, csatlakozzon hozzánk a Discordon",
     "nickname": "Becenév",
     "skin": "Bőr",

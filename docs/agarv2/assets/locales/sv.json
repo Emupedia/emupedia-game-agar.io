@@ -1,6 +1,6 @@
 {
   "meta": {
-    "title": "Agar.io v2.0",
+    "title": "Agar.io v2",
     "description": "Ät celler som är mindre än du och bli inte uppätna av de större, som ett MMO"
   },
   "chat": {
@@ -15,7 +15,7 @@
     "skins": "Skinn"
   },
   "lobby": {
-    "title": "Agar.io v2.0",
+    "title": "Agar.io v2",
     "discordSuggestions": "Gå med oss på Discord om du har förslag",
     "nickname": "Smeknamn",
     "skin": "Hud",

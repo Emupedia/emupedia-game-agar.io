@@ -1,6 +1,6 @@
 {
   "meta": {
-    "title": "Agar.io v2.0",
+    "title": "Agar.io v2",
     "description": "Jezte buňky menší než vy a nenechte se sežrat těmi většími, jako MMO"
   },
   "chat": {
@@ -15,7 +15,7 @@
     "skins": "skiny"
   },
   "lobby": {
-    "title": "Agar.io v2.0",
+    "title": "Agar.io v2",
     "discordSuggestions": "Pokud máte návrhy, přidejte se k nám na Discordu",
     "nickname": "přezdívka",
     "skin": "Kůže",

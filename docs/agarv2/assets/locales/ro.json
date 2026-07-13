@@ -1,6 +1,6 @@
 {
   "meta": {
-    "title": "Agar.io v2.0",
+    "title": "Agar.io v2",
     "description": "Mănâncă celule mai mici decât tine și nu te lăsa mâncat de cele mai mari, ca MMO"
   },
   "chat": {
@@ -15,7 +15,7 @@
     "skins": "Piei"
   },
   "lobby": {
-    "title": "Agar.io v2.0",
+    "title": "Agar.io v2",
     "discordSuggestions": "Alăturați-vă nouă pe Discord dacă aveți sugestii",
     "nickname": "Pseudonim",
     "skin": "Pielea",

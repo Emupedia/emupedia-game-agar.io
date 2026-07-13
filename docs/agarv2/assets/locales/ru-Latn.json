@@ -1,6 +1,6 @@
 {
   "meta": {
-    "title": "Agar.io v2.0",
+    "title": "Agar.io v2",
     "description": "Eshte kletki menshego razmera, chem vy, i ne pozvolyayte sebe byt sedennymi bolee krupnymi, kak v MMO."
   },
   "chat": {
@@ -15,7 +15,7 @@
     "skins": "Skiny"
   },
   "lobby": {
-    "title": "Agar.io v2.0",
+    "title": "Agar.io v2",
     "discordSuggestions": "Prisoedinyaytes k nam v Discord, esli u vas est predlozheniya",
     "nickname": "Psevdonim",
     "skin": "Kozha",

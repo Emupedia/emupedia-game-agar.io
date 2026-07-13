@@ -1,6 +1,6 @@
 {
   "meta": {
-    "title": "Agar.io v2.0",
+    "title": "Agar.io v2",
     "description": "Jedite chelije manje od vas i nemojte da vas pojedu veche, kao MMO"
   },
   "chat": {
@@ -15,7 +15,7 @@
     "skins": "Skins"
   },
   "lobby": {
-    "title": "Agar.io v2.0",
+    "title": "Agar.io v2",
     "discordSuggestions": "Pridruzhite nam se na Distsord-u ako imate predloge",
     "nickname": "Nadimak",
     "skin": "Kozha",

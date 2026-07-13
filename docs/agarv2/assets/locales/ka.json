@@ -1,6 +1,6 @@
 {
   "meta": {
-    "title": "Agar.io v2.0",
+    "title": "Agar.io v2",
     "description": "მიირთვით თქვენზე პატარა უჯრედები და ნუ შეჭამთ უფრო დიდებს, როგორც MMO"
   },
   "chat": {
@@ -15,7 +15,7 @@
     "skins": "ტყავი"
   },
   "lobby": {
-    "title": "Agar.io v2.0",
+    "title": "Agar.io v2",
     "discordSuggestions": "შემოგვიერთდით Discord-ზე, თუ გაქვთ შემოთავაზებები",
     "nickname": "მეტსახელი",
     "skin": "კანი",

@@ -1,6 +1,6 @@
 {
   "meta": {
-    "title": "Agar.io v2.0",
+    "title": "Agar.io v2",
     "description": "Syö itseäsi pienempiä soluja, äläkä joudu syömään isompia MMO:na"
   },
   "chat": {
@@ -15,7 +15,7 @@
     "skins": "Skinit"
   },
   "lobby": {
-    "title": "Agar.io v2.0",
+    "title": "Agar.io v2",
     "discordSuggestions": "Liity meihin Discordissa, jos sinulla on ehdotuksia",
     "nickname": "Lempinimi",
     "skin": "Iho",

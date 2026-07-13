@@ -1,6 +1,6 @@
 {
   "meta": {
-    "title": "Agar.io v2.0",
+    "title": "Agar.io v2",
     "description": "Bir MMO olarak sizden küçük hücreleri yiyin ve büyük hücreler tarafından yenilmeyin"
   },
   "chat": {
@@ -15,7 +15,7 @@
     "skins": "Kaplamalar"
   },
   "lobby": {
-    "title": "Agar.io v2.0",
+    "title": "Agar.io v2",
     "discordSuggestions": "Önerileriniz varsa Discord'da bize katılın",
     "nickname": "Takma ad",
     "skin": "Cilt",

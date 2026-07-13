@@ -1,6 +1,6 @@
 {
   "meta": {
-    "title": "Agar.io v2.0",
+    "title": "Agar.io v2",
     "description": "Mangez des cellules plus petites que vous et ne vous faites pas manger par les plus grosses, en tant que MMO"
   },
   "chat": {
@@ -15,7 +15,7 @@
     "skins": "Peaux"
   },
   "lobby": {
-    "title": "Agar.io v2.0",
+    "title": "Agar.io v2",
     "discordSuggestions": "Rejoignez-nous sur Discord si vous avez des suggestions",
     "nickname": "Surnom",
     "skin": "Peau",

@@ -1,6 +1,6 @@
 {
   "meta": {
-    "title": "Agar.io v2.0",
+    "title": "Agar.io v2",
     "description": "Ēdiet šūnas, kas ir mazākas par jums, un lai tās neapēd lielākās, kā MMO"
   },
   "chat": {
@@ -15,7 +15,7 @@
     "skins": "Ādas"
   },
   "lobby": {
-    "title": "Agar.io v2.0",
+    "title": "Agar.io v2",
     "discordSuggestions": "Pievienojieties mums Discord, ja jums ir ieteikumi",
     "nickname": "Segvārds",
     "skin": "Āda",

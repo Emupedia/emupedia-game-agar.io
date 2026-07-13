@@ -1,6 +1,6 @@
 {
   "meta": {
-    "title": "Agar.io v2.0",
+    "title": "Agar.io v2",
     "description": "Φάτε κύτταρα μικρότερα από εσάς και μην σας τρώνε τα μεγαλύτερα, ως MMO"
   },
   "chat": {
@@ -15,7 +15,7 @@
     "skins": "Δέρματα"
   },
   "lobby": {
-    "title": "Agar.io v2.0",
+    "title": "Agar.io v2",
     "discordSuggestions": "Ελάτε μαζί μας στο Discord αν έχετε προτάσεις",
     "nickname": "Παρατσούκλι",
     "skin": "Δέρμα",

@@ -1,6 +1,6 @@
 {
   "meta": {
-    "title": "Agar.io v2.0",
+    "title": "Agar.io v2",
     "description": "Яжте клетки, по-малки от вас и не бъдете изяждани от по-големите, като MMO"
   },
   "chat": {
@@ -15,7 +15,7 @@
     "skins": "Кожи"
   },
   "lobby": {
-    "title": "Agar.io v2.0",
+    "title": "Agar.io v2",
     "discordSuggestions": "Присъединете се към нас в Discord, ако имате предложения",
     "nickname": "Псевдоним",
     "skin": "кожа",

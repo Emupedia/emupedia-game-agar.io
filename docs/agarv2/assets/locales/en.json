@@ -1,6 +1,6 @@
 {
   "meta": {
-    "title": "Agar.io v2.0",
+    "title": "Agar.io v2",
     "description": "Eat cells smaller than you and don't get eaten by the bigger ones, as an MMO"
   },
   "chat": {
@@ -15,7 +15,7 @@
     "skins": "Skins"
   },
   "lobby": {
-    "title": "Agar.io v2.0",
+    "title": "Agar.io v2",
     "discordSuggestions": "Join us on Discord if you have suggestions",
     "nickname": "Nickname",
     "skin": "Skin",

@@ -1,6 +1,6 @@
 {
   "meta": {
-    "title": "Agar.io v2.0",
+    "title": "Agar.io v2",
     "description": "Yazhte kletki, po-malki ot vas i ne bdete izyazhdani ot po-golemite, kato MMO"
   },
   "chat": {
@@ -15,7 +15,7 @@
     "skins": "Kozhi"
   },
   "lobby": {
-    "title": "Agar.io v2.0",
+    "title": "Agar.io v2",
     "discordSuggestions": "Prisedinete se km nas v Discord, ako imate predlozheniya",
     "nickname": "Psevdonim",
     "skin": "kozha",

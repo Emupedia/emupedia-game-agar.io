@@ -1,6 +1,6 @@
 {
   "meta": {
-    "title": "Agar.io v2.0",
+    "title": "Agar.io v2",
     "description": "Valgykite ląsteles, mažesnes nei jūs, ir nesuvalgykite didesnių, kaip MMO"
   },
   "chat": {
@@ -15,7 +15,7 @@
     "skins": "Skinai"
   },
   "lobby": {
-    "title": "Agar.io v2.0",
+    "title": "Agar.io v2",
     "discordSuggestions": "Jei turite pasiūlymų, prisijunkite prie mūsų „Discord“.",
     "nickname": "Slapyvardis",
     "skin": "Oda",

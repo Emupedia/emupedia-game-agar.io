@@ -1,6 +1,6 @@
 {
   "meta": {
-    "title": "Agar.io v2.0",
+    "title": "Agar.io v2",
     "description": "Jedz komórki mniejsze od siebie i nie daj się zjeść większym, w grze MMO"
   },
   "chat": {
@@ -15,7 +15,7 @@
     "skins": "Skórki"
   },
   "lobby": {
-    "title": "Agar.io v2.0",
+    "title": "Agar.io v2",
     "discordSuggestions": "Dołącz do nas na Discordzie, jeśli masz sugestie",
     "nickname": "Przydomek",
     "skin": "Skóra",
