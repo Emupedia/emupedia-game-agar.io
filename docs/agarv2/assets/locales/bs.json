@@ -90,7 +90,11 @@
     "lockMobileButtons": "Zaključavanje mobilnih dugmadi",
     "resetButtonPositions": "Poništi položaj mobilnih dugmadi",
     "useWordFilters": "Riječi Cenzura",
-    "autoRespawn": "AutoRespawn",
+    "autoRespawn": "Automatsko oživljavanje",
+    "tabGeneral": "Općenito",
+    "tabAppearance": "Izgled",
+    "tabInterface": "Sučelje",
+    "tabControls": "Kontrole",
     "translateChat": "Prevedi chat (Beta)"
   },
   "colors": {

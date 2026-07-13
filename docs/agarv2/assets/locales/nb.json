@@ -90,7 +90,11 @@
     "lockMobileButtons": "Lås mobilknapper",
     "resetButtonPositions": "Tilbakestill mobilknappposisjoner",
     "useWordFilters": "Ordsensur",
-    "autoRespawn": "AutoRespawn",
+    "autoRespawn": "Automatisk gjenoppliving",
+    "tabGeneral": "Generelt",
+    "tabAppearance": "Utseende",
+    "tabInterface": "Grensesnitt",
+    "tabControls": "Kontroller",
     "translateChat": "Oversett chat (beta)"
   },
   "colors": {

@@ -90,7 +90,11 @@
     "lockMobileButtons": "Blocați butoanele mobile",
     "resetButtonPositions": "Resetați pozițiile butoanelor mobile",
     "useWordFilters": "Cenzura cuvintelor",
-    "autoRespawn": "AutoRespawn",
+    "autoRespawn": "Reapariție automată",
+    "tabGeneral": "General",
+    "tabAppearance": "Aspect",
+    "tabInterface": "Interfață",
+    "tabControls": "Comenzi",
     "translateChat": "Traduceți chat (beta)"
   },
   "colors": {

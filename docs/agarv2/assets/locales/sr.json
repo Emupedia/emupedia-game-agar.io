@@ -90,7 +90,11 @@
     "lockMobileButtons": "Закључај дугмад",
     "resetButtonPositions": "Ресетујте положаје мобилних дугмади",
     "useWordFilters": "Речи Цензура",
-    "autoRespawn": "AutoRespawn",
+    "autoRespawn": "Аутоматско оживљавање",
+    "tabGeneral": "Опште",
+    "tabAppearance": "Изглед",
+    "tabInterface": "Интерфејс",
+    "tabControls": "Контроле",
     "translateChat": "Преведи ћаскање (Бета)"
   },
   "colors": {

@@ -90,7 +90,11 @@
     "lockMobileButtons": "Κλείδωμα κουμπιά κινητού",
     "resetButtonPositions": "Επαναφορά θέσεων κουμπιών κινητού",
     "useWordFilters": "Λογοκρισία",
-    "autoRespawn": "AutoRespawn",
+    "autoRespawn": "Αυτόματη αναγέννηση",
+    "tabGeneral": "Γενικά",
+    "tabAppearance": "Εμφάνιση",
+    "tabInterface": "Διεπαφή",
+    "tabControls": "Χειρισμός",
     "translateChat": "Μετάφραση συνομιλίας (Beta)"
   },
   "colors": {

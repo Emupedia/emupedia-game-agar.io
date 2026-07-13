@@ -90,7 +90,11 @@
     "lockMobileButtons": "Blokirovka mobilnykh knopok",
     "resetButtonPositions": "Sbrosit raspolozhenie mobilnykh knopok",
     "useWordFilters": "Tsenzura slov",
-    "autoRespawn": "AutoRespawn",
+    "autoRespawn": "Avtovozrozhdenie",
+    "tabGeneral": "Obshchie",
+    "tabAppearance": "Vneshniy vid",
+    "tabInterface": "Interfeys",
+    "tabControls": "Upravlenie",
     "translateChat": "Perevesti chat (beta)"
   },
   "colors": {

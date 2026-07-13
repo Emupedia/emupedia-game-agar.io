@@ -90,7 +90,11 @@
     "lockMobileButtons": "Zaključaj dugmad",
     "resetButtonPositions": "Resetujte polozhaje mobilnikh dugmadi",
     "useWordFilters": "Rechi Tsenzura",
-    "autoRespawn": "AutoRespawn",
+    "autoRespawn": "Automatsko oživljavanje",
+    "tabGeneral": "Opšte",
+    "tabAppearance": "Izgled",
+    "tabInterface": "Interfejs",
+    "tabControls": "Kontrole",
     "translateChat": "Prevedi ćaskanje (Beta)"
   },
   "colors": {

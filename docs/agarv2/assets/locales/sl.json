@@ -90,7 +90,11 @@
     "lockMobileButtons": "Zakleni mobilne gumbe",
     "resetButtonPositions": "Ponastavite položaje mobilnih gumbov",
     "useWordFilters": "Cenzura besed",
-    "autoRespawn": "AutoRespawn",
+    "autoRespawn": "Samodejna oživitev",
+    "tabGeneral": "Splošno",
+    "tabAppearance": "Videz",
+    "tabInterface": "Vmesnik",
+    "tabControls": "Kontrole",
     "translateChat": "Prevajalnik klepeta (beta)"
   },
   "colors": {

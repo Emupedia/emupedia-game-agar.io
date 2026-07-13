@@ -90,7 +90,11 @@
     "lockMobileButtons": "Verrouiller les boutons mobiles",
     "resetButtonPositions": "Réinitialiser les positions des boutons mobiles",
     "useWordFilters": "Censure des mots",
-    "autoRespawn": "AutoRespawn",
+    "autoRespawn": "Réapparition auto",
+    "tabGeneral": "Général",
+    "tabAppearance": "Apparence",
+    "tabInterface": "Interface",
+    "tabControls": "Contrôles",
     "translateChat": "Traduire le chat (bêta)"
   },
   "colors": {

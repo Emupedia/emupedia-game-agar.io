@@ -90,7 +90,11 @@
     "lockMobileButtons": "მობილური ღილაკების ჩაკეტვა",
     "resetButtonPositions": "მობილური ღილაკების პოზიციების გადატვირთვა",
     "useWordFilters": "სიტყვების ცენზურა",
-    "autoRespawn": "AutoRespawn",
+    "autoRespawn": "ავტომატური აღდგენა",
+    "tabGeneral": "ზოგადი",
+    "tabAppearance": "გარეგნობა",
+    "tabInterface": "ინტერფეისი",
+    "tabControls": "მართვა",
     "translateChat": "თარგმნეთ ჩატი (ბეტა)"
   },
   "colors": {

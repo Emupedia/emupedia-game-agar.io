@@ -90,7 +90,11 @@
     "lockMobileButtons": "Заклучи мобилни копчиња",
     "resetButtonPositions": "Ресетирајте ги позициите на мобилните копчиња",
     "useWordFilters": "Зборови цензура",
-    "autoRespawn": "AutoRespawn",
+    "autoRespawn": "Автоматско оживување",
+    "tabGeneral": "Општо",
+    "tabAppearance": "Изглед",
+    "tabInterface": "Интерфејс",
+    "tabControls": "Контроли",
     "translateChat": "Преведи разговор (бета)"
   },
   "colors": {

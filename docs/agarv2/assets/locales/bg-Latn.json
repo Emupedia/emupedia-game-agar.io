@@ -90,7 +90,11 @@
     "lockMobileButtons": "Zaklyuchvane na mobilni butoni",
     "resetButtonPositions": "Nulirane na pozitsiite na mobilnite butoni",
     "useWordFilters": "Tsenzura na dumite",
-    "autoRespawn": "AutoRespawn",
+    "autoRespawn": "Avto vazrazhdane",
+    "tabGeneral": "Obshto",
+    "tabAppearance": "Izgled",
+    "tabInterface": "Interfeys",
+    "tabControls": "Upravlenie",
     "translateChat": "Prevod na chat (beta)"
   },
   "colors": {

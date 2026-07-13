@@ -90,7 +90,11 @@
     "lockMobileButtons": "Lock Buttuni Mobbli",
     "resetButtonPositions": "Irrisettja l-Pożizzjonijiet tal-buttuni mobbli",
     "useWordFilters": "Kliem Ċensura",
-    "autoRespawn": "AutoRespawn",
+    "autoRespawn": "Qawmien awtomatiku",
+    "tabGeneral": "Ġenerali",
+    "tabAppearance": "Dehra",
+    "tabInterface": "Interfaċċa",
+    "tabControls": "Kontrolli",
     "translateChat": "Ittraduċi Chat (Beta)"
   },
   "colors": {

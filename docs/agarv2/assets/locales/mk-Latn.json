@@ -90,7 +90,11 @@
     "lockMobileButtons": "Zakluchi mobilni kopchinja",
     "resetButtonPositions": "Resetirajte gi pozitsiite na mobilnite kopchinja",
     "useWordFilters": "Zborovi tsenzura",
-    "autoRespawn": "AutoRespawn",
+    "autoRespawn": "Avtomatsko ozhivuvanje",
+    "tabGeneral": "Opshto",
+    "tabAppearance": "Izgled",
+    "tabInterface": "Interfejs",
+    "tabControls": "Kontroli",
     "translateChat": "Prevedi razgovor (beta)"
   },
   "colors": {

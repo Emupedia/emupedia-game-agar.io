@@ -90,7 +90,11 @@
     "lockMobileButtons": "Блокування мобільних кнопок",
     "resetButtonPositions": "Скинути позиції мобільних кнопок",
     "useWordFilters": "Слова Цензура",
-    "autoRespawn": "AutoRespawn",
+    "autoRespawn": "Автовідродження",
+    "tabGeneral": "Загальні",
+    "tabAppearance": "Вигляд",
+    "tabInterface": "Інтерфейс",
+    "tabControls": "Керування",
     "translateChat": "Перекласти чат (бета-версія)"
   },
   "colors": {

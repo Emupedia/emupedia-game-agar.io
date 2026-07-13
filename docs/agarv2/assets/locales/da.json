@@ -29,7 +29,7 @@
     "gameMode": "Spiltype",
     "play": "Spil",
     "chooseSkin": "Vælg skin",
-    "uploadSkin": "Upload skin",
+    "uploadSkin": "Indlæs skin",
     "unban": "Ophæv forbuddet",
     "skinCopied": "Skin URL kopieret til udklipsholder!",
     "spectate": "Se med",
@@ -90,7 +90,11 @@
     "lockMobileButtons": "Lås mobilknapper",
     "resetButtonPositions": "Nulstil mobilknappernes positioner",
     "useWordFilters": "Ord Censur",
-    "autoRespawn": "AutoRespawn",
+    "autoRespawn": "Genopstå automatisk",
+    "tabGeneral": "Generelt",
+    "tabAppearance": "Udseende",
+    "tabInterface": "Brugerflade",
+    "tabControls": "Styring",
     "translateChat": "Oversæt chat (beta)"
   },
   "colors": {

@@ -90,7 +90,11 @@
     "lockMobileButtons": "Блокировка мобильных кнопок",
     "resetButtonPositions": "Сбросить расположение мобильных кнопок",
     "useWordFilters": "Цензура слов",
-    "autoRespawn": "AutoRespawn",
+    "autoRespawn": "Автовозрождение",
+    "tabGeneral": "Общие",
+    "tabAppearance": "Внешний вид",
+    "tabInterface": "Интерфейс",
+    "tabControls": "Управление",
     "translateChat": "Перевести чат (бета)"
   },
   "colors": {

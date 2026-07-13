@@ -90,7 +90,11 @@
     "lockMobileButtons": "Blocca i pulsanti mobili",
     "resetButtonPositions": "Ripristina le posizioni dei pulsanti mobili",
     "useWordFilters": "Censura delle parole",
-    "autoRespawn": "AutoRespawn",
+    "autoRespawn": "Rientro automatico",
+    "tabGeneral": "Generali",
+    "tabAppearance": "Aspetto",
+    "tabInterface": "Interfaccia",
+    "tabControls": "Comandi",
     "translateChat": "Traduci chat (Beta)"
   },
   "colors": {

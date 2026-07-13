@@ -90,7 +90,11 @@
     "lockMobileButtons": "Gumbi za zaključavanje mobitela",
     "resetButtonPositions": "Resetirajte položaje mobilnih gumba",
     "useWordFilters": "Cenzura riječi",
-    "autoRespawn": "AutoRespawn",
+    "autoRespawn": "Automatsko oživljavanje",
+    "tabGeneral": "Općenito",
+    "tabAppearance": "Izgled",
+    "tabInterface": "Sučelje",
+    "tabControls": "Kontrole",
     "translateChat": "Prevedi chat (Beta)"
   },
   "colors": {

@@ -91,7 +91,11 @@
     "lockMobileButtons": "Lock Mobile Buttons",
     "resetButtonPositions": "Reset Mobile Button Positions",
     "useWordFilters": "Word Filter",
-    "autoRespawn": "AutoRespawn"
+    "autoRespawn": "Auto Respawn",
+    "tabGeneral": "General",
+    "tabAppearance": "Appearance",
+    "tabInterface": "Interface",
+    "tabControls": "Controls"
   },
   "colors": {
     "title": "Colors",

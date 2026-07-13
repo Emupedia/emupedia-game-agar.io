@@ -90,7 +90,11 @@
     "lockMobileButtons": "Sperren Sie mobile Tasten",
     "resetButtonPositions": "Setzen Sie die Positionen der mobilen Tasten zurück",
     "useWordFilters": "Wortzensur",
-    "autoRespawn": "AutoRespawn",
+    "autoRespawn": "Automatisch spawnen",
+    "tabGeneral": "Allgemein",
+    "tabAppearance": "Aussehen",
+    "tabInterface": "Oberfläche",
+    "tabControls": "Steuerung",
     "translateChat": "Chat übersetzen (Beta)"
   },
   "colors": {

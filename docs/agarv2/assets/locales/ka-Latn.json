@@ -90,7 +90,11 @@
     "lockMobileButtons": "mobiluri ghilakebis chaketva",
     "resetButtonPositions": "mobiluri ghilakebis pozitsiebis gadatvirtva",
     "useWordFilters": "sitqvebis tsenzura",
-    "autoRespawn": "AutoRespawn",
+    "autoRespawn": "Avtomaturi aghdgena",
+    "tabGeneral": "Zogadi",
+    "tabAppearance": "Iersakhe",
+    "tabInterface": "Interpeisi",
+    "tabControls": "Martva",
     "translateChat": "თარგმნეთ ჩატი (ბეტა)"
   },
   "colors": {

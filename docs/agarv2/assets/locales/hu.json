@@ -90,7 +90,11 @@
     "lockMobileButtons": "Mobil gombok zárolása",
     "resetButtonPositions": "Állítsa vissza a mobilgombok pozícióit",
     "useWordFilters": "Szavak cenzúra",
-    "autoRespawn": "AutoRespawn",
+    "autoRespawn": "Automatikus újraéledés",
+    "tabGeneral": "Általános",
+    "tabAppearance": "Megjelenés",
+    "tabInterface": "Felület",
+    "tabControls": "Irányítás",
     "translateChat": "Csevegés fordítása (béta)"
   },
   "colors": {

@@ -90,7 +90,11 @@
     "lockMobileButtons": "Zamknúť tlačidlá mobilu",
     "resetButtonPositions": "Obnovte polohy tlačidiel mobilného telefónu",
     "useWordFilters": "Cenzúra slov",
-    "autoRespawn": "AutoRespawn",
+    "autoRespawn": "Automatické oživenie",
+    "tabGeneral": "Všeobecné",
+    "tabAppearance": "Vzhľad",
+    "tabInterface": "Rozhranie",
+    "tabControls": "Ovládanie",
     "translateChat": "Preložiť čet (beta)"
   },
   "colors": {

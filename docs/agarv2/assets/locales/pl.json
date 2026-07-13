@@ -90,7 +90,11 @@
     "lockMobileButtons": "Zablokuj przyciski mobilne",
     "resetButtonPositions": "Zresetuj pozycje przycisków telefonu komórkowego",
     "useWordFilters": "Cenzura słów",
-    "autoRespawn": "AutoRespawn",
+    "autoRespawn": "Automatyczne odrodzenie",
+    "tabGeneral": "Ogólne",
+    "tabAppearance": "Wygląd",
+    "tabInterface": "Interfejs",
+    "tabControls": "Sterowanie",
     "translateChat": "Tłumacz czat (beta)"
   },
   "colors": {

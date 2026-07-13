@@ -90,7 +90,11 @@
     "lockMobileButtons": "Lukitse mobiilipainikkeet",
     "resetButtonPositions": "Palauta mobiilipainikkeiden paikat",
     "useWordFilters": "Sanat sensuuri",
-    "autoRespawn": "AutoRespawn",
+    "autoRespawn": "Automaattinen paluu",
+    "tabGeneral": "Yleiset",
+    "tabAppearance": "Ulkoasu",
+    "tabInterface": "Käyttöliittymä",
+    "tabControls": "Ohjaimet",
     "translateChat": "Käännä Chat (beta)"
   },
   "colors": {

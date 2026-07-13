@@ -90,7 +90,11 @@
     "lockMobileButtons": "Užrakinti mygtukus",
     "resetButtonPositions": "Iš naujo nustatyti mobiliųjų mygtukų padėtis",
     "useWordFilters": "Žodžiai cenzūra",
-    "autoRespawn": "AutoRespawn",
+    "autoRespawn": "Automatinis atgimimas",
+    "tabGeneral": "Bendrieji",
+    "tabAppearance": "Išvaizda",
+    "tabInterface": "Sąsaja",
+    "tabControls": "Valdymas",
     "translateChat": "Išversti pokalbį (beta versija)"
   },
   "colors": {

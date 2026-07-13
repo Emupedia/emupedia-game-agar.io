@@ -90,7 +90,11 @@
     "lockMobileButtons": "Lukusta mobiilinupud",
     "resetButtonPositions": "Lähtestage mobiilinuppude positsioonid",
     "useWordFilters": "Sõnade tsensuur",
-    "autoRespawn": "AutoRespawn",
+    "autoRespawn": "Automaatne taassünd",
+    "tabGeneral": "Üldine",
+    "tabAppearance": "Välimus",
+    "tabInterface": "Liides",
+    "tabControls": "Juhtimine",
     "translateChat": "Tõlgi vestlus (beeta)"
   },
   "colors": {

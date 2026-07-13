@@ -90,7 +90,11 @@
     "lockMobileButtons": "Bloķēt mobilās pogas",
     "resetButtonPositions": "Atiestatīt mobilo sakaru pogu pozīcijas",
     "useWordFilters": "Vārdi cenzūra",
-    "autoRespawn": "AutoRespawn",
+    "autoRespawn": "Automātiska atdzimšana",
+    "tabGeneral": "Vispārīgi",
+    "tabAppearance": "Izskats",
+    "tabInterface": "Saskarne",
+    "tabControls": "Vadība",
     "translateChat": "Tulkot tērzēšanu (beta)"
   },
   "colors": {

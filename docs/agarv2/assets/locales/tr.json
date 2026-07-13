@@ -90,7 +90,11 @@
     "lockMobileButtons": "Mobil Düğmeleri Kilitle",
     "resetButtonPositions": "Mobil Düğme Konumlarını Sıfırla",
     "useWordFilters": "Kelimeler Sansür",
-    "autoRespawn": "AutoRespawn",
+    "autoRespawn": "Otomatik yeniden doğma",
+    "tabGeneral": "Genel",
+    "tabAppearance": "Görünüm",
+    "tabInterface": "Arayüz",
+    "tabControls": "Kontroller",
     "translateChat": "Sohbeti Çevir (Beta)"
   },
   "colors": {

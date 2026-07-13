@@ -90,7 +90,11 @@
     "lockMobileButtons": "Bloquear botões móveis",
     "resetButtonPositions": "Redefinir as posições dos botões móveis",
     "useWordFilters": "Censura de palavras",
-    "autoRespawn": "AutoRespawn",
+    "autoRespawn": "Reaparecimento automático",
+    "tabGeneral": "Geral",
+    "tabAppearance": "Aspeto",
+    "tabInterface": "Interface",
+    "tabControls": "Controlos",
     "translateChat": "Traduzir bate-papo (beta)"
   },
   "colors": {

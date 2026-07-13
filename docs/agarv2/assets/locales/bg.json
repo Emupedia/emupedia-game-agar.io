@@ -90,7 +90,11 @@
     "lockMobileButtons": "Заключване на мобилни бутони",
     "resetButtonPositions": "Нулиране на позициите на мобилните бутони",
     "useWordFilters": "Цензура на думите",
-    "autoRespawn": "AutoRespawn",
+    "autoRespawn": "Автоматично възраждане",
+    "tabGeneral": "Общи",
+    "tabAppearance": "Изглед",
+    "tabInterface": "Интерфейс",
+    "tabControls": "Управление",
     "translateChat": "Превод на чат (бета)"
   },
   "colors": {
