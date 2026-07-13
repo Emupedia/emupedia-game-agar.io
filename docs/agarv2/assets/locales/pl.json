@@ -31,7 +31,9 @@
     "chooseSkin": "Wybierz skórkę",
     "uploadSkin": "Prześlij skórkę",
     "unban": "Odblokuj",
-    "skinCopied": "Adres URL skórki skopiowany do schowka!"
+    "skinCopied": "Adres URL skórki skopiowany do schowka!",
+    "spectate": "Oglądać",
+    "settings": "Ustawienia"
   },
   "settings": {
     "language": "Język",
@@ -132,6 +134,7 @@
     "rulesTitle": "Zasady",
     "rule1": "Nie przesyłaj zabronionych niestandardowych skórek, zwłaszcza jeśli jest to czyjaś twarz, możesz zostać zbanowany za swoją skórkę lub zostać wyrzucony z gry.",
     "rule2": "Nie używaj pseudonimów innych osób na czacie ani jako swojego imienia w obraźliwy sposób, ponieważ możesz zostać wyciszony lub zablokowany w grze.",
+    "rule3": "Nie reklamuj innych serwerów, usług ani stron internetowych na czacie, możesz zostać wyciszony lub zablokowany w grze.",
     "gameplayTitle": "Rozgrywka",
     "controlsIntro": "Poruszaj <kbd>MYSZĄ</kbd> / <kbd>TOUCH</kbd>, aby sterować komórką<br /><kbd>Kółkiem myszy</kbd> lub <kbd id=\"key-zoomin-display\">F</kbd> i <kbd id=\"key-zoomout-display\">V</kbd>, aby przybliżać i oddalać<br />Naciśnij <kbd id=\"key-feed-display\">W</kbd> lub <kbd>Kliknij lewym przyciskiem myszy</kbd>, aby wysunąć masę<br />Naciśnij <kbd id=\"key-split-display\">SPACJA</kbd>, aby jednokrotnie podzielić komórkę<br />Naciśnij <kbd id=\"key-doublesplit-display\">X</kbd> lub <kbd>kliknij prawym przyciskiem</kbd>, aby wykonać Podwójny podział<br />Naciśnij <kbd id=\"key-multisplit-display\">C</kbd> lub <kbd>kliknięcie środkowym przyciskiem</kbd>, aby wykonać wielokrotny podział",
     "objective": "<b>Cel:</b> Celem Agar.io jest hodowanie komórek poprzez spożywanie mniejszych komórek i unikanie większych. W miarę dorastania staniesz się potężniejszy i będziesz mógł konsumować jeszcze większe komórki.",

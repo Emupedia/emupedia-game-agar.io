@@ -31,7 +31,9 @@
     "chooseSkin": "Izberete Kozha",
     "uploadSkin": "Postavete kozha",
     "unban": "Otstrani zabrana",
-    "skinCopied": "URL-adresata na kozhata e kopirana vo tablata so isechotsi!"
+    "skinCopied": "URL-adresata na kozhata e kopirana vo tablata so isechotsi!",
+    "spectate": "Spektajt",
+    "settings": "Postavki"
   },
   "settings": {
     "language": "Jazik",
@@ -132,6 +134,7 @@
     "rulesTitle": "Pravila",
     "rule1": "Ne postavuvajte zabraneti sopstveni skinovi, osobeno ako toa e nechie litse, mozhe da dobiete zabrana za vashata kozha ili vie samite da bidete zabraneti od igrata.",
     "rule2": "Ne koristete tugji prekari vo razgovorot ili kako vasheto ime na pogrden nachin, mozhe da dobiete iskluchuvanje ili zabrana za igranje.",
+    "rule3": "Ne reklamirajte drugi serveri, uslugi ili veb-stranitsi vo razgovorot, mozhe da bidete zamolcheni ili zabraneti od igrata.",
     "gameplayTitle": "Igranje",
     "controlsIntro": "Premestete go vashiot<kbd>Gluvche</kbd>/<kbd>DOPIR</kbd>da ja kontrolirate vashata kjelija<br /><kbd>Trkalo na gluvcheto</kbd>ili<kbd id=\"key-zoomin-display\">F</kbd>i<kbd id=\"key-zoomout-display\">V</kbd>za da zumirate i odzumirate<br />Pritisnete<kbd id=\"key-feed-display\">V</kbd>ili<kbd>Lev klik</kbd>da ja isfrli masata<br />Pritisnete<kbd id=\"key-split-display\">PROSTOR</kbd>za da ja podelite vashata kjelija ednash<br />Pritisnete<kbd id=\"key-doublesplit-display\">X</kbd>ili<kbd>Desen klik</kbd>da se napravi Dvoen Split<br />Pritisnete<kbd id=\"key-multisplit-display\">V</kbd>ili<kbd>Sreden klik</kbd>da se napravi Multi Split",
     "objective": "<b>Tsel:</b>Tselta na Agar.io e da ja zgolemi vashata kletka so konsumiranje pomali kletki i izbegnuvanje na pogolemi. Kako shto rastete, kje stanete postrashni i kje mozhete da konsumirate ushte pogolemi kletki.",

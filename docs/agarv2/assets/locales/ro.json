@@ -31,7 +31,9 @@
     "chooseSkin": "Alegeți Skin",
     "uploadSkin": "Încărcați pielea",
     "unban": "Unban",
-    "skinCopied": "Adresa URL a skinului a fost copiată în Clipboard!"
+    "skinCopied": "Adresa URL a skinului a fost copiată în Clipboard!",
+    "spectate": "Spectator",
+    "settings": "Setări"
   },
   "settings": {
     "language": "Limba",
@@ -132,6 +134,7 @@
     "rulesTitle": "Reguli",
     "rule1": "Nu încărcați skin-uri personalizate interzise, mai ales dacă este vorba despre fața cuiva, s-ar putea să vă fie interzis skin-ul sau să vă interziceți din joc.",
     "rule2": "Nu folosi pseudonimele altor persoane în chat sau ca nume într-un mod derogatoriu, s-ar putea să fii dezactivat sau interzis din joc.",
+    "rule3": "Nu face publicitate altor servere, servicii sau site-uri web în chat, s-ar putea să fii dezactivat sau interzis din joc.",
     "gameplayTitle": "Gameplay-ul",
     "controlsIntro": "Mutați <kbd>MOUSE</kbd> / <kbd>TOUCH</kbd> pentru a vă controla celula<br /><kbd></kbd>Rotița mouse-ului<kbd id=\"key-zoomin-display\"> sau </kbd>F<kbd id=\"key-zoomout-display\"> și </kbd>V<br /> pentru a mări și micșora id=\"key-feed-display\">W<kbd id=\"key-feed-display\"> sau </kbd>Clic stânga<kbd> pentru a scoate Masa</kbd>Apăsați <br />SPAȚIU<kbd id=\"key-split-display\"> pentru a vă împărți celula o dată</kbd>Apăsați <br />>Răspuns pentru a face clic pe <kbd id=\"key-doublesplit-display\">Apăsați </kbd>C<kbd> sau </kbd>Clic din mijloc<br /> pentru a face o împărțire multiplă<kbd id=\"key-multisplit-display\"></kbd><kbd></kbd>",
     "objective": "<b>Obiectiv:</b> Obiectivul Agar.io este de a vă crește celula consumând celule mai mici și evitându-le pe cele mai mari. Pe măsură ce creșteți, veți deveni mai formidabil și veți putea consuma celule și mai mari.",

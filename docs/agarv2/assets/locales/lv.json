@@ -31,7 +31,9 @@
     "chooseSkin": "Izvēlieties Skin",
     "uploadSkin": "Augšupielādēt ādu",
     "unban": "Atcelt aizliegumu",
-    "skinCopied": "Ādas URL ir kopēts starpliktuvē!"
+    "skinCopied": "Ādas URL ir kopēts starpliktuvē!",
+    "spectate": "Skatīties",
+    "settings": "Iestatījumi"
   },
   "settings": {
     "language": "Valoda",
@@ -132,6 +134,7 @@
     "rulesTitle": "Noteikumi",
     "rule1": "Neaugšupielādējiet aizliegtas pielāgotas ādas, it īpaši, ja tā ir kāda seja, iespējams, ka jūsu āda tiks aizliegta vai jūs pats tiksiet aizliegts no spēles.",
     "rule2": "Neizmantojiet citu cilvēku segvārdus tērzēšanā vai kā savu vārdu nievājošā veidā, jo jūs varat tikt izslēgts vai padzīts no spēles.",
+    "rule3": "Tērzēšanā nereklamējiet citus serverus, pakalpojumus vai vietnes, jo jūs varat tikt izslēgts vai aizliegts piedalīties spēlē.",
     "gameplayTitle": "Spēles gaita",
     "controlsIntro": "Pārvietojiet savu <kbd>PELI</kbd> / <kbd>PISKIESTIE</kbd>, lai vadītu savu šūnu<br /><kbd></kbd>peles ritenīti<kbd id=\"key-zoomin-display\"> vai </kbd>F<kbd id=\"key-zoomout-display\"> un </kbd>, lai <br />tuvinātu un tālinātu <kbd id=\"key-feed-display\"></kbd>. id=\"key-feed-display\">W<kbd> vai </kbd>kreisais klikšķis<br />, lai izstumtu masu.<kbd id=\"key-split-display\">Nospiediet </kbd>SPACE<br />, lai vienreiz sadalītu šūnu.<kbd id=\"key-doublesplit-display\">Nospiediet </kbd> vai<kbd>X, lai noklikšķinātu</kbd> veiciet dubulto sadalīšanu<br />nospiediet <kbd id=\"key-multisplit-display\">C</kbd> vai <kbd>vidējais klikšķis</kbd>, lai veiktu vairāku sadalīšanu",
     "objective": "<b>Mērķis:</b> Agar.io mērķis ir palielināt jūsu šūnu, patērējot mazākas šūnas un izvairoties no lielākām. Pieaugot, jūs kļūsit briesmīgāks un varēsit patērēt vēl lielākas šūnas.",

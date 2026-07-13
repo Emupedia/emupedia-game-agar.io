@@ -31,7 +31,9 @@
     "chooseSkin": "Agħżel Ġilda",
     "uploadSkin": "Ittella Ġilda",
     "unban": "Unban",
-    "skinCopied": "URL tal-ġilda kkupjat fil-clipboard!"
+    "skinCopied": "URL tal-ġilda kkupjat fil-clipboard!",
+    "spectate": "Spettaklu",
+    "settings": "Issettjar"
   },
   "settings": {
     "language": "Lingwa",
@@ -132,6 +134,7 @@
     "rulesTitle": "Regoli",
     "rule1": "M'għandekx ittella ġlud tad-dwana projbiti, speċjalment jekk ikun wiċċ xi ħadd, jista 'jkollok il-ġilda tiegħek ipprojbita jew lilek innifsek ipprojbit mil-logħba.",
     "rule2": "Tużax il-laqmijiet ta' nies oħra fiċ-chat jew bħala ismek b'mod dispreġġjattiv, tista' tisikket jew ipprojbit mil-logħba.",
+    "rule3": "Tirreklamax servers, servizzi jew websajts oħra fiċ-chat, jista' jkollok siekta jew ipprojbit mil-logħba.",
     "gameplayTitle": "Gameplay",
     "controlsIntro": "Mexxi <kbd>MOUSE</kbd> / <kbd>TOUCH</kbd> tiegħek biex tikkontrolla ċ-Ċellula tiegħek<br /><kbd></kbd>Rota tal-maws<kbd id=\"key-zoomin-display\"> jew </kbd>F<kbd id=\"key-zoomout-display\"> u </kbd>V<br /> biex Iżżejjed<kbd id=\"key-feed-display\">b> id=\"key-feed-display\">W</kbd> jew <kbd>Ikklikkja tax-Xellug</kbd> biex Tneħħi l-Massa<br />Agħfas <kbd id=\"key-split-display\">SPAZJU</kbd> biex taqsam iċ-Ċellola tiegħek darba<br />Agħfas <kbd id=\"key-doublesplit-display\">>R</kbd>>R<kbd>D</kbd> Double Split<br />Agħfas <kbd id=\"key-multisplit-display\">C</kbd> jew <kbd>Middle Click</kbd> biex tagħmel Multi Split",
     "objective": "<b>Objettiv:</b> L-għan ta 'Agar.io huwa li tkabbar iċ-ċellula tiegħek billi tikkonsma ċelluli iżgħar u tevita dawk akbar. Hekk kif tikber, int se ssir aktar formidabbli u tkun tista 'tikkonsma ċelloli saħansitra akbar.",

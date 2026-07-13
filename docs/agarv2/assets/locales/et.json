@@ -31,7 +31,9 @@
     "chooseSkin": "Valige Nahk",
     "uploadSkin": "Laadige nahk üles",
     "unban": "Tühista keelamine",
-    "skinCopied": "Skini URL on lõikelauale kopeeritud!"
+    "skinCopied": "Skini URL on lõikelauale kopeeritud!",
+    "spectate": "Vaadata",
+    "settings": "Seaded"
   },
   "settings": {
     "language": "Keel",
@@ -132,6 +134,7 @@
     "rulesTitle": "Reeglid",
     "rule1": "Ärge laadige üles keelatud kohandatud nahku, eriti kui see on kellegi nägu, võite saada oma naha või teie enda mängust keelu.",
     "rule2": "Ärge kasutage vestluses ega oma nimena teiste inimeste hüüdnimesid halvustavalt, sest võite mängu vaigistada või mängust blokeerida.",
+    "rule3": "Ärge reklaamige vestluses teisi servereid, teenuseid ega veebisaite, sest teid võidakse mängu vaigistada või keelata.",
     "gameplayTitle": "Mängu käik",
     "controlsIntro": "Liigutage oma <kbd>HIIRT</kbd> / <kbd>PUUDETT</kbd>, et juhtida oma lahtrit<br /><kbd></kbd>hiireratast<kbd id=\"key-zoomin-display\"> või </kbd>F<kbd id=\"key-zoomout-display\"> ja </kbd><br />sisse- ja väljasuumimiseks <kbd id=\"key-feed-display\"></kbd> id=\"key-feed-display\">W<kbd> või </kbd>vasakklõps<br /> massi väljutamiseks<kbd id=\"key-split-display\">Vajutage </kbd>TÜHIK<br />, et lahter üks kord poolitada.<kbd id=\"key-doublesplit-display\">Vajutage </kbd>R või <kbd>X</kbd> tehke topeltjagamine<br />mitme jagamise tegemiseks vajutage <kbd id=\"key-multisplit-display\">C</kbd> või <kbd>keskmine klõps</kbd>",
     "objective": "<b>Eesmärk:</b> Agar.io eesmärk on teie rakku kasvatada, tarbides väiksemaid rakke ja vältides suuremaid. Kasvades muutute hirmuäratavamaks ja suudate tarbida veelgi suuremaid rakke.",

@@ -31,7 +31,9 @@
     "chooseSkin": "Cilt Seç",
     "uploadSkin": "Görünüm Yükle",
     "unban": "Yasağı kaldır",
-    "skinCopied": "Görünüm URL'si Panoya Kopyalandı!"
+    "skinCopied": "Görünüm URL'si Panoya Kopyalandı!",
+    "spectate": "Seyirci",
+    "settings": "Ayarlar"
   },
   "settings": {
     "language": "Dil",
@@ -132,6 +134,7 @@
     "rulesTitle": "Kurallar",
     "rule1": "Yasaklanmış özel görünümler yüklemeyin, özellikle de birisinin yüzüyse, görünümünüzün yasaklanmasına veya kendinizin oyundan men edilmesine neden olabilirsiniz.",
     "rule2": "Sohbette başkalarının takma adlarını veya adınız olarak aşağılayıcı bir şekilde kullanmayın; sessize alınabilirsiniz veya oyundan yasaklanabilirsiniz.",
+    "rule3": "Sohbette diğer sunucuların, hizmetlerin veya web sitelerinin reklamını yapmayın; sessize alınabilirsiniz veya oyundan yasaklanabilirsiniz.",
     "gameplayTitle": "oynanış",
     "controlsIntro": "Hücrenizi kontrol etmek için <kbd>MOUSE</kbd> / <kbd>TOUCH</kbd>'unuzu hareket ettirin<br /><kbd>Fare Tekerleğini</kbd> veya <kbd id=\"key-zoomin-display\">F</kbd> ve Yakınlaştırmak ve uzaklaştırmak için <kbd id=\"key-zoomout-display\">V</kbd>'yi hareket ettirin<br /><kbd id=\"key-feed-display\">W</kbd> veya Kütleyi Çıkarmak için <kbd>Sol Tıklama</kbd><br />Hücrenizi Bir Kez Bölmek için <kbd id=\"key-split-display\">SPACE</kbd> tuşuna basın<br />Hücrenizi bir kez Bölmek için <kbd id=\"key-doublesplit-display\">X</kbd> veya <kbd>Sağ Tık</kbd> tuşuna basın Çift Bölme yapın<br />Çoklu Bölme yapmak için <kbd id=\"key-multisplit-display\">C</kbd> tuşuna basın veya <kbd>Orta Tıklama</kbd>'ya basın",
     "objective": "<b>Hedef:</b> Agar.io'nun amacı, daha küçük hücreleri t��keterek ve daha büyük olanlardan kaçınarak hücrenizi büyütmektir. Büyüdükçe daha zorlu hale gelecek ve daha da büyük hücreleri tüketebileceksiniz.",

@@ -31,7 +31,9 @@
     "chooseSkin": "Kies Huid",
     "uploadSkin": "Huid uploaden",
     "unban": "Verbanning ongedaan maken",
-    "skinCopied": "Skin-URL gekopieerd naar klembord!"
+    "skinCopied": "Skin-URL gekopieerd naar klembord!",
+    "spectate": "Toeschouwen",
+    "settings": "Instellingen"
   },
   "settings": {
     "language": "Taal",
@@ -132,6 +134,7 @@
     "rulesTitle": "Regels",
     "rule1": "Upload geen verboden aangepaste skins, vooral niet als het iemands gezicht is. Het kan zijn dat uw skin wordt verbannen of dat u zelf uit het spel wordt verbannen.",
     "rule2": "Gebruik de bijnamen van anderen niet op een denigrerende manier in de chat of als jouw naam. Het kan zijn dat je hierdoor wordt gedempt of uit het spel wordt verbannen.",
+    "rule3": "Maak geen reclame voor andere servers, services of websites in de chat. U kunt hierdoor worden gedempt of verbannen uit het spel.",
     "gameplayTitle": "Gameplay",
     "controlsIntro": "Beweeg je <kbd>MUIS</kbd> / <kbd>TOUCH</kbd> om je cel te besturen<br /><kbd>Muiswiel</kbd> of <kbd id=\"key-zoomin-display\">F</kbd> en <kbd id=\"key-zoomout-display\">V</kbd> om in en uit te zoomen<br />Druk op <kbd id=\"key-feed-display\">W</kbd> of <kbd>Klik met de linkermuisknop</kbd> om massa uit te werpen<br />Druk op <kbd id=\"key-split-display\">SPACE</kbd> om uw cel één keer te splitsen<br />Druk op <kbd id=\"key-doublesplit-display\">X</kbd> of <kbd>Klik met de rechtermuisknop</kbd> om een dubbele splitsing uit te voeren<br />Druk op <kbd id=\"key-multisplit-display\">C</kbd> of <kbd>Middelklik</kbd> om een Multi Split uit te voeren",
     "objective": "<b>Doelstelling:</b> Het doel van Agar.io is om uw cel te laten groeien door kleinere cellen te consumeren en grotere cellen te vermijden. Naarmate je groeit, word je formidabeler en kun je nog grotere cellen consumeren.",

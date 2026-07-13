@@ -31,7 +31,9 @@
     "chooseSkin": "Velg Hud",
     "uploadSkin": "Last opp hud",
     "unban": "Opphev utestengelsen",
-    "skinCopied": "Skin URL kopiert til utklippstavlen!"
+    "skinCopied": "Skin URL kopiert til utklippstavlen!",
+    "spectate": "Tilskuer",
+    "settings": "Innstillinger"
   },
   "settings": {
     "language": "Språk",
@@ -132,6 +134,7 @@
     "rulesTitle": "Regler",
     "rule1": "Ikke last opp forbudte tilpassede skins, spesielt hvis det er noens ansikt, kan det hende du blir utestengt eller selv utestengt fra spillet.",
     "rule2": "Ikke bruk andres kallenavn i chat eller som navnet ditt på en nedsettende måte, du kan bli dempet eller utestengt fra spillet.",
+    "rule3": "Ikke annonser andre servere, tjenester eller nettsteder i chat, du kan bli dempet eller utestengt fra spillet.",
     "gameplayTitle": "Gameplay",
     "controlsIntro": "Flytt <kbd>MUS</kbd> / <kbd>TOUCH</kbd> for å kontrollere celle<br /><kbd></kbd>musehjulet<kbd id=\"key-zoomin-display\"> eller </kbd>F<kbd id=\"key-zoomout-display\"> og </kbd>V<br /> for å zoome inn og <kbd id=\"key-feed-display\"> id=\"key-feed-display\">W</kbd> eller <kbd>Venstreklikk</kbd> for å løse ut masse<br />Trykk <kbd id=\"key-split-display\">MELLOMROM</kbd> for å dele cellen én gang<br />Trykk <kbd id=\"key-doublesplit-display\">R til høyre</kbd>X eller <kbd> Del</kbd>Trykk på <br />C<kbd id=\"key-multisplit-display\"> eller </kbd>Melltklikk<kbd> for å gjøre en multideling</kbd>",
     "objective": "<b>Mål:</b> Målet med Agar.io er å utvide cellen din ved å konsumere mindre celler og unngå større. Etter hvert som du vokser, vil du bli mer formidabel og være i stand til å konsumere enda større celler.",

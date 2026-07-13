@@ -31,7 +31,9 @@
     "chooseSkin": "Izberete Kozha",
     "uploadSkin": "Kachvane na kozha",
     "unban": "Otmyana na zabranata",
-    "skinCopied": "URL adrest na kozhata e kopiran v klipborda!"
+    "skinCopied": "URL adrest na kozhata e kopiran v klipborda!",
+    "spectate": "Gledayte",
+    "settings": "Nastroyki"
   },
   "settings": {
     "language": "ezik",
@@ -132,6 +134,7 @@
     "rulesTitle": "pravila",
     "rule1": "Ne kachvayte zabraneni personalizirani skinove, osobeno ako tova e nechie litse, mozhe da poluchite zabrana na vashiya skin ili vas samite ot igrata.",
     "rule2": "Ne izpolzvayte psevdonimi na drugi khora v chata ili kato svoe ime po unizitelen nachin, mozhe da bdete zaglushen ili zabranen ot igrata.",
+    "rule3": "Ne reklamirayte drugi sarvari, uslugi ili uebsaytove v chata, mozhe da badete zaglusheni ili zabraneni ot igrata.",
     "gameplayTitle": "Geympley",
     "controlsIntro": "Premestete svoyata <kbd>MIShKA</kbd> / <kbd>DOKOSVANE</kbd>, za da upravlyavate svoyata kletka<br /><kbd>Koleltseto na mishkata</kbd> ili <kbd id=\"key-zoomin-display\">F</kbd> i <kbd id=\"key-zoomout-display\">V</kbd> za uvelichavane i namalyavane na mashchaba<br />Natisnete <kbd id=\"key-feed-display\">W</kbd> ili <kbd>Shchraknete s lyav buton</kbd>, za da izvadite masa<br />Natisnete <kbd id=\"key-split-display\">INTERVAL</kbd>, za da razdelite vashata kletka vednzh<br />Natisnete <kbd id=\"key-doublesplit-display\">X</kbd> ili <kbd>Shchraknete s desen buton</kbd>, za da napravite dvoyno razdelyane<br />Natisnete <kbd id=\"key-multisplit-display\">C</kbd> ili <kbd>Shchraknete ss sreden buton</kbd>, za da napravite razdelyane na nyakolko pti",
     "objective": "<b>Tsel:</b> Tselta na Agar.io e da razviete vashata kletka, kato konsumirate po-malki kletki i izbyagvate po-golemite. Dokato rastete, shche stavate po-strashni i shche mozhete da konsumirate dori po-golemi kletki.",

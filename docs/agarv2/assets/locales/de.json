@@ -31,7 +31,9 @@
     "chooseSkin": "Wählen Sie „Haut“.",
     "uploadSkin": "Skin hochladen",
     "unban": "Verbot aufheben",
-    "skinCopied": "Skin-URL in die Zwischenablage kopiert!"
+    "skinCopied": "Skin-URL in die Zwischenablage kopiert!",
+    "spectate": "Zuschauen",
+    "settings": "Einstellungen"
   },
   "settings": {
     "language": "Sprache",
@@ -132,6 +134,7 @@
     "rulesTitle": "Regeln",
     "rule1": "Laden Sie keine benutzerdefinierten Skins hoch, insbesondere wenn es sich um das Gesicht einer anderen Person handelt. Andernfalls wird Ihr Skin möglicherweise gesperrt oder Sie selbst werden vom Spiel ausgeschlossen.",
     "rule2": "Benutzen Sie die Spitznamen anderer Personen im Chat oder als Ihren Namen nicht auf abfällige Weise, da Sie sonst stummgeschaltet oder vom Spiel ausgeschlossen werden könnten.",
+    "rule3": "Machen Sie im Chat keine Werbung für andere Server, Dienste oder Websites, da Sie sonst stummgeschaltet oder vom Spiel ausgeschlossen werden könnten.",
     "gameplayTitle": "Gameplay",
     "controlsIntro": "Bewegen Sie Ihre <kbd>MAUS</kbd> / <kbd>TOUCH</kbd>, um Ihre Zelle zu steuern<br /><kbd>Mausrad</kbd> oder <kbd id=\"key-zoomin-display\">F</kbd> und <kbd id=\"key-zoomout-display\">V</kbd> zum Vergrößern und Verkleinern<br />Drücken Sie <kbd id=\"key-feed-display\">W</kbd> oder <kbd>Linksklick</kbd>, um Masse auszuwerfen.<br />Drücken Sie die <kbd id=\"key-split-display\">LEERTASTE</kbd>, um Ihre Zelle einmal zu teilen.<br />Drücken Sie <kbd id=\"key-doublesplit-display\">X</kbd> oder <kbd>Rechtsklick</kbd>, um eine Doppelteilung durchzuführen.<br />Drücken Sie <kbd id=\"key-multisplit-display\">C</kbd> oder <kbd>Mittelklick</kbd>, um einen Multi Split durchzuführen",
     "objective": "<b>Ziel:</b> Das Ziel von Agar.io ist das Wachstum Ihrer Zelle durch den Verbrauch kleinerer Zellen und die Vermeidung größerer. Mit zunehmendem Wachstum werden Sie leistungsfähiger und können noch größere Zellen verzehren.",

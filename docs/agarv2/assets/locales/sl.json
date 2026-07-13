@@ -31,7 +31,9 @@
     "chooseSkin": "Izberite Koža",
     "uploadSkin": "Naloži kožo",
     "unban": "Prekliči prepoved",
-    "skinCopied": "URL preobleke kopiran v odložišče!"
+    "skinCopied": "URL preobleke kopiran v odložišče!",
+    "spectate": "Oglejte si",
+    "settings": "nastavitve"
   },
   "settings": {
     "language": "Jezik",
@@ -132,6 +134,7 @@
     "rulesTitle": "Pravila",
     "rule1": "Ne nalagajte prepovedanih preoblek po meri, še posebej, če gre za nečiji obraz, lahko dobite prepoved vaše preobleke ali vas izključijo iz igre.",
     "rule2": "Ne uporabljajte vzdevkov drugih ljudi v klepetu ali kot svoje ime na slabšalni način, lahko vas utišajo ali izključijo iz igre.",
+    "rule3": "V klepetu ne oglašujte drugih strežnikov, storitev ali spletnih mest, saj vas lahko utišajo ali vas izključijo iz igre.",
     "gameplayTitle": "Igranje",
     "controlsIntro": "Premaknite <kbd>MIŠKO</kbd> / <kbd>DOTIK</kbd> za upravljanje celice<br /><kbd>miškino kolesce</kbd> ali <kbd id=\"key-zoomin-display\">F</kbd> in <kbd id=\"key-zoomout-display\">V</kbd> za povečavo in pomanjšanje<br />Pritisnite <kbd id=\"key-feed-display\">W</kbd> ali <kbd>levi klik</kbd> za izmet mase<br />pritisnite <kbd id=\"key-split-display\">PRESLEDNICO</kbd> za enkratno razdelitev celice<br />pritisnite <kbd id=\"key-doublesplit-display\">X</kbd> ali <kbd>Desni klik</kbd> za dvojno delitev<br />Pritisnite <kbd id=\"key-multisplit-display\">C</kbd> ali <kbd>srednji klik</kbd> za večkratno delitev",
     "objective": "<b>Cilj:</b> Cilj Agar.io je povečati vašo celico s porabo manjših celic in izogibanjem večjim. Ko boste rasli, boste postajali mogočnejši in boste lahko zaužili še večje celice.",

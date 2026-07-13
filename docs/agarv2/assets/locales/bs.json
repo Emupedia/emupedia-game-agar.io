@@ -31,7 +31,9 @@
     "chooseSkin": "Odaberite Skin",
     "uploadSkin": "Upload Skin",
     "unban": "Unban",
-    "skinCopied": "URL kože kopiran u međuspremnik!"
+    "skinCopied": "URL kože kopiran u međuspremnik!",
+    "spectate": "Gledaj",
+    "settings": "Postavke"
   },
   "settings": {
     "language": "Jezik",
@@ -132,6 +134,7 @@
     "rulesTitle": "Pravila",
     "rule1": "Ne postavljajte zabranjene prilagođene skinove, pogotovo ako je nečije lice, možete dobiti zabranu vašeg skina ili vas iz igre.",
     "rule2": "Ne koristite nadimke drugih ljudi u chatu ili kao svoje ime na pogrdan način, možete biti isključeni ili izbačeni iz igre.",
+    "rule3": "Ne oglašavajte druge servere, usluge ili web stranice u chatu, možete biti isključeni ili banovani iz igre.",
     "gameplayTitle": "Igranje",
     "controlsIntro": "Pomjerite <kbd>MIŠ</kbd> / <kbd>TOUCH</kbd> da kontrolirate svoju ćeliju<br /><kbd></kbd>Točak miša<kbd id=\"key-zoomin-display\"> ili </kbd>F<kbd id=\"key-zoomout-display\"> i </kbd>V Zoomout-display /Prethodno zumiranje<br /> <kbd id=\"key-feed-display\">W</kbd> ili <kbd>Kliknite lijevom tipkom</kbd> za izbacivanje mase<br />Pritisnite <kbd id=\"key-split-display\">SPACE</kbd> da podijelite ćeliju jednom<br />Pritisnite <kbd id=\"key-doublesplit-display\"> </kbd>Desni klik<kbd> da izvršite dvostruko razdvajanje</kbd>Pritisnite <br />C<kbd id=\"key-multisplit-display\"> ili </kbd>Srednji klik<kbd> da izvršite višestruko razdvajanje</kbd>",
     "objective": "<b>Cilj:</b> Cilj Agar.io je da raste vaše ćelije konzumiranjem manjih ćelija i izbegavanjem većih. Kako rastete, postat ćete moćniji i moći ćete konzumirati još veće ćelije.",

@@ -31,7 +31,9 @@
     "chooseSkin": "airchiet kani",
     "uploadSkin": "atvirtet kani",
     "unban": "gaukmeba",
-    "skinCopied": "kanis URL kopirebulia bufershi!"
+    "skinCopied": "kanis URL kopirebulia bufershi!",
+    "spectate": "Sanakhaoba",
+    "settings": "Parametrebi"
   },
   "settings": {
     "language": "ena",
@@ -132,6 +134,7 @@
     "rulesTitle": "tsesebi",
     "rule1": "ar atvirtot akrdzaluli morgebuli skinebi, mit umetes, tu es vighatsis sakhea, shesadzloa tkveni kani aikrdzalos an tavad aikrdzalos tamashi.",
     "rule2": "nu gamoiqenebt skhva adamianebis metsakhelebs chatshi an tkveni sakhelis damamtsireblad, sheidzleba dadumdet an tamashshi akrdzalot.",
+    "rule3": "nu gauketebt skhva serverebis, servisebis an vebsaitebis reklamas chatshi, shesadzloa dadumdet an aikrdzalot tamashshi.",
     "gameplayTitle": "geimplei",
     "controlsIntro": "gadaaadgilet tkveni <kbd>mausi</kbd> / <kbd>TOUCH</kbd>, rata martot tkveni ujredi<br /><kbd></kbd>mausis borbali<kbd id=\"key-zoomin-display\"> an </kbd>F<kbd id=\"key-zoomout-display\"> da </kbd>V-ze. <br />W<kbd id=\"key-feed-display\"> an </kbd>martskhniv datskapunebit<kbd> masis amosaghebad</kbd>daachiret <br />SPACE<kbd id=\"key-split-display\"> tkveni ujredis ertkhel gasaqofad</kbd>daachiret <br />daatskapunet marjvena ghilakit<kbd id=\"key-doublesplit-display\"></kbd>daachiret <kbd>C</kbd> an <br />shua datskapuneba<kbd id=\"key-multisplit-display\"> mravaljeradi gaqofis gasaketeblad</kbd><kbd></kbd>",
     "objective": "<b>mizani:</b> Agar.io-s mizania gaizardos tkveni ujredi patara ujredebis mokhmarebit da ufro didi ujredebis tavidan atsilebit. rotsa izrdebi, ufro dzlieri gakhdebi da shedzleb kidev ufro didi ujredebis mokhmarebas.",

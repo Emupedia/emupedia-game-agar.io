@@ -31,7 +31,9 @@
     "chooseSkin": "Escolha a pele",
     "uploadSkin": "Carregar skin",
     "unban": "Desbanir",
-    "skinCopied": "URL do skin copiado para a área de transferência!"
+    "skinCopied": "URL do skin copiado para a área de transferência!",
+    "spectate": "Espectador",
+    "settings": "Configurações"
   },
   "settings": {
     "language": "Linguagem",
@@ -132,6 +134,7 @@
     "rulesTitle": "Regras",
     "rule1": "Não carregue skins personalizadas proibidas, especialmente se for o rosto de alguém, você pode ter sua skin banida ou você mesmo ser banido do jogo.",
     "rule2": "Não use apelidos de outras pessoas no chat ou como seu nome de forma depreciativa, pois você pode ser silenciado ou banido do jogo.",
+    "rule3": "Não anuncie outros servidores, serviços ou sites no chat, você pode ser silenciado ou banido do jogo.",
     "gameplayTitle": "Jogabilidade",
     "controlsIntro": "Mova seu <kbd>MOUSE</kbd> / <kbd>TOUCH</kbd> para controlar seu celular<br /><kbd>Roda do mouse</kbd> ou <kbd id=\"key-zoomin-display\">F</kbd> e <kbd id=\"key-zoomout-display\">V</kbd> para aumentar e diminuir o zoom<br />Pressione <kbd id=\"key-feed-display\">W</kbd> ou <kbd>clique esquerdo</kbd> para ejetar massa<br />Pressione <kbd id=\"key-split-display\">ESPAÇO</kbd> para dividir sua célula uma vez<br />Pressione <kbd id=\"key-doublesplit-display\">X</kbd> ou <kbd>clique com o botão direito</kbd> para fazer um Divisão dupla<br />Pressione <kbd id=\"key-multisplit-display\">C</kbd> ou <kbd>Clique do meio</kbd> para fazer uma divisão múltipla",
     "objective": "<b>Objetivo:</b> O objetivo do Agar.io é fazer crescer sua célula consumindo células menores e evitando as maiores. À medida que você cresce, você se tornará mais formidável e será capaz de consumir células ainda maiores.",

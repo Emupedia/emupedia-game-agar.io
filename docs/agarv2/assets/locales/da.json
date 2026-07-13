@@ -31,7 +31,9 @@
     "chooseSkin": "Vælg Hud",
     "uploadSkin": "Upload skin",
     "unban": "Ophæv forbuddet",
-    "skinCopied": "Skin URL kopieret til udklipsholder!"
+    "skinCopied": "Skin URL kopieret til udklipsholder!",
+    "spectate": "Tilskuer",
+    "settings": "Indstillinger"
   },
   "settings": {
     "language": "Sprog",
@@ -132,6 +134,7 @@
     "rulesTitle": "Regler",
     "rule1": "Lad være med at uploade forbudte brugerdefinerede skins, især hvis det er nogens ansigt, kan du få dit skin banned eller dig selv banned fra spillet.",
     "rule2": "Brug ikke andres kaldenavne i chat eller som dit navn på en nedsættende måde, du kan blive slået fra eller udelukket fra spillet.",
+    "rule3": "Annoncer ikke andre servere, tjenester eller websteder i chat, du kan blive slået fra eller udelukket fra spillet.",
     "gameplayTitle": "Gameplay",
     "controlsIntro": "Flyt din <kbd>MUS</kbd> / <kbd>TOUCH</kbd> for at styre dit celle<br /><kbd></kbd>musehjul<kbd id=\"key-zoomin-display\"> eller </kbd>F<kbd id=\"key-zoomout-display\"> og </kbd>V<br /> for at zoome ind og <kbd id=\"key-feed-display\"> id=\"key-feed-display\">W</kbd> eller <kbd>Venstre klik</kbd> for at skubbe masse ud<br />Tryk på <kbd id=\"key-split-display\">MELLEMRUM</kbd> for at opdele din celle én gang<br />Tryk på <kbd id=\"key-doublesplit-display\">R til højre</kbd> eller <kbd> Split</kbd>Tryk på <br />C<kbd id=\"key-multisplit-display\"> eller </kbd>midtklik<kbd> for at lave en Multi Split</kbd>",
     "objective": "<b>Mål:</b> Formålet med Agar.io er at dyrke din celle ved at forbruge mindre celler og undgå større. Efterhånden som du vokser, vil du blive mere formidabel og være i stand til at forbruge endnu større celler.",

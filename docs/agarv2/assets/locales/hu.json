@@ -31,7 +31,9 @@
     "chooseSkin": "Válassza a Skin lehetőséget",
     "uploadSkin": "Skin feltöltése",
     "unban": "Unban",
-    "skinCopied": "Skin URL a vágólapra másolva!"
+    "skinCopied": "Skin URL a vágólapra másolva!",
+    "spectate": "Megfigyelés",
+    "settings": "Beállítások"
   },
   "settings": {
     "language": "Nyelv",
@@ -132,6 +134,7 @@
     "rulesTitle": "Szabályok",
     "rule1": "Ne tölts fel tiltott egyéni skineket, különösen, ha valakinek az arca, előfordulhat, hogy a bőrödet kitiltják, vagy magadat kitiltják a játékból.",
     "rule2": "Ne használj mások becenevét a chaten vagy saját nevedként becsmérlő módon, mert elnémítanak vagy kitiltják a játékból.",
+    "rule3": "Ne hirdessen más szervereket, szolgáltatásokat vagy webhelyeket a chaten, mert elnémíthatják vagy kitilthatják a játékból.",
     "gameplayTitle": "Játékmenet",
     "controlsIntro": "Mozgassa az <kbd>EGÉR</kbd> / <kbd>ÉRINTÉS</kbd> elemet a cella<br /><kbd></kbd>egérgörgő<kbd id=\"key-zoomin-display\"> vagy </kbd>F<kbd id=\"key-zoomout-display\"> és </kbd>F<br /> és <kbd id=\"key-feed-display\"> gombjával a </kbd>V<kbd> </kbd>nagyításhoz és kicsinyítéshez. id=\"key-feed-display\">W<br /> vagy <kbd id=\"key-split-display\">bal gomb</kbd> a tömeg kiadásához<br />Nyomja meg a <kbd id=\"key-doublesplit-display\">SZÓKÖZ</kbd> billentyűt a cella egyszeri felosztásához<kbd>Nyomja meg a </kbd>R vagy a<br />R<kbd id=\"key-multisplit-display\"> gombot a kattintáshoz végezzen kettős felosztást</kbd>Nyomja meg a <kbd>C</kbd> vagy a ",
     "objective": "<b>Cél:</b> Az Agar.io célja, hogy a sejteket kisebb sejtek fogyasztásával és a nagyobbak elkerülésével növelje. Ahogy nősz, egyre félelmetesebb leszel, és képes leszel még nagyobb sejteket fogyasztani.",

@@ -31,7 +31,9 @@
     "chooseSkin": "Pasirinkite odą",
     "uploadSkin": "Įkelti odą",
     "unban": "Atšaukti draudimą",
-    "skinCopied": "Skin URL nukopijuotas į mainų sritį!"
+    "skinCopied": "Skin URL nukopijuotas į mainų sritį!",
+    "spectate": "Žiūrėti",
+    "settings": "Nustatymai"
   },
   "settings": {
     "language": "Kalba",
@@ -132,6 +134,7 @@
     "rulesTitle": "Taisyklės",
     "rule1": "Neįkelkite uždraustų tinkintų skinų, ypač jei tai kažkieno veidas, jūsų oda gali būti uždrausta arba jums bus uždrausta dalyvauti žaidime.",
     "rule2": "Nenaudokite kitų žmonių slapyvardžių pokalbiuose ar kaip savo vardo žeminančiai, nes galite būti nutildyti arba uždrausti dalyvauti žaidime.",
+    "rule3": "Pokalbyje nereklamuokite kitų serverių, paslaugų ar svetainių, galite būti nutildyti arba uždrausti dalyvauti žaidime.",
     "gameplayTitle": "Žaidimo eiga",
     "controlsIntro": "Perkelkite <kbd>PELĖS</kbd> / <kbd>LIESTĮ</kbd>, kad valdytumėte langelį<br /><kbd></kbd>Pelės ratuką<kbd id=\"key-zoomin-display\"> arba </kbd>F<kbd id=\"key-zoomout-display\"> ir </kbd> <br />V<kbd id=\"key-feed-display\"> </kbd>Didinti ir tolinti id=\"key-feed-display\">W<kbd> arba </kbd>kairysis spustelėjimas<br />, kad išstumtumėte masę<kbd id=\"key-split-display\">Paspauskite </kbd>tarpo klavišą<br />, kad padalintumėte langelį vieną kartą.<kbd id=\"key-doublesplit-display\">Paspauskite </kbd> arba <kbd></kbd>X Atlikite dvigubą padalijimą<br />Paspauskite <kbd id=\"key-multisplit-display\">C</kbd> arba <kbd>vidutinį paspaudimą</kbd>, kad atliktumėte padalijimą iš kelių kartų",
     "objective": "<b>Tikslas:</b> Agar.io tikslas yra auginti jūsų ląsteles vartojant mažesnes ląsteles ir vengiant didesnių. Augdami tapsite grėsmingesni ir galėsite suvartoti dar didesnes ląsteles.",

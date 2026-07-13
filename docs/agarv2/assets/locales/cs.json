@@ -31,7 +31,9 @@
     "chooseSkin": "Vyberte Skin",
     "uploadSkin": "Nahrát vzhled",
     "unban": "Zrušit zákaz",
-    "skinCopied": "Adresa URL vzhledu zkopírována do schránky!"
+    "skinCopied": "Adresa URL vzhledu zkopírována do schránky!",
+    "spectate": "Diváci",
+    "settings": "Nastavení"
   },
   "settings": {
     "language": "Jazyk",
@@ -132,6 +134,7 @@
     "rulesTitle": "Pravidla",
     "rule1": "Nenahrávejte zakázané vlastní skiny, zvláště pokud se jedná o něčí obličej, můžete dostat svůj skin zabanovaný nebo vy sami ze hry.",
     "rule2": "Nepoužívejte přezdívky jiných lidí v chatu nebo jako své jméno hanlivým způsobem, mohli byste být ztlumeni nebo vám bude zakázána hra.",
+    "rule3": "Neinzerujte v chatu jiné servery, služby nebo webové stránky, mohli byste být ztlumeni nebo vám hra zakázána.",
     "gameplayTitle": "Hratelnost",
     "controlsIntro": "Pohybem <kbd>MYŠI</kbd> / <kbd>TOUCH</kbd> ovládáte buňku<br /><kbd></kbd>kolečko myši<kbd id=\"key-zoomin-display\"> nebo </kbd>F<kbd id=\"key-zoomout-display\"> a </kbd>V<br /> <kbd id=\"key-feed-display\"> pro přiblížení id=\"key-feed-display\">W</kbd> nebo <kbd>Kliknutí levým tlačítkem</kbd> pro vysunutí hmoty<br />Stisknutím <kbd id=\"key-split-display\">SPACE</kbd> jednou rozdělíte buňku<br />Stiskněte <kbd id=\"key-doublesplit-display\"> k dvojitému kliknutí\">db>Right </kbd> Rozdělit<kbd>Stisknutím </kbd>C<br /> nebo <kbd id=\"key-multisplit-display\">Kliknutí prostředním tlačítkem</kbd> provedete vícenásobné rozdělení<kbd></kbd>",
     "objective": "<b>Cíl:</b> Cílem Agar.io je vypěstovat vaši buňku tím, že budete spotřebovávat menší buňky a vyhýbat se větším. Jak budete růst, stanete se impozantnějšími a budete schopni konzumovat ještě větší buňky.",

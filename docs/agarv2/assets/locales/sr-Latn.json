@@ -31,7 +31,9 @@
     "chooseSkin": "Izaberite Skin",
     "uploadSkin": "Upload Skin",
     "unban": "Unban",
-    "skinCopied": "URL maske je kopiran u medjuspremnik!"
+    "skinCopied": "URL maske je kopiran u medjuspremnik!",
+    "spectate": "Posmatraj",
+    "settings": "Podeshavanja"
   },
   "settings": {
     "language": "Jezik",
@@ -132,6 +134,7 @@
     "rulesTitle": "Pravila",
     "rule1": "Ne postavljajte zabranjene prilagodjene skinove, posebno ako je u pitanju nechije litse, mozhda chete dobiti zabranu vasheg skina ili sebe iz igre.",
     "rule2": "Ne koristite nadimke drugikh ljudi u chaskanju ili kao svoje ime na pogrdan nachin, mozhete biti iskljucheni ili izbacheni iz igre.",
+    "rule3": "Ne oglashavajte druge servere, usluge ili veb-sajtove u chaskanju, mozhda chete biti utishani ili izbacheni iz igre.",
     "gameplayTitle": "Igranje",
     "controlsIntro": "Pomeri svoje<kbd>MISh</kbd>/<kbd>TOUTsKh</kbd>da kontrolishete svoju cheliju<br /><kbd>Tochak misha</kbd>ili<kbd id=\"key-zoomin-display\">F</kbd>i<kbd id=\"key-zoomout-display\">V</kbd>da uvechate i umanjite<br />Pritisnite<kbd id=\"key-feed-display\">V</kbd>ili<kbd>Kliknite levim klikom</kbd>da izbatsi masu<br />Pritisnite<kbd id=\"key-split-display\">SPATsE</kbd>da jednom podelite svoju cheliju<br />Pritisnite<kbd id=\"key-doublesplit-display\">Ks</kbd>ili<kbd>Desni klik</kbd>da uradite dupli Split<br />Pritisnite<kbd id=\"key-multisplit-display\">Ts</kbd>ili<kbd>Srednji klik</kbd>da uradite Multi Split",
     "objective": "<b>Tsilj:</b>Tsilj Agar.io je da povecha vashu cheliju konzumiranjem manjikh chelija i izbegavanjem vechikh. Kako rastete, postachete mochniji i mochi chete da konzumirate josh veche chelije.",
