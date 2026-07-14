@@ -66,7 +66,7 @@ class ChatChannel {
 	 */
 	shouldFilter(message) {
 		for (let i = 0, l = this.settings.chatFilteredPhrases.length; i < l; i++) {
-			if (containsChatFilterMatch(message, this.settings.chatFilteredPhrases[i])) {
+			if (containsChatFilterMatch(message, this.settings.chatFilteredPhrases[i], true)) {
 				this.listener.logger.inform(`MESSAGE REJECTED '${message}' contains '${this.settings.chatFilteredPhrases[i]}'`)
 				return true
 			}

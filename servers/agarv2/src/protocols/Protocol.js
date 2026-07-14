@@ -1,7 +1,7 @@
 /**
  * @abstract
  */
-const { containsChatFilterMatch, normalizeChatFilterText } = require('../sockets/ChatFilterNormalization');
+const { containsChatFilterMatch, normalizeChatFilterText, stripInvisible } = require('../sockets/ChatFilterNormalization');
 
 class Protocol {
 	/**
@@ -140,6 +140,10 @@ class Protocol {
 	filterName(name) {
 		let newname = name || ''
 
+		// Strip control/invisible bytes (binary-name injection) via the chat filter shared,
+		// data-driven strip (ranges live in data/normalize.json). Skin punctuation is preserved.
+		newname = stripInvisible(newname)
+
 		for (let i = 0, l = this.settings.chatForbiddenNames.length; i < l; i++) {
 			if (containsChatFilterMatch(newname, this.settings.chatForbiddenNames[i])) {
 				return 'An unnamed cell'
@@ -156,11 +160,10 @@ class Protocol {
 		}
 
 		for (let i = 0, l = this.settings.chatFilteredPhrases.length; i < l; i++) {
-			if (containsChatFilterMatch(newname, this.settings.chatFilteredPhrases[i])) {
+			if (containsChatFilterMatch(newname, this.settings.chatFilteredPhrases[i], true)) {
 				return 'An unnamed cell'
 			}
 		}
-
 		return newname
 	}
 

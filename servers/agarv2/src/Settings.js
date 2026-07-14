@@ -25,6 +25,11 @@ const value = Object.seal({
 	/** @type {string[]} */
 	chatFilteredPhrases: [],
 	chatCooldown: 1000,
+	// Structural anti-spam. chatMaxUnbrokenRun rejects "wall of text" messages — a run of more
+	// than this many consecutive non-whitespace characters (spaceless flooding). chatMaxLength
+	// caps total message length. Set either to 0 to disable.
+	chatMaxUnbrokenRun: 40,
+	chatMaxLength: 0,
 
 	worldMapX: 0,
 	worldMapY: 0,

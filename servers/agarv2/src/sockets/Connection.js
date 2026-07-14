@@ -1,6 +1,7 @@
 const Router = require('./Router')
 const Reader = require('../primitives/Reader')
 const { filterIPAddress } = require('../primitives/Misc')
+const { chatStructureRejectReason } = require('./ChatFilterNormalization')
 
 class Connection extends Router {
 	/**
@@ -110,6 +111,15 @@ class Connection extends Router {
 	onChatMessage(message) {
 		if (this.listener.globalChat.shouldFilter(message)) {
 			return this.listener.globalChat.rejectFilteredMessage(this)
+		}
+
+		// Structural anti-spam: reject "wall of text" / overly long messages (checked on the raw
+		// message so a single-character flood is caught before the repeat-collapse shrinks it).
+		const structReason = chatStructureRejectReason(message, this.settings.chatMaxUnbrokenRun, this.settings.chatMaxLength)
+		if (structReason) {
+			this.listener.globalChat.directMessage(null, this, '[AntiSpam] Last message was not sent (' + structReason + ').')
+			this.listener.logger.inform(`MESSAGE REJECTED (${structReason}) from ${this.remoteAddress}`)
+			return
 		}
 
 		message = message.replace(/  +/g, ' ')

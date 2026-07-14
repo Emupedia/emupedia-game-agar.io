@@ -1,211 +1,104 @@
-/**
- * Maps common unicode confusables to their latin ascii lookalikes.
- * @type {Map<string, string>}
+'use strict';
+/*
+ * Data-driven chat-text normalization and filter matching.
+ *
+ * ALL character maps and tuning live in data/normalize.json (a single reusable dataset shared
+ * with test/mangle.js) — there are no hardcoded confusable/font/leet tables here. The dataset's
+ * `mapping` holds one category per obfuscation family (fonts, diacritics, fullwidth, small-caps,
+ * cross-script homoglyphs, leetspeak, …), each mapping a decorated character to its ASCII base;
+ * `options` carries the tuning (which categories are aggressive-only, combining ranges to strip,
+ * and the length thresholds).
  */
-const CONFUSABLES = new Map([
-	// Greek
-	['\u03b1', 'a'], ['\u03b2', 'b'], ['\u03b3', 'g'], ['\u03b4', 'd'], ['\u03b5', 'e'],
-	['\u03b6', 'z'], ['\u03b7', 'h'], ['\u03b8', 'th'], ['\u03b9', 'i'], ['\u03ba', 'k'],
-	['\u03bb', 'l'], ['\u03bc', 'm'], ['\u03bd', 'n'], ['\u03be', 'x'], ['\u03bf', 'o'],
-	['\u03c0', 'p'], ['\u03c1', 'r'], ['\u03c2', 'c'], ['\u03c3', 'o'], ['\u03c4', 't'],
-	['\u03c5', 'u'], ['\u03c6', 'f'], ['\u03c7', 'x'], ['\u03c8', 'ps'], ['\u03c9', 'w'],
-	// Cyrillic
-	['\u0430', 'a'], ['\u0431', 'b'], ['\u0432', 'v'], ['\u0433', 'r'], ['\u0434', 'd'],
-	['\u0435', 'e'], ['\u0436', 'zh'], ['\u0437', 'z'], ['\u0438', 'i'], ['\u0439', 'j'],
-	['\u043a', 'k'], ['\u043b', 'l'], ['\u043c', 'm'], ['\u043d', 'n'], ['\u043e', 'o'],
-	['\u043f', 'p'], ['\u0440', 'p'], ['\u0441', 'c'], ['\u0442', 't'], ['\u0443', 'y'],
-	['\u0444', 'f'], ['\u0445', 'x'], ['\u0446', 'c'], ['\u0447', 'ch'], ['\u0448', 'sh'],
-	['\u0449', 'sh'], ['\u044a', ''], ['\u044b', 'y'], ['\u044c', ''], ['\u044d', 'e'],
-	['\u044e', 'yu'], ['\u044f', 'ya'], ['\u0454', 'e'], ['\u0456', 'i'], ['\u0457', 'i'],
-	['\u04cf', 'l'],
-	// Latin phonetic extensions / small caps
-	['\u1d00', 'a'], ['\u1d01', 'ae'], ['\u1d02', 'b'], ['\u1d03', 'b'], ['\u1d04', 'c'],
-	['\u1d05', 'd'], ['\u1d06', 'd'], ['\u1d07', 'e'], ['\u1d08', 'e'], ['\u1d09', 'i'],
-	['\u1d0a', 'j'], ['\u1d0b', 'k'], ['\u1d0c', 'l'], ['\u1d0d', 'm'], ['\u1d0e', 'n'],
-	['\u1d0f', 'o'], ['\u1d10', 'o'], ['\u1d11', 'o'], ['\u1d12', 'o'], ['\u1d13', 'o'],
-	['\u1d14', 'oe'], ['\u1d15', 'ou'], ['\u1d16', 'o'], ['\u1d17', 'o'], ['\u1d18', 'p'],
-	['\u1d19', 'r'], ['\u1d1a', 'z'], ['\u1d1b', 't'], ['\u1d1c', 'u'], ['\u1d1d', 'u'],
-	['\u1d1e', 'u'], ['\u1d1f', 'm'], ['\u1d20', 'v'], ['\u1d21', 'w'], ['\u1d22', 'z'],
-	['\u0280', 'r'], ['\u0274', 'n'], ['\u026a', 'i'], ['\u1d0b', 'k'],
-	// Thai (common arenarcade homoglyphs)
-	['\u0e04', 'a'], ['\u0e20', 'n'], ['\u0e4f', 'o'], ['\u0e53', 'm'],
-])
 
-/**
- * Mathematical Alphanumeric Symbols that NFKC may not fold on older Node/ICU builds.
- * @type {Map<string, string>}
- */
-const MATHEMATICAL_ALPHANUMERICS = buildMathematicalAlphanumericMap()
+const DATA = require('../../data/normalize.json');
+const OPTIONS = DATA.options || {};
+const AGGRESSIVE_ONLY = new Set(OPTIONS.aggressiveOnlyCategories || []);
 
-/**
- * @returns {Map<string, string>}
- */
-function buildMathematicalAlphanumericMap() {
-	const map = new Map()
-	const letterRanges = [
-		[0x1D400, 0x1D433], // bold
-		[0x1D434, 0x1D467], // italic
-		[0x1D468, 0x1D49B], // bold italic
-		[0x1D49C, 0x1D4CF], // script
-		[0x1D4D0, 0x1D503], // bold script
-		[0x1D504, 0x1D537], // fraktur
-		[0x1D538, 0x1D56B], // double-struck
-		[0x1D56C, 0x1D59F], // bold fraktur
-		[0x1D5A0, 0x1D5D3], // sans-serif
-		[0x1D5D4, 0x1D607], // sans-serif bold
-		[0x1D608, 0x1D63B], // sans-serif italic
-		[0x1D63C, 0x1D66F], // sans-serif bold italic
-		[0x1D670, 0x1D6A3]  // monospace
-	]
-	const digitRanges = [
-		[0x1D7CE, 0x1D7D7],
-		[0x1D7D8, 0x1D7E1],
-		[0x1D7E2, 0x1D7EB],
-		[0x1D7EC, 0x1D7F5],
-		[0x1D7F6, 0x1D7FF]
-	]
+// Merge the dataset categories into char->ascii fold maps. BASE excludes aggressive-only
+// categories (e.g. leetspeak, so ordinary digits in chat aren't rewritten); FULL includes them
+// and is used only for the aggressive obfuscation-proof signature.
+function buildFold(includeAggressive) {
+	const map = new Map();
+	const mapping = DATA.mapping || {};
 
-	for (let i = 0, l = letterRanges.length; i < l; i++) {
-		const start = letterRanges[i][0]
-		const end = letterRanges[i][1]
+	for (const category in mapping) {
+		if (!includeAggressive && AGGRESSIVE_ONLY.has(category)) continue;
 
-		for (let cp = start; cp <= end; cp++) {
-			const offset = cp - start
+		const table = mapping[category];
 
-			if (offset < 26) {
-				map.set(String.fromCodePoint(cp), String.fromCharCode(65 + offset))
-			} else if (offset < 52) {
-				map.set(String.fromCodePoint(cp), String.fromCharCode(97 + offset - 26))
-			}
+		for (const ch in table) {
+			if (!map.has(ch)) map.set(ch, table[ch]);
 		}
 	}
 
-	for (let i = 0, l = digitRanges.length; i < l; i++) {
-		const start = digitRanges[i][0]
-		const end = digitRanges[i][1]
-
-		for (let cp = start; cp <= end; cp++) {
-			map.set(String.fromCodePoint(cp), String.fromCharCode(48 + (cp - start)))
-		}
-	}
-
-	addEnclosedAlphanumericLetters(map)
-
-	return map
+	return map;
 }
 
-/**
- * Enclosed / decorative latin letters (NFKC may not fold these on older Node builds).
- * @param {Map<string, string>} map
- */
-function addEnclosedAlphanumericLetters(map) {
-	const enclosedRanges = [
-		[0x1F130, 0x1F149], // negative circled capitals A-Z
-		[0x1F170, 0x1F189], // squared capitals A-Z
-		[0x24B6, 0x24CF],   // circled capitals A-Z
-		[0x24D0, 0x24E9]    // circled small a-z
-	]
-
-	for (let r = 0; r < enclosedRanges.length; r++) {
-		const start = enclosedRanges[r][0]
-		const end = enclosedRanges[r][1]
-		const upper = start >= 0x24B6 && start <= 0x24CF
-
-		for (let cp = start; cp <= end; cp++) {
-			const offset = cp - start
-
-			if (offset < 26) {
-				map.set(
-					String.fromCodePoint(cp),
-					String.fromCharCode((upper ? 65 : 97) + offset)
-				)
-			}
-		}
-	}
-}
+const BASE_FOLD = buildFold(false);
+const AGGRESSIVE_FOLD = buildFold(true);
 
 /**
  * @param {string} text
+ * @param {Map<string, string>} foldMap
  */
-function foldMathematicalAlphanumerics(text) {
-	let folded = ''
+function fold(text, foldMap) {
+	let out = '';
+	for (const ch of text) out += (foldMap.get(ch) || ch);
+	return out;
+}
 
-	for (const ch of text) {
-		folded += MATHEMATICAL_ALPHANUMERICS.get(ch) || ch
-	}
+function buildRangeRegex(ranges) {
+	if (!ranges || !ranges.length) return null;
+	const cls = ranges.map(function (r) { return '\\u' + r[0] + '-\\u' + r[1]; }).join('');
+	return new RegExp('[' + cls + ']', 'g');
+}
 
-	return folded
+// Combining-mark / variation-selector strip (used inside normalization), from options.stripCodepointRanges.
+const STRIP_RE = buildRangeRegex(OPTIONS.stripCodepointRanges);
+
+// Control / bidi / zero-width / format characters, from options.stripInvisibleRanges. These
+// corrupt logs and break name/skin/color rendering on clients (binary-name injection), so they
+// are removed from ingested names/messages. Visible text and skin punctuation are untouched.
+const INVISIBLE_RE = buildRangeRegex(OPTIONS.stripInvisibleRanges);
+
+const SIGNATURE_MIN_LENGTH = OPTIONS.signatureMinLength || 6;
+const MIN_NORMALIZED_PATTERN_LENGTH = OPTIONS.minPatternLength || 4;
+
+// Fold -> Unicode NFKC/lowercase/NFD/strip-combining -> fold again (catches confusables that only
+// surface after Unicode normalization). Both passes use the same data-driven map.
+function canonicalize(text, foldMap) {
+	let s = fold(String(text == null ? '' : text), foldMap)
+		.normalize('NFKC')
+		.toLowerCase()
+		.normalize('NFD');
+
+	if (STRIP_RE) s = s.replace(STRIP_RE, '');
+
+	return fold(s, foldMap);
 }
 
 /**
- * @param {string} text
- */
-function foldConfusables(text) {
-	let folded = ''
-
-	for (const ch of text) {
-		folded += CONFUSABLES.get(ch) || ch
-	}
-
-	return folded
-}
-
-/**
+ * Canonical space-separated form for token matching.
  * @param {string} text
  */
 function normalizeChatFilterText(text) {
-	let normalized = foldMathematicalAlphanumerics(text)
-		.normalize('NFKC')
-		.toLowerCase()
-		.normalize('NFD')
-		.replace(/[\u0300-\u036f\ufe00-\ufe0f]/g, '')
-
-	normalized = foldConfusables(normalized)
-
-	return normalized
+	return canonicalize(text, BASE_FOLD)
 		.replace(/[^a-z0-9]+/g, ' ')
 		.replace(/  +/g, ' ')
 		.replace(/(.)\1{3,}/g, '$1')
-		.trim()
+		.trim();
 }
 
 /**
- * Compact form used for domain-signature checks (no spaces).
+ * Aggressive compact signature: also folds leetspeak and strips ALL separators, so any decorated
+ * variant of a phrase collapses to one string. Used for obfuscation-proof phrase matching.
  * @param {string} text
  */
-function compactChatFilterText(text) {
-	return normalizeChatFilterText(text).replace(/\s+/g, '')
+function promoSignature(text) {
+	return canonicalize(text, AGGRESSIVE_FOLD)
+		.replace(/[^a-z0-9]+/g, '')
+		.replace(/(.)\1{2,}/g, '$1$1');
 }
-
-/**
- * Catches arenarcade.com homoglyph + ornamental-wrapper spam even when the
- * exact decorated string is not listed in settings.
- * @param {string} text
- */
-function containsArenarcadeDomainSignature(text) {
-	const normalized = normalizeChatFilterText(text)
-
-	if (!normalized) {
-		return false
-	}
-
-	if (/\barenarcade\s*com\b/.test(normalized)) {
-		return true
-	}
-
-	const compact = normalized.replace(/\s+/g, '')
-
-	return /\barenarcade\b/.test(normalized) && compact.indexOf('arenarcadecom') !== -1
-}
-
-/**
- * @param {string} text
- */
-function isBlockedPromotionText(text) {
-	return containsArenarcadeDomainSignature(text)
-}
-
-const MIN_NORMALIZED_PATTERN_LENGTH = 4
 
 /**
  * @param {string} pattern
@@ -213,40 +106,116 @@ const MIN_NORMALIZED_PATTERN_LENGTH = 4
  */
 function isUsableFilterPattern(pattern, normalizedPattern) {
 	if (!normalizedPattern || normalizedPattern.length < MIN_NORMALIZED_PATTERN_LENGTH) {
-		return false
+		return false;
 	}
 
 	// Long homoglyph phrases that collapse to almost nothing cause false positives (e.g. -> "d").
 	if (pattern.length >= 8 && normalizedPattern.length < Math.max(MIN_NORMALIZED_PATTERN_LENGTH, Math.ceil(pattern.length / 4))) {
-		return false
+		return false;
 	}
 
-	return true
+	return true;
 }
 
 /**
- * @param {string} text
- * @param {string} pattern
+ * Whole-token (word-boundary) match. Prevents a short pattern like "aren" matching inside "arent"
+ * while still catching it as a standalone token or a consecutive token run.
+ * @param {string} normalizedText
+ * @param {string} normalizedPattern
  */
-function containsChatFilterMatch(text, pattern) {
-	if (isBlockedPromotionText(text)) {
-		return true
+function containsTokenSequence(normalizedText, normalizedPattern) {
+	if (!normalizedText || !normalizedPattern) {
+		return false;
 	}
 
-	const normalizedText = normalizeChatFilterText(text)
-	const normalizedPattern = normalizeChatFilterText(pattern)
+	return (' ' + normalizedText + ' ').indexOf(' ' + normalizedPattern + ' ') !== -1;
+}
+
+/**
+ * @param {string} text     chat message or player name
+ * @param {string} pattern  a chatFilteredPhrases / chatForbiddenNames entry
+ * @param {boolean} [aggressive]  when true (chatFilteredPhrases) also match the compact
+ *   obfuscation-proof signature so any decorated variant of the pattern is caught.
+ */
+function containsChatFilterMatch(text, pattern, aggressive) {
+	const normalizedPattern = normalizeChatFilterText(pattern);
 
 	if (!isUsableFilterPattern(pattern, normalizedPattern)) {
-		return false
+		return false;
 	}
 
-	return normalizedText.indexOf(normalizedPattern) !== -1
+	const normalizedText = normalizeChatFilterText(text);
+
+	if (containsTokenSequence(normalizedText, normalizedPattern)) {
+		return true;
+	}
+
+	if (aggressive) {
+		const patternSignature = promoSignature(pattern);
+
+		if (patternSignature.length >= SIGNATURE_MIN_LENGTH && promoSignature(text).indexOf(patternSignature) !== -1) {
+			return true;
+		}
+	}
+
+	return false;
+}
+
+/**
+ * Longest run of consecutive non-whitespace code points. A "wall of text" (a long line with no
+ * spaces) has a very large run; normal chat is broken up by spaces.
+ * @param {string} text
+ */
+function longestUnbrokenRun(text) {
+	const s = String(text == null ? '' : text);
+	let max = 0, run = 0;
+
+	for (const ch of s) {
+		if (/\s/.test(ch)) { run = 0; }
+		else { run++; if (run > max) max = run; }
+	}
+
+	return max;
+}
+
+/**
+ * Structural chat-spam check (independent of content): flags overly long messages and spaceless
+ * "wall of text" flooding. Returns a short reason string to reject, or null to allow. A threshold
+ * of 0 disables that check.
+ * @param {string} message
+ * @param {number} maxUnbrokenRun  reject if the longest no-whitespace run exceeds this
+ * @param {number} maxLength       reject if the whole message is longer than this
+ * @returns {string|null}
+ */
+function chatStructureRejectReason(message, maxUnbrokenRun, maxLength) {
+	const text = String(message == null ? '' : message);
+
+	if (maxLength > 0 && text.length > maxLength) {
+		return 'message too long';
+	}
+
+	if (maxUnbrokenRun > 0 && longestUnbrokenRun(text) > maxUnbrokenRun) {
+		return 'too many characters without a space';
+	}
+
+	return null;
+}
+
+/**
+ * Remove control / bidi / zero-width / format characters from ingested text (names and chat).
+ * These corrupt logs and break name/skin/color rendering on clients; visible characters and the
+ * skin-encoding punctuation (< > | #) are preserved.
+ * @param {string} text
+ */
+function stripInvisible(text) {
+	const s = String(text == null ? '' : text);
+	return INVISIBLE_RE ? s.replace(INVISIBLE_RE, '') : s;
 }
 
 module.exports = {
 	normalizeChatFilterText,
-	compactChatFilterText,
-	containsArenarcadeDomainSignature,
-	isBlockedPromotionText,
-	containsChatFilterMatch
-}
+	containsChatFilterMatch,
+	longestUnbrokenRun,
+	chatStructureRejectReason,
+	stripInvisible
+};
