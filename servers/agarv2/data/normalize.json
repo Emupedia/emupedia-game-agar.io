@@ -56,7 +56,10 @@
 				"feff",
 				"feff"
 			]
-		]
+		],
+		"fuzzyMinLength": 8,
+		"fuzzyMaxDistance": 2,
+		"letterSepMinSingles": 8
 	},
 	"mapping": {
 		"diacritics": {
