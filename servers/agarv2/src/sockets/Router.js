@@ -1,3 +1,25 @@
+const SKIN_COLOR_RE = /^#?(?:[0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/;
+
+/**
+ * Sanitize a skin string ("skinId|nameColor|cellColor|borderColor||fp2") extracted from a
+ * player name, so hostile fields can't break skin/color rendering on other clients. Keeps
+ * well-formed values untouched; blanks unsafe skin ids and invalid color fields; caps length.
+ * @param {string} skin
+ * @returns {string}
+ */
+function sanitizeSkin(skin) {
+	if (!skin) return skin;
+	// eslint-disable-next-line no-control-regex
+	skin = String(skin).replace(/[\u0000-\u001f\u007f-\u009f]/g, '');
+	if (skin.length > 256) skin = skin.slice(0, 256);
+	const parts = skin.split('|');
+	if (parts[0] && /[<>]/.test(parts[0])) parts[0] = '';
+	for (let i = 1; i <= 3; i++) {
+		if (parts[i] && parts[i] !== '#ffffff' && !SKIN_COLOR_RE.test(parts[i])) parts[i] = '';
+	}
+	return parts.join('|');
+}
+
 /** @interface */
 class Router {
 	/**
@@ -112,7 +134,7 @@ class Router {
 
 			if (regex !== null) {
 				name = regex[2];
-				skin = regex[1];
+				skin = sanitizeSkin(regex[1]);
 			}
 		}
 
