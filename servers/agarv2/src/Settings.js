@@ -30,6 +30,18 @@ const value = Object.seal({
 	// caps total message length. Set either to 0 to disable.
 	chatMaxUnbrokenRun: 40,
 	chatMaxLength: 0,
+	// Detect advertising split across several messages (e.g. "AR" "EN" "AR" "CA" "DE" ".COM"):
+	// the last chatAssembleMaxParts messages within chatAssembleWindow ms are concatenated and
+	// re-checked against chatFilteredPhrases. Set either to 0 to disable.
+	chatAssembleWindow: 60000,
+	chatAssembleMaxParts: 16,
+	// Fragmentation throttle: a spaceless message <= chatFragmentMaxLen chars counts as a
+	// "fragment". After chatFragmentBurstLimit consecutive fragments, further fragments are
+	// blocked (stops "AR"/"EN"/"AR"... advertising before the brand can be spelled out). A
+	// confirmed split-advertising assembly mutes the player's chat for chatSpamMuteMs. 0 disables.
+	chatFragmentMaxLen: 8,
+	chatFragmentBurstLimit: 4,
+	chatSpamMuteMs: 30000,
 
 	worldMapX: 0,
 	worldMapY: 0,
