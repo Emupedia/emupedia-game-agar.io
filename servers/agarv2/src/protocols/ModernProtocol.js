@@ -3,6 +3,15 @@ const Writer = require("../primitives/Writer");
 
 const PingReturn = Buffer.from(new Uint8Array([2]));
 
+// Clamp a value into the uint16 range. World-stats fields (notably `limit`, which is
+// listenerMaxConnections - connections + external) are serialized with writeUInt16; an
+// out-of-range value throws a RangeError inside the unguarded server tick and crashes the
+// whole process. Clamping keeps serialization safe regardless of configuration.
+function clampU16(v) {
+	v = v | 0;
+	return v < 0 ? 0 : (v > 0xffff ? 0xffff : v);
+}
+
 class ModernProtocol extends Protocol {
 	/**
 	 * @param {Connection} connection
@@ -290,11 +299,11 @@ class ModernProtocol extends Protocol {
 			writer.writeZTStringUTF8(item.gamemode);
 			writer.writeFloat32(item.loadTime / this.handle.tickDelay);
 			writer.writeUInt32(item.uptime);
-			writer.writeUInt16(item.limit);
-			writer.writeUInt16(item.external);
-			writer.writeUInt16(item.internal);
-			writer.writeUInt16(item.playing);
-			writer.writeUInt16(item.spectating);
+			writer.writeUInt16(clampU16(item.limit));
+			writer.writeUInt16(clampU16(item.external));
+			writer.writeUInt16(clampU16(item.internal));
+			writer.writeUInt16(clampU16(item.playing));
+			writer.writeUInt16(clampU16(item.spectating));
 			this.worldStatsPending = false;
 		}
 
