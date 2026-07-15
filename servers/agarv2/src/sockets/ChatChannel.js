@@ -1,4 +1,4 @@
-const { containsChatFilterMatch } = require('./ChatFilterNormalization')
+const { firstFilterMatch, fuzzyFilterMatch, letterSeparatorSignature } = require('./ChatFilterNormalization')
 
 const serverSource = {
 	isServer: true,
@@ -65,11 +65,24 @@ class ChatChannel {
 	 * @param {string} message
 	 */
 	shouldFilter(message) {
-		for (let i = 0, l = this.settings.chatFilteredPhrases.length; i < l; i++) {
-			if (containsChatFilterMatch(message, this.settings.chatFilteredPhrases[i], true)) {
-				this.listener.logger.inform(`MESSAGE REJECTED '${message}' contains '${this.settings.chatFilteredPhrases[i]}'`)
-				return true
-			}
+		const phrases = this.settings.chatFilteredPhrases
+
+		// 1) direct (normalized / obfuscation-signature) match
+		let hit = firstFilterMatch(message, phrases, true)
+		let via = 'phrase'
+
+		// 2) letter-as-separator spam ("A x R x E ...") — strip the separator and re-check
+		if (!hit) {
+			const stripped = letterSeparatorSignature(message)
+			if (stripped) { hit = firstFilterMatch(stripped, phrases, true); via = 'letter-separator' }
+		}
+
+		// 3) fuzzy match — misspellings / transpositions / doubled letters
+		if (!hit) { hit = fuzzyFilterMatch(message, phrases); via = 'fuzzy' }
+
+		if (hit) {
+			this.listener.logger.inform(`MESSAGE REJECTED '${message}' contains '${hit}' (${via})`)
+			return true
 		}
 
 		return false

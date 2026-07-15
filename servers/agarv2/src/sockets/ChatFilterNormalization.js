@@ -202,6 +202,22 @@ function chatStructureRejectReason(message, maxUnbrokenRun, maxLength) {
 }
 
 /**
+ * Return the FIRST pattern in `patterns` that matches `text` (or null). Used so callers log the
+ * pattern that actually matched, instead of guessing.
+ * @param {string} text
+ * @param {string[]} patterns
+ * @param {boolean} [aggressive]
+ * @returns {string|null}
+ */
+function firstFilterMatch(text, patterns, aggressive) {
+	if (!patterns) return null;
+	for (let i = 0, l = patterns.length; i < l; i++) {
+		if (containsChatFilterMatch(text, patterns[i], aggressive)) return patterns[i];
+	}
+	return null;
+}
+
+/**
  * Remove control / bidi / zero-width / format characters from ingested text (names and chat).
  * These corrupt logs and break name/skin/color rendering on clients; visible characters and the
  * skin-encoding punctuation (< > | #) are preserved.
@@ -212,9 +228,114 @@ function stripInvisible(text) {
 	return INVISIBLE_RE ? s.replace(INVISIBLE_RE, '') : s;
 }
 
+/**
+ * Bounded Damerau-Levenshtein distance (insert / delete / substitute / adjacent-transpose).
+ * Returns the distance, or max+1 once it provably exceeds `max` (row-min early exit). Strings are
+ * short (single words), so the full DP is cheap.
+ * @param {string} a
+ * @param {string} b
+ * @param {number} max
+ * @returns {number}
+ */
+function boundedEditDistance(a, b, max) {
+	const la = a.length, lb = b.length;
+	if (Math.abs(la - lb) > max) return max + 1;
+	if (la === 0) return lb;
+	if (lb === 0) return la;
+
+	const d = [];
+	for (let i = 0; i <= la; i++) { d[i] = []; d[i][0] = i; }
+	for (let j = 0; j <= lb; j++) d[0][j] = j;
+
+	for (let i = 1; i <= la; i++) {
+		let rowMin = Infinity;
+		for (let j = 1; j <= lb; j++) {
+			const cost = a.charCodeAt(i - 1) === b.charCodeAt(j - 1) ? 0 : 1;
+			let v = Math.min(d[i - 1][j] + 1, d[i][j - 1] + 1, d[i - 1][j - 1] + cost);
+			if (i > 1 && j > 1 && a.charCodeAt(i - 1) === b.charCodeAt(j - 2) && a.charCodeAt(i - 2) === b.charCodeAt(j - 1)) {
+				v = Math.min(v, d[i - 2][j - 2] + 1);
+			}
+			d[i][j] = v;
+			if (v < rowMin) rowMin = v;
+		}
+		if (rowMin > max) return max + 1;
+	}
+	return d[la][lb];
+}
+
+/**
+ * Fuzzy phrase match: catches misspellings, transpositions and doubled letters (e.g. "arearcade",
+ * "aranarcode", "atenarcade", "arennarccade") that are a small edit distance from a listed phrase.
+ * Only long phrase signatures (>= options.fuzzyMinLength) are matched, and only against message
+ * words/compact form of a similar length, keeping false positives near-zero.
+ * @param {string} text
+ * @param {string[]} patterns
+ * @returns {string|null}
+ */
+function fuzzyFilterMatch(text, patterns) {
+	const minLen = OPTIONS.fuzzyMinLength || 8;
+	const maxCap = OPTIONS.fuzzyMaxDistance || 0;
+	if (!patterns || maxCap <= 0) return null;
+
+	const norm = normalizeChatFilterText(text);
+	if (!norm) return null;
+	const cands = norm.split(' ').filter(Boolean);
+	const compact = norm.replace(/\s+/g, '');
+	if (compact && cands.indexOf(compact) === -1) cands.push(compact);
+
+	const seenSig = {};
+	for (let i = 0, l = patterns.length; i < l; i++) {
+		const psig = promoSignature(patterns[i]);
+		if (psig.length < minLen || seenSig[psig]) continue;
+		seenSig[psig] = 1;
+		const dist = Math.min(maxCap, psig.length >= 9 ? 2 : 1); // stricter for shorter phrases
+		for (let c = 0; c < cands.length; c++) {
+			const cand = cands[c];
+			if (cand === psig) continue; // exact is handled by containsChatFilterMatch
+			if (Math.abs(cand.length - psig.length) > dist) continue;
+			if (boundedEditDistance(cand, psig, dist) <= dist) return patterns[i];
+		}
+	}
+	return null;
+}
+
+/**
+ * Detect "letter-as-separator" spam ("A x R x E x N ...") where single letters are interleaved
+ * with a repeated junk letter. Returns the message with the separator removed and compacted (so a
+ * caller can re-run the phrase filter on it), or null when the message doesn't look like this.
+ * @param {string} text
+ * @returns {string|null}
+ */
+function letterSeparatorSignature(text) {
+	const minSingles = OPTIONS.letterSepMinSingles || 0;
+	if (minSingles <= 0) return null;
+
+	const tokens = normalizeChatFilterText(text).split(' ').filter(Boolean);
+	if (tokens.length < minSingles) return null;
+
+	const singles = tokens.filter(function (t) { return t.length === 1; });
+	if (singles.length < minSingles || singles.length < tokens.length * 0.5) return null;
+
+	const freq = {};
+	let sep = null, sepCount = 0;
+	for (let i = 0; i < singles.length; i++) {
+		const c = singles[i];
+		freq[c] = (freq[c] || 0) + 1;
+		if (freq[c] > sepCount) { sepCount = freq[c]; sep = c; }
+	}
+	if (sepCount < 3) return null; // the separator must actually repeat
+
+	const kept = tokens.filter(function (t) { return t !== sep; }).join('');
+	return kept.length >= 3 ? kept : null;
+}
+
 module.exports = {
 	normalizeChatFilterText,
 	containsChatFilterMatch,
+	firstFilterMatch,
+	fuzzyFilterMatch,
+	letterSeparatorSignature,
+	boundedEditDistance,
 	longestUnbrokenRun,
 	chatStructureRejectReason,
 	stripInvisible

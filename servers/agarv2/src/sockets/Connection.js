@@ -145,12 +145,62 @@ class Connection extends Router {
 			return
 		}
 
-		if (!lastChatTime || (Date.now() - lastChatTime >= this.settings.chatCooldown)) {
+		const nowChat = Date.now()
+
+		// Muted (after confirmed split-advertising) — silently drop chat until the mute expires.
+		if (this.chatMutedUntil && nowChat < this.chatMutedUntil) {
+			return
+		}
+
+		// Fragmentation throttle: block the "AR" "EN" "AR" "CA" ... one-syllable-per-message
+		// advertising BEFORE it can spell anything out. A spaceless short message is a "fragment";
+		// after a run of them, drop further fragments (a normal message resets the run).
+		const fragMax = this.settings.chatFragmentMaxLen
+		const burstLimit = this.settings.chatFragmentBurstLimit
+		if (fragMax > 0 && burstLimit > 0) {
+			const isFragment = message.length <= fragMax && !/\s/.test(message)
+			if (isFragment && (nowChat - (this.lastFragmentTime || 0) < (this.settings.chatAssembleWindow || 60000))) {
+				this.fragmentStreak = (this.fragmentStreak || 0) + 1
+			} else {
+				this.fragmentStreak = isFragment ? 1 : 0
+			}
+			if (isFragment) this.lastFragmentTime = nowChat
+
+			if (isFragment && this.fragmentStreak >= burstLimit) {
+				this.listener.globalChat.directMessage(null, this, '[AntiSpam] Please write complete messages, not one-word/one-letter fragments.')
+				this.listener.logger.inform(`MESSAGE REJECTED (fragment burst x${this.fragmentStreak}) from ${this.remoteAddress}`)
+				return
+			}
+		}
+
+		if (!lastChatTime || (nowChat - lastChatTime >= this.settings.chatCooldown)) {
 			if (lastMessage) {
 				if ((lastMessage === message || ~lastMessage.indexOf(message) && lastMessage.length >= 10 || ~message.indexOf(lastMessage) && message.length >= 10)) {
 					this.listener.globalChat.directMessage(null, this, '[AntiSpam] Last message was not sent, please don\'t repeat yourself, write something different.')
 					this.listener.logger.inform(`MESSAGE REJECTED '${message}' contains repeated last message '${lastMessage}'`)
 
+					return
+				}
+			}
+
+			// Confirmed split-advertising: concatenate this player's recent FRAGMENT messages
+			// (spaceless, so interleaved real words don't break the assembly) and re-run the
+			// phrase filter. On a match, mute the player's chat so they can't finish or retry.
+			const assembleWindow = this.settings.chatAssembleWindow
+			const assembleMaxParts = this.settings.chatAssembleMaxParts
+			const isFragment = this.settings.chatFragmentMaxLen > 0 && message.length <= this.settings.chatFragmentMaxLen && !/\s/.test(message)
+			if (assembleWindow > 0 && assembleMaxParts > 0 && isFragment) {
+				if (!this.recentChat) this.recentChat = []
+				this.recentChat.push({ t: nowChat, text: message })
+				this.recentChat = this.recentChat.filter(p => nowChat - p.t < assembleWindow)
+				if (this.recentChat.length > assembleMaxParts) this.recentChat = this.recentChat.slice(-assembleMaxParts)
+
+				if (this.recentChat.length > 1 && this.listener.globalChat.shouldFilter(this.recentChat.map(p => p.text).join(''))) {
+					this.recentChat = []
+					if (this.settings.chatSpamMuteMs > 0) this.chatMutedUntil = Date.now() + this.settings.chatSpamMuteMs
+					this.listener.globalChat.directMessage(null, this, '[AntiSpam] Advertising detected — your chat is muted for a while.')
+					this.listener.logger.inform(`CHAT MUTED (split-advertising) ${this.remoteAddress} for ${this.settings.chatSpamMuteMs}ms`)
+					this.lastChatTime = Date.now()
 					return
 				}
 			}
