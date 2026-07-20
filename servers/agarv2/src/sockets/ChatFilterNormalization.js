@@ -61,7 +61,7 @@ const STRIP_RE = buildRangeRegex(OPTIONS.stripCodepointRanges);
 // are removed from ingested names/messages. Visible text and skin punctuation are untouched.
 const INVISIBLE_RE = buildRangeRegex(OPTIONS.stripInvisibleRanges);
 
-const SIGNATURE_MIN_LENGTH = OPTIONS.signatureMinLength || 6;
+const SIGNATURE_MIN_LENGTH = OPTIONS.signatureMinLength || 3;
 const MIN_NORMALIZED_PATTERN_LENGTH = OPTIONS.minPatternLength || 4;
 
 // Fold -> Unicode NFKC/lowercase/NFD/strip-combining -> fold again (catches confusables that only
