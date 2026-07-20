@@ -57,7 +57,7 @@
 				"feff"
 			]
 		],
-		"fuzzyMinLength": 8,
+		"fuzzyMinLength": 6,
 		"fuzzyMaxDistance": 2,
 		"letterSepMinSingles": 8
 	},

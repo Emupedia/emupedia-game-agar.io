@@ -1,7 +1,7 @@
 /**
  * @abstract
  */
-const { containsChatFilterMatch, normalizeChatFilterText, stripInvisible } = require('../sockets/ChatFilterNormalization');
+const { firstFilterMatch, normalizeChatFilterText, stripInvisible, letterSeparatorSignature, fuzzyFilterMatch } = require('../sockets/ChatFilterNormalization');
 
 class Protocol {
 	/**
@@ -144,10 +144,24 @@ class Protocol {
 		// data-driven strip (ranges live in data/normalize.json). Skin punctuation is preserved.
 		newname = stripInvisible(newname)
 
-		for (let i = 0, l = this.settings.chatForbiddenNames.length; i < l; i++) {
-			if (containsChatFilterMatch(newname, this.settings.chatForbiddenNames[i], true)) {
-				return 'An unnamed cell'
-			}
+		const forbiddenNames = this.settings.chatForbiddenNames
+		const filteredPhrases = this.settings.chatFilteredPhrases
+
+		// Same three-tier chain ChatChannel#shouldFilter uses for chat messages (direct/aggressive
+		// match, then letter-as-separator stripping, then fuzzy edit-distance) — a decorated,
+		// letter-separated, or misspelled name gets the same protection a decorated/letter-
+		// separated/misspelled chat message does, instead of only the first tier.
+		if (firstFilterMatch(newname, forbiddenNames, true) || firstFilterMatch(newname, filteredPhrases, true)) {
+			return 'An unnamed cell'
+		}
+
+		const stripped = letterSeparatorSignature(newname)
+		if (stripped && (firstFilterMatch(stripped, forbiddenNames, true) || firstFilterMatch(stripped, filteredPhrases, true))) {
+			return 'An unnamed cell'
+		}
+
+		if (fuzzyFilterMatch(newname, forbiddenNames) || fuzzyFilterMatch(newname, filteredPhrases)) {
+			return 'An unnamed cell'
 		}
 
 		if (this.settings.worldPlayerBotNames && this.settings.worldPlayerBotNames.length > 0) {
@@ -159,11 +173,6 @@ class Protocol {
 			}
 		}
 
-		for (let i = 0, l = this.settings.chatFilteredPhrases.length; i < l; i++) {
-			if (containsChatFilterMatch(newname, this.settings.chatFilteredPhrases[i], true)) {
-				return 'An unnamed cell'
-			}
-		}
 		return newname
 	}
 
