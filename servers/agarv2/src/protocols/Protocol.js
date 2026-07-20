@@ -145,7 +145,7 @@ class Protocol {
 		newname = stripInvisible(newname)
 
 		for (let i = 0, l = this.settings.chatForbiddenNames.length; i < l; i++) {
-			if (containsChatFilterMatch(newname, this.settings.chatForbiddenNames[i])) {
+			if (containsChatFilterMatch(newname, this.settings.chatForbiddenNames[i], true)) {
 				return 'An unnamed cell'
 			}
 		}
