@@ -18,7 +18,7 @@
 			]
 		],
 		"signatureMinLength": 3,
-		"minPatternLength": 4,
+		"minPatternLength": 3,
 		"stripInvisibleRanges": [
 			[
 				"0000",
