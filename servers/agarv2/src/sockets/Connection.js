@@ -109,6 +109,19 @@ class Connection extends Router {
 	 * @param {string} message
 	 */
 	onChatMessage(message) {
+		// Commands are directives to the server, not chat content for other players — they must
+		// never go through the player chat filter (a false positive there would make a command
+		// permanently unrunnable with no recourse but "banned words"). Detected and dispatched
+		// before any filtering/anti-spam logic runs.
+		const trimmedForCommand = message.trim()
+		if (trimmedForCommand[0] === '/' && trimmedForCommand.length >= 2) {
+			if (!this.handle.chatCommands.execute(this, trimmedForCommand.slice(1))) {
+				this.listener.globalChat.directMessage(null, this, 'unknown command, execute /help for the list of commands')
+			}
+
+			return
+		}
+
 		if (this.listener.globalChat.shouldFilter(message, this)) {
 			return this.listener.globalChat.rejectFilteredMessage(this)
 		}
@@ -136,14 +149,6 @@ class Connection extends Router {
 
 		const lastChatTime = this.lastChatTime
 		const lastMessage = this.lastMessage
-
-		if (message[0] === '/' && message.length >= 2) {
-			if (!this.handle.chatCommands.execute(this, message.slice(1))) {
-				this.listener.globalChat.directMessage(null, this, 'unknown command, execute /help for the list of commands')
-			}
-
-			return
-		}
 
 		const nowChat = Date.now()
 
