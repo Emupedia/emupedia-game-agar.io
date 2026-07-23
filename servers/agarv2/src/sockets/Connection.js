@@ -109,7 +109,7 @@ class Connection extends Router {
 	 * @param {string} message
 	 */
 	onChatMessage(message) {
-		if (this.listener.globalChat.shouldFilter(message)) {
+		if (this.listener.globalChat.shouldFilter(message, this)) {
 			return this.listener.globalChat.rejectFilteredMessage(this)
 		}
 
@@ -130,7 +130,7 @@ class Connection extends Router {
 
 		if (message === '') {
 			this.listener.globalChat.directMessage(null, this, '[AntiSpam] Last message was not sent, cannot send empty message.')
-			this.listener.logger.inform(`MESSAGE REJECTED '${message}' is empty`)
+			this.listener.logger.inform(`MESSAGE REJECTED '${message}' is empty from ${this.remoteAddress}`)
 			return
 		}
 
@@ -161,14 +161,17 @@ class Connection extends Router {
 			const isFragment = message.length <= fragMax && !/\s/.test(message)
 			if (isFragment && (nowChat - (this.lastFragmentTime || 0) < (this.settings.chatAssembleWindow || 60000))) {
 				this.fragmentStreak = (this.fragmentStreak || 0) + 1
+				this.fragmentTexts = (this.fragmentTexts || []).concat([message])
 			} else {
 				this.fragmentStreak = isFragment ? 1 : 0
+				this.fragmentTexts = isFragment ? [message] : []
 			}
 			if (isFragment) this.lastFragmentTime = nowChat
 
 			if (isFragment && this.fragmentStreak >= burstLimit) {
 				this.listener.globalChat.directMessage(null, this, '[AntiSpam] Please write complete messages, not one-word/one-letter fragments.')
-				this.listener.logger.inform(`MESSAGE REJECTED (fragment burst x${this.fragmentStreak}) from ${this.remoteAddress}`)
+				this.listener.logger.inform(`MESSAGE REJECTED (fragment burst x${this.fragmentStreak}) from ${this.remoteAddress}: ${JSON.stringify(this.fragmentTexts)}`)
+				this.fragmentTexts = []
 				return
 			}
 		}
@@ -177,7 +180,7 @@ class Connection extends Router {
 			if (lastMessage) {
 				if ((lastMessage === message || ~lastMessage.indexOf(message) && lastMessage.length >= 10 || ~message.indexOf(lastMessage) && message.length >= 10)) {
 					this.listener.globalChat.directMessage(null, this, '[AntiSpam] Last message was not sent, please don\'t repeat yourself, write something different.')
-					this.listener.logger.inform(`MESSAGE REJECTED '${message}' contains repeated last message '${lastMessage}'`)
+					this.listener.logger.inform(`MESSAGE REJECTED '${message}' contains repeated last message '${lastMessage}' from ${this.remoteAddress}`)
 
 					return
 				}
@@ -195,11 +198,12 @@ class Connection extends Router {
 				this.recentChat = this.recentChat.filter(p => nowChat - p.t < assembleWindow)
 				if (this.recentChat.length > assembleMaxParts) this.recentChat = this.recentChat.slice(-assembleMaxParts)
 
-				if (this.recentChat.length > 1 && this.listener.globalChat.shouldFilter(this.recentChat.map(p => p.text).join(''))) {
+				if (this.recentChat.length > 1 && this.listener.globalChat.shouldFilter(this.recentChat.map(p => p.text).join(''), this)) {
+					const assembledFrom = this.recentChat.map(p => p.text)
 					this.recentChat = []
 					if (this.settings.chatSpamMuteMs > 0) this.chatMutedUntil = Date.now() + this.settings.chatSpamMuteMs
 					this.listener.globalChat.directMessage(null, this, '[AntiSpam] Advertising detected — your chat is muted for a while.')
-					this.listener.logger.inform(`CHAT MUTED (split-advertising) ${this.remoteAddress} for ${this.settings.chatSpamMuteMs}ms`)
+					this.listener.logger.inform(`CHAT MUTED (split-advertising) ${this.remoteAddress} for ${this.settings.chatSpamMuteMs}ms, assembled from: ${JSON.stringify(assembledFrom)}`)
 					this.lastChatTime = Date.now()
 					return
 				}
@@ -211,7 +215,7 @@ class Connection extends Router {
 			this.lastMessage = message
 		} else {
 			this.listener.globalChat.directMessage(null, this, '[AntiSpam] Last message was not sent, please don\'t write too fast, wait at least ' + (this.settings.chatCooldown / 1000)  + ' seconds.')
-			this.listener.logger.inform(`MESSAGE REJECTED '${message}' tryied to write too fast`)
+			this.listener.logger.inform(`MESSAGE REJECTED '${message}' tryied to write too fast from ${this.remoteAddress}`)
 		}
 	}
 	onQPress() {
