@@ -111,7 +111,8 @@ const value = Object.seal({
 	playerRoamViewScale: 0.4,
 	playerViewScaleMult: 1,
 	playerMinViewScale: 0.01,
-	playerMaxNameLength: 16,
+	playerMaxNameLength: 170,
+	playerNicknameMaxLength: 16, // Separate from playerMaxNameLength, which bounds the raw wire string (skin/color/fp2 wrapper + nickname combined) and may need to be much larger than 16 to fit that wrapper. This bounds the actual DISPLAYED nickname after the wrapper is stripped, so raising playerMaxNameLength for wrapper headroom can't also inflate the visible name length.
 	playerAllowSkinInName: true,
 
 	playerSpawnSize: 32,

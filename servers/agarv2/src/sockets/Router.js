@@ -138,6 +138,11 @@ class Router {
 			}
 		}
 
+		// playerMaxNameLength bounds the raw wire string (wrapper + name combined) and may be much
+		// larger than a sane display length to fit the skin/color/fp2 wrapper; clamp the actual
+		// visible nickname separately so that headroom can't also inflate the displayed name.
+		name = name.slice(0, this.settings.playerNicknameMaxLength);
+
 		this.listener.handle.gamemode.onPlayerSpawnRequest(this.player, name, skin);
 	}
 
