@@ -63,8 +63,13 @@ class ChatChannel {
 
 	/**
 	 * @param {string} message
+	 * @param {Connection} [source] the connection this message came from, for IP logging
 	 */
-	shouldFilter(message) {
+	shouldFilter(message, source) {
+		// source is null for server-originated messages (join messages, command output, anti-spam
+		// notices, ...) — trusted content the filter must never reject.
+		if (!source) return false
+
 		const phrases = this.settings.chatFilteredPhrases
 
 		// 1) direct (normalized / obfuscation-signature) match
@@ -81,7 +86,7 @@ class ChatChannel {
 		if (!hit) { hit = fuzzyFilterMatch(message, phrases); via = 'fuzzy' }
 
 		if (hit) {
-			this.listener.logger.inform(`MESSAGE REJECTED '${message}' contains '${hit}' (${via})`)
+			this.listener.logger.inform(`MESSAGE REJECTED '${message}' contains '${hit}' (${via}) from ${source ? source.remoteAddress : 'unknown'}`)
 			return true
 		}
 
@@ -98,7 +103,7 @@ class ChatChannel {
 	 * @param {string} message
 	 */
 	broadcast(source, message) {
-		if (this.shouldFilter(message)) {
+		if (this.shouldFilter(message, source)) {
 			return this.rejectFilteredMessage(source)
 		}
 
@@ -122,7 +127,7 @@ class ChatChannel {
 	 * @param {string} message
 	 */
 	directMessage(source, recipient, message) {
-		if (this.shouldFilter(message) && recipient.protocol) {
+		if (this.shouldFilter(message, source) && recipient.protocol) {
 			return this.rejectFilteredMessage(recipient)
 		}
 

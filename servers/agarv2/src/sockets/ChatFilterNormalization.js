@@ -266,8 +266,15 @@ function boundedEditDistance(a, b, max) {
 /**
  * Fuzzy phrase match: catches misspellings, transpositions and doubled letters (e.g. "arearcade",
  * "aranarcode", "atenarcade", "arennarccade") that are a small edit distance from a listed phrase.
- * Only long phrase signatures (>= options.fuzzyMinLength) are matched, and only against message
- * words/compact form of a similar length, keeping false positives near-zero.
+ * Only long phrase signatures (>= options.fuzzyMinLength) are matched.
+ *
+ * Candidates are built strictly on whole-word boundaries: a run of N consecutive message tokens
+ * (joined with no separator, but never a mid-word substring) is only compared against a pattern
+ * whose OWN normalized word count is also N. This prevents a bare single word (e.g. "players")
+ * from ever being fuzzy-compared against a multi-word phrase's flattened signature (e.g. "no
+ * players" -> "noplayers") just because a short prefix/suffix happens to fall within the edit-
+ * distance budget — that comparison used to run for any N vs. any candidate length, which is what
+ * let common single words collide with short decorated multi-word phrases.
  * @param {string} text
  * @param {string[]} patterns
  * @returns {string|null}
@@ -279,15 +286,31 @@ function fuzzyFilterMatch(text, patterns) {
 
 	const norm = normalizeChatFilterText(text);
 	if (!norm) return null;
-	const cands = norm.split(' ').filter(Boolean);
-	const compact = norm.replace(/\s+/g, '');
-	if (compact && cands.indexOf(compact) === -1) cands.push(compact);
+	const tokens = norm.split(' ').filter(Boolean);
+	if (!tokens.length) return null;
+
+	// Word-count-keyed cache of joined N-consecutive-token windows (only whole tokens are ever
+	// concatenated, so a candidate never straddles part of one word and part of another out of
+	// the pattern's intended shape).
+	const windowCache = {};
+	function windowsOfLength(n) {
+		if (windowCache[n]) return windowCache[n];
+		const out = [];
+		for (let i = 0; i + n <= tokens.length; i++) out.push(tokens.slice(i, i + n).join(''));
+		windowCache[n] = out;
+		return out;
+	}
 
 	const seenSig = {};
 	for (let i = 0, l = patterns.length; i < l; i++) {
 		const psig = promoSignature(patterns[i]);
 		if (psig.length < minLen || seenSig[psig]) continue;
 		seenSig[psig] = 1;
+
+		const patternWordCount = normalizeChatFilterText(patterns[i]).split(' ').filter(Boolean).length || 1;
+		const cands = windowsOfLength(patternWordCount);
+		if (!cands.length) continue;
+
 		const dist = Math.min(maxCap, psig.length >= 9 ? 2 : 1); // stricter for shorter phrases
 		for (let c = 0; c < cands.length; c++) {
 			const cand = cands[c];
