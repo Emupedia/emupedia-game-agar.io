@@ -7,6 +7,7 @@ const Logger = require("./primitives/Logger");
 const Ticker = require("./primitives/Ticker");
 const { version } = require("./primitives/Misc");
 const Listener = require("./sockets/Listener");
+const BanLists = require("./BanLists");
 const Matchmaker = require("./worlds/Matchmaker");
 const Player = require("./worlds/Player");
 const World = require("./worlds/World");
@@ -40,6 +41,7 @@ class ServerHandle {
 		this.logger = new Logger();
 
 		this.listener = new Listener(this);
+		this.banLists = BanLists.getInstance();
 		this.matchmaker = new Matchmaker(this);
 		/** @type {Identified<World>} */
 		this.worlds = {};
@@ -74,6 +76,7 @@ class ServerHandle {
 
 		this.listener.open();
 		this.ticker.start();
+		this.banLists.start();
 		this.gamemode.onHandleStart();
 
 		if (this.settings.worldEnforceMinCount) {
@@ -98,6 +101,8 @@ class ServerHandle {
 		if (this.ticker.running) {
 			this.ticker.stop();
 		}
+
+		this.banLists.stop();
 
 		for (let id in this.worlds) {
 			this.removeWorld(id);

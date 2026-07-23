@@ -1,4 +1,5 @@
 const { reloadSettings } = require("../SettingsIO");
+const BanLists = require("../BanLists");
 const { genCommand } = require("./CommandList");
 const { EOL } = require("os");
 const { inspect } = require("util");
@@ -665,12 +666,21 @@ const serverUnban = {
 		}
 
 		const index = handle.settings.listenerForbiddenIPs.indexOf(ip);
+		const wasAutoBanned = BanLists.getInstance().isIpBanned(ip);
 
-		if (index === -1) {
+		if (index === -1 && !wasAutoBanned) {
 			return void handle.logger.print("specified IP address is not forbidden");
 		}
 
-		handle.settings.listenerForbiddenIPs.splice(index, 1);
+		if (index !== -1) {
+			handle.settings.listenerForbiddenIPs.splice(index, 1);
+		}
+
+		// Also purge BanLists' own local auto-ban record, so this pardon doesn't silently get
+		// re-applied the next time BanLists.isIpBanned() is checked (e.g. on the player's next
+		// connection attempt).
+		BanLists.getInstance().unbanIp(ip);
+
 		handle.logger.print(`IP address ${ip} has been pardoned`);
 	}
 }
