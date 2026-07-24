@@ -35,12 +35,10 @@ const value = Object.seal({
 	// re-checked against chatFilteredPhrases. Set either to 0 to disable.
 	chatAssembleWindow: 60000,
 	chatAssembleMaxParts: 16,
-	// Fragmentation throttle: a spaceless message <= chatFragmentMaxLen chars counts as a
-	// "fragment". After chatFragmentBurstLimit consecutive fragments, further fragments are
-	// blocked (stops "AR"/"EN"/"AR"... advertising before the brand can be spelled out). A
-	// confirmed split-advertising assembly mutes the player's chat for chatSpamMuteMs. 0 disables.
+	// A spaceless message <= chatFragmentMaxLen chars is a candidate "fragment" for the
+	// chatAssembleWindow/chatAssembleMaxParts split-advertising check above. A confirmed assembly
+	// mutes the player's chat for chatSpamMuteMs. 0 disables.
 	chatFragmentMaxLen: 8,
-	chatFragmentBurstLimit: 4,
 	chatSpamMuteMs: 30000,
 
 	worldMapX: 0,

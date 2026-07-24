@@ -157,30 +157,6 @@ class Connection extends Router {
 			return
 		}
 
-		// Fragmentation throttle: block the "AR" "EN" "AR" "CA" ... one-syllable-per-message
-		// advertising BEFORE it can spell anything out. A spaceless short message is a "fragment";
-		// after a run of them, drop further fragments (a normal message resets the run).
-		const fragMax = this.settings.chatFragmentMaxLen
-		const burstLimit = this.settings.chatFragmentBurstLimit
-		if (fragMax > 0 && burstLimit > 0) {
-			const isFragment = message.length <= fragMax && !/\s/.test(message)
-			if (isFragment && (nowChat - (this.lastFragmentTime || 0) < (this.settings.chatAssembleWindow || 60000))) {
-				this.fragmentStreak = (this.fragmentStreak || 0) + 1
-				this.fragmentTexts = (this.fragmentTexts || []).concat([message])
-			} else {
-				this.fragmentStreak = isFragment ? 1 : 0
-				this.fragmentTexts = isFragment ? [message] : []
-			}
-			if (isFragment) this.lastFragmentTime = nowChat
-
-			if (isFragment && this.fragmentStreak >= burstLimit) {
-				this.listener.globalChat.directMessage(null, this, '[AntiSpam] Please write complete messages, not one-word/one-letter fragments.')
-				this.listener.logger.inform(`MESSAGE REJECTED (fragment burst x${this.fragmentStreak}) from ${this.remoteAddress}: ${JSON.stringify(this.fragmentTexts)}`)
-				this.fragmentTexts = []
-				return
-			}
-		}
-
 		if (!lastChatTime || (nowChat - lastChatTime >= this.settings.chatCooldown)) {
 			if (lastMessage) {
 				if ((lastMessage === message || ~lastMessage.indexOf(message) && lastMessage.length >= 10 || ~message.indexOf(lastMessage) && message.length >= 10)) {
