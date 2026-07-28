@@ -97,7 +97,7 @@ function normalizeChatFilterText(text) {
 function promoSignature(text) {
 	return canonicalize(text, AGGRESSIVE_FOLD)
 		.replace(/[^a-z0-9]+/g, '')
-		.replace(/(.)\1{2,}/g, '$1$1');
+		.replace(/(.)\1+/g, '$1');
 }
 
 /**
