@@ -1,6 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 const DefaultSettings = require("./Settings");
+const { reloadNormalizeData } = require("./sockets/ChatFilterNormalization");
 
 /**
  * @returns {string}
@@ -49,6 +50,10 @@ function writeSettingsFile(settings) {
 function reloadSettings(handle) {
 	const settings = readSettingsFile({ fatal: false });
 	handle.setSettings(settings);
+	// data/normalize.json (chat-filter character maps/tuning) is require()'d once at process start
+	// and never re-read on its own — without this, a normalize.json edit needs a full process
+	// restart to take effect, even though settings.json already reloads live via this same path.
+	reloadNormalizeData();
 	return getSettingsFilePath();
 }
 

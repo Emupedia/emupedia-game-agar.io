@@ -10,9 +10,10 @@
  * and the length thresholds).
  */
 
-const DATA = require('../../data/normalize.json');
-const OPTIONS = DATA.options || {};
-const AGGRESSIVE_ONLY = new Set(OPTIONS.aggressiveOnlyCategories || []);
+const NORMALIZE_DATA_PATH = require.resolve('../../data/normalize.json');
+
+let DATA, OPTIONS, AGGRESSIVE_ONLY, BASE_FOLD, AGGRESSIVE_FOLD, STRIP_RE, INVISIBLE_RE,
+	SIGNATURE_MIN_LENGTH, MIN_NORMALIZED_PATTERN_LENGTH;
 
 // Merge the dataset categories into char->ascii fold maps. BASE excludes aggressive-only
 // categories (e.g. leetspeak, so ordinary digits in chat aren't rewritten); FULL includes them
@@ -34,8 +35,37 @@ function buildFold(includeAggressive) {
 	return map;
 }
 
-const BASE_FOLD = buildFold(false);
-const AGGRESSIVE_FOLD = buildFold(true);
+function buildRangeRegex(ranges) {
+	if (!ranges || !ranges.length) return null;
+	const cls = ranges.map(function (r) { return '\\u' + r[0] + '-\\u' + r[1]; }).join('');
+	return new RegExp('[' + cls + ']', 'g');
+}
+
+/**
+ * (Re)load data/normalize.json from disk and rebuild every derived structure (fold maps, strip
+ * regexes, thresholds). require() caches the JSON file, so a plain require() would keep serving
+ * the version present at process start even after the file changes on disk — this bypasses that
+ * cache explicitly. Called once at module load, and again by reloadNormalizeData() so an operator
+ * can pick up character-mapping/tuning edits without a full process restart.
+ */
+function loadNormalizeData() {
+	delete require.cache[NORMALIZE_DATA_PATH];
+	DATA = require(NORMALIZE_DATA_PATH);
+	OPTIONS = DATA.options || {};
+	AGGRESSIVE_ONLY = new Set(OPTIONS.aggressiveOnlyCategories || []);
+	BASE_FOLD = buildFold(false);
+	AGGRESSIVE_FOLD = buildFold(true);
+	// Combining-mark / variation-selector strip (used inside normalization), from options.stripCodepointRanges.
+	STRIP_RE = buildRangeRegex(OPTIONS.stripCodepointRanges);
+	// Control / bidi / zero-width / format characters, from options.stripInvisibleRanges. These
+	// corrupt logs and break name/skin/color rendering on clients (binary-name injection), so they
+	// are removed from ingested names/messages. Visible text and skin punctuation are untouched.
+	INVISIBLE_RE = buildRangeRegex(OPTIONS.stripInvisibleRanges);
+	SIGNATURE_MIN_LENGTH = OPTIONS.signatureMinLength || 3;
+	MIN_NORMALIZED_PATTERN_LENGTH = OPTIONS.minPatternLength || 4;
+}
+
+loadNormalizeData();
 
 /**
  * @param {string} text
@@ -46,23 +76,6 @@ function fold(text, foldMap) {
 	for (const ch of text) out += (foldMap.get(ch) || ch);
 	return out;
 }
-
-function buildRangeRegex(ranges) {
-	if (!ranges || !ranges.length) return null;
-	const cls = ranges.map(function (r) { return '\\u' + r[0] + '-\\u' + r[1]; }).join('');
-	return new RegExp('[' + cls + ']', 'g');
-}
-
-// Combining-mark / variation-selector strip (used inside normalization), from options.stripCodepointRanges.
-const STRIP_RE = buildRangeRegex(OPTIONS.stripCodepointRanges);
-
-// Control / bidi / zero-width / format characters, from options.stripInvisibleRanges. These
-// corrupt logs and break name/skin/color rendering on clients (binary-name injection), so they
-// are removed from ingested names/messages. Visible text and skin punctuation are untouched.
-const INVISIBLE_RE = buildRangeRegex(OPTIONS.stripInvisibleRanges);
-
-const SIGNATURE_MIN_LENGTH = OPTIONS.signatureMinLength || 3;
-const MIN_NORMALIZED_PATTERN_LENGTH = OPTIONS.minPatternLength || 4;
 
 // Fold -> Unicode NFKC/lowercase/NFD/strip-combining -> fold again (catches confusables that only
 // surface after Unicode normalization). Both passes use the same data-driven map.
@@ -361,5 +374,6 @@ module.exports = {
 	boundedEditDistance,
 	longestUnbrokenRun,
 	chatStructureRejectReason,
-	stripInvisible
+	stripInvisible,
+	reloadNormalizeData: loadNormalizeData
 };
