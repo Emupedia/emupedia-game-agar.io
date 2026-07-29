@@ -35,10 +35,14 @@ const value = Object.seal({
 	// re-checked against chatFilteredPhrases. Set either to 0 to disable.
 	chatAssembleWindow: 60000,
 	chatAssembleMaxParts: 16,
-	// A spaceless message <= chatFragmentMaxLen chars is a candidate "fragment" for the
-	// chatAssembleWindow/chatAssembleMaxParts split-advertising check above. A confirmed assembly
-	// mutes the player's chat for chatSpamMuteMs. 0 disables.
+	// A spaceless message <= chatFragmentMaxLen chars is a candidate "fragment" for both the
+	// frequency-based burst throttle (below) and the content-aware chatAssembleWindow/
+	// chatAssembleMaxParts split-advertising check above. After chatFragmentBurstLimit consecutive
+	// fragments the throttle blocks further ones outright (no content check — can also catch fast
+	// ordinary chat bursts, e.g. "lol"/"gg"/chess notation). A confirmed assembly match separately
+	// mutes the player's chat for chatSpamMuteMs. Set either length/limit to 0 to disable that check.
 	chatFragmentMaxLen: 8,
+	chatFragmentBurstLimit: 4,
 	chatSpamMuteMs: 30000,
 
 	worldMapX: 0,

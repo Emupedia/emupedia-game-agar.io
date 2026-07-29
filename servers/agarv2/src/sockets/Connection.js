@@ -131,7 +131,7 @@ class Connection extends Router {
 		const structReason = chatStructureRejectReason(message, this.settings.chatMaxUnbrokenRun, this.settings.chatMaxLength)
 		if (structReason) {
 			this.listener.globalChat.directMessage(null, this, '[AntiSpam] Last message was not sent (' + structReason + ').')
-			this.listener.logger.inform(`MESSAGE REJECTED (${structReason}) from ${this.remoteAddress}`)
+			this.listener.logger.inform(`MESSAGE REJECTED (${structReason}) from ${this.remoteAddress}: ${JSON.stringify(message)}`)
 			return
 		}
 
@@ -155,6 +155,34 @@ class Connection extends Router {
 		// Muted (after confirmed split-advertising) — silently drop chat until the mute expires.
 		if (this.chatMutedUntil && nowChat < this.chatMutedUntil) {
 			return
+		}
+
+		// Fragmentation throttle: block the "AR" "EN" "AR" "CA" ... one-syllable-per-message
+		// advertising BEFORE it can spell anything out. A spaceless short message is a "fragment";
+		// after a run of them, drop further fragments (a normal message resets the run). Purely
+		// frequency-based (no content check), so it can also catch fast ordinary chat bursts —
+		// re-enabled despite that tradeoff since the content-aware assemble/mute check below only
+		// catches a fragment sequence once it actually spells out a filtered phrase, which can be
+		// too late to stop earlier fragments from already being broadcast.
+		const fragMax = this.settings.chatFragmentMaxLen
+		const burstLimit = this.settings.chatFragmentBurstLimit
+		if (fragMax > 0 && burstLimit > 0) {
+			const isFragmentForBurst = message.length <= fragMax && !/\s/.test(message)
+			if (isFragmentForBurst && (nowChat - (this.lastFragmentTime || 0) < (this.settings.chatAssembleWindow || 60000))) {
+				this.fragmentStreak = (this.fragmentStreak || 0) + 1
+				this.fragmentTexts = (this.fragmentTexts || []).concat([message])
+			} else {
+				this.fragmentStreak = isFragmentForBurst ? 1 : 0
+				this.fragmentTexts = isFragmentForBurst ? [message] : []
+			}
+			if (isFragmentForBurst) this.lastFragmentTime = nowChat
+
+			if (isFragmentForBurst && this.fragmentStreak >= burstLimit) {
+				this.listener.globalChat.directMessage(null, this, '[AntiSpam] Please write complete messages, not one-word/one-letter fragments.')
+				this.listener.logger.inform(`MESSAGE REJECTED (fragment burst x${this.fragmentStreak}) from ${this.remoteAddress}: ${JSON.stringify(this.fragmentTexts)}`)
+				this.fragmentTexts = []
+				return
+			}
 		}
 
 		if (!lastChatTime || (nowChat - lastChatTime >= this.settings.chatCooldown)) {
