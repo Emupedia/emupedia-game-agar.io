@@ -1,7 +1,7 @@
 const Router = require('./Router')
 const Reader = require('../primitives/Reader')
 const { filterIPAddress } = require('../primitives/Misc')
-const { chatStructureRejectReason } = require('./ChatFilterNormalization')
+const { chatStructureRejectReason, fragmentResemblesFilteredPhrase } = require('./ChatFilterNormalization')
 
 class Connection extends Router {
 	/**
@@ -159,25 +159,61 @@ class Connection extends Router {
 
 		// Fragmentation throttle: block the "AR" "EN" "AR" "CA" ... one-syllable-per-message
 		// advertising BEFORE it can spell anything out. A spaceless short message is a "fragment";
-		// after a run of them, drop further fragments (a normal message resets the run). Purely
-		// frequency-based (no content check), so it can also catch fast ordinary chat bursts —
-		// re-enabled despite that tradeoff since the content-aware assemble/mute check below only
-		// catches a fragment sequence once it actually spells out a filtered phrase, which can be
-		// too late to stop earlier fragments from already being broadcast.
+		// after a run of them, drop further fragments (a normal message resets the run). Two
+		// independent tiers, since neither alone is sufficient:
+		//  - Content-agnostic (chatFragmentBurstLimit, e.g. 8): no check on what the fragments say,
+		//    just frequency. Needed because the content-aware assemble/mute check below only fires
+		//    once assembled fragments actually spell out a filtered phrase — a real one-word-per-
+		//    message harassment rant with no bannable vocabulary at all ("WRITE IT TO YOUR BROWSER
+		//    ... BAN MY DCK") would never trip it. Set high enough that ordinary quick reactions
+		//    ("gg", "wp", chess coordinates) don't reach it under normal play.
+		//  - Content-aware (chatFragmentPatternBurstLimit, e.g. 3): fires much sooner, but only
+		//    while the accumulated fragments remain a genuine, GROWING prefix of some real
+		//    chatFilteredPhrases entry (e.g. "AR" -> "AREN" -> "ARENAR" -> ... towards
+		//    "arenarcade"). A single fragment can coincidentally look like the start of some
+		//    unrelated phrase (e.g. "b1" folds through leetspeak to "bi", the start of "BIG" in an
+		//    unrelated phrase) — requiring the resemblance to persist across several consecutive
+		//    fragments in a row is what keeps chess notation, casual short reactions, etc. from
+		//    ever triggering this tier, while still catching deliberate spelling-out sooner than
+		//    waiting for the content-agnostic tier's higher limit.
 		const fragMax = this.settings.chatFragmentMaxLen
 		const burstLimit = this.settings.chatFragmentBurstLimit
-		if (fragMax > 0 && burstLimit > 0) {
+		const patternBurstLimit = this.settings.chatFragmentPatternBurstLimit
+		if (fragMax > 0 && (burstLimit > 0 || patternBurstLimit > 0)) {
 			const isFragmentForBurst = message.length <= fragMax && !/\s/.test(message)
-			if (isFragmentForBurst && (nowChat - (this.lastFragmentTime || 0) < (this.settings.chatAssembleWindow || 60000))) {
+			const withinFragmentWindow = nowChat - (this.lastFragmentTime || 0) < (this.settings.chatAssembleWindow || 60000)
+
+			if (isFragmentForBurst && withinFragmentWindow) {
 				this.fragmentStreak = (this.fragmentStreak || 0) + 1
 				this.fragmentTexts = (this.fragmentTexts || []).concat([message])
 			} else {
 				this.fragmentStreak = isFragmentForBurst ? 1 : 0
 				this.fragmentTexts = isFragmentForBurst ? [message] : []
 			}
+
+			if (isFragmentForBurst && withinFragmentWindow && fragmentResemblesFilteredPhrase((this.patternFragmentTexts || []).join('') + message, this.settings.chatFilteredPhrases)) {
+				this.patternFragmentTexts = (this.patternFragmentTexts || []).concat([message])
+				this.patternFragmentStreak = (this.patternFragmentStreak || 0) + 1
+			} else if (isFragmentForBurst && fragmentResemblesFilteredPhrase(message, this.settings.chatFilteredPhrases)) {
+				this.patternFragmentTexts = [message]
+				this.patternFragmentStreak = 1
+			} else {
+				this.patternFragmentTexts = []
+				this.patternFragmentStreak = 0
+			}
+
 			if (isFragmentForBurst) this.lastFragmentTime = nowChat
 
-			if (isFragmentForBurst && this.fragmentStreak >= burstLimit) {
+			if (patternBurstLimit > 0 && this.patternFragmentStreak >= patternBurstLimit) {
+				this.listener.globalChat.directMessage(null, this, '[AntiSpam] Please write complete messages, not one-word/one-letter fragments.')
+				this.listener.logger.inform(`MESSAGE REJECTED (pattern fragment burst x${this.patternFragmentStreak}) from ${this.remoteAddress}: ${JSON.stringify(this.patternFragmentTexts)}`)
+				this.patternFragmentTexts = []
+				this.fragmentStreak = 0
+				this.fragmentTexts = []
+				return
+			}
+
+			if (burstLimit > 0 && isFragmentForBurst && this.fragmentStreak >= burstLimit) {
 				this.listener.globalChat.directMessage(null, this, '[AntiSpam] Please write complete messages, not one-word/one-letter fragments.')
 				this.listener.logger.inform(`MESSAGE REJECTED (fragment burst x${this.fragmentStreak}) from ${this.remoteAddress}: ${JSON.stringify(this.fragmentTexts)}`)
 				this.fragmentTexts = []

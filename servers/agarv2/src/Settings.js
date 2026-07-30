@@ -35,14 +35,18 @@ const value = Object.seal({
 	// re-checked against chatFilteredPhrases. Set either to 0 to disable.
 	chatAssembleWindow: 60000,
 	chatAssembleMaxParts: 16,
-	// A spaceless message <= chatFragmentMaxLen chars is a candidate "fragment" for both the
-	// frequency-based burst throttle (below) and the content-aware chatAssembleWindow/
-	// chatAssembleMaxParts split-advertising check above. After chatFragmentBurstLimit consecutive
-	// fragments the throttle blocks further ones outright (no content check — can also catch fast
-	// ordinary chat bursts, e.g. "lol"/"gg"/chess notation). A confirmed assembly match separately
-	// mutes the player's chat for chatSpamMuteMs. Set either length/limit to 0 to disable that check.
+	// A spaceless message <= chatFragmentMaxLen chars is a candidate "fragment" for the
+	// chatAssembleWindow/chatAssembleMaxParts split-advertising check above and for two fragment-
+	// burst throttle tiers in Connection.onChatMessage: chatFragmentBurstLimit is content-agnostic
+	// (pure frequency — set high since it has no evidence besides "many short messages in a row");
+	// chatFragmentPatternBurstLimit is content-aware and fires much sooner, but only while the
+	// accumulated fragments remain a genuine growing prefix of a real chatFilteredPhrases entry
+	// (e.g. "AR" -> "AREN" -> "ARENAR" towards "arenarcade") — chess notation, casual reactions,
+	// etc. never satisfy this no matter how many are sent. A confirmed assembly match separately
+	// mutes the player's chat for chatSpamMuteMs. Set any length/limit to 0 to disable that check.
 	chatFragmentMaxLen: 8,
-	chatFragmentBurstLimit: 4,
+	chatFragmentBurstLimit: 8,
+	chatFragmentPatternBurstLimit: 3,
 	chatSpamMuteMs: 30000,
 
 	worldMapX: 0,

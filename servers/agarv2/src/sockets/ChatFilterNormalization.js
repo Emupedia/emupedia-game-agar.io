@@ -114,6 +114,31 @@ function promoSignature(text) {
 }
 
 /**
+ * Checks whether the compact signature of `accumulatedText` is a genuine, non-trivial PREFIX of at
+ * least one pattern's own compact signature — i.e. "typing more of this could still become a real
+ * filtered phrase". Used by the content-aware fragment-burst throttle to tell a deliberate
+ * letter-by-letter spelling attempt (every step remains a valid growing prefix of some real phrase,
+ * e.g. "ar" -> "aren" -> "arenar" -> ... towards "arenarcade") apart from unrelated short messages
+ * (chess coordinates, casual reactions) that never do, no matter how many are sent in a row.
+ * Requires signature length >= 2 so a single coincidental letter doesn't count as a "match" against
+ * nearly every phrase.
+ * @param {string} accumulatedText
+ * @param {string[]} patterns
+ * @returns {boolean}
+ */
+function fragmentResemblesFilteredPhrase(accumulatedText, patterns) {
+	const sig = promoSignature(accumulatedText);
+	if (sig.length < 2 || !patterns) return false;
+
+	for (let i = 0, l = patterns.length; i < l; i++) {
+		const patternSig = promoSignature(patterns[i]);
+		if (patternSig.length >= sig.length && patternSig.indexOf(sig) === 0) return true;
+	}
+
+	return false;
+}
+
+/**
  * @param {string} pattern
  * @param {string} normalizedPattern
  */
@@ -370,6 +395,7 @@ module.exports = {
 	containsChatFilterMatch,
 	firstFilterMatch,
 	fuzzyFilterMatch,
+	fragmentResemblesFilteredPhrase,
 	letterSeparatorSignature,
 	boundedEditDistance,
 	longestUnbrokenRun,
