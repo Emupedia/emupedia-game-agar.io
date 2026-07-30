@@ -1,3 +1,5 @@
+const BanLists = require('../BanLists');
+
 const SKIN_COLOR_RE = /^#?(?:[0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/;
 
 /**
@@ -18,6 +20,18 @@ function sanitizeSkin(skin) {
 		if (parts[i] && parts[i] !== '#ffffff' && !SKIN_COLOR_RE.test(parts[i])) parts[i] = '';
 	}
 	return parts.join('|');
+}
+
+/**
+ * Extracts the fp2 field (index 5) from a raw, unsanitized "skinId|nameColor|cellColor|
+ * borderColor||fp2" blob, as sent by the client in the "<...>" wrapper around the spawn name.
+ * @param {string} rawSkinBlob
+ * @returns {string} the trimmed fp2 value, or '' if absent
+ */
+function extractFp2FromSkinWrapper(rawSkinBlob) {
+	if (!rawSkinBlob) return '';
+	const parts = String(rawSkinBlob).split('|');
+	return parts[5] ? parts[5].trim() : '';
 }
 
 /** @interface */
@@ -134,6 +148,22 @@ class Router {
 
 			if (regex !== null) {
 				name = regex[2];
+
+				const fp2 = extractFp2FromSkinWrapper(regex[1]);
+				const banLists = BanLists.getInstance();
+
+				if (fp2 && banLists.isFp2Banned(fp2)) {
+					const banned = banLists.autoBanIp(this.remoteAddress, { fp2, channel: 'spawn' });
+
+					if (banned) {
+						this.settings.listenerForbiddenIPs.push(this.remoteAddress);
+					}
+
+					this.logger.inform(`onSpawnRequest: fp2 ban match for '${this.remoteAddress}', auto-banning IP (applied=${banned})`);
+					this.closeSocket(1008, 'Policy violation');
+					return;
+				}
+
 				skin = sanitizeSkin(regex[1]);
 			}
 		}
@@ -197,5 +227,10 @@ class Router {
 		throw new Error("Must be overriden");
 	}
 }
+
+// Attached rather than wrapping the export, so existing `const Router = require('./Router')` +
+// `class X extends Router` consumers (Connection.js, bots/Bot.js) are unaffected — this just makes
+// the helper reachable as Router.extractFp2FromSkinWrapper for the test suite.
+Router.extractFp2FromSkinWrapper = extractFp2FromSkinWrapper;
 
 module.exports = Router;

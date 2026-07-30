@@ -10,6 +10,7 @@ const request = require('request');
 const Connection = require('./Connection');
 const ChatChannel = require('./ChatChannel');
 const { filterIPAddress } = require('../primitives/Misc');
+const BanLists = require('../BanLists');
 
 class Listener {
 	/**
@@ -103,6 +104,12 @@ class Listener {
 			return void response(false, 403, "Forbidden");
 		}
 
+		if (BanLists.getInstance().isIpBanned(address)) {
+			this.logger.inform(`verifyClient: BanLists ipBanList contains ${address}, dropping connection`);
+
+			return void response(false, 403, "Forbidden");
+		}
+
 		if (this.settings.listenerMaxConnectionsPerIP > 0) {
 			const count = this.connectionsByIP[address];
 
@@ -115,6 +122,32 @@ class Listener {
 
 		function sha256Hex(input) {
 			return crypto.createHash('sha256').update(input).digest('hex');
+		}
+
+		// Derives the same per-connection XOR key the client derives (from ts/nonce/CS, distinct
+		// from the main proof digest so the two purposes don't share key material) to decode the
+		// obfuscated fp2 segment. Returns a 32-byte Buffer.
+		function deriveFp2Key(ts, nonce, CS) {
+			return crypto.createHash('sha256').update([ts, nonce, CS, 'fp2key'].join('.')).digest();
+		}
+
+		// XOR is self-inverse, so this is the same operation the client used to encode fp2.
+		// Returns the decoded 64-char hex fp2 string, or null if encodedHex isn't a well-formed
+		// 64-char hex string to begin with.
+		function decodeFp2(ts, nonce, CS, encodedHex) {
+			if (!/^[a-f0-9]{64}$/.test(encodedHex)) {
+				return null;
+			}
+
+			const keyBytes = deriveFp2Key(ts, nonce, CS);
+			const encBytes = Buffer.from(encodedHex, 'hex');
+			const outBytes = Buffer.alloc(encBytes.length);
+
+			for (let i = 0; i < encBytes.length; i++) {
+				outBytes[i] = encBytes[i] ^ keyBytes[i];
+			}
+
+			return outBytes.toString('hex');
 		}
 
 		function cleanupUsedNonces(usedNonces) {
@@ -130,8 +163,9 @@ class Listener {
 		function validateProof(CS, logger, usedNonces) {
 			const parts = protocol.split(".");
 
-			// <timestamp>.<nonce>.<digest>
-			if (parts.length !== 3) {
+			// <timestamp>.<nonce>.<digest>.<encoded fp2> — fp2 is mandatory: a connection without
+			// it is rejected exactly like any other malformed proof.
+			if (parts.length !== 4) {
 		    		return false;
 			}
 
@@ -148,6 +182,12 @@ class Listener {
 			}
 
 			if (!/^[a-f0-9]{64}$/.test(digest)) {
+				return false;
+			}
+
+			const decodedFp2 = decodeFp2(ts, nonce, CS, parts[3]);
+
+			if (decodedFp2 === null) {
 				return false;
 			}
 
@@ -180,14 +220,22 @@ class Listener {
 			// Prevent replay within the timestamp window
 			usedNonces.set(nonce, now + 30000);
 
+			requestFp2 = decodedFp2;
 			return true;
 		}
+
+		let requestFp2 = '';
 
 		if (!validateProof(this.CS, this.logger, this.usedNonces)) {
                         this.logger.inform(`verifyClient: protocol validation failed for '${address}'`);
 			return void response(false, 403, "Forbidden");
 		}
 
+		if (BanLists.getInstance().isFp2Banned(requestFp2)) {
+			this.logger.inform(`verifyClient: BanLists fp2BanList matched for '${address}'`);
+
+			return void response(false, 403, "Forbidden");
+		}
 
 		this.logger.debug(`verifyClient: IP '${address}' Client Verification Passed`);
 		response(true);
