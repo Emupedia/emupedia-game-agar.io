@@ -236,6 +236,11 @@ class Listener {
 			return void response(false, 403, "Forbidden");
 		}
 
+		// Stash the decoded fp2 on the upgrade request so Connection (constructed from this same
+		// req in onConnection) can pick it up — otherwise it's only ever checked here, once, and is
+		// unavailable later for per-spawn re-checks or logging.
+		info.req.fp2 = requestFp2;
+
 		this.logger.debug(`verifyClient: IP '${address}' Client Verification Passed`);
 		response(true);
 	}
