@@ -227,13 +227,12 @@ class Listener {
 		let requestFp2 = '';
 
 		if (!validateProof(this.CS, this.logger, this.usedNonces)) {
-                        this.logger.inform(`verifyClient: protocol validation failed for '${address}'`);
+			this.logger.inform(`verifyClient: protocol validation failed for '${address}'`);
 			return void response(false, 403, "Forbidden");
 		}
 
 		if (BanLists.getInstance().isFp2Banned(requestFp2)) {
-			this.logger.inform(`verifyClient: BanLists fp2BanList matched for '${address}'`);
-
+			this.logger.inform(`verifyClient: BanLists fp2BanList matched for '${address}', fp2='${requestFp2}'`);
 			return void response(false, 403, "Forbidden");
 		}
 
