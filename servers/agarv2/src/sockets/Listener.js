@@ -126,10 +126,16 @@ class Listener {
 			return crypto.createHash('sha256').update(input).digest('hex');
 		}
 
+		// Derives the same per-connection XOR key the client derives (from ts/nonce/CS, distinct
+		// from the main proof digest so the two purposes don't share key material) to decode the
+		// obfuscated fp2 segment. Returns a 32-byte Buffer.
 		function deriveFp2Key(ts, nonce, CS) {
 			return crypto.createHash('sha256').update([ts, nonce, CS, 'fp2key'].join('.')).digest();
 		}
 
+		// XOR is self-inverse, so this is the same operation the client used to encode fp2.
+		// Returns the decoded 64-char hex fp2 string, or null if encodedHex isn't a well-formed
+		// 64-char hex string to begin with.
 		function decodeFp2(ts, nonce, CS, encodedHex) {
 			if (!/^[a-f0-9]{64}$/.test(encodedHex)) {
 				return null;
@@ -159,6 +165,8 @@ class Listener {
 		function validateProof(CS, logger, usedNonces) {
 			const parts = protocol.split(".");
 
+			// <timestamp>.<nonce>.<digest>.<encoded fp2> — fp2 is mandatory: a connection without
+			// it is rejected exactly like any other malformed proof.
 			if (parts.length !== 4) {
 		    		return false;
 			}
@@ -188,6 +196,7 @@ class Listener {
 			const now = Date.now();
 			const timestamp = Number(ts);
 
+			// 30-second validity window
 			if (Math.abs(now - timestamp) > (20 * 60 * 1000)) {
 				logger.inform(`verifyClient: timestamp expired for '${address}', server=${now}, client=${timestamp}, diff=${Math.abs(now - timestamp)}ms`);
 				return false;
@@ -210,6 +219,7 @@ class Listener {
 				return false;
 			}
 
+			// Prevent replay within the timestamp window
 			usedNonces.set(nonce, now + 30000);
 
 			requestFp2 = decodedFp2;
@@ -228,6 +238,9 @@ class Listener {
 			return void response(false, 403, "Forbidden");
 		}
 
+		// Stash the decoded fp2 on the upgrade request so Connection (constructed from this same
+		// req in onConnection) can pick it up — otherwise it's only ever checked here, once, and is
+		// unavailable later for per-spawn re-checks or logging.
 		info.req.fp2 = requestFp2;
 
 		this.logger.debug(`verifyClient: IP '${address}' Client Verification Passed`);
@@ -236,12 +249,21 @@ class Listener {
 	onOpen() {
 		this.logger.inform(`listener open at ${this.settings.listeningPort}`);
 	}
+	/**
+	 * @param {Router} router
+	 */
 	addRouter(router) {
 		this.routers.push(router);
 	}
+	/**
+	 * @param {Router} router
+	 */
 	removeRouter(router) {
 		this.routers.splice(this.routers.indexOf(router), 1);
 	}
+	/**
+	 * @param {WebSocket} webSocket
+	 */
 	onConnection(webSocket, req) {
 		const newConnection = new Connection(this, webSocket, req);
 		this.logger.onAccess(`CONNECTION FROM ${newConnection.remoteAddress}`);
@@ -271,6 +293,11 @@ class Listener {
 		}
 	}
 
+	/**
+	 * @param {Connection} connection
+	 * @param {number} code
+	 * @param {string} reason
+	 */
 	onDisconnection(connection, code, reason) {
 		this.logger.onAccess(`DISCONNECTION FROM ${connection.remoteAddress} (${code} '${reason}')`);
 
