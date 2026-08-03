@@ -1,0 +1,6 @@
+{
+  "minionControl": true,
+  "customSkinUpload": true,
+  "serverSelection": true,
+  "modes": ["eu-ffa-pro", "eu-ffa-casual", "eu-ffa", "eu-pvp", "eu", "us"]
+}
