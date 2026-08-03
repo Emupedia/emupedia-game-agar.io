@@ -117,3 +117,23 @@ window.PointQuadTree = (function() {
 
 	return PointQuadTree;
 })();
+
+// Prevent document-level gameplay bindings from handling interactions with menus and dialogs.
+(function () {
+	'use strict';
+
+	const UI_SELECTOR = '#overlays, #gallery, #connecting, dialog, [role="dialog"], .modal, input, select, textarea, button, a, label';
+	const guardedEvents = ['mousedown', 'mouseup', 'contextmenu', 'pointerdown', 'pointerup'];
+
+	function isInterfaceTarget(target) {
+		return target instanceof Element && target.closest(UI_SELECTOR) !== null;
+	}
+
+	function stopGameplayHandler(event) {
+		if (isInterfaceTarget(event.target)) event.stopImmediatePropagation();
+	}
+
+	for (const eventName of guardedEvents) {
+		document.addEventListener(eventName, stopGameplayHandler);
+	}
+})();
