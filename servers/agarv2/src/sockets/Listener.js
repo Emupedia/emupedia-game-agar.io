@@ -72,7 +72,7 @@ class Listener {
 		this.logger.onAccess(`REQUEST FROM ${address}, ${info.secure ? "" : "not "}secure, Origin: ${info.origin}`);
 		this.logger.onAccess(`IP: '${address}' Browser UA: '${userAgent}'`);
 
-		if (this.connections.length > this.settings.listenerMaxConnections) {
+		if (this.settings.listenerMaxConnections > 0 && this.connections.length >= this.settings.listenerMaxConnections) {
 			this.logger.inform("verifyClient: listenerMaxConnections reached, dropping new connections");
 
 			return void response(false, 503, "Service Unavailable");
