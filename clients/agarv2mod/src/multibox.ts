@@ -7,6 +7,7 @@ import {
   type MoveFormat,
 } from "./encode";
 import { getFp2Sync, profileColors } from "./fp2";
+import { ClientOp } from "./opcodes";
 import type { Overlay, Scene, SceneLayer, SceneTheme } from "./overlay";
 import { currentProfile, save, settings } from "./settings";
 import type { SkinShare } from "./skinshare";
@@ -24,9 +25,6 @@ const CHIP_COLORS = ["#22d3ee", "#fbbf24"];
 export type GameMode = "menu" | "playing" | "spectating";
 
 const MACRO_FEED_MS = 70;
-const SPECTATE_OP = 15;
-const QKEY_DOWN_OP = 18;
-const QKEY_UP_OP = 19;
 const ENABLE_SECOND_SOCKET = true;
 const RELAY_URL = "";
 const WS2_URL = `wss://agar.emupedia.net/ws2/`;
@@ -89,14 +87,14 @@ export class Multibox implements Scene {
   }
 
   private build254(): ArrayBuffer {
-    return new Uint8Array([254, PROTOCOL_VERSION, 0, 0, 0]).buffer;
+    return new Uint8Array([ClientOp.SET_PROTOCOL, PROTOCOL_VERSION, 0, 0, 0]).buffer;
   }
 
   private build255(): ArrayBuffer {
     const name = new TextEncoder().encode(this.nick());
     const out = new ArrayBuffer(5 + name.length + 1);
     const ov = new DataView(out);
-    ov.setUint8(0, 255);
+    ov.setUint8(0, ClientOp.HANDSHAKE);
     ov.setUint32(1, HANDSHAKE_KEY, true);
     new Uint8Array(out).set(name, 5);
     return out;
@@ -260,7 +258,7 @@ export class Multibox implements Scene {
     p.client.send(pkt);
     p.deployed = true;
     this.announceSkin();
-    this.log(`[agarv2mod] opcode-20 spawn box ${idx + 1} (nick="${nick}")`);
+    this.log(`[agarv2mod] spawn box ${idx + 1} (nick="${nick}")`);
   }
 
   spectate() {
@@ -284,13 +282,13 @@ export class Multibox implements Scene {
     this.freeRoam = !this.freeRoam;
     const aux = this.auxClient;
     if (aux?.ws?.readyState === WebSocket.OPEN) {
-      aux.send(this.oneByte(QKEY_DOWN_OP));
+      aux.send(this.oneByte(ClientOp.Q_DOWN));
       window.setTimeout(() => {
-        if (aux.ws?.readyState === WebSocket.OPEN) aux.send(this.oneByte(QKEY_UP_OP));
+        if (aux.ws?.readyState === WebSocket.OPEN) aux.send(this.oneByte(ClientOp.Q_UP));
       }, 40);
       if (!this.freeRoam) {
         window.setTimeout(() => {
-          if (this.mode === "spectating" && aux.ws?.readyState === WebSocket.OPEN) aux.send(this.oneByte(SPECTATE_OP));
+          if (this.mode === "spectating" && aux.ws?.readyState === WebSocket.OPEN) aux.send(this.oneByte(ClientOp.SPECTATE));
         }, 90);
       }
     }
@@ -307,10 +305,10 @@ export class Multibox implements Scene {
       if (!this.spectateKicked || (!this.freeRoam && aux.world.nodes.size === 0 && now - this.lastSpecKick > 3000)) {
         this.spectateKicked = true;
         this.lastSpecKick = now;
-        aux.send(this.oneByte(SPECTATE_OP));
+        aux.send(this.oneByte(ClientOp.SPECTATE));
         window.setTimeout(() => {
           if ((this.mode === "spectating" || settings.game.spectatorView) && aux.ws?.readyState === WebSocket.OPEN) {
-            aux.send(this.oneByte(SPECTATE_OP));
+            aux.send(this.oneByte(ClientOp.SPECTATE));
           }
         }, 300);
         this.log("[agarv2mod] spectate: requesting aux stream (follow-leader)");

@@ -1,3 +1,5 @@
+import { ServerOp } from "./opcodes";
+
 export const COORD: "i16" | "i32" = "i32";
 
 export class Reader {
@@ -136,25 +138,25 @@ export function decodeServer(buf: ArrayBuffer): ServerEvent {
   const r = new Reader(buf);
   const op = r.u8();
   switch (op) {
-    case 16:
+    case ServerOp.UPDATE_NODES:
       return { t: "world", world: decodeUpdateNodes(r) };
-    case 64:
+    case ServerOp.BORDER:
       return { t: "border", border: decodeBorder(r) };
-    case 32: {
+    case ServerOp.OWN_CELL: {
       const ownIds: number[] = [];
       while (r.remaining >= 4) ownIds.push(r.u32());
       return { t: "own", ownIds };
     }
-    case 17: {
+    case ServerOp.SPECTATE_POSITION: {
       if (r.remaining < 12) return { t: "raw", op, len: buf.byteLength };
       const x = r.f32();
       const y = r.f32();
       const scale = r.f32();
       return { t: "camera", x, y, scale };
     }
-    case 49:
+    case ServerOp.LEADERBOARD:
       return { t: "leaderboard", entries: decodeLeaderboard(r) };
-    case 98: {
+    case ServerOp.CHAT: {
       const flags = r.u8();
       const cr = r.u8(), cg = r.u8(), cb = r.u8();
       void flags;
@@ -162,7 +164,7 @@ export function decodeServer(buf: ArrayBuffer): ServerEvent {
       const message = r.str8();
       return { t: "chat", name, message, color: `rgb(${cr},${cg},${cb})` };
     }
-    case 20:
+    case ServerOp.CLEAR:
       return { t: "clear" };
     default:
       return { t: "raw", op, len: buf.byteLength };

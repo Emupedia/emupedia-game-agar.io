@@ -1,3 +1,5 @@
+import { ClientOp } from "./opcodes";
+
 export const DEFAULT_BOX_COUNT = 2;
 
 export interface Profile {
@@ -115,9 +117,9 @@ export const DEFAULT_GAME: GameSettings = {
   inactiveBoxStops: false,
   spectatorView: false,
   drawDelay: 70,
-  splitOp: 17,
-  ejectOp: 21,
-  chatOp: 98,
+  splitOp: ClientOp.SPLIT,
+  ejectOp: ClientOp.EJECT,
+  chatOp: ClientOp.CHAT,
   autoFps: true,
   maxFps: 144,
   renderScale: 1,
@@ -175,7 +177,7 @@ function load(): Settings {
       try { localStorage.setItem(BINDINGS_VERSION_KEY, BINDINGS_VERSION); } catch {}
     }
     if (localStorage.getItem(CHAT_OP_FIX_KEY) !== "1") {
-      base.game.chatOp = 98;
+      base.game.chatOp = ClientOp.CHAT;
       try { localStorage.setItem(CHAT_OP_FIX_KEY, "1"); } catch {}
     }
     if (localStorage.getItem(SPECTATOR_OFF_KEY) !== "1") {

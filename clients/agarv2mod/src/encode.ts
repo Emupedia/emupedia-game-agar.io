@@ -1,13 +1,12 @@
-export type MoveFormat = "i32" | "f64";
+import { ClientOp } from "./opcodes";
 
-const MOVE_OP = 5;
-const SPAWN_OP = 20;
+export type MoveFormat = "i32" | "f64";
 
 export function encodeMove(x: number, y: number, fmt: MoveFormat): ArrayBuffer {
   if (fmt === "f64") {
     const b = new ArrayBuffer(21);
     const v = new DataView(b);
-    v.setUint8(0, MOVE_OP);
+    v.setUint8(0, ClientOp.MOUSE);
     v.setFloat64(1, x, true);
     v.setFloat64(9, y, true);
     v.setUint32(17, 0, true);
@@ -15,7 +14,7 @@ export function encodeMove(x: number, y: number, fmt: MoveFormat): ArrayBuffer {
   }
   const b = new ArrayBuffer(13);
   const v = new DataView(b);
-  v.setUint8(0, MOVE_OP);
+  v.setUint8(0, ClientOp.MOUSE);
   v.setInt32(1, Math.round(x), true);
   v.setInt32(5, Math.round(y), true);
   v.setUint32(9, 0, true);
@@ -38,7 +37,7 @@ export function encodeOgarSpawn(
   const utf8 = new TextEncoder().encode(s);
   const b = new ArrayBuffer(1 + utf8.length + 1);
   const bytes = new Uint8Array(b);
-  bytes[0] = SPAWN_OP;
+  bytes[0] = ClientOp.SPAWN;
   bytes.set(utf8, 1);
   bytes[1 + utf8.length] = 0;
   return b;
