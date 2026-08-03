@@ -1,6 +1,27 @@
 const BanLists = require('../BanLists');
 
 const SKIN_COLOR_RE = /^#?(?:[0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/;
+const NAME_SEGMENTER = typeof Intl.Segmenter === 'function'
+	? new Intl.Segmenter(undefined, { granularity: 'grapheme' })
+	: null;
+
+/**
+ * Truncate a nickname without splitting a visible Unicode character.
+ * @param {string} value
+ * @param {number} maxLength
+ * @returns {string}
+ */
+function truncateNickname(value, maxLength) {
+	if (maxLength <= 0) {
+		return '';
+	}
+
+	const characters = NAME_SEGMENTER
+		? Array.from(NAME_SEGMENTER.segment(value), item => item.segment)
+		: Array.from(value);
+
+	return characters.slice(0, maxLength).join('');
+}
 
 /**
  * Sanitize a skin string ("skinId|nameColor|cellColor|borderColor||fp2") extracted from a
@@ -171,7 +192,7 @@ class Router {
 		// playerMaxNameLength bounds the raw wire string (wrapper + name combined) and may be much
 		// larger than a sane display length to fit the skin/color/fp2 wrapper; clamp the actual
 		// visible nickname separately so that headroom can't also inflate the displayed name.
-		name = name.slice(0, this.settings.playerNicknameMaxLength);
+		name = truncateNickname(name, this.settings.playerNicknameMaxLength);
 
 		this.listener.handle.gamemode.onPlayerSpawnRequest(this.player, name, skin);
 	}
@@ -228,9 +249,6 @@ class Router {
 	}
 }
 
-// Attached rather than wrapping the export, so existing `const Router = require('./Router')` +
-// `class X extends Router` consumers (Connection.js, bots/Bot.js) are unaffected — this just makes
-// the helper reachable as Router.extractFp2FromSkinWrapper for the test suite.
 Router.extractFp2FromSkinWrapper = extractFp2FromSkinWrapper;
 
 module.exports = Router;
