@@ -1,7 +1,7 @@
 require('dotenv').config();
 
 const crypto = require('crypto');
-const WebSocket = require('uws');
+const WebSocket = require('ws');
 const WebSocketServer = WebSocket.Server;
 // const uws = require('uWebSockets.js');
 // const app = uws.App();
@@ -41,9 +41,11 @@ class Listener {
 		this.listenerSocket = new WebSocketServer({
 			port: this.settings.listeningPort,
 			verifyClient: this.verifyClient.bind(this),
-			handleProtocols: function (protocols) {
+			handleProtocols: (protocols) => {
 				this.logger.inform(`received protocols ${protocols}`);
-				return protocols[0];
+				return protocols instanceof Set
+					? protocols.values().next().value
+					: protocols[0];
 			}
 		}, this.onOpen.bind(this));
 
