@@ -1,0 +1,15 @@
+{
+  "skinBaseUrl": "./skins/",
+  "servers": [
+    "example.com/agar-ws/",
+    "example.com/agar-ws/"
+  ],
+  "geo": {
+    "eu-ffa-pro": "example.com/agar-ws/",
+    "eu-ffa-casual": "example.com/agar-ws/",
+    "eu-ffa": "example.com/agar-ws/",
+    "eu-pvp": "example.com/agar-ws/",
+    "eu": "example.com/agar-ws/",
+    "us": "example.com/agar-ws/"
+  }
+}
