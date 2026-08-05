@@ -41,6 +41,13 @@ class Mothercell extends Cell {
 		return true;
 	}
 
+	// A subclass that defines only a setter shadows the inherited accessor in
+	// JavaScript. Keep the Cell getters visible so mother cells are sent with
+	// their real size instead of `undefined` (which the protocol encodes as 0).
+	get size() {
+		return super.size;
+	}
+
 	set size(value) {
 		if (!Number.isFinite(value) || value < 0) {
 			value = 149;
@@ -50,8 +57,16 @@ class Mothercell extends Cell {
 		super.size = Math.min(value, maxSize);
 	}
 
+	get squareSize() {
+		return super.squareSize;
+	}
+
 	set squareSize(value) {
 		this.size = Math.sqrt(Math.max(0, value));
+	}
+
+	get mass() {
+		return super.mass;
 	}
 
 	set mass(value) {
