@@ -12,6 +12,8 @@ class Virus extends Cell {
 
 		this.fedTimes = 0;
 		this.splitAngle = NaN;
+		/** @type {{ id: number, name: string }} */
+		this.lastFedBy = null;
 	}
 
 	get type() {
@@ -63,6 +65,16 @@ class Virus extends Cell {
 	 */
 	whenAte(cell) {
 		const settings = this.world.settings;
+
+		// Remember who last pushed this virus, so a mothercell that swallows it
+		// can attribute the feed. Snapshotted instead of holding the player:
+		// they can disconnect long before the virus is consumed.
+		if (cell.owner) {
+			this.lastFedBy = {
+				id: cell.owner.id,
+				name: cell.owner.leaderboardName || cell.owner.cellName || "unnamed"
+			};
+		}
 
 		if (settings.virusPushing) {
 			const newD = this.boost.d + settings.virusPushBoost;
