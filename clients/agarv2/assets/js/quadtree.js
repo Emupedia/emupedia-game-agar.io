@@ -117,3 +117,25 @@ window.PointQuadTree = (function() {
 
 	return PointQuadTree;
 })();
+
+// Warn only after the user starts playing or spectating, not while idle in the menu.
+(function () {
+	'use strict';
+
+	let active = false;
+	window.AgarSessionState = Object.freeze({
+		isActive: () => active,
+		setActive: value => { active = value === true; }
+	});
+
+	function markActive(event) {
+		if (event.target instanceof Element && event.target.closest('#play-btn, #spectate-btn')) active = true;
+	}
+
+	document.addEventListener('click', markActive);
+	window.addEventListener('beforeunload', event => {
+		if (!active) return;
+		event.preventDefault();
+		event.returnValue = '';
+	});
+})();
