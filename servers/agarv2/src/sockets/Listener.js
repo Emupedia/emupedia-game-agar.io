@@ -12,6 +12,8 @@ const ChatChannel = require('./ChatChannel');
 const { filterIPAddress } = require('../primitives/Misc');
 const BanLists = require('../BanLists');
 
+const PROOF_VALIDITY_MS = 30 * 1000;
+
 class Listener {
 	/**
 	 * @param {ServerHandle} handle
@@ -194,8 +196,8 @@ class Listener {
 			const now = Date.now();
 			const timestamp = Number(ts);
 
-			// 30-second validity window
-			if (Math.abs(now - timestamp) > (20 * 60 * 1000)) {
+			// Keep timestamp acceptance and replay protection on the same validity window.
+			if (Math.abs(now - timestamp) > PROOF_VALIDITY_MS) {
 				logger.inform(`verifyClient: timestamp expired for '${address}', server=${now}, client=${timestamp}, diff=${Math.abs(now - timestamp)}ms`);
 				return false;
 			}
@@ -218,7 +220,7 @@ class Listener {
 			}
 
 			// Prevent replay within the timestamp window
-			usedNonces.set(nonce, now + 30000);
+			usedNonces.set(nonce, now + PROOF_VALIDITY_MS);
 
 			requestFp2 = decodedFp2;
 			return true;
