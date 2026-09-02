@@ -1,7 +1,7 @@
 const value = Object.seal({
 	// Admin Authentication System
-	adminAuthEnabled: true,                  // Enable admin authentication for chat commands
-	adminPassword: "admin123",               // Password for admin access (change this!)
+	adminAuthEnabled: false,                 // Enable admin authentication for chat commands
+	adminPassword: "",                       // Required when adminAuthEnabled is true
 	adminSessionTimeout: 300000,             // Admin session timeout in milliseconds (5 minutes)
 
 	/** @type {IPAddress[]} */
