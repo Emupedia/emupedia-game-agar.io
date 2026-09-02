@@ -146,9 +146,11 @@ function ask() {
 	});
 }
 
-setTimeout(() => {
-	logger.debug("command stream open");
-	ask();
-}, 1000);
+if (process.stdin.isTTY) {
+	setTimeout(() => {
+		logger.debug("command stream open");
+		ask();
+	}, 1000);
+}
 
 currentHandle.start();
