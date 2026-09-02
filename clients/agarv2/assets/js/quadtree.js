@@ -101,16 +101,39 @@ window.PointQuadTree = (function() {
 		constructor(x, y, w, h, maxPoints) {
 			this.root = new Node(x, y, w, h);
 			this.maxPoints = maxPoints;
+			this.parents = new Set();
 		}
 		clear() {
 			this.root.clear();
+			this.parents.clear();
 		}
 		insert(point) {
 			if (!this.root.containsPoint(point)) return;
 
+			if (point.parent) this.parents.add(point.parent);
 			this.root.insert(point, this.maxPoints);
 		}
 		some(aabb, test) {
+			// Jelly collision queries are centered on one outline point. Testing only the other
+			// cells' sampled outline points misses overlaps when their samples do not line up, or
+			// when the queried point is already inside a much larger cell. Use each unique parent
+			// cell as a cheap circular broad phase before falling back to the exact point lookup.
+			const x = aabb.x + aabb.w / 2;
+			const y = aabb.y + aabb.h / 2;
+			const padding = Math.max(aabb.w, aabb.h) / 2;
+
+			for (const parent of this.parents) {
+				if (!parent || !Number.isFinite(parent.x) || !Number.isFinite(parent.y) || !Number.isFinite(parent.s)) continue;
+
+				const dx = x - parent.x;
+				const dy = y - parent.y;
+				const radius = Math.max(parent.s, 0) + padding;
+
+				if (dx * dx + dy * dy <= radius * radius && test({ x, y, parent })) {
+					return true;
+				}
+			}
+
 			return this.root.some(aabb, test);
 		}
 	}
