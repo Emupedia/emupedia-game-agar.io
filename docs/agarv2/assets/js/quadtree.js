@@ -119,3 +119,35 @@ window.PointQuadTree = (function() {
 
 	return PointQuadTree;
 })();
+
+(() => {
+	"use strict";
+
+	const releaseChatFocus = event => {
+		const chat = document.getElementById("chat_textbox");
+		if (!chat || event.target === chat || chat.contains(event.target)) {
+			return;
+		}
+
+		chat.blur();
+		setTimeout(() => {
+			if (document.activeElement === chat) {
+				chat.blur();
+			}
+		}, 0);
+	};
+
+	document.addEventListener("pointerdown", releaseChatFocus, true);
+	document.addEventListener("click", releaseChatFocus, true);
+	document.addEventListener("focusin", event => {
+		const chat = document.getElementById("chat_textbox");
+		const overlays = document.getElementById("overlays");
+		if (event.target !== chat || !overlays) {
+			return;
+		}
+
+		if (getComputedStyle(overlays).display !== "none") {
+			chat.blur();
+		}
+	}, true);
+})();
