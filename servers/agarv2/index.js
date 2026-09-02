@@ -40,13 +40,27 @@ const commandStream = readline.createInterface({
 	removeHistoryDuplicates: true
 });
 
-commandStream.once("SIGINT", () => {
-	logger.inform("command stream caught SIGINT");
+let shutdownStarted = false;
+
+function shutdown(signal) {
+	if (shutdownStarted) return;
+	shutdownStarted = true;
+	logger.inform(`received ${signal}, shutting down`);
 	commandStreamClosing = true;
 	commandStream.close();
 	currentHandle.stop();
 	process.exitCode = 0;
-});
+
+	const forceExitTimer = setTimeout(() => {
+		logger.inform("graceful shutdown timed out");
+		process.exit(1);
+	}, 5000);
+	forceExitTimer.unref();
+}
+
+commandStream.once("SIGINT", () => shutdown("SIGINT"));
+process.once("SIGINT", () => shutdown("SIGINT"));
+process.once("SIGTERM", () => shutdown("SIGTERM"));
 
 DefaultCommands(currentHandle.commands, currentHandle.chatCommands);
 currentHandle.protocols.register(...DefaultProtocols);
