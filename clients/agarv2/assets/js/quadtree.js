@@ -117,3 +117,52 @@ window.PointQuadTree = (function() {
 
 	return PointQuadTree;
 })();
+
+// Apply optional deployment capabilities without changing the game protocol.
+(function () {
+	'use strict';
+
+	let capabilities = {};
+
+	function enabled(name) {
+		return capabilities[name] !== false;
+	}
+
+	function hideElement(element) {
+		if (!element) return;
+		const container = element.closest('label, .form-wrapper, .form-label-wrapper') || element;
+		container.hidden = true;
+		container.setAttribute('aria-hidden', 'true');
+	}
+
+	function applyCapabilities() {
+		if (!enabled('customSkinUpload')) {
+			document.querySelectorAll('#show-upload-btn, #unban-btn, .upload-btn-wrapper').forEach(hideElement);
+		}
+		if (!enabled('serverSelection')) hideElement(document.getElementById('server-list'));
+
+		const server = document.getElementById('server');
+		if (server && Array.isArray(capabilities.modes) && capabilities.modes.length) {
+			for (const option of Array.from(server.options)) {
+				if (!capabilities.modes.includes(option.value)) option.remove();
+			}
+		}
+
+		document.documentElement.dataset.minionControl = enabled('minionControl') ? 'enabled' : 'disabled';
+		document.dispatchEvent(new CustomEvent('agar-capabilities-ready', { detail: capabilities }));
+	}
+
+	document.addEventListener('keydown', event => {
+		if (!enabled('minionControl') && event.key && event.key.toLowerCase() === 'q') {
+			event.stopImmediatePropagation();
+		}
+	});
+
+	fetch('capabilities.json', { cache: 'no-store' })
+		.then(response => response.ok ? response.json() : {})
+		.then(value => {
+			capabilities = value && typeof value === 'object' ? value : {};
+			applyCapabilities();
+		})
+		.catch(() => applyCapabilities());
+})();
