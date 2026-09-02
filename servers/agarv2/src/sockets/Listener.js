@@ -11,6 +11,7 @@ const Connection = require('./Connection');
 const ChatChannel = require('./ChatChannel');
 const { filterIPAddress } = require('../primitives/Misc');
 const BanLists = require('../BanLists');
+const { getListenerNetworkSettings, resolveClientAddress } = require('./ListenerNetworkSettings');
 
 class Listener {
 	/**
@@ -36,9 +37,11 @@ class Listener {
 	open() {
 		if (this.listenerSocket !== null) return false;
 
-		this.logger.debug(`listener opening at ${this.settings.listeningPort}`);
+		const network = getListenerNetworkSettings(this.settings);
+		this.logger.debug(`listener opening at ${network.host}:${this.settings.listeningPort}`);
 
 		this.listenerSocket = new WebSocketServer({
+			host: network.host,
 			port: this.settings.listeningPort,
 			verifyClient: this.verifyClient.bind(this),
 			handleProtocols: function (protocols) {
@@ -65,8 +68,8 @@ class Listener {
 	 * @param {*} response
 	 */
 	verifyClient(info, response) {
-		const ip = typeof info.req.headers['x-real-ip'] !== 'undefined' ? info.req.headers['x-real-ip'] : info.req.socket.remoteAddress;
-		const address = filterIPAddress(ip);
+		const network = getListenerNetworkSettings(this.settings);
+		const address = resolveClientAddress(info.req, network, filterIPAddress);
 		const protocol = info.req.headers['sec-websocket-protocol'];
 		const userAgent = typeof info.req.headers['user-agent'] !== 'undefined' ? info.req.headers['user-agent'] : 'Unknown User Agent';
 		this.logger.onAccess(`REQUEST FROM ${address}, ${info.secure ? "" : "not "}secure, Origin: ${info.origin}`);
