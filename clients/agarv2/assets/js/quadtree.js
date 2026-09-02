@@ -117,3 +117,52 @@ window.PointQuadTree = (function() {
 
 	return PointQuadTree;
 })();
+
+(() => {
+	"use strict";
+
+	let nativeFullscreen = false;
+	const pageFullscreen = () => document.fullscreenElement || document.webkitFullscreenElement || document.msFullscreenElement;
+	const viewportFullscreen = () => Math.abs(window.outerWidth - screen.width) <= 2 && Math.abs(window.outerHeight - screen.height) <= 2;
+
+	const syncFullscreenControls = () => {
+		if (pageFullscreen()) {
+			nativeFullscreen = false;
+		} else {
+			nativeFullscreen = viewportFullscreen();
+		}
+
+		const active = Boolean(pageFullscreen()) || nativeFullscreen;
+		const toggle = document.getElementById("toggleFullscreen");
+		const button = document.getElementById("fullscreenBtn");
+		if (toggle) toggle.checked = active;
+		if (button) button.src = active ? "assets/img/fullscreen_off.png" : "assets/img/fullscreen.png";
+		document.querySelectorAll(".menu-fullscreen-toggle").forEach(control => {
+			control.setAttribute("aria-pressed", active ? "true" : "false");
+		});
+	};
+
+	document.addEventListener("click", event => {
+		if (!nativeFullscreen || pageFullscreen()) return;
+		const target = event.target instanceof Element ? event.target : null;
+		if (!target || !target.closest("#toggleFullscreen, #fullscreenBtn, .menu-fullscreen-toggle")) return;
+		event.preventDefault();
+		event.stopImmediatePropagation();
+		syncFullscreenControls();
+	}, true);
+
+	window.addEventListener("keydown", event => {
+		if (event.key === "F11" && !event.repeat) {
+			nativeFullscreen = !nativeFullscreen;
+			setTimeout(syncFullscreenControls, 300);
+		} else if (event.key === "Escape") {
+			setTimeout(syncFullscreenControls, 150);
+		}
+	}, true);
+
+	document.addEventListener("fullscreenchange", syncFullscreenControls);
+	document.addEventListener("webkitfullscreenchange", syncFullscreenControls);
+	window.addEventListener("resize", () => setTimeout(syncFullscreenControls, 120));
+	window.addEventListener("focus", syncFullscreenControls);
+	syncFullscreenControls();
+})();
